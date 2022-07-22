@@ -1,7 +1,6 @@
 # DND 7기 1조 iOS
 
 ## 🛠 Technical Stack
----
 
 |Title|Contents
 |-----|------------------
