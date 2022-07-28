@@ -141,5 +141,4 @@ iOSInjectionProject/
 # End of https://www.toptal.com/developers/gitignore/api/xcode,swift,cocoapods,macos
 .DS_Store
 !user/.keep
-!user/.keep
-!user/.keep
+
