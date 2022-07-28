@@ -1,8 +1,8 @@
 //
-//  MapVC.swift
+//  ChallengeVC.swift
 //  NEMODU
 //
-//  Created by 황윤경 on 2022/07/28.
+//  Created by 황윤경 on 2022/07/29.
 //
 
 import UIKit
@@ -12,10 +12,10 @@ import RxSwift
 import SnapKit
 import Then
 
-class MapVC: BaseViewController {
+class ChallengeVC: BaseViewController {
     private var tmp = UILabel()
         .then {
-            $0.text = "MAP"
+            $0.text = "CHALLENGE"
         }
     
     override func viewDidLoad() {
@@ -44,7 +44,7 @@ class MapVC: BaseViewController {
 
 // MARK: - Configure
 
-extension MapVC {
+extension ChallengeVC {
     private func configureLabel() {
         view.addSubview(tmp)
     }
@@ -52,7 +52,7 @@ extension MapVC {
 
 // MARK: - Layout
 
-extension MapVC {
+extension ChallengeVC {
     private func labelLayout() {
         tmp.snp.makeConstraints {
             $0.center.equalToSuperview()
@@ -62,12 +62,12 @@ extension MapVC {
 
 // MARK: - Input
 
-extension MapVC {
+extension ChallengeVC {
     
 }
 
 // MARK: - Output
 
-extension MapVC {
+extension ChallengeVC {
     
 }

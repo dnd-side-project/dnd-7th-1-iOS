@@ -33,6 +33,11 @@
 		2348B4092892D2E5001095BC /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348B4082892D2E5001095BC /* UIViewController+.swift */; };
 		2348B40D2892D360001095BC /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348B40C2892D360001095BC /* UIColor+.swift */; };
 		2348B4122892D901001095BC /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348B4112892D901001095BC /* LoadingView.swift */; };
+		2348B4142892DECA001095BC /* ChallengeVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348B4132892DECA001095BC /* ChallengeVM.swift */; };
+		2348B4192892DEED001095BC /* ChallengeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348B4182892DEED001095BC /* ChallengeVC.swift */; };
+		2348B41E2892DF0D001095BC /* MypageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348B41D2892DF0D001095BC /* MypageVC.swift */; };
+		2348B4202892DF16001095BC /* MypageVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348B41F2892DF16001095BC /* MypageVM.swift */; };
+		2348B4252892E007001095BC /* NEMODUTBC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348B4242892E007001095BC /* NEMODUTBC.swift */; };
 		37783E39C7DFB38581CA78A2 /* Pods_NEMODU.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7400965811C32403A72B2B0 /* Pods_NEMODU.framework */; };
 /* End PBXBuildFile section */
 
@@ -67,6 +72,11 @@
 		2348B4082892D2E5001095BC /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		2348B40C2892D360001095BC /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		2348B4112892D901001095BC /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		2348B4132892DECA001095BC /* ChallengeVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ChallengeVM.swift; path = NEMODU/Screen/Challenge/ViewModel/ChallengeVM.swift; sourceTree = SOURCE_ROOT; };
+		2348B4182892DEED001095BC /* ChallengeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeVC.swift; sourceTree = "<group>"; };
+		2348B41D2892DF0D001095BC /* MypageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MypageVC.swift; sourceTree = "<group>"; };
+		2348B41F2892DF16001095BC /* MypageVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MypageVM.swift; sourceTree = "<group>"; };
+		2348B4242892E007001095BC /* NEMODUTBC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NEMODUTBC.swift; sourceTree = "<group>"; };
 		E7400965811C32403A72B2B0 /* Pods_NEMODU.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NEMODU.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -133,6 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				2348B4102892D8F8001095BC /* Share */,
+				2348B4232892DFE7001095BC /* TabBar */,
 				2348B3D42892CE9F001095BC /* Map */,
 				2348B3D62892CECB001095BC /* Challenge */,
 				2348B3D52892CEBD001095BC /* Mypage */,
@@ -153,6 +164,9 @@
 		2348B3D52892CEBD001095BC /* Mypage */ = {
 			isa = PBXGroup;
 			children = (
+				2348B41C2892DEFD001095BC /* ViewModel */,
+				2348B41B2892DEF6001095BC /* ViewController */,
+				2348B41A2892DEF0001095BC /* Model */,
 			);
 			path = Mypage;
 			sourceTree = "<group>";
@@ -160,6 +174,9 @@
 		2348B3D62892CECB001095BC /* Challenge */ = {
 			isa = PBXGroup;
 			children = (
+				2348B4172892DEDC001095BC /* ViewModel */,
+				2348B4162892DED4001095BC /* ViewController */,
+				2348B4152892DECE001095BC /* Model */,
 			);
 			path = Challenge;
 			sourceTree = "<group>";
@@ -260,6 +277,60 @@
 				2348B4112892D901001095BC /* LoadingView.swift */,
 			);
 			path = Share;
+			sourceTree = "<group>";
+		};
+		2348B4152892DECE001095BC /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		2348B4162892DED4001095BC /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				2348B4182892DEED001095BC /* ChallengeVC.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		2348B4172892DEDC001095BC /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				2348B4132892DECA001095BC /* ChallengeVM.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		2348B41A2892DEF0001095BC /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		2348B41B2892DEF6001095BC /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				2348B41D2892DF0D001095BC /* MypageVC.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		2348B41C2892DEFD001095BC /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				2348B41F2892DF16001095BC /* MypageVM.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		2348B4232892DFE7001095BC /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				2348B4242892E007001095BC /* NEMODUTBC.swift */,
+			);
+			path = TabBar;
 			sourceTree = "<group>";
 		};
 		4B0C28207D39862BCC583AE5 /* Pods */ = {
@@ -385,8 +456,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2348B4192892DEED001095BC /* ChallengeVC.swift in Sources */,
 				2348B3F92892D151001095BC /* Input.swift in Sources */,
+				2348B4252892E007001095BC /* NEMODUTBC.swift in Sources */,
 				2348B3E92892D0BF001095BC /* BaseNavigationController.swift in Sources */,
+				2348B41E2892DF0D001095BC /* MypageVC.swift in Sources */,
 				2348B3F52892D131001095BC /* Service.swift in Sources */,
 				2348B3E32892D064001095BC /* BaseCollectionViewCell.swift in Sources */,
 				2348B3BF2892C675001095BC /* AppDelegate.swift in Sources */,
@@ -395,8 +469,10 @@
 				2348B3FF2892D184001095BC /* UILabel+.swift in Sources */,
 				2348B3E72892D08D001095BC /* BaseViewModel.swift in Sources */,
 				2348B4092892D2E5001095BC /* UIViewController+.swift in Sources */,
+				2348B4142892DECA001095BC /* ChallengeVM.swift in Sources */,
 				2348B3DB2892CF29001095BC /* MapVM.swift in Sources */,
 				2348B4032892D1D9001095BC /* UITextView+.swift in Sources */,
+				2348B4202892DF16001095BC /* MypageVM.swift in Sources */,
 				2348B4072892D286001095BC /* UIView+.swift in Sources */,
 				2348B3EE2892D0ED001095BC /* APIService.swift in Sources */,
 				2348B3E12892D046001095BC /* BaseView.swift in Sources */,
@@ -553,7 +629,6 @@
 				INFOPLIST_FILE = NEMODU/Support/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -582,7 +657,6 @@
 				INFOPLIST_FILE = NEMODU/Support/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
