@@ -23,12 +23,15 @@ final class MapVM: BaseViewModel {
     
     struct Output {}
     
-    override func bindInput() {
-        super.bindInput()
+    // MARK: - Init
+    
+    init() {
+        bindInput()
+        bindOutput()
     }
     
-    override func bindOutput() {
-        super.bindOutput()
+    deinit {
+        bag = DisposeBag()
     }
 }
 
@@ -38,8 +41,12 @@ extension MapVM {}
 
 // MARK: - Input
 
-extension MapVM: Input {}
+extension MapVM: Input {
+    func bindInput() { }
+}
 
 // MARK: - Output
 
-extension MapVM: Output {}
+extension MapVM: Output {
+    func bindOutput() { }
+}

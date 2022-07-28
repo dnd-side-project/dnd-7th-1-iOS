@@ -32,9 +32,13 @@
 		2348B4072892D286001095BC /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348B4062892D286001095BC /* UIView+.swift */; };
 		2348B4092892D2E5001095BC /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348B4082892D2E5001095BC /* UIViewController+.swift */; };
 		2348B40D2892D360001095BC /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348B40C2892D360001095BC /* UIColor+.swift */; };
+		2348B4122892D901001095BC /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348B4112892D901001095BC /* LoadingView.swift */; };
+		37783E39C7DFB38581CA78A2 /* Pods_NEMODU.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7400965811C32403A72B2B0 /* Pods_NEMODU.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		084396F5A23B94FBA7C80652 /* Pods-NEMODU.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEMODU.debug.xcconfig"; path = "Target Support Files/Pods-NEMODU/Pods-NEMODU.debug.xcconfig"; sourceTree = "<group>"; };
+		1EBADEEBC1D77F44700E20E8 /* Pods-NEMODU.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEMODU.release.xcconfig"; path = "Target Support Files/Pods-NEMODU/Pods-NEMODU.release.xcconfig"; sourceTree = "<group>"; };
 		2348B3BB2892C675001095BC /* NEMODU.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NEMODU.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2348B3BE2892C675001095BC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2348B3C72892C676001095BC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -62,6 +66,8 @@
 		2348B4062892D286001095BC /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		2348B4082892D2E5001095BC /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		2348B40C2892D360001095BC /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
+		2348B4112892D901001095BC /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		E7400965811C32403A72B2B0 /* Pods_NEMODU.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NEMODU.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,17 +75,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37783E39C7DFB38581CA78A2 /* Pods_NEMODU.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		219D107AC38DBDFC40740360 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E7400965811C32403A72B2B0 /* Pods_NEMODU.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		2348B3B22892C675001095BC = {
 			isa = PBXGroup;
 			children = (
 				2348B3BD2892C675001095BC /* NEMODU */,
 				2348B3BC2892C675001095BC /* Products */,
+				4B0C28207D39862BCC583AE5 /* Pods */,
+				219D107AC38DBDFC40740360 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -115,6 +132,7 @@
 		2348B3D32892CE89001095BC /* Screen */ = {
 			isa = PBXGroup;
 			children = (
+				2348B4102892D8F8001095BC /* Share */,
 				2348B3D42892CE9F001095BC /* Map */,
 				2348B3D62892CECB001095BC /* Challenge */,
 				2348B3D52892CEBD001095BC /* Mypage */,
@@ -236,6 +254,23 @@
 			path = Foundation;
 			sourceTree = "<group>";
 		};
+		2348B4102892D8F8001095BC /* Share */ = {
+			isa = PBXGroup;
+			children = (
+				2348B4112892D901001095BC /* LoadingView.swift */,
+			);
+			path = Share;
+			sourceTree = "<group>";
+		};
+		4B0C28207D39862BCC583AE5 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				084396F5A23B94FBA7C80652 /* Pods-NEMODU.debug.xcconfig */,
+				1EBADEEBC1D77F44700E20E8 /* Pods-NEMODU.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -243,9 +278,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2348B3CF2892C676001095BC /* Build configuration list for PBXNativeTarget "NEMODU" */;
 			buildPhases = (
+				D96D1D4D86917DA02DB3A35C /* [CP] Check Pods Manifest.lock */,
 				2348B3B72892C675001095BC /* Sources */,
 				2348B3B82892C675001095BC /* Frameworks */,
 				2348B3B92892C675001095BC /* Resources */,
+				16225BF91DE3294ABF405D45 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -301,6 +338,48 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		16225BF91DE3294ABF405D45 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-NEMODU/Pods-NEMODU-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-NEMODU/Pods-NEMODU-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NEMODU/Pods-NEMODU-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D96D1D4D86917DA02DB3A35C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-NEMODU-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		2348B3B72892C675001095BC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -311,6 +390,7 @@
 				2348B3F52892D131001095BC /* Service.swift in Sources */,
 				2348B3E32892D064001095BC /* BaseCollectionViewCell.swift in Sources */,
 				2348B3BF2892C675001095BC /* AppDelegate.swift in Sources */,
+				2348B4122892D901001095BC /* LoadingView.swift in Sources */,
 				2348B3DD2892CF92001095BC /* MapVC.swift in Sources */,
 				2348B3FF2892D184001095BC /* UILabel+.swift in Sources */,
 				2348B3E72892D08D001095BC /* BaseViewModel.swift in Sources */,
@@ -462,6 +542,7 @@
 		};
 		2348B3D02892C676001095BC /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 084396F5A23B94FBA7C80652 /* Pods-NEMODU.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -469,7 +550,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = U2Z5Z44P4R;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = NEMODU/Info.plist;
+				INFOPLIST_FILE = NEMODU/Support/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -490,6 +571,7 @@
 		};
 		2348B3D12892C676001095BC /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1EBADEEBC1D77F44700E20E8 /* Pods-NEMODU.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -497,7 +579,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = U2Z5Z44P4R;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = NEMODU/Info.plist;
+				INFOPLIST_FILE = NEMODU/Support/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
