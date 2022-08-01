@@ -33,6 +33,14 @@ class MapVC: BaseViewController {
             $0.activityType = .fitness
         }
     
+    private let mapZoomScale = 0.003
+    private let blockSize: Int = 37400
+    private let mul: Double = 100000000
+    
+    private var prevLatitude: Int = 0
+    private var prevLongitude: Int = 0
+    private var blocks: [[Double]] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -68,7 +76,7 @@ extension MapVC {
         // 현재 위치로 이동
         _ = goLocation(latitudeValue: locationManager.location?.coordinate.latitude ?? 0,
                        longtudeValue: locationManager.location?.coordinate.longitude ?? 0,
-                       delta: 0.01)
+                       delta: mapZoomScale)
     }
 }
 
@@ -133,8 +141,54 @@ extension MapVC: CLLocationManagerDelegate {
         annotation.subtitle = strSubtitle
         mapView.addAnnotation(annotation)
     }
+    
+    /// 사용자 위치 이동 시 처리 함수
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.last else { return }
+        let latitude = location.coordinate.latitude
+        let longitude = location.coordinate.longitude
+        let latPoint = Int(latitude * mul) / blockSize
+        let longPoint = Int(longitude * mul) / blockSize
+        
+        if prevLatitude != latPoint || prevLongitude != longPoint {
+            prevLatitude = latPoint
+            prevLongitude = longPoint
+            
+            // block Point 저장
+            blocks.append([Double((latPoint) * blockSize) / mul, Double((longPoint) * blockSize) / mul])
+            
+            // TODO: - 백엔드와 회의 후 클래스화 진행
+            let overlayTopLeftCoordinate = CLLocationCoordinate2D(latitude: Double((latPoint) * blockSize) / mul,
+                                                                  longitude: Double((longPoint - 1) * blockSize) / mul)
+            let overlayTopRightCoordinate = CLLocationCoordinate2D(latitude: Double((latPoint) * blockSize) / mul,
+                                                                   longitude: Double((longPoint) * blockSize) / mul)
+            let overlayBottomLeftCoordinate = CLLocationCoordinate2D(latitude: Double((latPoint + 1) * blockSize) / mul,
+                                                                     longitude: Double((longPoint - 1) * blockSize) / mul)
+            let overlayBottomRightCoordinate = CLLocationCoordinate2D(latitude: Double((latPoint + 1) * blockSize) / mul,
+                                                                      longitude: Double((longPoint) * blockSize) / mul)
+            
+            let blockDraw = MKPolygon(coordinates: [overlayTopLeftCoordinate,
+                                                    overlayTopRightCoordinate,
+                                                    overlayBottomRightCoordinate,
+                                                    overlayBottomLeftCoordinate], count: 4)
+            
+            mapView.addOverlay(blockDraw)
+        }
+    }
 }
 
 extension MapVC: MKMapViewDelegate {
-    
+    /// 사용자 땅을 칠하는 함수
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        if overlay is MKPolygon {
+            let block = MKPolygonRenderer(overlay: overlay)
+            block.fillColor = .blue
+            block.alpha = 0.5
+            return block
+        } else {
+            // TODO: - Alert 띄우기
+            print("영역을 그릴 수 없습니다")
+            return MKOverlayRenderer()
+        }
+    }
 }
