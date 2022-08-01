@@ -45,6 +45,7 @@ class MapVC: BaseViewController {
     
     private let bag = DisposeBag()
     
+    private var isFocusOn = true
     private var prevLatitude: Int = 0
     private var prevLongitude: Int = 0
     private var blocks: [[Double]] = []
@@ -65,6 +66,7 @@ class MapVC: BaseViewController {
     
     override func bindInput() {
         super.bindInput()
+        bindMapGesture()
         bindBtn()
     }
     
@@ -115,6 +117,16 @@ extension MapVC {
 // MARK: - Input
 
 extension MapVC {
+    func bindMapGesture() {
+        mapView.rx.anyGesture(.pan(), .pinch())
+            .when(.began)
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.isFocusOn = false
+            })
+            .disposed(by: bag)
+    }
+    
     func bindBtn() {
         // 현재 위치로 이동 버튼
         currentLocationBtn.rx.tap
@@ -125,6 +137,9 @@ extension MapVC {
                 _ = self.goLocation(latitudeValue: coordinate.latitude,
                                     longtudeValue: coordinate.longitude,
                                     delta: self.mapZoomScale)
+                
+                // 사용자 추적 On
+                self.isFocusOn = true
             })
             .disposed(by: bag)
     }
@@ -158,8 +173,8 @@ extension MapVC: CLLocationManagerDelegate {
 
     /// 위도, 경도, 스팬(영역 폭)을 입력받아 지도에 표시
     func goLocation(latitudeValue: CLLocationDegrees,
-                           longtudeValue: CLLocationDegrees,
-                           delta span: Double) -> CLLocationCoordinate2D {
+                    longtudeValue: CLLocationDegrees,
+                    delta span: Double) -> CLLocationCoordinate2D {
         let pLocation = CLLocationCoordinate2DMake(latitudeValue, longtudeValue)
         let spanValue = MKCoordinateSpan(latitudeDelta: span, longitudeDelta: span)
         let pRegion = MKCoordinateRegion(center: pLocation, span: spanValue)
@@ -168,9 +183,15 @@ extension MapVC: CLLocationManagerDelegate {
     }
     
     /// 특정 위도와 경도에 핀 설치하고 핀에 타이틀과 서브 타이틀의 문자열 표시
-    func setAnnotation(latitudeValue: CLLocationDegrees, longitudeValue: CLLocationDegrees, delta span: Double, title strTitle: String, subtitle strSubtitle: String) {
+    func setAnnotation(latitudeValue: CLLocationDegrees,
+                       longitudeValue: CLLocationDegrees,
+                       delta span: Double,
+                       title strTitle: String,
+                       subtitle strSubtitle: String) {
         let annotation = MKPointAnnotation()
-        annotation.coordinate = goLocation(latitudeValue: latitudeValue, longtudeValue: longitudeValue, delta: span)
+        annotation.coordinate = goLocation(latitudeValue: latitudeValue,
+                                           longtudeValue: longitudeValue,
+                                           delta: span)
         annotation.title = strTitle
         annotation.subtitle = strSubtitle
         mapView.addAnnotation(annotation)
@@ -184,6 +205,14 @@ extension MapVC: CLLocationManagerDelegate {
         let latPoint = Int(latitude * mul) / blockSize
         let longPoint = Int(longitude * mul) / blockSize
         
+        // 사용자 이동에 맞춰 화면 이동
+        if isFocusOn {
+            _ = goLocation(latitudeValue: latitude,
+                           longtudeValue: longitude,
+                           delta: mapZoomScale)
+        }
+        
+        // block 경계 이동 시 좌표 판단 및 block overlay 추가
         if prevLatitude != latPoint || prevLongitude != longPoint {
             prevLatitude = latPoint
             prevLongitude = longPoint
