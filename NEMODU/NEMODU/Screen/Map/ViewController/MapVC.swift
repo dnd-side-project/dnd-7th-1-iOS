@@ -35,8 +35,14 @@ class MapVC: BaseViewController {
     
     private var currentLocationBtn = UIButton()
         .then {
-            $0.backgroundColor = .blue
+            $0.backgroundColor = UIColor.blue
             $0.setTitle("L", for: .normal)
+        }
+    
+    private var filterBtn = UIButton()
+        .then {
+            $0.backgroundColor = UIColor.blue
+            $0.setTitle("F", for: .normal)
         }
     
     private let mapZoomScale = 0.003
@@ -94,7 +100,7 @@ extension MapVC {
                        delta: mapZoomScale)
         
         // 버튼
-        view.addSubviews([currentLocationBtn])
+        view.addSubviews([filterBtn, currentLocationBtn])
     }
 }
 
@@ -106,8 +112,14 @@ extension MapVC {
             $0.edges.equalToSuperview()
         }
         
-        currentLocationBtn.snp.makeConstraints {
+        filterBtn.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(40)
+            $0.trailing.equalToSuperview().offset(-20)
+            $0.width.height.equalTo(48)
+        }
+        
+        currentLocationBtn.snp.makeConstraints {
+            $0.top.equalTo(filterBtn.snp.bottom).offset(20)
             $0.trailing.equalToSuperview().offset(-20)
             $0.width.height.equalTo(48)
         }
@@ -128,10 +140,20 @@ extension MapVC {
     }
     
     func bindBtn() {
+        // 필터 버튼
+        filterBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                let filterBottomSheet = MapFilterBottomSheet()
+                self.present(filterBottomSheet, animated: true)
+            })
+            .disposed(by: bag)
+        
         // 현재 위치로 이동 버튼
         currentLocationBtn.rx.tap
             .asDriver()
-            .drive(onNext: { [weak self] in
+            .drive(onNext: { [weak self] _ in
                 guard let self = self,
                 let coordinate = self.locationManager.location?.coordinate else { return }
                 _ = self.goLocation(latitudeValue: coordinate.latitude,
