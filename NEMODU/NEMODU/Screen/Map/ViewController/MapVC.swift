@@ -33,9 +33,17 @@ class MapVC: BaseViewController {
             $0.activityType = .fitness
         }
     
+    private var currentLocationBtn = UIButton()
+        .then {
+            $0.backgroundColor = .blue
+            $0.setTitle("L", for: .normal)
+        }
+    
     private let mapZoomScale = 0.003
     private let blockSize: Int = 37400
     private let mul: Double = 100000000
+    
+    private let bag = DisposeBag()
     
     private var prevLatitude: Int = 0
     private var prevLongitude: Int = 0
@@ -57,12 +65,17 @@ class MapVC: BaseViewController {
     
     override func bindInput() {
         super.bindInput()
+        bindBtn()
     }
     
     override func bindOutput() {
         super.bindOutput()
     }
     
+    /// 메모리 경고를 수신할 경우 뷰 컨트롤러로 전송
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
 }
 
 // MARK: - Configure
@@ -77,6 +90,9 @@ extension MapVC {
         _ = goLocation(latitudeValue: locationManager.location?.coordinate.latitude ?? 0,
                        longtudeValue: locationManager.location?.coordinate.longitude ?? 0,
                        delta: mapZoomScale)
+        
+        // 버튼
+        view.addSubviews([currentLocationBtn])
     }
 }
 
@@ -87,13 +103,31 @@ extension MapVC {
         mapView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+        
+        currentLocationBtn.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(40)
+            $0.trailing.equalToSuperview().offset(-20)
+            $0.width.height.equalTo(48)
+        }
     }
 }
 
 // MARK: - Input
 
 extension MapVC {
-    
+    func bindBtn() {
+        // 현재 위치로 이동 버튼
+        currentLocationBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard let self = self,
+                let coordinate = self.locationManager.location?.coordinate else { return }
+                _ = self.goLocation(latitudeValue: coordinate.latitude,
+                                    longtudeValue: coordinate.longitude,
+                                    delta: self.mapZoomScale)
+            })
+            .disposed(by: bag)
+    }
 }
 
 // MARK: - Output
