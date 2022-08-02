@@ -45,6 +45,31 @@ class MapVC: BaseViewController {
             $0.setTitle("F", for: .normal)
         }
     
+    private var challengeListBtn = UIButton()
+        .then {
+            var config = UIButton.Configuration.filled()
+            config.baseBackgroundColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.6)
+            config.baseForegroundColor = .white
+            config.cornerStyle = .capsule
+            config.title = "n개의 챌린지 진행중"
+            config.subtitle = "남은 시간 00:00:00"
+            config.image = UIImage(systemName: "chevron.down")
+            config.imagePlacement = .trailing
+            config.imagePadding = 10
+            config.titleAlignment = .center
+            
+            $0.configuration = config
+        }
+    
+    private var startWalkBtn = UIButton()
+        .then {
+            $0.backgroundColor = UIColor.gray
+            $0.setTitleColor(UIColor.white, for: .normal)
+            $0.setTitle("기록 시작하기", for: .normal)
+            $0.titleLabel?.font = UIFont.systemFont(ofSize: 20)
+            $0.layer.cornerRadius = 25
+        }
+    
     private let mapZoomScale = 0.003
     private let blockSize: Int = 37400
     private let mul: Double = 100000000
@@ -52,6 +77,7 @@ class MapVC: BaseViewController {
     private let bag = DisposeBag()
     
     private var isFocusOn = true
+    private var isWalking = false
     private var prevLatitude: Int = 0
     private var prevLongitude: Int = 0
     private var blocks: [[Double]] = []
@@ -100,7 +126,7 @@ extension MapVC {
                        delta: mapZoomScale)
         
         // 버튼
-        view.addSubviews([filterBtn, currentLocationBtn])
+        view.addSubviews([filterBtn, currentLocationBtn, challengeListBtn, startWalkBtn])
     }
 }
 
@@ -122,6 +148,20 @@ extension MapVC {
             $0.top.equalTo(filterBtn.snp.bottom).offset(20)
             $0.trailing.equalToSuperview().offset(-20)
             $0.width.height.equalTo(48)
+        }
+        
+        challengeListBtn.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(40)
+            $0.width.equalTo(196)
+            $0.height.equalTo(44)
+            $0.centerX.equalToSuperview()
+        }
+        
+        startWalkBtn.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(50)
+            $0.trailing.equalToSuperview().offset(-50)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-30)
+            $0.height.equalTo(50)
         }
     }
 }
@@ -162,6 +202,14 @@ extension MapVC {
                 
                 // 사용자 추적 On
                 self.isFocusOn = true
+            })
+            .disposed(by: bag)
+        
+        startWalkBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.isWalking.toggle()
             })
             .disposed(by: bag)
     }
@@ -234,8 +282,9 @@ extension MapVC: CLLocationManagerDelegate {
                            delta: mapZoomScale)
         }
         
+        // 기록 중이고
         // block 경계 이동 시 좌표 판단 및 block overlay 추가
-        if prevLatitude != latPoint || prevLongitude != longPoint {
+        if isWalking && (prevLatitude != latPoint || prevLongitude != longPoint) {
             prevLatitude = latPoint
             prevLongitude = longPoint
             
