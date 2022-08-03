@@ -16,4 +16,5 @@ target 'NEMODU' do
   pod 'Alamofire'
   pod 'SnapKit'
   pod 'Then'
+  pod 'DynamicBottomSheet'
 end
