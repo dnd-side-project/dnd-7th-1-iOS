@@ -8,14 +8,22 @@
 import UIKit
 
 class NEMODUTBC: UITabBarController {
+    
+    // MARK: - Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setTabBar()
         setTabIndex(index: 1)
     }
+    
 }
 
+// MARK: - NEMODU TabBarController
+
 extension NEMODUTBC {
+    
     private func makeTabVC(vc: UIViewController, tabBarTitle: String, tabBarImage: String, tabBarSelectedImage: String) -> UIViewController {
         
         let tab = vc
@@ -25,7 +33,7 @@ extension NEMODUTBC {
     }
     
     private func setTabBar() {
-        let challengeTab = makeTabVC(vc: ChallengeVC(), tabBarTitle: "랭킹/챌린지", tabBarImage: "", tabBarSelectedImage: "")
+        let challengeRankingTab = makeTabVC(vc: ChallengeRankingVC(), tabBarTitle: "챌린지/랭킹", tabBarImage: "", tabBarSelectedImage: "")
         let mapTab = makeTabVC(vc: MapVC(), tabBarTitle: "지도", tabBarImage: "", tabBarSelectedImage: "")
         let mypageTab = makeTabVC(vc: MypageVC(), tabBarTitle: "MY", tabBarImage: "", tabBarSelectedImage: "")
         
@@ -41,7 +49,7 @@ extension NEMODUTBC {
         tabBar.layer.shadowOpacity = 0.3
         
         // 탭 구성
-        let tabs =  [challengeTab, mapTab, mypageTab]
+        let tabs =  [challengeRankingTab, mapTab, mypageTab]
         
         // VC에 루트로 설정
         self.setViewControllers(tabs, animated: false)
@@ -51,4 +59,5 @@ extension NEMODUTBC {
     func setTabIndex(index: Int) {
         self.selectedIndex = index
     }
+    
 }
