@@ -47,18 +47,8 @@ class MapVC: BaseViewController {
     
     private var challengeListBtn = UIButton()
         .then {
-            var config = UIButton.Configuration.filled()
-            config.baseBackgroundColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.6)
-            config.baseForegroundColor = .white
-            config.cornerStyle = .capsule
-            config.title = "n개의 챌린지 진행중"
-            config.subtitle = "남은 시간 00:00:00"
-            config.image = UIImage(systemName: "chevron.down")
-            config.imagePlacement = .trailing
-            config.imagePadding = 10
-            config.titleAlignment = .center
-            
-            $0.configuration = config
+            $0.backgroundColor = UIColor.blue
+            $0.setTitle("C", for: .normal)
         }
     
     private var startWalkBtn = UIButton()
@@ -151,10 +141,9 @@ extension MapVC {
         }
         
         challengeListBtn.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(40)
-            $0.width.equalTo(196)
-            $0.height.equalTo(44)
-            $0.centerX.equalToSuperview()
+            $0.top.equalTo(currentLocationBtn.snp.bottom).offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
+            $0.width.height.equalTo(48)
         }
         
         startWalkBtn.snp.makeConstraints {
@@ -205,11 +194,22 @@ extension MapVC {
             })
             .disposed(by: bag)
         
+        // 기록 시작 버튼
         startWalkBtn.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.isWalking.toggle()
+            })
+            .disposed(by: bag)
+        
+        // 챌린지 목록 버튼
+        challengeListBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                let challengeBottomSheet = ChallengeListBottomSheet()
+                self.present(challengeBottomSheet, animated: true)
             })
             .disposed(by: bag)
     }
