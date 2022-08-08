@@ -15,7 +15,7 @@ import MapKit
 import CoreLocation
 
 class MapVC: BaseViewController {
-    private var mapView = MKMapView()
+    var mapView = MKMapView()
         .then {
             $0.mapType = .standard
             $0.setUserTrackingMode(.followWithHeading, animated: true)
@@ -24,7 +24,7 @@ class MapVC: BaseViewController {
             $0.showsTraffic = false
         }
     
-    private var locationManager = CLLocationManager()
+    var locationManager = CLLocationManager()
         .then {
             $0.desiredAccuracy = kCLLocationAccuracyBest
             $0.allowsBackgroundLocationUpdates = true
@@ -33,31 +33,16 @@ class MapVC: BaseViewController {
             $0.activityType = .fitness
         }
     
-    private var currentLocationBtn = UIButton()
-        .then {
-            $0.backgroundColor = UIColor.blue
-            $0.setTitle("L", for: .normal)
-        }
-    
-    private var filterBtn = UIButton()
+    var filterBtn = UIButton()
         .then {
             $0.backgroundColor = UIColor.blue
             $0.setTitle("F", for: .normal)
         }
-    
-    private var challengeListBtn = UIButton()
+
+    var currentLocationBtn = UIButton()
         .then {
             $0.backgroundColor = UIColor.blue
-            $0.setTitle("C", for: .normal)
-        }
-    
-    private var startWalkBtn = UIButton()
-        .then {
-            $0.backgroundColor = UIColor.gray
-            $0.setTitleColor(UIColor.white, for: .normal)
-            $0.setTitle("기록 시작하기", for: .normal)
-            $0.titleLabel?.font = UIFont.systemFont(ofSize: 20)
-            $0.layer.cornerRadius = 25
+            $0.setTitle("L", for: .normal)
         }
     
     private let mapZoomScale = 0.003
@@ -66,11 +51,11 @@ class MapVC: BaseViewController {
     
     private let bag = DisposeBag()
     
+    var isWalking: Bool?
     private var isFocusOn = true
-    private var isWalking = false
     private var prevLatitude: Int = 0
     private var prevLongitude: Int = 0
-    private var blocks: [[Double]] = []
+    var blocks: [[Double]] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -116,7 +101,7 @@ extension MapVC {
                        delta: mapZoomScale)
         
         // 버튼
-        view.addSubviews([filterBtn, currentLocationBtn, challengeListBtn, startWalkBtn])
+        view.addSubviews([filterBtn, currentLocationBtn])
     }
 }
 
@@ -138,19 +123,6 @@ extension MapVC {
             $0.top.equalTo(filterBtn.snp.bottom).offset(20)
             $0.trailing.equalToSuperview().offset(-20)
             $0.width.height.equalTo(48)
-        }
-        
-        challengeListBtn.snp.makeConstraints {
-            $0.top.equalTo(currentLocationBtn.snp.bottom).offset(20)
-            $0.trailing.equalToSuperview().offset(-20)
-            $0.width.height.equalTo(48)
-        }
-        
-        startWalkBtn.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(50)
-            $0.trailing.equalToSuperview().offset(-50)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-30)
-            $0.height.equalTo(50)
         }
     }
 }
@@ -191,25 +163,6 @@ extension MapVC {
                 
                 // 사용자 추적 On
                 self.isFocusOn = true
-            })
-            .disposed(by: bag)
-        
-        // 기록 시작 버튼
-        startWalkBtn.rx.tap
-            .asDriver()
-            .drive(onNext: { [weak self] _ in
-                guard let self = self else { return }
-                self.isWalking.toggle()
-            })
-            .disposed(by: bag)
-        
-        // 챌린지 목록 버튼
-        challengeListBtn.rx.tap
-            .asDriver()
-            .drive(onNext: { [weak self] _ in
-                guard let self = self else { return }
-                let challengeBottomSheet = ChallengeListBottomSheet()
-                self.present(challengeBottomSheet, animated: true)
             })
             .disposed(by: bag)
     }
@@ -284,7 +237,7 @@ extension MapVC: CLLocationManagerDelegate {
         
         // 기록 중이고
         // block 경계 이동 시 좌표 판단 및 block overlay 추가
-        if isWalking && (prevLatitude != latPoint || prevLongitude != longPoint) {
+        if (isWalking ?? false) && (prevLatitude != latPoint || prevLongitude != longPoint) {
             prevLatitude = latPoint
             prevLongitude = longPoint
             
