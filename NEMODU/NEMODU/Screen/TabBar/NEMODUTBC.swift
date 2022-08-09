@@ -26,7 +26,7 @@ extension NEMODUTBC {
     
     private func setTabBar() {
         let challengeTab = makeTabVC(vc: ChallengeVC(), tabBarTitle: "랭킹/챌린지", tabBarImage: "", tabBarSelectedImage: "")
-        let mapTab = makeTabVC(vc: MapVC(), tabBarTitle: "지도", tabBarImage: "", tabBarSelectedImage: "")
+        let mapTab = makeTabVC(vc: MainVC(), tabBarTitle: "지도", tabBarImage: "", tabBarSelectedImage: "")
         let mypageTab = makeTabVC(vc: MypageVC(), tabBarTitle: "MY", tabBarImage: "", tabBarSelectedImage: "")
         
         // 탭바 스타일 설정
