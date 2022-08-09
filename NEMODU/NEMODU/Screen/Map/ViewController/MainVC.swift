@@ -18,6 +18,12 @@ class MainVC: BaseViewController {
             $0.isWalking = false
         }
     
+    private var filterBtn = UIButton()
+        .then {
+            $0.backgroundColor = UIColor.blue
+            $0.setTitle("F", for: .normal)
+        }
+    
     private var challengeListBtn = UIButton()
         .then {
             $0.backgroundColor = UIColor.blue
@@ -33,6 +39,13 @@ class MainVC: BaseViewController {
             $0.layer.cornerRadius = 25
         }
     
+    private let blocksCnt = UILabel()
+        .then {
+            $0.font = .headline2
+            $0.textColor = .gray800
+        }
+    
+    private let naviBar = NavigationBar()
     private let bag = DisposeBag()
     
     override func viewDidLoad() {
@@ -42,6 +55,9 @@ class MainVC: BaseViewController {
     override func configureView() {
         super.configureView()
         configureMainView()
+        configureNaviBar()
+        // TODO: - 서버 연결 후 이동
+        configureBlocksCnt(72)
     }
     
     override func layoutView() {
@@ -65,7 +81,20 @@ class MainVC: BaseViewController {
 extension MainVC {
     private func configureMainView() {
         addChild(mapVC)
-        view.addSubviews([mapVC.view, challengeListBtn, startWalkBtn])
+        view.addSubviews([mapVC.view, filterBtn, challengeListBtn, startWalkBtn])
+    }
+    
+    private func configureNaviBar() {
+        view.addSubview(naviBar)
+        let month = Calendar.current.component(.month, from: Date.now)
+        let week = Calendar.current.component(.weekOfMonth, from: Date.now)
+        naviBar.configureNaviBar(targetVC: self, title: "\(month)월 \(week)주차")
+        naviBar.setTitleFont(font: .title2)
+    }
+    
+    private func configureBlocksCnt(_ cnt: Int) {
+        view.addSubview(blocksCnt)
+        blocksCnt.text = "현재 나의 영역: \(cnt)칸"
     }
 }
 
@@ -75,6 +104,18 @@ extension MainVC {
     private func configureLayout() {
         mapVC.view.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+        
+        filterBtn.snp.makeConstraints {
+            $0.top.equalTo(naviBar.snp.bottom).offset(6)
+            $0.trailing.equalToSuperview().offset(-20)
+            $0.width.height.equalTo(48)
+        }
+        
+        mapVC.currentLocationBtn.snp.makeConstraints {
+            $0.top.equalTo(filterBtn.snp.bottom).offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
+            $0.width.height.equalTo(48)
         }
         
         challengeListBtn.snp.makeConstraints {
@@ -89,6 +130,11 @@ extension MainVC {
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-30)
             $0.height.equalTo(50)
         }
+        
+        blocksCnt.snp.makeConstraints {
+            $0.top.equalTo(naviBar.snp.bottom)
+            $0.centerX.equalToSuperview()
+        }
     }
 }
 
@@ -96,6 +142,16 @@ extension MainVC {
 
 extension MainVC {
     private func bindBtn() {
+        // 필터 버튼
+        filterBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                let filterBottomSheet = MapFilterBottomSheet()
+                self.present(filterBottomSheet, animated: true)
+            })
+            .disposed(by: bag)
+        
         // 기록 시작 버튼
         startWalkBtn.rx.tap
             .asDriver()

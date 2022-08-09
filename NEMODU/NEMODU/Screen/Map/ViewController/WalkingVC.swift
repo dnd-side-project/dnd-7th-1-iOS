@@ -132,6 +132,12 @@ extension WalkingVC {
             $0.bottom.equalTo(view.safeAreaLayoutGuide)
             $0.height.equalTo(240)
         }
+        
+        mapVC.currentLocationBtn.snp.makeConstraints {
+            $0.bottom.equalTo(recodeBaseView.snp.top).offset(-16)
+            $0.trailing.equalToSuperview().offset(-16)
+            $0.width.height.equalTo(48)
+        }
     }
     
     private func recordViewLayout() {

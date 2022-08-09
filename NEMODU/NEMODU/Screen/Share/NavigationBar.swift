@@ -53,6 +53,11 @@ extension NavigationBar {
         self.title.font = font
     }
     
+    /// title의 font를 변경하는 함수입니다.
+    func setTitleFont(font: UIFont) {
+        self.title.font = font
+    }
+    
     /// naviBar의 backBtn을 지정하는 함수입니다.
     /// naviType 지정 필수!
     func configureBackBtn(targetVC: UIViewController) {
