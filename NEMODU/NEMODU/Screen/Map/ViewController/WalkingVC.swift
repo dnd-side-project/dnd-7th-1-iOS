@@ -224,6 +224,15 @@ extension WalkingVC {
                 }
             })
             .disposed(by: bag)
+        
+        // 채운 칸 수 기록
+        mapVC.blocksCnt
+            .asDriver()
+            .drive(onNext: { [weak self] blocksCnt in
+                guard let self = self else { return }
+                self.blocksNumView.recodeValue.text = "\(blocksCnt)"
+            })
+            .disposed(by: bag)
     }
 }
 

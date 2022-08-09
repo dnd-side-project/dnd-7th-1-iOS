@@ -48,16 +48,16 @@ class MapVC: BaseViewController {
     private let mapZoomScale = 0.003
     private let blockSize: Int = 37400
     private let mul: Double = 100000000
-    
     private let bag = DisposeBag()
     
-    var isWalking: Bool?
     private var isFocusOn = true
     private var prevLatitude: Int = 0
     private var prevLongitude: Int = 0
+    private var previousCoordinate: CLLocationCoordinate2D?
+    private var walkDistance: Double = 0
+    var isWalking: Bool?
     var blocks: [[Double]] = []
-    var previousCoordinate: CLLocationCoordinate2D?
-    var walkDistance: Double = 0
+    var blocksCnt = BehaviorRelay<Int>(value: 0)
     var updateDistance = BehaviorRelay<Int>(value: 0)
     
     override func viewDidLoad() {
@@ -244,25 +244,28 @@ extension MapVC: CLLocationManagerDelegate {
             prevLatitude = latPoint
             prevLongitude = longPoint
             
-            // block Point 저장
-            blocks.append([Double((latPoint) * blockSize) / mul, Double((longPoint) * blockSize) / mul])
-            
-            // TODO: - 백엔드와 회의 후 클래스화 진행
-            let overlayTopLeftCoordinate = CLLocationCoordinate2D(latitude: Double((latPoint) * blockSize) / mul,
-                                                                  longitude: Double((longPoint - 1) * blockSize) / mul)
-            let overlayTopRightCoordinate = CLLocationCoordinate2D(latitude: Double((latPoint) * blockSize) / mul,
-                                                                   longitude: Double((longPoint) * blockSize) / mul)
-            let overlayBottomLeftCoordinate = CLLocationCoordinate2D(latitude: Double((latPoint + 1) * blockSize) / mul,
-                                                                     longitude: Double((longPoint - 1) * blockSize) / mul)
-            let overlayBottomRightCoordinate = CLLocationCoordinate2D(latitude: Double((latPoint + 1) * blockSize) / mul,
-                                                                      longitude: Double((longPoint) * blockSize) / mul)
-            
-            let blockDraw = MKPolygon(coordinates: [overlayTopLeftCoordinate,
-                                                    overlayTopRightCoordinate,
-                                                    overlayBottomRightCoordinate,
-                                                    overlayBottomLeftCoordinate], count: 4)
-            
-            mapView.addOverlay(blockDraw)
+            if !blocks.contains([Double((latPoint) * blockSize) / mul, Double((longPoint) * blockSize) / mul]) {
+                // block Point 저장
+                blocks.append([Double((latPoint) * blockSize) / mul, Double((longPoint) * blockSize) / mul])
+                
+                // TODO: - 백엔드와 회의 후 클래스화 진행
+                let overlayTopLeftCoordinate = CLLocationCoordinate2D(latitude: Double((latPoint) * blockSize) / mul,
+                                                                      longitude: Double((longPoint - 1) * blockSize) / mul)
+                let overlayTopRightCoordinate = CLLocationCoordinate2D(latitude: Double((latPoint) * blockSize) / mul,
+                                                                       longitude: Double((longPoint) * blockSize) / mul)
+                let overlayBottomLeftCoordinate = CLLocationCoordinate2D(latitude: Double((latPoint + 1) * blockSize) / mul,
+                                                                         longitude: Double((longPoint - 1) * blockSize) / mul)
+                let overlayBottomRightCoordinate = CLLocationCoordinate2D(latitude: Double((latPoint + 1) * blockSize) / mul,
+                                                                          longitude: Double((longPoint) * blockSize) / mul)
+                
+                let blockDraw = MKPolygon(coordinates: [overlayTopLeftCoordinate,
+                                                        overlayTopRightCoordinate,
+                                                        overlayBottomRightCoordinate,
+                                                        overlayBottomLeftCoordinate], count: 4)
+                
+                mapView.addOverlay(blockDraw)
+                blocksCnt.accept(blocks.count)
+            }
         }
         
         // 이동 거리 계산
@@ -273,7 +276,7 @@ extension MapVC: CLLocationManagerDelegate {
             let lastPoint = CLLocation(latitude: latitude,
                                        longitude: longitude)
             walkDistance += prevPoint.distance(from: lastPoint)
-            updateDistance.accept(Int(walkDistance))
+            updateDistance.accept(Int(floor(walkDistance)))
         }
         self.previousCoordinate = location.coordinate
     }
