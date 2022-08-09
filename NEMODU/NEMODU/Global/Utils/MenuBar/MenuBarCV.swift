@@ -11,7 +11,7 @@ import RxSwift
 import Then
 import SnapKit
 
-let menuBarCVCellIdentifier = "MenuBarCVCell"
+let menuBarCVCIdentifier = "MenuBarCVC"
 
 class MenuBarCV: BaseView {
     
@@ -80,7 +80,7 @@ class MenuBarCV: BaseView {
         super.configureView()
         
         // menuBarCollectionView
-        menuBarCollectionView.register(MenuBarCVCell.self, forCellWithReuseIdentifier: menuBarCVCellIdentifier)
+        menuBarCollectionView.register(MenuBarCVC.self, forCellWithReuseIdentifier: menuBarCVCIdentifier)
         
         menuBarCollectionView.delegate = self
         menuBarCollectionView.dataSource = self
@@ -107,7 +107,7 @@ class MenuBarCV: BaseView {
         
         let menuBarCVOb = Observable<[String]>.just(menuList)
 
-        menuBarCVOb.bind(to: menuBarCollectionView.rx.items(cellIdentifier: menuBarCVCellIdentifier, cellType: MenuBarCVCell.self)) { (index: Int, element: String, cell: MenuBarCVCell) in
+        menuBarCVOb.bind(to: menuBarCollectionView.rx.items(cellIdentifier: menuBarCVCIdentifier, cellType: MenuBarCVC.self)) { (index: Int, element: String, cell: MenuBarCVC) in
             cell.menuTitle.text = self.menuList[index]
             
             print("bind cellForItemAt called ", index, " ", self.menuList[index])
@@ -163,7 +163,7 @@ extension MenuBarCV : UICollectionViewDataSource {
         }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = menuBarCollectionView.dequeueReusableCell(withReuseIdentifier: "MenuBarCVCell", for: indexPath) as! MenuBarCVCell
+        let cell = menuBarCollectionView.dequeueReusableCell(withReuseIdentifier: "MenuBarCVC", for: indexPath) as! MenuBarCVC
 
         cell.menuTitle.text = menuList[indexPath.item]
 

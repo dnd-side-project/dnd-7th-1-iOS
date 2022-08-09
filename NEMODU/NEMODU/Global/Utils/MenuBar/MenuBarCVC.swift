@@ -9,7 +9,7 @@ import UIKit
 import Then
 import SnapKit
 
-class MenuBarCVCell: UICollectionViewCell {
+class MenuBarCVC: UICollectionViewCell {
     
     // MARK: - UI components
     
