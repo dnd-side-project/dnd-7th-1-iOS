@@ -73,7 +73,9 @@ class WalkingVC: BaseViewController {
             $0.recodeTitle.text = "시간"
         }
     
-    let bag = DisposeBag()
+    private var secondTimeValue: Int = 0
+    private let viewModel = WalkingVM()
+    private let bag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -172,9 +174,7 @@ extension WalkingVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                self.stopPlayView.isHidden = false
-                self.pauseBtn.isHidden = true
-                self.mapVC.isWalking = false
+                self.setRecodeBtnStatus(isWalking: false)
             })
             .disposed(by: bag)
         
@@ -193,9 +193,7 @@ extension WalkingVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                self.stopPlayView.isHidden = true
-                self.pauseBtn.isHidden = false
-                self.mapVC.isWalking = true
+                self.setRecodeBtnStatus(isWalking: true)
             })
             .disposed(by: bag)
     }
@@ -213,5 +211,29 @@ extension WalkingVC {
                 self.distanceView.recodeValue.text = "\(distance)m"
             })
             .disposed(by: bag)
+        
+        // 이동 시간 기록
+        viewModel.output.driver.asObservable()
+            .subscribe(onNext: { [weak self] second in
+                guard let self = self else { return }
+                if self.mapVC.isWalking ?? false {
+                    self.secondTimeValue += second
+                    self.timeView.recodeValue.text
+                    = "\(self.secondTimeValue / 60):"
+                    + String(format: "%02d", self.secondTimeValue % 60)
+                }
+            })
+            .disposed(by: bag)
+    }
+}
+
+// MARK: - Custom Methods
+
+extension WalkingVC {
+    /// 기록 중 상태에 따라 일시정지, 멈춤, 재시작 버튼의 상태를 지정하는 함수
+    private func setRecodeBtnStatus(isWalking: Bool) {
+        stopPlayView.isHidden = isWalking
+        pauseBtn.isHidden = !isWalking
+        mapVC.isWalking = isWalking
     }
 }
