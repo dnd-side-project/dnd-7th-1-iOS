@@ -56,6 +56,9 @@ class MapVC: BaseViewController {
     private var prevLatitude: Int = 0
     private var prevLongitude: Int = 0
     var blocks: [[Double]] = []
+    var previousCoordinate: CLLocationCoordinate2D?
+    var walkDistance: Double = 0
+    var updateDistance = BehaviorRelay<Int>(value: 0)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -261,6 +264,18 @@ extension MapVC: CLLocationManagerDelegate {
             
             mapView.addOverlay(blockDraw)
         }
+        
+        // 이동 거리 계산
+        if (isWalking ?? false),
+           let previousCoordinate = self.previousCoordinate {
+            let prevPoint = CLLocation(latitude: previousCoordinate.latitude,
+                                       longitude: previousCoordinate.longitude)
+            let lastPoint = CLLocation(latitude: latitude,
+                                       longitude: longitude)
+            walkDistance += prevPoint.distance(from: lastPoint)
+            updateDistance.accept(Int(walkDistance))
+        }
+        self.previousCoordinate = location.coordinate
     }
 }
 

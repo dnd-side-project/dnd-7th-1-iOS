@@ -97,6 +97,7 @@ class WalkingVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        bindRecodeValue()
     }
 }
 
@@ -203,5 +204,14 @@ extension WalkingVC {
 // MARK: - Output
 
 extension WalkingVC {
-    
+    func bindRecodeValue() {
+        // 이동 거리 기록
+        mapVC.updateDistance
+            .asDriver()
+            .drive(onNext: { [weak self] distance in
+                guard let self = self else { return }
+                self.distanceView.recodeValue.text = "\(distance)m"
+            })
+            .disposed(by: bag)
+    }
 }
