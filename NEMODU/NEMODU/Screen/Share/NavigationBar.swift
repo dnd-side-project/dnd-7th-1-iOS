@@ -17,11 +17,14 @@ class NavigationBar: BaseView {
        
     private var backBtn = UIButton()
         .then {
-            $0.setImage(UIImage(systemName: "xmark"), for: .normal)
             $0.tintColor = .label
         }
     
     var rightBtn = UIButton()
+        .then {
+            $0.tintColor = .label
+        }
+    
     var naviType: NaviType! 
     
     override func configureView() {
@@ -37,7 +40,7 @@ class NavigationBar: BaseView {
 // MARK: - Configure
 extension NavigationBar {
     /// naviBar을 view에 추가하고 title을 지정하는 함수
-    func configureNaviBar(targetVC: UIViewController, title: String) {
+    func configureNaviBar(targetVC: UIViewController, title: String?) {
         targetVC.view.addSubview(self)
         self.snp.makeConstraints {
             $0.height.equalTo(44)
@@ -60,12 +63,17 @@ extension NavigationBar {
     
     /// naviBar의 backBtn을 지정하는 함수입니다.
     /// naviType 지정 필수!
+    /// push는 왼쪽, present는 오른쪽에 뒤로가기 / 닫기 버튼이 추가되도록 구현하였습니다.
     func configureBackBtn(targetVC: UIViewController) {
-        leftBtnLayout()
-        backBtn.setImage(naviType.backBtnImage, for: .normal)
-        naviType == .push
-        ? backBtn.addTarget(targetVC, action: #selector(targetVC.popVC), for: .touchUpInside)
-        : backBtn.addTarget(targetVC, action: #selector(targetVC.dismissVC), for: .touchUpInside)
+        if naviType == .push {
+            leftBtnLayout()
+            backBtn.setImage(naviType.backBtnImage, for: .normal)
+            backBtn.addTarget(targetVC, action: #selector(targetVC.popVC), for: .touchUpInside)
+        } else {
+            rightBtnLayout()
+            rightBtn.setImage(naviType.backBtnImage, for: .normal)
+            rightBtn.addTarget(targetVC, action: #selector(targetVC.dismissVC), for: .touchUpInside)
+        }
     }
     
     /// naviBar의 우측 버튼(이미지)을 추가하는 함수입니다.

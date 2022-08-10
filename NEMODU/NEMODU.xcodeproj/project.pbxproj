@@ -37,6 +37,13 @@
 		2348B41E2892DF0D001095BC /* MypageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348B41D2892DF0D001095BC /* MypageVC.swift */; };
 		2348B4252892E007001095BC /* NEMODUTBC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348B4242892E007001095BC /* NEMODUTBC.swift */; };
 		23B72058289808EB00D3A410 /* MapFilterBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B72057289808EB00D3A410 /* MapFilterBottomSheet.swift */; };
+		23B7205D28A0CBAC00D3A410 /* ChallengeListBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B7205C28A0CBAC00D3A410 /* ChallengeListBottomSheet.swift */; };
+		23B7206128A0D53200D3A410 /* ProceedingChallengeTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B7206028A0D53200D3A410 /* ProceedingChallengeTVC.swift */; };
+		23B7206328A0DCAA00D3A410 /* ProceedingChallengeDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B7206228A0DCAA00D3A410 /* ProceedingChallengeDataSource.swift */; };
+		23B7206B28A12BCD00D3A410 /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B7206A28A12BCD00D3A410 /* MainVC.swift */; };
+		23B7206D28A12BE800D3A410 /* WalkingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B7206C28A12BE800D3A410 /* WalkingVC.swift */; };
+		23B7207028A12DBB00D3A410 /* RecodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B7206F28A12DBB00D3A410 /* RecodeView.swift */; };
+		23B7207428A2227000D3A410 /* WalkingVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B7207328A2227000D3A410 /* WalkingVM.swift */; };
 		23B7207F28A2394200D3A410 /* Pretendard-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 23B7207928A2394200D3A410 /* Pretendard-ExtraBold.otf */; };
 		23B7208028A2394200D3A410 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 23B7207A28A2394200D3A410 /* Pretendard-Medium.otf */; };
 		23B7208128A2394200D3A410 /* Pretendard-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 23B7207B28A2394200D3A410 /* Pretendard-Black.otf */; };
@@ -46,13 +53,6 @@
 		23B7208628A23A2100D3A410 /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B7208528A23A2100D3A410 /* UIFont+.swift */; };
 		23B86D1F28A26EEF00B1630E /* NaviType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B86D1E28A26EEF00B1630E /* NaviType.swift */; };
 		23B86D2128A26F0F00B1630E /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B86D2028A26F0F00B1630E /* NavigationBar.swift */; };
-		23B7205D28A0CBAC00D3A410 /* ChallengeListBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B7205C28A0CBAC00D3A410 /* ChallengeListBottomSheet.swift */; };
-		23B7206128A0D53200D3A410 /* ProceedingChallengeTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B7206028A0D53200D3A410 /* ProceedingChallengeTVC.swift */; };
-		23B7206328A0DCAA00D3A410 /* ProceedingChallengeDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B7206228A0DCAA00D3A410 /* ProceedingChallengeDataSource.swift */; };
-		23B7206B28A12BCD00D3A410 /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B7206A28A12BCD00D3A410 /* MainVC.swift */; };
-		23B7206D28A12BE800D3A410 /* WalkingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B7206C28A12BE800D3A410 /* WalkingVC.swift */; };
-		23B7207028A12DBB00D3A410 /* RecodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B7206F28A12DBB00D3A410 /* RecodeView.swift */; };
-		23B7207428A2227000D3A410 /* WalkingVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B7207328A2227000D3A410 /* WalkingVM.swift */; };
 		37783E39C7DFB38581CA78A2 /* Pods_NEMODU.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7400965811C32403A72B2B0 /* Pods_NEMODU.framework */; };
 /* End PBXBuildFile section */
 
@@ -91,6 +91,13 @@
 		2348B41D2892DF0D001095BC /* MypageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MypageVC.swift; sourceTree = "<group>"; };
 		2348B4242892E007001095BC /* NEMODUTBC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NEMODUTBC.swift; sourceTree = "<group>"; };
 		23B72057289808EB00D3A410 /* MapFilterBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapFilterBottomSheet.swift; sourceTree = "<group>"; };
+		23B7205C28A0CBAC00D3A410 /* ChallengeListBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeListBottomSheet.swift; sourceTree = "<group>"; };
+		23B7206028A0D53200D3A410 /* ProceedingChallengeTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProceedingChallengeTVC.swift; sourceTree = "<group>"; };
+		23B7206228A0DCAA00D3A410 /* ProceedingChallengeDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProceedingChallengeDataSource.swift; sourceTree = "<group>"; };
+		23B7206A28A12BCD00D3A410 /* MainVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC.swift; sourceTree = "<group>"; };
+		23B7206C28A12BE800D3A410 /* WalkingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkingVC.swift; sourceTree = "<group>"; };
+		23B7206F28A12DBB00D3A410 /* RecodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecodeView.swift; sourceTree = "<group>"; };
+		23B7207328A2227000D3A410 /* WalkingVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkingVM.swift; sourceTree = "<group>"; };
 		23B7207928A2394200D3A410 /* Pretendard-ExtraBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-ExtraBold.otf"; sourceTree = "<group>"; };
 		23B7207A28A2394200D3A410 /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
 		23B7207B28A2394200D3A410 /* Pretendard-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Black.otf"; sourceTree = "<group>"; };
@@ -100,13 +107,6 @@
 		23B7208528A23A2100D3A410 /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
 		23B86D1E28A26EEF00B1630E /* NaviType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaviType.swift; sourceTree = "<group>"; };
 		23B86D2028A26F0F00B1630E /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
-		23B7205C28A0CBAC00D3A410 /* ChallengeListBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeListBottomSheet.swift; sourceTree = "<group>"; };
-		23B7206028A0D53200D3A410 /* ProceedingChallengeTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProceedingChallengeTVC.swift; sourceTree = "<group>"; };
-		23B7206228A0DCAA00D3A410 /* ProceedingChallengeDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProceedingChallengeDataSource.swift; sourceTree = "<group>"; };
-		23B7206A28A12BCD00D3A410 /* MainVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC.swift; sourceTree = "<group>"; };
-		23B7206C28A12BE800D3A410 /* WalkingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkingVC.swift; sourceTree = "<group>"; };
-		23B7206F28A12DBB00D3A410 /* RecodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecodeView.swift; sourceTree = "<group>"; };
-		23B7207328A2227000D3A410 /* WalkingVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkingVM.swift; sourceTree = "<group>"; };
 		E7400965811C32403A72B2B0 /* Pods_NEMODU.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NEMODU.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -372,27 +372,6 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		23B7207828A238FE00D3A410 /* Font */ = {
-			isa = PBXGroup;
-			children = (
-				23B7207B28A2394200D3A410 /* Pretendard-Black.otf */,
-				23B7207E28A2394200D3A410 /* Pretendard-Bold.otf */,
-				23B7207928A2394200D3A410 /* Pretendard-ExtraBold.otf */,
-				23B7207A28A2394200D3A410 /* Pretendard-Medium.otf */,
-				23B7207C28A2394200D3A410 /* Pretendard-Regular.otf */,
-				23B7207D28A2394200D3A410 /* Pretendard-SemiBold.otf */,
-			);
-			path = Font;
-			sourceTree = "<group>";
-		};
-		23B86D1D28A26EDE00B1630E /* Enum */ = {
-			isa = PBXGroup;
-			children = (
-				23B86D1E28A26EEF00B1630E /* NaviType.swift */,
-			);
-			path = Enum;
-			sourceTree = "<group>";
-		};
 		23B7205B28A0CB8D00D3A410 /* BottomSheet */ = {
 			isa = PBXGroup;
 			children = (
@@ -424,6 +403,27 @@
 				23B7206F28A12DBB00D3A410 /* RecodeView.swift */,
 			);
 			path = Share;
+			sourceTree = "<group>";
+		};
+		23B7207828A238FE00D3A410 /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				23B7207B28A2394200D3A410 /* Pretendard-Black.otf */,
+				23B7207E28A2394200D3A410 /* Pretendard-Bold.otf */,
+				23B7207928A2394200D3A410 /* Pretendard-ExtraBold.otf */,
+				23B7207A28A2394200D3A410 /* Pretendard-Medium.otf */,
+				23B7207C28A2394200D3A410 /* Pretendard-Regular.otf */,
+				23B7207D28A2394200D3A410 /* Pretendard-SemiBold.otf */,
+			);
+			path = Font;
+			sourceTree = "<group>";
+		};
+		23B86D1D28A26EDE00B1630E /* Enum */ = {
+			isa = PBXGroup;
+			children = (
+				23B86D1E28A26EEF00B1630E /* NaviType.swift */,
+			);
+			path = Enum;
 			sourceTree = "<group>";
 		};
 		4B0C28207D39862BCC583AE5 /* Pods */ = {
