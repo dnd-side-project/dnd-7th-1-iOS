@@ -77,6 +77,9 @@ class WalkingVC: BaseViewController {
     private let viewModel = WalkingVM()
     private let bag = DisposeBag()
     
+    // TODO: - 서버 연결 후 수정
+    private var weekBlockCnt = 0
+
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -189,8 +192,13 @@ extension WalkingVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                // TODO: - 기록 확인 화면 연결
-                self.dismiss(animated: false)
+                let recodeResultVC = RecodeResultVC()
+                recodeResultVC.modalPresentationStyle = .fullScreen
+                recodeResultVC.configureRecodeValue(recodeBlockCnt: self.mapVC.blocksCnt.value,
+                                                    weekBlockCnt: self.weekBlockCnt,
+                                                    distance: self.mapVC.updateDistance.value,
+                                                    second: self.secondTimeValue)
+                self.present(recodeResultVC, animated: true)
             })
             .disposed(by: bag)
         
