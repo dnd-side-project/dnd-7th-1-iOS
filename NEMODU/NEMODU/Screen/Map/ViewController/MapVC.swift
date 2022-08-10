@@ -259,7 +259,7 @@ extension MapVC: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKPolygon {
             let block = MKPolygonRenderer(overlay: overlay)
-            block.fillColor = .blue
+            block.fillColor = .main
             block.alpha = 0.5
             return block
         } else {

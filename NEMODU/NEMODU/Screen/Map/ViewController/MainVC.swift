@@ -32,11 +32,14 @@ class MainVC: BaseViewController {
     
     private var startWalkBtn = UIButton()
         .then {
-            $0.backgroundColor = UIColor.gray
-            $0.setTitleColor(UIColor.white, for: .normal)
-            $0.setTitle("기록 시작하기", for: .normal)
-            $0.titleLabel?.font = UIFont.systemFont(ofSize: 20)
-            $0.layer.cornerRadius = 25
+            $0.backgroundColor = .secondary
+            $0.titleLabel?.font = .headline1
+            $0.tintColor = .main
+            $0.setTitleColor(.main, for: .normal)
+            $0.setTitle("기록 시작하기  ", for: .normal)
+            $0.setImage(UIImage(systemName: "chevron.right"), for: .normal)
+            $0.layer.cornerRadius = 24
+            $0.semanticContentAttribute = .forceRightToLeft
         }
     
     private let blocksCnt = UILabel()
@@ -125,10 +128,10 @@ extension MainVC {
         }
         
         startWalkBtn.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(50)
-            $0.trailing.equalToSuperview().offset(-50)
+            $0.leading.equalToSuperview().offset(24)
+            $0.trailing.equalToSuperview().offset(-24)
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-30)
-            $0.height.equalTo(50)
+            $0.height.equalTo(48)
         }
         
         blocksCnt.snp.makeConstraints {

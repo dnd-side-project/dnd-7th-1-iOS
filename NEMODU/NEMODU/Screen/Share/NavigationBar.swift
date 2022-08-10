@@ -12,7 +12,7 @@ import Then
 class NavigationBar: BaseView {
     private var title = UILabel()
         .then {
-            $0.font = UIFont.title3M
+            $0.font = .title3M
         }
        
     private var backBtn = UIButton()
@@ -87,7 +87,7 @@ extension NavigationBar {
         rightBtnLayout()
         rightBtn.setTitle(title, for: .normal)
         rightBtn.setTitleColor(.label, for: .normal)
-        rightBtn.titleLabel?.font = UIFont.title3SB
+        rightBtn.titleLabel?.font = .title3SB
     }
 }
 

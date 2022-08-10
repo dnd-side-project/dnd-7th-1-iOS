@@ -12,18 +12,20 @@ import SnapKit
 class RecodeView: BaseView {
     var recodeValue = UILabel()
         .then {
-            $0.font = UIFont.systemFont(ofSize: 34)
+            $0.font = .number2
+            $0.textColor = .gray900
         }
     
     var recodeTitle = UILabel()
         .then {
-            $0.font = UIFont.systemFont(ofSize: 12)
+            $0.font = .caption1
+            $0.textColor = .gray800
         }
     
     var recodeSubtitle = UILabel()
         .then {
-            $0.font = UIFont.systemFont(ofSize: 12)
-            $0.textColor = UIColor.lightGray
+            $0.font = .caption1
+            $0.textColor = .gray500
         }
     
     override func configureView() {
