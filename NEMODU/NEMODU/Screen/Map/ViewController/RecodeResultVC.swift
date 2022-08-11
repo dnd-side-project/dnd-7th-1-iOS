@@ -12,7 +12,6 @@ import RxSwift
 import SnapKit
 import Then
 import MapKit
-import UITextView_Placeholder
 
 class RecodeResultVC: BaseViewController {
     private let baseScrollView = UIScrollView()
@@ -67,20 +66,9 @@ class RecodeResultVC: BaseViewController {
             $0.textColor = .gray900
         }
     
-    private let memoTextView = UITextView()
+    private let memoTextView = NemoduTextView()
         .then {
-            $0.placeholder = "상세 기록 남기기"
-            $0.placeholderColor = .gray600
-            $0.font = .caption1
-            $0.backgroundColor = .gray50
-            $0.layer.cornerRadius = 10
-        }
-    
-    private let memoCnt = UILabel()
-        .then {
-            $0.text = "0 / 100"
-            $0.font = .caption2R
-            $0.textColor = .gray600
+            $0.tv.placeholder = "상세 기록 남기기"
         }
     
     private let naviBar = NavigationBar()
@@ -108,6 +96,7 @@ class RecodeResultVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        bindKeyboardScroll()
     }
     
 }
@@ -133,8 +122,7 @@ extension RecodeResultVC {
                           miniMap,
                           recodeStackView,
                           memoLabel,
-                          memoTextView,
-                          memoCnt])
+                          memoTextView])
         [distanceView, timeView, calorieView].forEach {
             recodeStackView.addArrangedSubview($0)
         }
@@ -155,7 +143,8 @@ extension RecodeResultVC {
     private func configureLayout() {
         baseScrollView.snp.makeConstraints {
             $0.top.equalTo(naviBar.snp.bottom)
-            $0.leading.trailing.bottom.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(view.keyboardLayoutGuide.snp.top)
         }
         
         contentView.snp.makeConstraints {
@@ -193,12 +182,6 @@ extension RecodeResultVC {
             $0.top.equalTo(memoLabel.snp.bottom).offset(10)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
-            $0.height.equalTo(100)
-        }
-        
-        memoCnt.snp.makeConstraints {
-            $0.top.equalTo(memoTextView.snp.bottom).offset(8)
-            $0.trailing.equalToSuperview().offset(-16)
             $0.bottom.equalToSuperview().offset(-89)
         }
     }
@@ -207,7 +190,7 @@ extension RecodeResultVC {
 // MARK: - Input
 
 extension RecodeResultVC {
-    func bindDismissBtn() {
+    private func bindDismissBtn() {
         // dismiss to rootViewController
         naviBar.rightBtn.rx.tap
             .asDriver()
@@ -222,5 +205,12 @@ extension RecodeResultVC {
 // MARK: - Output
 
 extension RecodeResultVC {
-    
+    private func bindKeyboardScroll() {
+        keyboardWillShow
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.baseScrollView.scrollToBottom(animated: true)
+            })
+            .disposed(by: bag)
+    }
 }
