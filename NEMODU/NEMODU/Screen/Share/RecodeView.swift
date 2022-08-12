@@ -12,7 +12,7 @@ import SnapKit
 class RecodeView: BaseView {
     var recodeValue = UILabel()
         .then {
-            $0.font = .title2
+            $0.font = .title1
             $0.textColor = .gray900
         }
     

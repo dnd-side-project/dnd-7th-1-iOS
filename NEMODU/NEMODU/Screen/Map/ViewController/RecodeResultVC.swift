@@ -11,7 +11,6 @@ import RxGesture
 import RxSwift
 import SnapKit
 import Then
-import MapKit
 
 class RecodeResultVC: BaseViewController {
     private let baseScrollView = UIScrollView()
@@ -42,44 +41,9 @@ class RecodeResultVC: BaseViewController {
             $0.recodeTitle.text = "채운 칸의 수"
         }
     
-    private var miniMap = MKMapView()
-        .then {
-            $0.mapType = .standard
-            $0.showsUserLocation = false
-            $0.layer.cornerRadius = 15
-        }
+    private var miniMap = MiniMapVC()
     
-    private let recodeStackView = UIStackView()
-        .then {
-            $0.axis = .horizontal
-            $0.spacing = 0
-            $0.alignment = .center
-            $0.distribution = .equalSpacing
-        }
-    
-    private var distanceView = RecodeView()
-        .then {
-            $0.recodeValue.font = .title3SB
-            $0.recodeTitle.font = .caption1
-            $0.recodeTitle.text = "거리"
-            $0.widthAnchor.constraint(equalToConstant: 86).isActive = true
-        }
-    
-    private var timeView = RecodeView()
-        .then {
-            $0.recodeValue.font = .title3SB
-            $0.recodeTitle.font = .caption1
-            $0.recodeTitle.text = "시간"
-            $0.widthAnchor.constraint(equalToConstant: 86).isActive = true
-        }
-    
-    private var stepCntView = RecodeView()
-        .then {
-            $0.recodeValue.font = .title3SB
-            $0.recodeTitle.font = .caption1
-            $0.recodeTitle.text = "걸음수"
-            $0.widthAnchor.constraint(equalToConstant: 86).isActive = true
-        }
+    private let recodeStackView = RecodeStackView()
     
     private let viewSeparator = UIView()
         .then {
@@ -143,28 +107,25 @@ extension RecodeResultVC {
     }
     
     private func configureContentView() {
+        addChild(miniMap)
         view.addSubview(baseScrollView)
         baseScrollView.addSubview(contentView)
         contentView.addSubviews([recodeBaseView,
                                  memoView])
         recodeBaseView.addSubviews([blocksCntView,
-                                    miniMap,
+                                    miniMap.view,
                                     recodeStackView])
         memoView.addSubviews([memoLabel,
                               viewSeparator,
                               memoTextView])
-        [distanceView, timeView, stepCntView].forEach {
-            recodeStackView.addArrangedSubview($0)
-        }
-        recodeStackView.addVerticalSeparators(color: .gray300, width: 1, multiplier: 0.2)
     }
     
     func configureRecodeValue(recodeBlockCnt: Int, weekBlockCnt: Int, distance: Int, second: Int, stepCnt: Int) {
         blocksCntView.recodeValue.text = "\(recodeBlockCnt)"
         blocksCntView.recodeSubtitle.text = "이번주 영역 : \(weekBlockCnt + recodeBlockCnt)칸"
-        distanceView.recodeValue.text = "\(distance)m"
-        timeView.recodeValue.text = "\(second / 60):" + String(format: "%02d", second % 60)
-        stepCntView.recodeValue.text = "\(stepCnt)"
+        recodeStackView.distanceView.recodeValue.text = "\(distance)m"
+        recodeStackView.timeView.recodeValue.text = "\(second / 60):" + String(format: "%02d", second % 60)
+        recodeStackView.stepCntView.recodeValue.text = "\(stepCnt)"
     }
 }
 
@@ -194,19 +155,19 @@ extension RecodeResultVC {
         
         blocksCntView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(24)
-            $0.height.equalTo(97)
+            $0.height.equalTo(100)
             $0.leading.trailing.equalToSuperview()
         }
         
-        miniMap.snp.makeConstraints {
-            $0.top.equalTo(blocksCntView.snp.bottom).offset(20)
+        miniMap.view.snp.makeConstraints {
+            $0.top.equalTo(blocksCntView.snp.bottom).offset(24)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
-            $0.height.equalTo(miniMap.snp.width).multipliedBy(0.76)
+            $0.height.equalTo(miniMap.view.snp.width).multipliedBy(0.76)
         }
         
         recodeStackView.snp.makeConstraints {
-            $0.top.equalTo(miniMap.snp.bottom).offset(40)
+            $0.top.equalTo(miniMap.view.snp.bottom).offset(40)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
             $0.bottom.equalToSuperview().offset(-40)

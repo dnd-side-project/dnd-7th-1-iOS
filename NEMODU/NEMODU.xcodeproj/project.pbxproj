@@ -57,6 +57,8 @@
 		23B86D1F28A26EEF00B1630E /* NaviType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B86D1E28A26EEF00B1630E /* NaviType.swift */; };
 		23B86D2128A26F0F00B1630E /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B86D2028A26F0F00B1630E /* NavigationBar.swift */; };
 		23F5716928A6802C005F2E21 /* UIStackView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5716828A6802C005F2E21 /* UIStackView+.swift */; };
+		23F5716D28A6A61E005F2E21 /* MiniMapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5716C28A6A61D005F2E21 /* MiniMapVC.swift */; };
+		23F5716F28A6AD01005F2E21 /* RecodeStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5716E28A6AD01005F2E21 /* RecodeStackView.swift */; };
 		37783E39C7DFB38581CA78A2 /* Pods_NEMODU.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7400965811C32403A72B2B0 /* Pods_NEMODU.framework */; };
 /* End PBXBuildFile section */
 
@@ -115,6 +117,8 @@
 		23B86D1E28A26EEF00B1630E /* NaviType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaviType.swift; sourceTree = "<group>"; };
 		23B86D2028A26F0F00B1630E /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
 		23F5716828A6802C005F2E21 /* UIStackView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+.swift"; sourceTree = "<group>"; };
+		23F5716C28A6A61D005F2E21 /* MiniMapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniMapVC.swift; sourceTree = "<group>"; };
+		23F5716E28A6AD01005F2E21 /* RecodeStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecodeStackView.swift; sourceTree = "<group>"; };
 		E7400965811C32403A72B2B0 /* Pods_NEMODU.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NEMODU.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -192,7 +196,6 @@
 		2348B3D42892CE9F001095BC /* Map */ = {
 			isa = PBXGroup;
 			children = (
-				23B7206E28A12DA600D3A410 /* Share */,
 				2348B3D92892CF10001095BC /* ViewModel */,
 				2348B3D82892CF06001095BC /* ViewController */,
 				239B52CC2892ED7A0030E8C0 /* Model */,
@@ -320,6 +323,9 @@
 				2348B4112892D901001095BC /* LoadingView.swift */,
 				23B86D2028A26F0F00B1630E /* NavigationBar.swift */,
 				238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */,
+				23F5716C28A6A61D005F2E21 /* MiniMapVC.swift */,
+				23F5716E28A6AD01005F2E21 /* RecodeStackView.swift */,
+				23B7206F28A12DBB00D3A410 /* RecodeView.swift */,
 			);
 			path = Share;
 			sourceTree = "<group>";
@@ -407,14 +413,6 @@
 				23B7206028A0D53200D3A410 /* ProceedingChallengeTVC.swift */,
 			);
 			path = TVC;
-			sourceTree = "<group>";
-		};
-		23B7206E28A12DA600D3A410 /* Share */ = {
-			isa = PBXGroup;
-			children = (
-				23B7206F28A12DBB00D3A410 /* RecodeView.swift */,
-			);
-			path = Share;
 			sourceTree = "<group>";
 		};
 		23B7207828A238FE00D3A410 /* Font */ = {
@@ -594,6 +592,7 @@
 				238C4DE328A3F0D6000BEE36 /* NemoduTextView.swift in Sources */,
 				23B7208628A23A2100D3A410 /* UIFont+.swift in Sources */,
 				2348B3E12892D046001095BC /* BaseView.swift in Sources */,
+				23F5716F28A6AD01005F2E21 /* RecodeStackView.swift in Sources */,
 				2348B3FB2892D15C001095BC /* Output.swift in Sources */,
 				2348B3F02892D0FE001095BC /* APISession.swift in Sources */,
 				2348B3E52892D075001095BC /* BaseViewController.swift in Sources */,
@@ -604,6 +603,7 @@
 				2348B4012892D1A6001095BC /* UITextField+.swift in Sources */,
 				23B86D2128A26F0F00B1630E /* NavigationBar.swift in Sources */,
 				2348B3EC2892D0DF001095BC /* APIError.swift in Sources */,
+				23F5716D28A6A61E005F2E21 /* MiniMapVC.swift in Sources */,
 				2348B3F22892D116001095BC /* urlResource.swift in Sources */,
 				23B7206328A0DCAA00D3A410 /* ProceedingChallengeDataSource.swift in Sources */,
 				238C4DE528A4BFE2000BEE36 /* UIScrollView+.swift in Sources */,
