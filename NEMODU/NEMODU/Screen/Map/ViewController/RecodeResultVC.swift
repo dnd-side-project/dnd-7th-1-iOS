@@ -20,6 +20,19 @@ class RecodeResultVC: BaseViewController {
         }
     
     private let contentView = UIView()
+        .then {
+            $0.backgroundColor = .gray50
+        }
+    
+    private let recodeBaseView = UIView()
+        .then {
+            $0.backgroundColor = UIColor.systemBackground
+        }
+    
+    private let memoView = UIView()
+        .then {
+            $0.backgroundColor = UIColor.systemBackground
+        }
     
     private var blocksCntView = RecodeView()
         .then {
@@ -40,23 +53,37 @@ class RecodeResultVC: BaseViewController {
         .then {
             $0.axis = .horizontal
             $0.spacing = 0
-            $0.alignment = .fill
-            $0.distribution = .fillEqually
+            $0.alignment = .center
+            $0.distribution = .equalSpacing
         }
     
     private var distanceView = RecodeView()
         .then {
+            $0.recodeValue.font = .title3SB
+            $0.recodeTitle.font = .caption1
             $0.recodeTitle.text = "거리"
+            $0.widthAnchor.constraint(equalToConstant: 86).isActive = true
         }
     
     private var timeView = RecodeView()
         .then {
+            $0.recodeValue.font = .title3SB
+            $0.recodeTitle.font = .caption1
             $0.recodeTitle.text = "시간"
+            $0.widthAnchor.constraint(equalToConstant: 86).isActive = true
         }
     
     private var stepCntView = RecodeView()
         .then {
+            $0.recodeValue.font = .title3SB
+            $0.recodeTitle.font = .caption1
             $0.recodeTitle.text = "걸음수"
+            $0.widthAnchor.constraint(equalToConstant: 86).isActive = true
+        }
+    
+    private let viewSeparator = UIView()
+        .then {
+            $0.backgroundColor = .gray50
         }
     
     private let memoLabel = UILabel()
@@ -118,14 +145,18 @@ extension RecodeResultVC {
     private func configureContentView() {
         view.addSubview(baseScrollView)
         baseScrollView.addSubview(contentView)
-        contentView.addSubviews([blocksCntView,
-                          miniMap,
-                          recodeStackView,
-                          memoLabel,
-                          memoTextView])
+        contentView.addSubviews([recodeBaseView,
+                                 memoView])
+        recodeBaseView.addSubviews([blocksCntView,
+                                    miniMap,
+                                    recodeStackView])
+        memoView.addSubviews([memoLabel,
+                              viewSeparator,
+                              memoTextView])
         [distanceView, timeView, stepCntView].forEach {
             recodeStackView.addArrangedSubview($0)
         }
+        recodeStackView.addVerticalSeparators(color: .gray300, width: 1, multiplier: 0.2)
     }
     
     func configureRecodeValue(recodeBlockCnt: Int, weekBlockCnt: Int, distance: Int, second: Int, stepCnt: Int) {
@@ -152,9 +183,18 @@ extension RecodeResultVC {
             $0.height.equalToSuperview().priority(.low)
         }
         
+        recodeBaseView.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview()
+        }
+        
+        memoView.snp.makeConstraints {
+            $0.top.equalTo(recodeBaseView.snp.bottom).offset(8)
+            $0.leading.trailing.bottom.equalToSuperview()
+        }
+        
         blocksCntView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(30)
-            $0.height.equalTo(106)
+            $0.top.equalToSuperview().offset(24)
+            $0.height.equalTo(97)
             $0.leading.trailing.equalToSuperview()
         }
         
@@ -166,23 +206,30 @@ extension RecodeResultVC {
         }
         
         recodeStackView.snp.makeConstraints {
-            $0.top.equalTo(miniMap.snp.bottom).offset(16)
+            $0.top.equalTo(miniMap.snp.bottom).offset(40)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
-            $0.height.equalTo(65)
+            $0.bottom.equalToSuperview().offset(-40)
+            $0.height.equalTo(50)
         }
         
         memoLabel.snp.makeConstraints {
-            $0.top.equalTo(recodeStackView.snp.bottom).offset(16)
+            $0.top.equalToSuperview()
             $0.leading.equalToSuperview().offset(16)
             $0.height.equalTo(56)
         }
         
+        viewSeparator.snp.makeConstraints {
+            $0.top.equalTo(memoLabel.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(2)
+        }
+        
         memoTextView.snp.makeConstraints {
-            $0.top.equalTo(memoLabel.snp.bottom).offset(10)
+            $0.top.equalTo(viewSeparator.snp.bottom).offset(10)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
-            $0.bottom.equalToSuperview().offset(-89)
+            $0.bottom.equalToSuperview().offset(-47)
         }
     }
 }

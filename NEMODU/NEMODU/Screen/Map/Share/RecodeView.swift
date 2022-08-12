@@ -47,18 +47,17 @@ extension RecodeView {
     private func configureLayout() {
         recodeValue.snp.makeConstraints {
             $0.top.equalToSuperview()
-            $0.height.equalTo(41)
             $0.centerX.equalToSuperview()
         }
         
         recodeTitle.snp.makeConstraints {
             $0.top.equalTo(recodeValue.snp.bottom).offset(10)
-            $0.height.equalTo(14)
             $0.centerX.equalToSuperview()
         }
         
         recodeSubtitle.snp.makeConstraints {
             $0.top.equalTo(recodeTitle.snp.bottom).offset(4)
+            $0.bottom.equalToSuperview()
             $0.centerX.equalToSuperview()
         }
     }
