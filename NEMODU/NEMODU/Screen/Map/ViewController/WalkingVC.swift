@@ -82,6 +82,7 @@ class WalkingVC: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        mapVC.updateStep()
     }
     
     override func configureView() {
@@ -184,6 +185,7 @@ extension WalkingVC {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.setRecodeBtnStatus(isWalking: false)
+                self.mapVC.stopUpdateStep()
             })
             .disposed(by: bag)
         
@@ -197,7 +199,9 @@ extension WalkingVC {
                 recodeResultVC.configureRecodeValue(recodeBlockCnt: self.mapVC.blocksCnt.value,
                                                     weekBlockCnt: self.weekBlockCnt,
                                                     distance: self.mapVC.updateDistance.value,
-                                                    second: self.secondTimeValue)
+                                                    second: self.secondTimeValue,
+                                                    stepCnt: self.mapVC.stepCnt)
+                self.mapVC.stopUpdateStep()
                 self.present(recodeResultVC, animated: true)
             })
             .disposed(by: bag)
@@ -208,6 +212,7 @@ extension WalkingVC {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.setRecodeBtnStatus(isWalking: true)
+                self.mapVC.updateStep()
             })
             .disposed(by: bag)
     }

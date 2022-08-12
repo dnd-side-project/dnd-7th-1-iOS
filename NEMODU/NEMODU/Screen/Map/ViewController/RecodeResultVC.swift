@@ -54,9 +54,9 @@ class RecodeResultVC: BaseViewController {
             $0.recodeTitle.text = "시간"
         }
     
-    private var calorieView = RecodeView()
+    private var stepCntView = RecodeView()
         .then {
-            $0.recodeTitle.text = "칼로리"
+            $0.recodeTitle.text = "걸음수"
         }
     
     private let memoLabel = UILabel()
@@ -123,17 +123,17 @@ extension RecodeResultVC {
                           recodeStackView,
                           memoLabel,
                           memoTextView])
-        [distanceView, timeView, calorieView].forEach {
+        [distanceView, timeView, stepCntView].forEach {
             recodeStackView.addArrangedSubview($0)
         }
     }
     
-    func configureRecodeValue(recodeBlockCnt: Int, weekBlockCnt: Int, distance: Int, second: Int) {
+    func configureRecodeValue(recodeBlockCnt: Int, weekBlockCnt: Int, distance: Int, second: Int, stepCnt: Int) {
         blocksCntView.recodeValue.text = "\(recodeBlockCnt)"
         blocksCntView.recodeSubtitle.text = "이번주 영역 : \(weekBlockCnt + recodeBlockCnt)칸"
         distanceView.recodeValue.text = "\(distance)m"
         timeView.recodeValue.text = "\(second / 60):" + String(format: "%02d", second % 60)
-        calorieView.recodeValue.text = "0"
+        stepCntView.recodeValue.text = "\(stepCnt)"
     }
 }
 

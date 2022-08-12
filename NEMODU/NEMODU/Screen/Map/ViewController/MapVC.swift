@@ -13,6 +13,7 @@ import SnapKit
 import Then
 import MapKit
 import CoreLocation
+import CoreMotion
 
 class MapVC: BaseViewController {
     var mapView = MKMapView()
@@ -32,6 +33,11 @@ class MapVC: BaseViewController {
             $0.startUpdatingLocation()
             $0.activityType = .fitness
         }
+    
+    let activityManager = CMMotionActivityManager()
+    let pedoMeter = CMPedometer()
+    var stepCnt = 0
+    var pauseCnt = 0
 
     var currentLocationBtn = UIButton()
         .then {
@@ -147,6 +153,45 @@ extension MapVC {
 
 extension MapVC {
     
+}
+
+// MARK: - Custom Methods
+
+extension MapVC {
+    /// 사용자 activity를 추적하여 운동 상태와 걸음 수를 측정하는 함수
+    func updateStep() {
+        // TODO: - 자동차 or 자전거 사용 시 알람 정책 정한 후 수정
+        activityManager.startActivityUpdates(
+            to: OperationQueue.current!,
+            withHandler: {(
+                deviceActivity: CMMotionActivity!
+            ) -> Void in
+                if deviceActivity.stationary {
+                    print("정지중!")
+                } else if deviceActivity.walking {
+                    print("걷는중!")
+                } else if deviceActivity.running {
+                    print("뛰는중!")
+                } else if deviceActivity.automotive {
+                    print("자동차!")
+                }
+            }
+        )
+        
+        pedoMeter.startUpdates(from: Date()) { data, error in
+            if error == nil {
+                if let response = data {
+                    self.stepCnt = response.numberOfSteps.intValue + self.pauseCnt
+                }
+            }
+        }
+    }
+    
+    func stopUpdateStep() {
+        activityManager.stopActivityUpdates()
+        pedoMeter.stopUpdates()
+        pauseCnt = stepCnt
+    }
 }
 
 // MARK: - CLLocationManagerDelegate
