@@ -20,14 +20,14 @@ class MainVC: BaseViewController {
     
     private var filterBtn = UIButton()
         .then {
-            $0.backgroundColor = UIColor.blue
-            $0.setTitle("F", for: .normal)
+            $0.setImage(UIImage(named: "filter"), for: .normal)
+            $0.addShadow()
         }
     
     private var challengeListBtn = UIButton()
         .then {
-            $0.backgroundColor = UIColor.blue
-            $0.setTitle("C", for: .normal)
+            $0.setImage(UIImage(named: "challenge"), for: .normal)
+            $0.addShadow()
         }
     
     private var startWalkBtn = UIButton()

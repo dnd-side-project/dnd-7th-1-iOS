@@ -16,7 +16,8 @@ import MapKit
 class MiniMapVC: MapVC {
     private let magnificationBtn = UIButton()
         .then {
-            $0.setImage(UIImage(named: "pause"), for: .normal)
+            $0.setImage(UIImage(named: "magnification"), for: .normal)
+            $0.addShadow()
         }
     
     private let bag = DisposeBag()

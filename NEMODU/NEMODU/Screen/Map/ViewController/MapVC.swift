@@ -41,8 +41,8 @@ class MapVC: BaseViewController {
 
     var currentLocationBtn = UIButton()
         .then {
-            $0.backgroundColor = UIColor.blue
-            $0.setTitle("L", for: .normal)
+            $0.setImage(UIImage(named: "location"), for: .normal)
+            $0.addShadow()
         }
     
     private let mapZoomScale = 0.003
