@@ -36,7 +36,17 @@
 		2348B4192892DEED001095BC /* ChallengeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348B4182892DEED001095BC /* ChallengeVC.swift */; };
 		2348B41E2892DF0D001095BC /* MypageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348B41D2892DF0D001095BC /* MypageVC.swift */; };
 		2348B4252892E007001095BC /* NEMODUTBC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348B4242892E007001095BC /* NEMODUTBC.swift */; };
+		238C4DDF28A3AC18000BEE36 /* RecodeResultVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DDE28A3AC18000BEE36 /* RecodeResultVC.swift */; };
+		238C4DE328A3F0D6000BEE36 /* NemoduTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */; };
+		238C4DE528A4BFE2000BEE36 /* UIScrollView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DE428A4BFE2000BEE36 /* UIScrollView+.swift */; };
 		23B72058289808EB00D3A410 /* MapFilterBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B72057289808EB00D3A410 /* MapFilterBottomSheet.swift */; };
+		23B7205D28A0CBAC00D3A410 /* ChallengeListBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B7205C28A0CBAC00D3A410 /* ChallengeListBottomSheet.swift */; };
+		23B7206128A0D53200D3A410 /* ProceedingChallengeTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B7206028A0D53200D3A410 /* ProceedingChallengeTVC.swift */; };
+		23B7206328A0DCAA00D3A410 /* ProceedingChallengeDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B7206228A0DCAA00D3A410 /* ProceedingChallengeDataSource.swift */; };
+		23B7206B28A12BCD00D3A410 /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B7206A28A12BCD00D3A410 /* MainVC.swift */; };
+		23B7206D28A12BE800D3A410 /* WalkingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B7206C28A12BE800D3A410 /* WalkingVC.swift */; };
+		23B7207028A12DBB00D3A410 /* RecodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B7206F28A12DBB00D3A410 /* RecodeView.swift */; };
+		23B7207428A2227000D3A410 /* WalkingVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B7207328A2227000D3A410 /* WalkingVM.swift */; };
 		23B7207F28A2394200D3A410 /* Pretendard-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 23B7207928A2394200D3A410 /* Pretendard-ExtraBold.otf */; };
 		23B7208028A2394200D3A410 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 23B7207A28A2394200D3A410 /* Pretendard-Medium.otf */; };
 		23B7208128A2394200D3A410 /* Pretendard-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 23B7207B28A2394200D3A410 /* Pretendard-Black.otf */; };
@@ -46,13 +56,9 @@
 		23B7208628A23A2100D3A410 /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B7208528A23A2100D3A410 /* UIFont+.swift */; };
 		23B86D1F28A26EEF00B1630E /* NaviType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B86D1E28A26EEF00B1630E /* NaviType.swift */; };
 		23B86D2128A26F0F00B1630E /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B86D2028A26F0F00B1630E /* NavigationBar.swift */; };
-		23B7205D28A0CBAC00D3A410 /* ChallengeListBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B7205C28A0CBAC00D3A410 /* ChallengeListBottomSheet.swift */; };
-		23B7206128A0D53200D3A410 /* ProceedingChallengeTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B7206028A0D53200D3A410 /* ProceedingChallengeTVC.swift */; };
-		23B7206328A0DCAA00D3A410 /* ProceedingChallengeDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B7206228A0DCAA00D3A410 /* ProceedingChallengeDataSource.swift */; };
-		23B7206B28A12BCD00D3A410 /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B7206A28A12BCD00D3A410 /* MainVC.swift */; };
-		23B7206D28A12BE800D3A410 /* WalkingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B7206C28A12BE800D3A410 /* WalkingVC.swift */; };
-		23B7207028A12DBB00D3A410 /* RecodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B7206F28A12DBB00D3A410 /* RecodeView.swift */; };
-		23B7207428A2227000D3A410 /* WalkingVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B7207328A2227000D3A410 /* WalkingVM.swift */; };
+		23F5716928A6802C005F2E21 /* UIStackView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5716828A6802C005F2E21 /* UIStackView+.swift */; };
+		23F5716D28A6A61E005F2E21 /* MiniMapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5716C28A6A61D005F2E21 /* MiniMapVC.swift */; };
+		23F5716F28A6AD01005F2E21 /* RecodeStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5716E28A6AD01005F2E21 /* RecodeStackView.swift */; };
 		37783E39C7DFB38581CA78A2 /* Pods_NEMODU.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7400965811C32403A72B2B0 /* Pods_NEMODU.framework */; };
 /* End PBXBuildFile section */
 
@@ -90,7 +96,17 @@
 		2348B4182892DEED001095BC /* ChallengeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeVC.swift; sourceTree = "<group>"; };
 		2348B41D2892DF0D001095BC /* MypageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MypageVC.swift; sourceTree = "<group>"; };
 		2348B4242892E007001095BC /* NEMODUTBC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NEMODUTBC.swift; sourceTree = "<group>"; };
+		238C4DDE28A3AC18000BEE36 /* RecodeResultVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecodeResultVC.swift; sourceTree = "<group>"; };
+		238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NemoduTextView.swift; sourceTree = "<group>"; };
+		238C4DE428A4BFE2000BEE36 /* UIScrollView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+.swift"; sourceTree = "<group>"; };
 		23B72057289808EB00D3A410 /* MapFilterBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapFilterBottomSheet.swift; sourceTree = "<group>"; };
+		23B7205C28A0CBAC00D3A410 /* ChallengeListBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeListBottomSheet.swift; sourceTree = "<group>"; };
+		23B7206028A0D53200D3A410 /* ProceedingChallengeTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProceedingChallengeTVC.swift; sourceTree = "<group>"; };
+		23B7206228A0DCAA00D3A410 /* ProceedingChallengeDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProceedingChallengeDataSource.swift; sourceTree = "<group>"; };
+		23B7206A28A12BCD00D3A410 /* MainVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC.swift; sourceTree = "<group>"; };
+		23B7206C28A12BE800D3A410 /* WalkingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkingVC.swift; sourceTree = "<group>"; };
+		23B7206F28A12DBB00D3A410 /* RecodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecodeView.swift; sourceTree = "<group>"; };
+		23B7207328A2227000D3A410 /* WalkingVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkingVM.swift; sourceTree = "<group>"; };
 		23B7207928A2394200D3A410 /* Pretendard-ExtraBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-ExtraBold.otf"; sourceTree = "<group>"; };
 		23B7207A28A2394200D3A410 /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
 		23B7207B28A2394200D3A410 /* Pretendard-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Black.otf"; sourceTree = "<group>"; };
@@ -100,13 +116,9 @@
 		23B7208528A23A2100D3A410 /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
 		23B86D1E28A26EEF00B1630E /* NaviType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaviType.swift; sourceTree = "<group>"; };
 		23B86D2028A26F0F00B1630E /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
-		23B7205C28A0CBAC00D3A410 /* ChallengeListBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeListBottomSheet.swift; sourceTree = "<group>"; };
-		23B7206028A0D53200D3A410 /* ProceedingChallengeTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProceedingChallengeTVC.swift; sourceTree = "<group>"; };
-		23B7206228A0DCAA00D3A410 /* ProceedingChallengeDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProceedingChallengeDataSource.swift; sourceTree = "<group>"; };
-		23B7206A28A12BCD00D3A410 /* MainVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC.swift; sourceTree = "<group>"; };
-		23B7206C28A12BE800D3A410 /* WalkingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkingVC.swift; sourceTree = "<group>"; };
-		23B7206F28A12DBB00D3A410 /* RecodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecodeView.swift; sourceTree = "<group>"; };
-		23B7207328A2227000D3A410 /* WalkingVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkingVM.swift; sourceTree = "<group>"; };
+		23F5716828A6802C005F2E21 /* UIStackView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+.swift"; sourceTree = "<group>"; };
+		23F5716C28A6A61D005F2E21 /* MiniMapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniMapVC.swift; sourceTree = "<group>"; };
+		23F5716E28A6AD01005F2E21 /* RecodeStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecodeStackView.swift; sourceTree = "<group>"; };
 		E7400965811C32403A72B2B0 /* Pods_NEMODU.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NEMODU.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -184,7 +196,6 @@
 		2348B3D42892CE9F001095BC /* Map */ = {
 			isa = PBXGroup;
 			children = (
-				23B7206E28A12DA600D3A410 /* Share */,
 				2348B3D92892CF10001095BC /* ViewModel */,
 				2348B3D82892CF06001095BC /* ViewController */,
 				239B52CC2892ED7A0030E8C0 /* Model */,
@@ -219,6 +230,7 @@
 				2348B3DC2892CF92001095BC /* MapVC.swift */,
 				23B7206A28A12BCD00D3A410 /* MainVC.swift */,
 				23B7206C28A12BE800D3A410 /* WalkingVC.swift */,
+				238C4DDE28A3AC18000BEE36 /* RecodeResultVC.swift */,
 				23B7205B28A0CB8D00D3A410 /* BottomSheet */,
 			);
 			path = ViewController;
@@ -289,6 +301,8 @@
 				2348B4082892D2E5001095BC /* UIViewController+.swift */,
 				2348B40C2892D360001095BC /* UIColor+.swift */,
 				23B7208528A23A2100D3A410 /* UIFont+.swift */,
+				238C4DE428A4BFE2000BEE36 /* UIScrollView+.swift */,
+				23F5716828A6802C005F2E21 /* UIStackView+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -308,6 +322,10 @@
 			children = (
 				2348B4112892D901001095BC /* LoadingView.swift */,
 				23B86D2028A26F0F00B1630E /* NavigationBar.swift */,
+				238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */,
+				23F5716C28A6A61D005F2E21 /* MiniMapVC.swift */,
+				23F5716E28A6AD01005F2E21 /* RecodeStackView.swift */,
+				23B7206F28A12DBB00D3A410 /* RecodeView.swift */,
 			);
 			path = Share;
 			sourceTree = "<group>";
@@ -372,27 +390,6 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		23B7207828A238FE00D3A410 /* Font */ = {
-			isa = PBXGroup;
-			children = (
-				23B7207B28A2394200D3A410 /* Pretendard-Black.otf */,
-				23B7207E28A2394200D3A410 /* Pretendard-Bold.otf */,
-				23B7207928A2394200D3A410 /* Pretendard-ExtraBold.otf */,
-				23B7207A28A2394200D3A410 /* Pretendard-Medium.otf */,
-				23B7207C28A2394200D3A410 /* Pretendard-Regular.otf */,
-				23B7207D28A2394200D3A410 /* Pretendard-SemiBold.otf */,
-			);
-			path = Font;
-			sourceTree = "<group>";
-		};
-		23B86D1D28A26EDE00B1630E /* Enum */ = {
-			isa = PBXGroup;
-			children = (
-				23B86D1E28A26EEF00B1630E /* NaviType.swift */,
-			);
-			path = Enum;
-			sourceTree = "<group>";
-		};
 		23B7205B28A0CB8D00D3A410 /* BottomSheet */ = {
 			isa = PBXGroup;
 			children = (
@@ -418,12 +415,25 @@
 			path = TVC;
 			sourceTree = "<group>";
 		};
-		23B7206E28A12DA600D3A410 /* Share */ = {
+		23B7207828A238FE00D3A410 /* Font */ = {
 			isa = PBXGroup;
 			children = (
-				23B7206F28A12DBB00D3A410 /* RecodeView.swift */,
+				23B7207B28A2394200D3A410 /* Pretendard-Black.otf */,
+				23B7207E28A2394200D3A410 /* Pretendard-Bold.otf */,
+				23B7207928A2394200D3A410 /* Pretendard-ExtraBold.otf */,
+				23B7207A28A2394200D3A410 /* Pretendard-Medium.otf */,
+				23B7207C28A2394200D3A410 /* Pretendard-Regular.otf */,
+				23B7207D28A2394200D3A410 /* Pretendard-SemiBold.otf */,
 			);
-			path = Share;
+			path = Font;
+			sourceTree = "<group>";
+		};
+		23B86D1D28A26EDE00B1630E /* Enum */ = {
+			isa = PBXGroup;
+			children = (
+				23B86D1E28A26EEF00B1630E /* NaviType.swift */,
+			);
+			path = Enum;
 			sourceTree = "<group>";
 		};
 		4B0C28207D39862BCC583AE5 /* Pods */ = {
@@ -562,6 +572,7 @@
 				23B7206D28A12BE800D3A410 /* WalkingVC.swift in Sources */,
 				2348B3E92892D0BF001095BC /* BaseNavigationController.swift in Sources */,
 				2348B41E2892DF0D001095BC /* MypageVC.swift in Sources */,
+				23F5716928A6802C005F2E21 /* UIStackView+.swift in Sources */,
 				23B7206B28A12BCD00D3A410 /* MainVC.swift in Sources */,
 				2348B3F52892D131001095BC /* Service.swift in Sources */,
 				2348B3E32892D064001095BC /* BaseCollectionViewCell.swift in Sources */,
@@ -578,8 +589,10 @@
 				2348B4032892D1D9001095BC /* UITextView+.swift in Sources */,
 				2348B4072892D286001095BC /* UIView+.swift in Sources */,
 				2348B3EE2892D0ED001095BC /* APIService.swift in Sources */,
+				238C4DE328A3F0D6000BEE36 /* NemoduTextView.swift in Sources */,
 				23B7208628A23A2100D3A410 /* UIFont+.swift in Sources */,
 				2348B3E12892D046001095BC /* BaseView.swift in Sources */,
+				23F5716F28A6AD01005F2E21 /* RecodeStackView.swift in Sources */,
 				2348B3FB2892D15C001095BC /* Output.swift in Sources */,
 				2348B3F02892D0FE001095BC /* APISession.swift in Sources */,
 				2348B3E52892D075001095BC /* BaseViewController.swift in Sources */,
@@ -590,9 +603,12 @@
 				2348B4012892D1A6001095BC /* UITextField+.swift in Sources */,
 				23B86D2128A26F0F00B1630E /* NavigationBar.swift in Sources */,
 				2348B3EC2892D0DF001095BC /* APIError.swift in Sources */,
+				23F5716D28A6A61E005F2E21 /* MiniMapVC.swift in Sources */,
 				2348B3F22892D116001095BC /* urlResource.swift in Sources */,
 				23B7206328A0DCAA00D3A410 /* ProceedingChallengeDataSource.swift in Sources */,
+				238C4DE528A4BFE2000BEE36 /* UIScrollView+.swift in Sources */,
 				2348B4052892D1FA001095BC /* UIButton+.swift in Sources */,
+				238C4DDF28A3AC18000BEE36 /* RecodeResultVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -77,8 +77,12 @@ class WalkingVC: BaseViewController {
     private let viewModel = WalkingVM()
     private let bag = DisposeBag()
     
+    // TODO: - 서버 연결 후 수정
+    private var weekBlockCnt = 0
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        mapVC.updateStep()
     }
     
     override func configureView() {
@@ -132,6 +136,12 @@ extension WalkingVC {
             $0.bottom.equalTo(view.safeAreaLayoutGuide)
             $0.height.equalTo(240)
         }
+        
+        mapVC.currentLocationBtn.snp.makeConstraints {
+            $0.bottom.equalTo(recodeBaseView.snp.top).offset(-16)
+            $0.trailing.equalToSuperview().offset(-16)
+            $0.width.height.equalTo(48)
+        }
     }
     
     private func recordViewLayout() {
@@ -175,6 +185,7 @@ extension WalkingVC {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.setRecodeBtnStatus(isWalking: false)
+                self.mapVC.stopUpdateStep()
             })
             .disposed(by: bag)
         
@@ -183,8 +194,15 @@ extension WalkingVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                // TODO: - 기록 확인 화면 연결
-                self.dismiss(animated: false)
+                let recodeResultVC = RecodeResultVC()
+                recodeResultVC.modalPresentationStyle = .fullScreen
+                recodeResultVC.configureRecodeValue(blocks: self.mapVC.blocks,
+                                                    weekBlockCnt: self.weekBlockCnt,
+                                                    distance: self.mapVC.updateDistance.value,
+                                                    second: self.secondTimeValue,
+                                                    stepCnt: self.mapVC.stepCnt)
+                self.mapVC.stopUpdateStep()
+                self.present(recodeResultVC, animated: true)
             })
             .disposed(by: bag)
         
@@ -194,6 +212,7 @@ extension WalkingVC {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.setRecodeBtnStatus(isWalking: true)
+                self.mapVC.updateStep()
             })
             .disposed(by: bag)
     }

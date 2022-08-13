@@ -23,15 +23,15 @@ class ChallengeListBottomSheet: DynamicBottomSheetViewController {
     private let sheetTitle = UILabel()
         .then {
             $0.text = "진행중인 챌린지"
-            $0.font = UIFont.systemFont(ofSize: 16)
-            $0.textColor = UIColor.black
+            $0.font = .body2
+            $0.textColor = .gray900
         }
     
     private let noneMessage = UILabel()
         .then {
             $0.text = "지금 진행중인 챌린지가 없습니다.\n친구들과 일주일 챌린지, 실시간 챌린지를 할 수 있어요!"
-            $0.font = UIFont.systemFont(ofSize: 14)
-            $0.textColor = UIColor.lightGray
+            $0.font = .caption2R
+            $0.textColor = .gray500
             $0.setLineBreakMode()
             $0.textAlignment = .center
         }
@@ -39,9 +39,9 @@ class ChallengeListBottomSheet: DynamicBottomSheetViewController {
     private let makeChallengeBtn = UIButton()
         .then {
             $0.setTitle("챌린지 만들러가기", for: .normal)
-            $0.setTitleColor(UIColor.black, for: .normal)
-            $0.titleLabel?.font = UIFont.systemFont(ofSize: 18)
-            $0.backgroundColor = UIColor.systemGray5
+            $0.setTitleColor(.gray900, for: .normal)
+            $0.titleLabel?.font = .headline1
+            $0.backgroundColor = .gray200
             $0.layer.cornerRadius = 22
         }
     
@@ -69,7 +69,7 @@ extension ChallengeListBottomSheet {
         
         // bottomSheet height
         contentView.snp.makeConstraints {
-            $0.height.equalTo(270)
+            $0.height.equalTo(304)
         }
         
         viewBar.snp.makeConstraints {
@@ -110,7 +110,7 @@ extension ChallengeListBottomSheet {
         
         noneMessage.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(sheetTitle.snp.bottom).offset(58)
+            $0.top.equalTo(sheetTitle.snp.bottom).offset(72)
         }
         
         makeChallengeBtn.snp.makeConstraints {

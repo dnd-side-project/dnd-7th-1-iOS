@@ -17,19 +17,20 @@ class ProceedingChallengeTVC: UITableViewCell {
     
     let challengeTitle = UILabel()
         .then {
-            $0.font = UIFont.systemFont(ofSize: 17)
+            $0.font = .headline1
+            $0.textColor = .gray900
         }
     
     let rank = UILabel()
         .then {
-            $0.font = UIFont.systemFont(ofSize: 11)
-            $0.textColor = UIColor.lightGray
+            $0.font = .caption2M
+            $0.textColor = .gray500
         }
     
     let arrow = UIImageView()
         .then {
             $0.image = UIImage(systemName: "chevron.right")
-            $0.tintColor = UIColor.lightGray
+            $0.tintColor = .gray300
         }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

@@ -22,15 +22,15 @@ class MapFilterBottomSheet: DynamicBottomSheetViewController {
     private let sheetTitle = UILabel()
         .then {
             $0.text = "지도 필터"
-            $0.font = UIFont.systemFont(ofSize: 17)
-            $0.textColor = UIColor.black
+            $0.font = .body1
+            $0.textColor = .gray900
         }
     
     private let titleMessage = UILabel()
         .then {
             $0.text = "이번주(월~일)의 기록만 보여집니다."
-            $0.font = UIFont.systemFont(ofSize: 14)
-            $0.textColor = UIColor.lightGray
+            $0.font = .body4
+            $0.textColor = .gray400
         }
     
     private let btnStackView = UIStackView()
@@ -44,8 +44,8 @@ class MapFilterBottomSheet: DynamicBottomSheetViewController {
     private let showMyBlocksBtn = UIButton()
         .then {
             $0.setTitle("나의 기록 보기", for: .normal)
-            $0.setTitleColor(.black, for: .normal)
-            $0.titleLabel?.font = UIFont.systemFont(ofSize: 15)
+            $0.setTitleColor(.gray900, for: .normal)
+            $0.titleLabel?.font = .body3
             $0.toggleButtonImage(defaultImage: UIImage(named: "hideBlocks")!,
                                  selectedImage: UIImage(named: "showBlocks")!)
             $0.centerVertically(spacing: 8)
@@ -54,8 +54,8 @@ class MapFilterBottomSheet: DynamicBottomSheetViewController {
     private let showFriendsBtn = UIButton()
         .then {
             $0.setTitle("친구 보기", for: .normal)
-            $0.setTitleColor(.black, for: .normal)
-            $0.titleLabel?.font = UIFont.systemFont(ofSize: 15)
+            $0.setTitleColor(.gray900, for: .normal)
+            $0.titleLabel?.font = .body3
             $0.toggleButtonImage(defaultImage: UIImage(named: "hideFriends")!,
                                  selectedImage: UIImage(named: "showFriends")!)
             $0.centerVertically(spacing: 8)
@@ -63,24 +63,26 @@ class MapFilterBottomSheet: DynamicBottomSheetViewController {
     
     private let separatorLine = UIView()
         .then {
-            $0.backgroundColor = UIColor.systemGray5
+            $0.backgroundColor = .gray200
         }
     
     private let locationPermissionTitle = UILabel()
         .then {
             $0.text = "내 위치 공개"
-            $0.font = UIFont.systemFont(ofSize: 16)
+            $0.font = UIFont.PretendardMedium(size: 16)
+            $0.textColor = .gray900
         }
     
     private let locationPermissionMessage = UILabel()
         .then {
             $0.text = "친구들에게 보이기"
-            $0.font = UIFont.systemFont(ofSize: 15)
+            $0.font = .body3
+            $0.textColor = .gray900
         }
     
     private let locationPermissionToggleBtn = UISwitch()
         .then {
-            $0.onTintColor = UIColor.main
+            $0.onTintColor = .main
         }
     
     private let bag = DisposeBag()

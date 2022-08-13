@@ -12,16 +12,19 @@ import Then
 class NavigationBar: BaseView {
     private var title = UILabel()
         .then {
-            $0.font = UIFont.title3M
+            $0.font = .title3M
         }
        
     private var backBtn = UIButton()
         .then {
-            $0.setImage(UIImage(systemName: "xmark"), for: .normal)
             $0.tintColor = .label
         }
     
     var rightBtn = UIButton()
+        .then {
+            $0.tintColor = .label
+        }
+    
     var naviType: NaviType! 
     
     override func configureView() {
@@ -37,7 +40,7 @@ class NavigationBar: BaseView {
 // MARK: - Configure
 extension NavigationBar {
     /// naviBar을 view에 추가하고 title을 지정하는 함수
-    func configureNaviBar(targetVC: UIViewController, title: String) {
+    func configureNaviBar(targetVC: UIViewController, title: String?) {
         targetVC.view.addSubview(self)
         self.snp.makeConstraints {
             $0.height.equalTo(44)
@@ -53,14 +56,24 @@ extension NavigationBar {
         self.title.font = font
     }
     
+    /// title의 font를 변경하는 함수입니다.
+    func setTitleFont(font: UIFont) {
+        self.title.font = font
+    }
+    
     /// naviBar의 backBtn을 지정하는 함수입니다.
     /// naviType 지정 필수!
+    /// push는 왼쪽, present는 오른쪽에 뒤로가기 / 닫기 버튼이 추가되도록 구현하였습니다.
     func configureBackBtn(targetVC: UIViewController) {
-        leftBtnLayout()
-        backBtn.setImage(naviType.backBtnImage, for: .normal)
-        naviType == .push
-        ? backBtn.addTarget(targetVC, action: #selector(targetVC.popVC), for: .touchUpInside)
-        : backBtn.addTarget(targetVC, action: #selector(targetVC.dismissVC), for: .touchUpInside)
+        if naviType == .push {
+            leftBtnLayout()
+            backBtn.setImage(naviType.backBtnImage, for: .normal)
+            backBtn.addTarget(targetVC, action: #selector(targetVC.popVC), for: .touchUpInside)
+        } else {
+            rightBtnLayout()
+            rightBtn.setImage(naviType.backBtnImage, for: .normal)
+            rightBtn.addTarget(targetVC, action: #selector(targetVC.dismissVC), for: .touchUpInside)
+        }
     }
     
     /// naviBar의 우측 버튼(이미지)을 추가하는 함수입니다.
@@ -74,7 +87,7 @@ extension NavigationBar {
         rightBtnLayout()
         rightBtn.setTitle(title, for: .normal)
         rightBtn.setTitleColor(.label, for: .normal)
-        rightBtn.titleLabel?.font = UIFont.title3SB
+        rightBtn.titleLabel?.font = .title3SB
     }
 }
 

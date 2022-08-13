@@ -12,18 +12,21 @@ import SnapKit
 class RecodeView: BaseView {
     var recodeValue = UILabel()
         .then {
-            $0.font = UIFont.systemFont(ofSize: 34)
+            $0.font = .title1
+            $0.textColor = .gray900
         }
     
     var recodeTitle = UILabel()
         .then {
-            $0.font = UIFont.systemFont(ofSize: 12)
+            $0.font = .caption1
+            $0.textColor = .gray800
         }
     
     var recodeSubtitle = UILabel()
         .then {
-            $0.font = UIFont.systemFont(ofSize: 12)
-            $0.textColor = UIColor.lightGray
+            $0.font = .caption1
+            $0.textColor = .gray500
+            $0.text = " "
         }
     
     override func configureView() {
@@ -45,18 +48,17 @@ extension RecodeView {
     private func configureLayout() {
         recodeValue.snp.makeConstraints {
             $0.top.equalToSuperview()
-            $0.height.equalTo(41)
             $0.centerX.equalToSuperview()
         }
         
         recodeTitle.snp.makeConstraints {
             $0.top.equalTo(recodeValue.snp.bottom).offset(10)
-            $0.height.equalTo(14)
             $0.centerX.equalToSuperview()
         }
         
         recodeSubtitle.snp.makeConstraints {
             $0.top.equalTo(recodeTitle.snp.bottom).offset(4)
+            $0.bottom.equalToSuperview()
             $0.centerX.equalToSuperview()
         }
     }
