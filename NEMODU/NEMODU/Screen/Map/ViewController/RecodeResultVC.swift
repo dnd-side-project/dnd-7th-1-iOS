@@ -11,6 +11,7 @@ import RxGesture
 import RxSwift
 import SnapKit
 import Then
+import CoreLocation
 
 class RecodeResultVC: BaseViewController {
     private let baseScrollView = UIScrollView()
@@ -64,6 +65,7 @@ class RecodeResultVC: BaseViewController {
     
     private let naviBar = NavigationBar()
     private let bag = DisposeBag()
+    private var blocks: [[Double]]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,6 +75,7 @@ class RecodeResultVC: BaseViewController {
         super.configureView()
         configureNaviBar()
         configureContentView()
+        configureMiniMap()
     }
     
     override func layoutView() {
@@ -120,9 +123,23 @@ extension RecodeResultVC {
                               memoTextView])
     }
     
-    func configureRecodeValue(recodeBlockCnt: Int, weekBlockCnt: Int, distance: Int, second: Int, stepCnt: Int) {
-        blocksCntView.recodeValue.text = "\(recodeBlockCnt)"
-        blocksCntView.recodeSubtitle.text = "이번주 영역 : \(weekBlockCnt + recodeBlockCnt)칸"
+    private func configureMiniMap() {
+        guard let blocks = blocks else { return }
+        
+        let sortedLatitude = blocks.sorted(by: { $0[0] < $1[0] })
+        let sortedLongitude = blocks.sorted(by: { $0[1] < $1[1] })
+        
+        _ = miniMap.goLocation(latitudeValue: sortedLatitude[blocks.count/2][0], longitudeValue: sortedLongitude[blocks.count/2][1] - 0.0001, delta: 0.003)
+        
+        blocks.forEach {
+            miniMap.drawBlock(latitude: $0[0], longitude: $0[1])
+        }
+    }
+    
+    func configureRecodeValue(blocks: [[Double]], weekBlockCnt: Int, distance: Int, second: Int, stepCnt: Int) {
+        self.blocks = blocks
+        blocksCntView.recodeValue.text = "\(blocks.count)"
+        blocksCntView.recodeSubtitle.text = "이번주 영역 : \(weekBlockCnt + blocks.count)칸"
         recodeStackView.distanceView.recodeValue.text = "\(distance)m"
         recodeStackView.timeView.recodeValue.text = "\(second / 60):" + String(format: "%02d", second % 60)
         recodeStackView.stepCntView.recodeValue.text = "\(stepCnt)"

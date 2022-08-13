@@ -196,7 +196,7 @@ extension WalkingVC {
                 guard let self = self else { return }
                 let recodeResultVC = RecodeResultVC()
                 recodeResultVC.modalPresentationStyle = .fullScreen
-                recodeResultVC.configureRecodeValue(recodeBlockCnt: self.mapVC.blocksCnt.value,
+                recodeResultVC.configureRecodeValue(blocks: self.mapVC.blocks,
                                                     weekBlockCnt: self.weekBlockCnt,
                                                     distance: self.mapVC.updateDistance.value,
                                                     second: self.secondTimeValue,

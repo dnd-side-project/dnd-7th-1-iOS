@@ -50,11 +50,12 @@ class MapVC: BaseViewController {
     private let mul: Double = 100000000
     private let bag = DisposeBag()
     
-    private var isFocusOn = true
     private var prevLatitude: Int = 0
     private var prevLongitude: Int = 0
     private var previousCoordinate: CLLocationCoordinate2D?
     private var walkDistance: Double = 0
+    
+    var isFocusOn = true
     var isWalking: Bool?
     var blocks: [[Double]] = []
     var blocksCnt = BehaviorRelay<Int>(value: 0)
@@ -100,7 +101,7 @@ extension MapVC {
         
         // 현재 위치로 이동
         _ = goLocation(latitudeValue: locationManager.location?.coordinate.latitude ?? 0,
-                       longtudeValue: locationManager.location?.coordinate.longitude ?? 0,
+                       longitudeValue: locationManager.location?.coordinate.longitude ?? 0,
                        delta: mapZoomScale)
         
         // 버튼
@@ -121,7 +122,7 @@ extension MapVC {
 // MARK: - Input
 
 extension MapVC {
-    func bindMapGesture() {
+    private func bindMapGesture() {
         mapView.rx.anyGesture(.pan(), .pinch())
             .when(.began)
             .subscribe(onNext: { [weak self] _ in
@@ -131,7 +132,7 @@ extension MapVC {
             .disposed(by: bag)
     }
     
-    func bindBtn() {
+    private func bindBtn() {
         // 현재 위치로 이동 버튼
         currentLocationBtn.rx.tap
             .asDriver()
@@ -139,7 +140,7 @@ extension MapVC {
                 guard let self = self,
                 let coordinate = self.locationManager.location?.coordinate else { return }
                 _ = self.goLocation(latitudeValue: coordinate.latitude,
-                                    longtudeValue: coordinate.longitude,
+                                    longitudeValue: coordinate.longitude,
                                     delta: self.mapZoomScale)
                 
                 // 사용자 추적 On
@@ -187,10 +188,34 @@ extension MapVC {
         }
     }
     
+    /// update를 중지하는 함수
     func stopUpdateStep() {
         activityManager.stopActivityUpdates()
         pedoMeter.stopUpdates()
         pauseCnt = stepCnt
+    }
+    
+    /// 특정 좌표에 블록을 그리는 함수
+    func drawBlock(latitude: Double, longitude: Double) {
+        let latPoint = Int(latitude * mul) / blockSize
+        let longPoint = Int(longitude * mul) / blockSize
+        
+        // TODO: - 백엔드와 회의 후 클래스화 진행
+        let overlayTopLeftCoordinate = CLLocationCoordinate2D(latitude: Double((latPoint) * blockSize) / mul,
+                                                              longitude: Double((longPoint - 1) * blockSize) / mul)
+        let overlayTopRightCoordinate = CLLocationCoordinate2D(latitude: Double((latPoint) * blockSize) / mul,
+                                                               longitude: Double((longPoint) * blockSize) / mul)
+        let overlayBottomLeftCoordinate = CLLocationCoordinate2D(latitude: Double((latPoint + 1) * blockSize) / mul,
+                                                                 longitude: Double((longPoint - 1) * blockSize) / mul)
+        let overlayBottomRightCoordinate = CLLocationCoordinate2D(latitude: Double((latPoint + 1) * blockSize) / mul,
+                                                                  longitude: Double((longPoint) * blockSize) / mul)
+        
+        let blockDraw = MKPolygon(coordinates: [overlayTopLeftCoordinate,
+                                                overlayTopRightCoordinate,
+                                                overlayBottomRightCoordinate,
+                                                overlayBottomLeftCoordinate], count: 4)
+        
+        mapView.addOverlay(blockDraw)
     }
 }
 
@@ -216,9 +241,9 @@ extension MapVC: CLLocationManagerDelegate {
 
     /// 위도, 경도, 스팬(영역 폭)을 입력받아 지도에 표시
     func goLocation(latitudeValue: CLLocationDegrees,
-                    longtudeValue: CLLocationDegrees,
+                    longitudeValue: CLLocationDegrees,
                     delta span: Double) -> CLLocationCoordinate2D {
-        let pLocation = CLLocationCoordinate2DMake(latitudeValue, longtudeValue)
+        let pLocation = CLLocationCoordinate2DMake(latitudeValue, longitudeValue)
         let spanValue = MKCoordinateSpan(latitudeDelta: span, longitudeDelta: span)
         let pRegion = MKCoordinateRegion(center: pLocation, span: spanValue)
         mapView.setRegion(pRegion, animated: true)
@@ -233,7 +258,7 @@ extension MapVC: CLLocationManagerDelegate {
                        subtitle strSubtitle: String) {
         let annotation = MKPointAnnotation()
         annotation.coordinate = goLocation(latitudeValue: latitudeValue,
-                                           longtudeValue: longitudeValue,
+                                           longitudeValue: longitudeValue,
                                            delta: span)
         annotation.title = strTitle
         annotation.subtitle = strSubtitle
@@ -243,6 +268,7 @@ extension MapVC: CLLocationManagerDelegate {
     /// 사용자 위치 이동 시 처리 함수
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
+        // 실제 위치 좌표
         let latitude = location.coordinate.latitude
         let longitude = location.coordinate.longitude
         let latPoint = Int(latitude * mul) / blockSize
@@ -251,7 +277,7 @@ extension MapVC: CLLocationManagerDelegate {
         // 사용자 이동에 맞춰 화면 이동
         if isFocusOn {
             _ = goLocation(latitudeValue: latitude,
-                           longtudeValue: longitude,
+                           longitudeValue: longitude,
                            delta: mapZoomScale)
         }
         
@@ -265,22 +291,8 @@ extension MapVC: CLLocationManagerDelegate {
                 // block Point 저장
                 blocks.append([Double((latPoint) * blockSize) / mul, Double((longPoint) * blockSize) / mul])
                 
-                // TODO: - 백엔드와 회의 후 클래스화 진행
-                let overlayTopLeftCoordinate = CLLocationCoordinate2D(latitude: Double((latPoint) * blockSize) / mul,
-                                                                      longitude: Double((longPoint - 1) * blockSize) / mul)
-                let overlayTopRightCoordinate = CLLocationCoordinate2D(latitude: Double((latPoint) * blockSize) / mul,
-                                                                       longitude: Double((longPoint) * blockSize) / mul)
-                let overlayBottomLeftCoordinate = CLLocationCoordinate2D(latitude: Double((latPoint + 1) * blockSize) / mul,
-                                                                         longitude: Double((longPoint - 1) * blockSize) / mul)
-                let overlayBottomRightCoordinate = CLLocationCoordinate2D(latitude: Double((latPoint + 1) * blockSize) / mul,
-                                                                          longitude: Double((longPoint) * blockSize) / mul)
-                
-                let blockDraw = MKPolygon(coordinates: [overlayTopLeftCoordinate,
-                                                        overlayTopRightCoordinate,
-                                                        overlayBottomRightCoordinate,
-                                                        overlayBottomLeftCoordinate], count: 4)
-                
-                mapView.addOverlay(blockDraw)
+                drawBlock(latitude: latitude, longitude: longitude)
+
                 blocksCnt.accept(blocks.count)
             }
         }

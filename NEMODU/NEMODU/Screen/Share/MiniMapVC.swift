@@ -13,17 +13,8 @@ import SnapKit
 import Then
 import MapKit
 
-class MiniMapVC: BaseViewController {
-    private var miniMap = MKMapView()
-        .then {
-            $0.mapType = .standard
-            $0.showsUserLocation = false
-            $0.isZoomEnabled = false
-            $0.isScrollEnabled = false
-            $0.layer.cornerRadius = 15
-        }
-    
-    private let zoomInBtn = UIButton()
+class MiniMapVC: MapVC {
+    private let magnificationBtn = UIButton()
         .then {
             $0.setImage(UIImage(named: "pause"), for: .normal)
         }
@@ -59,7 +50,16 @@ class MiniMapVC: BaseViewController {
 
 extension MiniMapVC {
     private func configureMiniMap() {
-        view.addSubviews([miniMap, zoomInBtn])
+        view.addSubview(magnificationBtn)
+        
+        isFocusOn = false
+        isWalking = false
+        
+        mapView.mapType = .standard
+        mapView.showsUserLocation = false
+        mapView.isZoomEnabled = false
+        mapView.isScrollEnabled = false
+        mapView.layer.cornerRadius = 15
     }
 }
 
@@ -67,11 +67,11 @@ extension MiniMapVC {
 
 extension MiniMapVC {
     private func configureLayout() {
-        miniMap.snp.makeConstraints {
+        mapView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
         
-        zoomInBtn.snp.makeConstraints {
+        magnificationBtn.snp.makeConstraints {
             $0.trailing.bottom.equalToSuperview().offset(-16)
             $0.height.width.equalTo(48)
         }
@@ -82,7 +82,7 @@ extension MiniMapVC {
 
 extension MiniMapVC {
     private func bindBtn() {
-        zoomInBtn.rx.tap
+        magnificationBtn.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
