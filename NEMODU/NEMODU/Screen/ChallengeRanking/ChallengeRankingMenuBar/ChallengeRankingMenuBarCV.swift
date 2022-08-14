@@ -20,7 +20,7 @@ class ChallengeRankingMenuBarCV : MenuBarCV {
     
     var challengeRankingVC: ChallengeRankingVC?
     
-    let positionBarHeight: CGFloat = 2.0
+    let positionBarHeight: CGFloat = 1.0
     
     // MARK: - Life Cycle
     
