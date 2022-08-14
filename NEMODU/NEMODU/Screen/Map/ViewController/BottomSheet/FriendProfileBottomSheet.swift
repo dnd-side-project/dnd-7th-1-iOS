@@ -62,14 +62,24 @@ class FriendProfileBottomSheet: DynamicBottomSheetViewController {
     
     private let addFriendBtn = UIButton()
         .then {
-            $0.setTitle("친구 추가 ", for: .normal)
+            $0.setTitle("친구 추가", for: .normal)
             $0.setTitleColor(.white, for: .normal)
+            $0.setBackgroundColor(.main, for: .normal)
+
+            $0.setTitle("친구중", for: .selected)
+            $0.setTitleColor(.main, for: .selected)
+            $0.setBackgroundColor(.white, for: .selected)
+            
+            $0.toggleButtonImage(defaultImage: UIImage(named: "add")!.withTintColor(.white, renderingMode: .alwaysOriginal),
+                                 selectedImage: UIImage(named: "check")!.withTintColor(.main, renderingMode: .alwaysOriginal))
+            $0.imageView?.layer.transform = CATransform3DMakeScale(0.7, 0.7, 0.7)
+            $0.layer.borderColor = UIColor.main.cgColor
+            $0.layer.borderWidth = 1
             $0.titleLabel?.font = .body3
-            $0.setImage(UIImage(systemName: "plus"), for: .normal)
             $0.sizeToFit()
-            $0.backgroundColor = .main
             $0.semanticContentAttribute = .forceRightToLeft
             $0.layer.cornerRadius = 17
+            $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 8)
         }
     
     private let recodeStackView = ProfileRecodeStackView()
