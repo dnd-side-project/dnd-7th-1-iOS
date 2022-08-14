@@ -9,11 +9,17 @@ import UIKit
 
 class BaseCollectionViewCell: UICollectionViewCell {
     
-    // MARK: init
+    // MARK: - UI components
+    
+    // MARK: - Variables and Properties
+    
+    // MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupViews()
+        
+        configureView()
+        layoutView()
     }
     
     @available(*, unavailable)
@@ -21,5 +27,9 @@ class BaseCollectionViewCell: UICollectionViewCell {
         fatalError()
     }
     
-    func setupViews() {}
+    // MARK: - Function
+    
+    func configureView() {}
+    
+    func layoutView() {}
 }
