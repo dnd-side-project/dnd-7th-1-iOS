@@ -17,6 +17,8 @@ class BaseViewController: UIViewController {
     // MARK: Properties
     let screenWidth = UIScreen.main.bounds.size.width
     let screenHeight = UIScreen.main.bounds.size.height
+    let keyboardWillShow = NotificationCenter.default.rx.notification(UIResponder.keyboardWillShowNotification)
+    let keyboardWillHide = NotificationCenter.default.rx.notification(UIResponder.keyboardWillHideNotification)
     
     override func viewDidLoad() {
         super.viewDidLoad()
