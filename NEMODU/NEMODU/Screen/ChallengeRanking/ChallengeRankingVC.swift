@@ -49,8 +49,6 @@ class ChallengeRankingVC: BaseViewController {
     override func configureView() {
         super.configureView()
         
-        view.backgroundColor = .brown
-        
         challengeRankingMenuBar.challengeRankingVC = self
         
         _ = challengeRankingContainerCollectionView
