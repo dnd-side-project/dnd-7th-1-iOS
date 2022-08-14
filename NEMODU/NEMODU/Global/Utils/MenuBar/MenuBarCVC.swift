@@ -15,7 +15,7 @@ class MenuBarCVC: UICollectionViewCell {
     
     let menuTitle = UILabel()
         .then {
-            $0.font = .systemFont(ofSize: 15)
+            $0.font = .systemFont(ofSize: 17)
             $0.textColor = .gray
         }
     
@@ -50,12 +50,12 @@ class MenuBarCVC: UICollectionViewCell {
         didSet {
             if isSelected == true {
                 _ = menuTitle.then {
-                    $0.font = .systemFont(ofSize: 14)
+                    $0.font = .systemFont(ofSize: 17)
                     $0.textColor = .black
                 }
             } else {
                 _ = menuTitle.then {
-                    $0.font = .systemFont(ofSize: 14)
+                    $0.font = .systemFont(ofSize: 17)
                     $0.textColor = .gray
                 }
             }
@@ -66,12 +66,12 @@ class MenuBarCVC: UICollectionViewCell {
         didSet {
             if isSelected == true {
                 _ = menuTitle.then {
-                    $0.font = .systemFont(ofSize: 14)
+                    $0.font = .systemFont(ofSize: 17)
                     $0.textColor = .black
                 }
             } else {
                 _ = menuTitle.then {
-                    $0.font = .systemFont(ofSize: 14)
+                    $0.font = .systemFont(ofSize: 17)
                     $0.textColor = .gray
                 }
             }

@@ -38,14 +38,11 @@ class MenuBarCV: BaseView {
     
     var menuList = [""]
     
-    let disposeBag = DisposeBag()
-    
     // MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-//        bindCollectionView()
     }
     
     required init?(coder: NSCoder) {
@@ -98,47 +95,7 @@ class MenuBarCV: BaseView {
             $0.bottom.equalTo(self.snp.bottom)
         }
     }
-    
-    func bindCollectionView() {
-        menuBarCollectionView.rx.setDelegate(self).disposed(by: disposeBag)
-//        menuBarCollectionView.rx.setDataSource(self).disposed(by: disposeBag)
         
-//        let menuBarCVOb: Observable<[String]> = Observable.of(menuList)
-        
-        let menuBarCVOb = Observable<[String]>.just(menuList)
-
-        menuBarCVOb.bind(to: menuBarCollectionView.rx.items(cellIdentifier: menuBarCVCIdentifier, cellType: MenuBarCVC.self)) { (index: Int, element: String, cell: MenuBarCVC) in
-            cell.menuTitle.text = self.menuList[index]
-            
-            print("bind cellForItemAt called ", index, " ", self.menuList[index])
-        }.disposed(by: disposeBag)
-         
-        
-//        menuBarCVOb.bind(to: menuBarCollectionView.rx.items(cellIdentifier: menuBarCVCellIdentifier, cellType: MenuBarCVCell.self)) { (index: Int, menuName: String, cell: MenuBarCVCell) -> Void in
-//
-//            let indexPath = IndexPath(item: index, section: 0)
-//            cell.menuTitle.text = self.menuList[indexPath.item]
-//        }
-//        .disposed(by: disposeBag)
-        
-        menuBarCollectionView.rx.itemSelected
-            .subscribe(onNext: { indexPath in
-                print("hi there", indexPath.item)
-                       })
-            .disposed(by: disposeBag)
-        
-        
-        
-        print("bind collecitionView called")
-        
-//        menuBarCVOb.bind(to: menuBarCollectionView.rx.items(cellIdentifier: menuBarCVCellIdentifier)) { (collecitionView: UICollectionView, index: Int, menuName: String) -> UICollectionViewCell in
-//            guard let cell = tableView.dequeueReusableCell(withIdentifier: menuBarCVCellIdentifier) else { return MenuBarCVCell() }
-//            cell.menuTitle.text = menuList[indexPath.item]
-//
-//            return cell
-//        }.dispose(by: bag)
-    }
-    
 }
 
 // MARK: - Menu Bar CollectionView
