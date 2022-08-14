@@ -22,6 +22,13 @@ extension UIView {
         layer.mask = mask
     }
     
+    /// UIView 상단에만 round를 주는 함수
+    func roundCorners(radius: CGFloat) {
+        layer.cornerRadius = radius
+        layer.maskedCorners = [.layerMaxXMinYCorner,
+                               .layerMinXMinYCorner]
+    }
+    
     /// view를 담당하는 viewController를 찾는 함수
     func findViewController() -> UIViewController? {
         if let nextResponder = self.next as? UIViewController {

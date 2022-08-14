@@ -59,6 +59,7 @@
 		23F5716928A6802C005F2E21 /* UIStackView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5716828A6802C005F2E21 /* UIStackView+.swift */; };
 		23F5716D28A6A61E005F2E21 /* MiniMapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5716C28A6A61D005F2E21 /* MiniMapVC.swift */; };
 		23F5716F28A6AD01005F2E21 /* RecodeStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5716E28A6AD01005F2E21 /* RecodeStackView.swift */; };
+		23F5717128A7CFD5005F2E21 /* FriendProfileBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5717028A7CFD5005F2E21 /* FriendProfileBottomSheet.swift */; };
 		37783E39C7DFB38581CA78A2 /* Pods_NEMODU.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7400965811C32403A72B2B0 /* Pods_NEMODU.framework */; };
 /* End PBXBuildFile section */
 
@@ -119,6 +120,7 @@
 		23F5716828A6802C005F2E21 /* UIStackView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+.swift"; sourceTree = "<group>"; };
 		23F5716C28A6A61D005F2E21 /* MiniMapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniMapVC.swift; sourceTree = "<group>"; };
 		23F5716E28A6AD01005F2E21 /* RecodeStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecodeStackView.swift; sourceTree = "<group>"; };
+		23F5717028A7CFD5005F2E21 /* FriendProfileBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendProfileBottomSheet.swift; sourceTree = "<group>"; };
 		E7400965811C32403A72B2B0 /* Pods_NEMODU.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NEMODU.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -395,6 +397,7 @@
 			children = (
 				23B72057289808EB00D3A410 /* MapFilterBottomSheet.swift */,
 				23B7205C28A0CBAC00D3A410 /* ChallengeListBottomSheet.swift */,
+				23F5717028A7CFD5005F2E21 /* FriendProfileBottomSheet.swift */,
 			);
 			path = BottomSheet;
 			sourceTree = "<group>";
@@ -594,6 +597,7 @@
 				2348B3E12892D046001095BC /* BaseView.swift in Sources */,
 				23F5716F28A6AD01005F2E21 /* RecodeStackView.swift in Sources */,
 				2348B3FB2892D15C001095BC /* Output.swift in Sources */,
+				23F5717128A7CFD5005F2E21 /* FriendProfileBottomSheet.swift in Sources */,
 				2348B3F02892D0FE001095BC /* APISession.swift in Sources */,
 				2348B3E52892D075001095BC /* BaseViewController.swift in Sources */,
 				23B7207428A2227000D3A410 /* WalkingVM.swift in Sources */,

@@ -62,8 +62,8 @@ extension ProceedingChallengeTVC {
     
     private func configureLayout() {
         challengeIcon.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(12)
-            $0.leading.equalToSuperview()
+            $0.top.equalToSuperview().offset(16)
+            $0.leading.equalToSuperview().offset(16)
             $0.height.width.equalTo(16)
         }
         
@@ -79,7 +79,8 @@ extension ProceedingChallengeTVC {
         }
         
         arrow.snp.makeConstraints {
-            $0.centerY.trailing.equalToSuperview()
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview().offset(-16)
             $0.height.equalTo(14)
             $0.width.equalTo(8)
         }
