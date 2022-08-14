@@ -15,36 +15,119 @@ class ChallengeRankingVC: BaseViewController {
     
     // MARK: - UI components
     
-    let menuBar = MenuBarCV()
+    let challengeRankingMenuBar = ChallengeRankingMenuBarCV()
         .then {
             $0.menuList = ["챌린지", "랭킹"]
+        }
+    
+    let challengeRankingContainerCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        .then {
+            let layout = UICollectionViewFlowLayout()
+            layout.scrollDirection = .horizontal
+            layout.minimumLineSpacing = 0
+            layout.minimumInteritemSpacing = 0
+            
+            $0.collectionViewLayout = layout
+            
+            $0.backgroundColor = .white
+            
+            $0.isPagingEnabled = true
+            $0.isScrollEnabled = false
+            $0.showsHorizontalScrollIndicator = false
         }
     
     // MARK: - Variables and Properties
     
     // MARK: - Life Cycle
     
-    // MARK: - Helper
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    
+    // MARK: - Functions
     
     override func configureView() {
         super.configureView()
         
-        view.backgroundColor = .systemPink
+        view.backgroundColor = .brown
+        
+        challengeRankingMenuBar.challengeRankingVC = self
+        
+        _ = challengeRankingContainerCollectionView
+            .then {
+            $0.delegate = self
+            $0.dataSource = self
+            
+            $0.register(ChallengeContainerCVC.self, forCellWithReuseIdentifier: ChallengeContainerCVC.className)
+            $0.register(RankingContainerCVC.self, forCellWithReuseIdentifier: RankingContainerCVC.className)
+        }
+        
     }
     
     override func layoutView() {
         super.layoutView()
         
-        print("VC: layoutView")
+        view.addSubview(challengeRankingMenuBar)
+        view.addSubview(challengeRankingContainerCollectionView)
         
-        view.addSubview(menuBar)
-        
-        menuBar.snp.makeConstraints {
+        challengeRankingMenuBar.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             $0.left.equalTo(view.snp.left)
             $0.right.equalTo(view.snp.right)
             $0.height.equalTo(59)
         }
+        challengeRankingContainerCollectionView.snp.makeConstraints {
+            $0.top.equalTo(challengeRankingMenuBar.snp.bottom)
+            $0.left.equalTo(view.snp.left)
+            $0.right.equalTo(view.snp.right)
+            $0.bottom.equalTo(view.snp.bottom)
+        }
+    }
+    
+}
+
+// MARK: - Challenge/Ranking CollectionView Container FlowLayout/Delegate/DataSource
+
+extension ChallengeRankingVC : UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView:UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: self.view.frame.width, height: collectionView.frame.height)
+    }
+
+}
+
+extension ChallengeRankingVC : UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        challengeRankingMenuBar.positionBarView.frame.origin.x = scrollView.contentOffset.x / CGFloat(challengeRankingMenuBar.menuList.count)
+    }
+    
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        let menuIndex = Int(targetContentOffset.pointee.x / view.frame.width)
+        let indexPath = IndexPath(item: menuIndex, section: 0)
+        challengeRankingMenuBar.menuBarCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredHorizontally)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return challengeRankingMenuBar.menuList.count
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cellId: String
+        
+        switch indexPath.item {
+        case 0:
+            cellId = ChallengeContainerCVC.className
+        case 1:
+            cellId = RankingContainerCVC.className
+        default:
+            cellId = BaseCollectionViewCell.className
+        }
+        
+        
+        let cell = challengeRankingContainerCollectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! BaseCollectionViewCell
+        
+        return cell
     }
     
 }
