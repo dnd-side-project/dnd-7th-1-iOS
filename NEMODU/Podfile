@@ -17,4 +17,5 @@ target 'NEMODU' do
   pod 'SnapKit'
   pod 'Then'
   pod 'DynamicBottomSheet'
+  pod 'UITextView+Placeholder'
 end
