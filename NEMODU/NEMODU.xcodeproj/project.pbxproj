@@ -60,6 +60,9 @@
 		23F5716D28A6A61E005F2E21 /* MiniMapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5716C28A6A61D005F2E21 /* MiniMapVC.swift */; };
 		23F5716F28A6AD01005F2E21 /* RecodeStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5716E28A6AD01005F2E21 /* RecodeStackView.swift */; };
 		23F5717128A7CFD5005F2E21 /* FriendProfileBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5717028A7CFD5005F2E21 /* FriendProfileBottomSheet.swift */; };
+		23F5717528A92D4A005F2E21 /* ProfileRecodeStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5717428A92D4A005F2E21 /* ProfileRecodeStackView.swift */; };
+		23F5717728A92E38005F2E21 /* ProfileRecodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5717628A92E38005F2E21 /* ProfileRecodeView.swift */; };
+		23F5717928A94AA5005F2E21 /* UIString+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5717828A94AA5005F2E21 /* UIString+.swift */; };
 		37783E39C7DFB38581CA78A2 /* Pods_NEMODU.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7400965811C32403A72B2B0 /* Pods_NEMODU.framework */; };
 /* End PBXBuildFile section */
 
@@ -121,6 +124,9 @@
 		23F5716C28A6A61D005F2E21 /* MiniMapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniMapVC.swift; sourceTree = "<group>"; };
 		23F5716E28A6AD01005F2E21 /* RecodeStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecodeStackView.swift; sourceTree = "<group>"; };
 		23F5717028A7CFD5005F2E21 /* FriendProfileBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendProfileBottomSheet.swift; sourceTree = "<group>"; };
+		23F5717428A92D4A005F2E21 /* ProfileRecodeStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRecodeStackView.swift; sourceTree = "<group>"; };
+		23F5717628A92E38005F2E21 /* ProfileRecodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRecodeView.swift; sourceTree = "<group>"; };
+		23F5717828A94AA5005F2E21 /* UIString+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIString+.swift"; sourceTree = "<group>"; };
 		E7400965811C32403A72B2B0 /* Pods_NEMODU.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NEMODU.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -295,6 +301,7 @@
 		2348B3F62892D138001095BC /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				23F5717828A94AA5005F2E21 /* UIString+.swift */,
 				2348B3FE2892D184001095BC /* UILabel+.swift */,
 				2348B4002892D1A6001095BC /* UITextField+.swift */,
 				2348B4022892D1D9001095BC /* UITextView+.swift */,
@@ -328,6 +335,8 @@
 				23F5716C28A6A61D005F2E21 /* MiniMapVC.swift */,
 				23F5716E28A6AD01005F2E21 /* RecodeStackView.swift */,
 				23B7206F28A12DBB00D3A410 /* RecodeView.swift */,
+				23F5717428A92D4A005F2E21 /* ProfileRecodeStackView.swift */,
+				23F5717628A92E38005F2E21 /* ProfileRecodeView.swift */,
 			);
 			path = Share;
 			sourceTree = "<group>";
@@ -589,6 +598,7 @@
 				2348B3E72892D08D001095BC /* BaseViewModel.swift in Sources */,
 				2348B4092892D2E5001095BC /* UIViewController+.swift in Sources */,
 				2348B3DB2892CF29001095BC /* MapVM.swift in Sources */,
+				23F5717728A92E38005F2E21 /* ProfileRecodeView.swift in Sources */,
 				2348B4032892D1D9001095BC /* UITextView+.swift in Sources */,
 				2348B4072892D286001095BC /* UIView+.swift in Sources */,
 				2348B3EE2892D0ED001095BC /* APIService.swift in Sources */,
@@ -605,9 +615,11 @@
 				23B72058289808EB00D3A410 /* MapFilterBottomSheet.swift in Sources */,
 				2348B3FD2892D16C001095BC /* Loadable.swift in Sources */,
 				2348B4012892D1A6001095BC /* UITextField+.swift in Sources */,
+				23F5717528A92D4A005F2E21 /* ProfileRecodeStackView.swift in Sources */,
 				23B86D2128A26F0F00B1630E /* NavigationBar.swift in Sources */,
 				2348B3EC2892D0DF001095BC /* APIError.swift in Sources */,
 				23F5716D28A6A61E005F2E21 /* MiniMapVC.swift in Sources */,
+				23F5717928A94AA5005F2E21 /* UIString+.swift in Sources */,
 				2348B3F22892D116001095BC /* urlResource.swift in Sources */,
 				23B7206328A0DCAA00D3A410 /* ProceedingChallengeDataSource.swift in Sources */,
 				238C4DE528A4BFE2000BEE36 /* UIScrollView+.swift in Sources */,

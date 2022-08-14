@@ -20,22 +20,16 @@ class RecodeStackView: BaseView {
     
     var distanceView = RecodeView()
         .then {
-            $0.recodeValue.font = .title3SB
-            $0.recodeTitle.font = .caption1
             $0.recodeTitle.text = "거리"
         }
     
     var timeView = RecodeView()
         .then {
-            $0.recodeValue.font = .title3SB
-            $0.recodeTitle.font = .caption1
             $0.recodeTitle.text = "시간"
         }
     
     var stepCntView = RecodeView()
         .then {
-            $0.recodeValue.font = .title3SB
-            $0.recodeTitle.font = .caption1
             $0.recodeTitle.text = "걸음수"
         }
     
@@ -57,8 +51,11 @@ extension RecodeStackView {
     private func configureRecodeStackView() {
         addSubview(recodeStackView)
         [distanceView, timeView, stepCntView].forEach {
+            $0.recodeValue.font = .title3SB
+            $0.recodeTitle.font = .caption1
             recodeStackView.addArrangedSubview($0)
         }
+        
         recodeStackView.addVerticalSeparators(color: .gray300,
                                               width: 1,
                                               multiplier: 0.2)

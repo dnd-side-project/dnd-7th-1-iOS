@@ -33,6 +33,7 @@ class FriendProfileBottomSheet: DynamicBottomSheetViewController {
     private let profileImgBtn = UIButton()
         .then {
             $0.setImage(UIImage(named: "defaultThumbnail"), for: .normal)
+            $0.layer.cornerRadius = 48
         }
     
     private let nickname = UILabel()
@@ -71,9 +72,13 @@ class FriendProfileBottomSheet: DynamicBottomSheetViewController {
             $0.layer.cornerRadius = 17
         }
     
-    private let tmpView = UIView()
+    private let recodeStackView = ProfileRecodeStackView()
         .then {
-            $0.backgroundColor = .gray50
+            $0.firstView.recodeTitle.text = "이번주 영역"
+            $0.firstView.valueUnit.text = "칸"
+            $0.secondView.recodeTitle.text = "역대 누적 칸 수"
+            $0.thirdView.recodeTitle.text = "랭킹"
+            $0.thirdView.valueUnit.text = "위"
         }
     
     private let listTitle = UILabel()
@@ -100,12 +105,14 @@ class FriendProfileBottomSheet: DynamicBottomSheetViewController {
             $0.backgroundColor = .white
         }
     
+    private let bag = DisposeBag()
     var challengeCnt: Int?
     
     override func configureView() {
         super.configureView()
         configureBottomSheet()
         configureLayout()
+        bindBtn()
     }
 }
 
@@ -122,12 +129,18 @@ extension FriendProfileBottomSheet {
                                  lastAccessTime,
                                  profileMessage,
                                  addFriendBtn,
-                                 tmpView])
+                                 recodeStackView])
         challengeListView.addSubview(listTitle)
         
         
         challengeCnt == 0 || challengeCnt == nil
         ? configureNoneData() : configureChallengeListTV()
+        
+        // TODO: - 서버 연결 후 수정
+        recodeStackView.setRecodeData(value1: 9,
+                                      value2: 1030,
+                                      value3: 1)
+        recodeStackView.secondView.recodeValue.insertComma()
     }
     
     private func configureNoneData() {
@@ -204,7 +217,7 @@ extension FriendProfileBottomSheet {
             $0.height.equalTo(34)
         }
         
-        tmpView.snp.makeConstraints {
+        recodeStackView.snp.makeConstraints {
             $0.top.equalTo(addFriendBtn.snp.bottom).offset(16)
             $0.leading.equalToSuperview().offset(16)
             $0.bottom.trailing.equalToSuperview().offset(-16)
@@ -222,6 +235,20 @@ extension FriendProfileBottomSheet {
             $0.trailing.equalToSuperview().offset(-16)
             $0.height.equalTo(51)
         }
+    }
+}
+
+// MARK: - Input
+
+extension FriendProfileBottomSheet {
+    private func bindBtn() {
+        addFriendBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.addFriendBtn.isSelected.toggle()
+            })
+            .disposed(by: bag)
     }
 }
 

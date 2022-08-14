@@ -41,4 +41,10 @@ extension UILabel {
         numberOfLines = 0
         lineBreakMode = .byCharWrapping
     }
+    
+    /// 세자리수마다 콤마를 추가하는 함수
+    func insertComma() {
+        guard let number = text else { return }
+        text = number.insertComma
+    }
 }
