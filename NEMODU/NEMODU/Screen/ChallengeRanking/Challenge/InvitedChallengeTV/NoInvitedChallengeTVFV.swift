@@ -17,11 +17,9 @@ class NoInvitedChallengeTVFV : UITableViewHeaderFooterView {
     
     let invitedChallengeLabel = UILabel()
         .then {
-            $0.text = "초대받은 챌린지"
-            $0.textColor = .black
-            $0.font = .systemFont(ofSize: 19)
-            
-            $0.backgroundColor = .white
+            $0.text = "초대받은 챌린지가 없습니다."
+            $0.font = .caption2R
+            $0.textColor = .gray500
         }
     
     // MARK: - Variables and Properties
@@ -42,29 +40,16 @@ class NoInvitedChallengeTVFV : UITableViewHeaderFooterView {
     // MARK: - Function
     
     func configureFV() {
-        
+        contentView.backgroundColor = .white
     }
     
     func layoutView() {
         contentView.addSubview(invitedChallengeLabel)
-        invitedChallengeLabel.addSubview(invitedChallengeBorderLineView)
-        
         
         invitedChallengeLabel.snp.makeConstraints {
-            $0.height.equalTo(52)
-            
-            $0.top.equalTo(contentView.snp.top)
-            $0.left.equalTo(contentView.snp.left)
-            $0.right.equalTo(contentView.snp.right)
+            $0.centerX.equalToSuperview()
+            $0.centerY.equalToSuperview()
         }
-        invitedChallengeBorderLineView.snp.makeConstraints {
-            $0.height.equalTo(1)
-            
-            $0.left.equalTo(invitedChallengeLabel.snp.left)
-            $0.right.equalTo(invitedChallengeLabel.snp.right)
-            $0.bottom.equalTo(invitedChallengeLabel.snp.bottom)
-        }
-        
     }
     
 }

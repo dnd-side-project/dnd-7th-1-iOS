@@ -23,21 +23,20 @@ class InvitedChallengeTV : UITableView {
     override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: .grouped)
         
+        // Connecting & Register
         delegate = self
         dataSource = self
         
-        register(SearchHistoryTVHeaderView.self, forHeaderFooterViewReuseIdentifier: Identify.SearchHistoryTVHeaderView)
-        register(SearchHistoryTVCell.self, forCellReuseIdentifier: Identify.SearchHistoryTVCell)
-        tableFooterView = nil
+        register(InvitedChallengeTVHV.self, forHeaderFooterViewReuseIdentifier: InvitedChallengeTVHV.className)
+        register(InvitedChallengeTVC.self, forCellReuseIdentifier: InvitedChallengeTVC.className)
+        register(NoInvitedChallengeTVFV.self, forHeaderFooterViewReuseIdentifier: NoInvitedChallengeTVFV.className)
         
+        // Set TableView Style
+        separatorStyle = .none
         backgroundColor = .white
-        separatorColor = .clear
         
-        separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        
-        keyboardDismissMode = .onDrag
-        
-        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapTableView(sender:))))
+        // footerView 하단 여백이 생기는 것을 방지(tableView 내의 scrollView의 inset 값 때문인 것으로 추정)
+        contentInset = UIEdgeInsets(top: 0, left: 0, bottom: -20, right: 0)
     }
     
     required init?(coder: NSCoder) {
@@ -53,78 +52,61 @@ extension InvitedChallengeTV : UITableViewDelegate, UITableViewDataSource {
     
     // HeaderView
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: Identify.SearchHistoryTVHeaderView) as? SearchHistoryTVHeaderView
-        headerView?.searchHistoryTV = self
+        let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: InvitedChallengeTVHV.className) as? InvitedChallengeTVHV
         
         return headerView
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 30
+        return 56
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        return 30
+        return 56
     }
     
     // Cell
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let postItems = searchVC?.searchHistoryList.count ?? 0
-        
-        if postItems == 0 {
-            setEmptyView(title: "", message: "검색 기록이 없습니다")
-            self.isScrollEnabled = false
-        } else {
-            restore()
-            self.isScrollEnabled = true
-        }
-        
-        return postItems
+        return 10
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Identify.SearchHistoryTVCell, for: indexPath) as! SearchHistoryTVCell
-        cell.selectionStyle = .none
-        cell.searchHistoryTV = self
+        let cell = tableView.dequeueReusableCell(withIdentifier: InvitedChallengeTVC.className, for: indexPath) as! InvitedChallengeTVC
         
-        cell.indexPath = indexPath.row
-        cell.keywordHistoryLabel.text = searchVC?.searchHistoryList[indexPath.row]
+        if indexPath.row / 2 == 0 {
+            cell.notYetCheckDetailCircleView.snp.updateConstraints {
+                $0.height.equalTo(0)
+            }
+        }
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 46
+        return 116
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 46
+        return 116
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedKeyword = searchVC?.searchHistoryList[indexPath.row] ?? ""
-        
-        let searchResultVC = SearchResultVC()
-        searchResultVC.afterSetKeyword(keyword: selectedKeyword)
-        searchVC?.saveSearchKeyword(toSaveKeyword: selectedKeyword)
-        
-        searchVC?.navigationController?.pushViewController(searchResultVC, animated: true)
+        print("invited TV row selected ", indexPath.row)
     }
     
     // FooterView
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let fakeView = UIView()
-        fakeView.backgroundColor = .clear
+        let footerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: NoInvitedChallengeTVFV.className) as? NoInvitedChallengeTVFV
         
-        return fakeView
+        return footerView
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return .leastNormalMagnitude
+        return 93
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
-        return .leastNormalMagnitude
+        return 93
     }
     
 }
