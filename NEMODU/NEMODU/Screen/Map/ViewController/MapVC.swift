@@ -325,4 +325,9 @@ extension MapVC: MKMapViewDelegate {
             return MKOverlayRenderer()
         }
     }
+    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        let friendBottomSheet = FriendProfileBottomSheet()
+        self.present(friendBottomSheet, animated: true)
+    }
 }

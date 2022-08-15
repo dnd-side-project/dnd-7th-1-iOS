@@ -150,8 +150,7 @@ extension MainVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                let filterBottomSheet = FriendProfileBottomSheet()
-//                let filterBottomSheet = MapFilterBottomSheet()
+                let filterBottomSheet = MapFilterBottomSheet()
                 self.present(filterBottomSheet, animated: true)
             })
             .disposed(by: bag)
