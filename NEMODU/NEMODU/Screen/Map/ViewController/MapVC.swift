@@ -110,12 +110,12 @@ extension MapVC {
     }
     
     private func registerMapAnnotationViews() {
-        mapView.register(CustomAnnotationView.self,
-                         forAnnotationViewWithReuseIdentifier: NSStringFromClass(CustomAnnotation.self))
+        mapView.register(FriendAnnotationView.self,
+                         forAnnotationViewWithReuseIdentifier: NSStringFromClass(FriendAnnotation.self))
     }
     
-    private func setupCustomAnnotationView(for annotation: CustomAnnotation, on mapView: MKMapView) -> MKAnnotationView {
-        return mapView.dequeueReusableAnnotationView(withIdentifier: NSStringFromClass(CustomAnnotation.self), for: annotation)
+    private func setupCustomAnnotationView(for annotation: FriendAnnotation, on mapView: MKMapView) -> MKAnnotationView {
+        return mapView.dequeueReusableAnnotationView(withIdentifier: NSStringFromClass(FriendAnnotation.self), for: annotation)
     }
 }
 
@@ -262,7 +262,7 @@ extension MapVC: CLLocationManagerDelegate {
     
     /// 친구 핀을 설치하는 함수
     func addFriendAnnotation(coordinate: [Double], nickname: String, profileImage: String, color: UIColor) {
-        let annotation = CustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate[0],
+        let annotation = FriendAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate[0],
                                                                              longitude: coordinate[1]))
         annotation.title = nickname
         annotation.imageName = profileImage
@@ -336,7 +336,7 @@ extension MapVC: MKMapViewDelegate {
         
         var annotationView: MKAnnotationView?
         
-        if let annotation = annotation as? CustomAnnotation {
+        if let annotation = annotation as? FriendAnnotation {
             annotationView = setupCustomAnnotationView(for: annotation, on: mapView)
         }
         

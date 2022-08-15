@@ -63,8 +63,8 @@
 		23F5717528A92D4A005F2E21 /* ProfileRecodeStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5717428A92D4A005F2E21 /* ProfileRecodeStackView.swift */; };
 		23F5717728A92E38005F2E21 /* ProfileRecodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5717628A92E38005F2E21 /* ProfileRecodeView.swift */; };
 		23F5717928A94AA5005F2E21 /* UIString+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5717828A94AA5005F2E21 /* UIString+.swift */; };
-		23F5717C28AA19E2005F2E21 /* CustomAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5717B28AA19E2005F2E21 /* CustomAnnotation.swift */; };
-		23F5717E28AA1A11005F2E21 /* CustomAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5717D28AA1A11005F2E21 /* CustomAnnotationView.swift */; };
+		23F5717C28AA19E2005F2E21 /* FriendAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5717B28AA19E2005F2E21 /* FriendAnnotation.swift */; };
+		23F5717E28AA1A11005F2E21 /* FriendAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5717D28AA1A11005F2E21 /* FriendAnnotationView.swift */; };
 		23F5718228AA6038005F2E21 /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5718128AA6038005F2E21 /* UIImage+.swift */; };
 		37783E39C7DFB38581CA78A2 /* Pods_NEMODU.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7400965811C32403A72B2B0 /* Pods_NEMODU.framework */; };
 /* End PBXBuildFile section */
@@ -130,8 +130,8 @@
 		23F5717428A92D4A005F2E21 /* ProfileRecodeStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRecodeStackView.swift; sourceTree = "<group>"; };
 		23F5717628A92E38005F2E21 /* ProfileRecodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRecodeView.swift; sourceTree = "<group>"; };
 		23F5717828A94AA5005F2E21 /* UIString+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIString+.swift"; sourceTree = "<group>"; };
-		23F5717B28AA19E2005F2E21 /* CustomAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotation.swift; sourceTree = "<group>"; };
-		23F5717D28AA1A11005F2E21 /* CustomAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotationView.swift; sourceTree = "<group>"; };
+		23F5717B28AA19E2005F2E21 /* FriendAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendAnnotation.swift; sourceTree = "<group>"; };
+		23F5717D28AA1A11005F2E21 /* FriendAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendAnnotationView.swift; sourceTree = "<group>"; };
 		23F5718128AA6038005F2E21 /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		E7400965811C32403A72B2B0 /* Pods_NEMODU.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NEMODU.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -459,8 +459,8 @@
 		23F5717A28AA19C8005F2E21 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				23F5717B28AA19E2005F2E21 /* CustomAnnotation.swift */,
-				23F5717D28AA1A11005F2E21 /* CustomAnnotationView.swift */,
+				23F5717B28AA19E2005F2E21 /* FriendAnnotation.swift */,
+				23F5717D28AA1A11005F2E21 /* FriendAnnotationView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -621,9 +621,9 @@
 				2348B4072892D286001095BC /* UIView+.swift in Sources */,
 				2348B3EE2892D0ED001095BC /* APIService.swift in Sources */,
 				238C4DE328A3F0D6000BEE36 /* NemoduTextView.swift in Sources */,
-				23F5717E28AA1A11005F2E21 /* CustomAnnotationView.swift in Sources */,
+				23F5717E28AA1A11005F2E21 /* FriendAnnotationView.swift in Sources */,
 				23B7208628A23A2100D3A410 /* UIFont+.swift in Sources */,
-				23F5717C28AA19E2005F2E21 /* CustomAnnotation.swift in Sources */,
+				23F5717C28AA19E2005F2E21 /* FriendAnnotation.swift in Sources */,
 				2348B3E12892D046001095BC /* BaseView.swift in Sources */,
 				23F5716F28A6AD01005F2E21 /* RecodeStackView.swift in Sources */,
 				2348B3FB2892D15C001095BC /* Output.swift in Sources */,

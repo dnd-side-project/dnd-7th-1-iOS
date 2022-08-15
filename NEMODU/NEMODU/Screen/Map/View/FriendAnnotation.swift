@@ -1,5 +1,5 @@
 //
-//  CustomAnnotation.swift
+//  FriendAnnotation.swift
 //  NEMODU
 //
 //  Created by 황윤경 on 2022/08/15.
@@ -8,7 +8,7 @@
 import UIKit
 import MapKit
 
-class CustomAnnotation: NSObject, MKAnnotation {
+class FriendAnnotation: NSObject, MKAnnotation {
     
     @objc dynamic var coordinate: CLLocationCoordinate2D
     

@@ -1,5 +1,5 @@
 //
-//  CustomAnnotationView.swift
+//  FriendAnnotationView.swift
 //  NEMODU
 //
 //  Created by 황윤경 on 2022/08/15.
@@ -10,7 +10,7 @@ import Then
 import SnapKit
 import MapKit
 
-class CustomAnnotationView: MKAnnotationView {
+class FriendAnnotationView: MKAnnotationView {
     private lazy var stackView = UIStackView()
         .then {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -85,7 +85,7 @@ class CustomAnnotationView: MKAnnotationView {
 
 // MARK: Configure
 
-extension CustomAnnotationView {
+extension FriendAnnotationView {
     private func addViews() {
         addSubview(stackView)
         [title, pinImageView].forEach {
@@ -95,7 +95,7 @@ extension CustomAnnotationView {
     }
     
     private func configureContent() {
-        if let annotation = annotation as? CustomAnnotation {
+        if let annotation = annotation as? FriendAnnotation {
             title.text = annotation.title
             color = annotation.color
             
@@ -109,7 +109,7 @@ extension CustomAnnotationView {
 
 // MARK: - Layout
 
-extension CustomAnnotationView {
+extension FriendAnnotationView {
     private func configureLayout() {
         stackView.snp.makeConstraints {
             $0.edges.equalToSuperview()
