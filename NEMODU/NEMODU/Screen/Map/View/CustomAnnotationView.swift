@@ -23,6 +23,7 @@ class CustomAnnotationView: MKAnnotationView {
                                                               size: CGSize(width: 46, height: 62)))
         .then {
             $0.image = UIImage(named: "friend_none")
+            $0.addShadow()
         }
     
     private lazy var title = UILabel()

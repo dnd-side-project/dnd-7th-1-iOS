@@ -53,4 +53,12 @@ extension UIView {
         let screenHeight = UIScreen.main.bounds.height
         return originalHeight * (screenHeight / 812)
     }
+    
+    /// view에 shadow를 추가하는 함수
+    func addShadow(opacity: Float = 0.15) {
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowOpacity = opacity
+        layer.shadowOffset = .zero
+        layer.shadowRadius = 3
+    }
 }
