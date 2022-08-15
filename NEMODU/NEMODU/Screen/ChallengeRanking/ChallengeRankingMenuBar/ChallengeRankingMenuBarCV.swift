@@ -41,9 +41,8 @@ class ChallengeRankingMenuBarCV : MenuBarCV {
         borderLine.snp.makeConstraints {
             $0.height.equalTo(positionBarHeight)
             
-            $0.left.equalTo(self.snp.left)
-            $0.right.equalTo(self.snp.right)
-            $0.bottom.equalTo(self.snp.bottom)
+            $0.horizontalEdges.equalToSuperview()
+            $0.bottom.equalToSuperview()
         }
     }
     

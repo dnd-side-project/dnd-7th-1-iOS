@@ -42,8 +42,7 @@ class ChallengeContainerCVC : BaseCollectionViewCell {
         
         invitedChallengeTableView.snp.makeConstraints {
             $0.top.equalTo(contentView.snp.top)
-            $0.left.equalTo(contentView.snp.left)
-            $0.right.equalTo(contentView.snp.right)
+            $0.horizontalEdges.equalTo(contentView)
             $0.bottom.equalTo(contentView.snp.bottom)
         }
     }
