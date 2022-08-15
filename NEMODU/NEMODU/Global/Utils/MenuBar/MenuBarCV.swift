@@ -11,8 +11,6 @@ import RxSwift
 import Then
 import SnapKit
 
-let menuBarCVCIdentifier = "MenuBarCVC"
-
 class MenuBarCV: BaseView {
     
     // MARK: - UI components
@@ -65,8 +63,8 @@ class MenuBarCV: BaseView {
             let width = menuBarCollectionView.frame.size.width / CGFloat(menuList.count)
             $0.width.equalTo(width)
             
-            $0.left.equalTo(self.snp.left)
-            $0.bottom.equalTo(self.snp.bottom)
+            $0.left.equalToSuperview()
+            $0.bottom.equalToSuperview()
         }
         
     }
@@ -77,7 +75,7 @@ class MenuBarCV: BaseView {
         super.configureView()
         
         // menuBarCollectionView
-        menuBarCollectionView.register(MenuBarCVC.self, forCellWithReuseIdentifier: menuBarCVCIdentifier)
+        menuBarCollectionView.register(MenuBarCVC.self, forCellWithReuseIdentifier: MenuBarCVC.className)
         
         menuBarCollectionView.delegate = self
         menuBarCollectionView.dataSource = self
@@ -86,13 +84,9 @@ class MenuBarCV: BaseView {
     override func layoutView() {
         super.layoutView()
         
-        // menuBarCollectionView
         addSubview(menuBarCollectionView)
         menuBarCollectionView.snp.makeConstraints {
-            $0.top.equalTo(self.snp.top)
-            $0.left.equalTo(self.snp.left)
-            $0.right.equalTo(self.snp.right)
-            $0.bottom.equalTo(self.snp.bottom)
+            $0.edges.equalToSuperview()
         }
     }
         
@@ -120,7 +114,7 @@ extension MenuBarCV : UICollectionViewDataSource {
         }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = menuBarCollectionView.dequeueReusableCell(withReuseIdentifier: "MenuBarCVC", for: indexPath) as! MenuBarCVC
+        let cell = menuBarCollectionView.dequeueReusableCell(withReuseIdentifier: MenuBarCVC.className, for: indexPath) as! MenuBarCVC
 
         cell.menuTitle.text = menuList[indexPath.item]
 

@@ -37,8 +37,7 @@ class MenuBarCVC: UICollectionViewCell {
         contentView.addSubview(menuTitle)
         
         menuTitle.snp.makeConstraints {
-            $0.centerX.equalTo(contentView)
-            $0.centerY.equalTo(contentView)
+            $0.center.equalTo(contentView)
         }
     }
     
