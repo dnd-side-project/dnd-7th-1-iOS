@@ -441,7 +441,6 @@
 			children = (
 				3CB9DBA028A94648007BC1BE /* ChallengeRankingMenuBar */,
 				3C08137728A91C00009F854B /* ChallengeRankingVC.swift */,
-				3C08137828A91C00009F854B /* ChallengeContainerCVC.swift */,
 				3C08136B28A91C00009F854B /* Challenge */,
 				3CB9DBA428A954EE007BC1BE /* Ranking */,
 			);
@@ -452,6 +451,7 @@
 		3C08136B28A91C00009F854B /* Challenge */ = {
 			isa = PBXGroup;
 			children = (
+				3C08137828A91C00009F854B /* ChallengeContainerCVC.swift */,
 				3C08136E28A91C00009F854B /* InvitedChallengeTV */,
 				3C08136C28A91C00009F854B /* ViewModel */,
 				3C08137328A91C00009F854B /* Model */,
