@@ -15,7 +15,7 @@ class NEMODUTBC: UITabBarController {
         super.viewDidLoad()
         
         setTabBar()
-        setStartTabIndex(index: 0)
+        setStartTabIndex(index: 1)
     }
     
 }
@@ -47,6 +47,7 @@ extension NEMODUTBC {
         self.setViewControllers(tabs, animated: false)
     }
     
+    /// tabBar의 선택된 탭을 지정하는 함수
     func setStartTabIndex(index: Int) {
         self.selectedIndex = index
     }
