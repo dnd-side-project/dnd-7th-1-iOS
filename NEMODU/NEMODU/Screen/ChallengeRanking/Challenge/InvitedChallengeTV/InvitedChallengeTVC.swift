@@ -22,19 +22,18 @@ class InvitedChallengeTVC : BaseTableViewCell {
             $0.layer.masksToBounds = true
         }
     
-    let timeStatusButton = UIButton()
+    let timeStatusLabel = UILabel()
         .then {
-            $0.setTitle("주간", for: .normal)
-            $0.titleLabel?.font = .caption1
-            $0.setTitleColor(.main, for: .normal)
+            $0.text = "주간"
+            $0.font = .caption1
+            $0.textColor = .main
             $0.backgroundColor = .clear
+            $0.textAlignment = .center
             
             $0.layer.cornerRadius = 11
             $0.layer.masksToBounds = true
             $0.layer.borderWidth = 1
             $0.layer.borderColor = UIColor.main.cgColor
-            
-            $0.isUserInteractionEnabled = false
         }
     
     let challengeNameLabel = UILabel()
@@ -45,7 +44,7 @@ class InvitedChallengeTVC : BaseTableViewCell {
         }
     let timeAgoLabel = UILabel()
         .then {
-            $0.text = "3분 전"
+            $0.text = "- 분 전"
             $0.font = .caption2R
             $0.textColor = .gray500
         }
@@ -70,7 +69,7 @@ class InvitedChallengeTVC : BaseTableViewCell {
         }
     let invitedMessage = UILabel()
         .then {
-            $0.text = "초대 메세지: 같이 ㄱㄱ"
+            $0.text = "초대 메세지: -"
             $0.font = .caption1
             $0.textColor = .gray500
         }
@@ -110,31 +109,21 @@ class InvitedChallengeTVC : BaseTableViewCell {
         super.layoutView()
         
         contentView.addSubview(contentsView)
-        
-        contentsView.addSubview(timeStatusButton)
-        contentsView.addSubview(challengeNameLabel)
-        contentsView.addSubview(timeAgoLabel)
-        contentsView.addSubview(notYetCheckDetailCircleView)
-        
-        contentsView.addSubview(userProfileImageView)
-        contentsView.addSubview(userNicknameLabel)
-        contentsView.addSubview(invitedMessage)
-        contentsView.addSubview(seeDetailButton)
+        contentsView.addSubviews([timeStatusLabel, challengeNameLabel, timeAgoLabel, notYetCheckDetailCircleView])
+        contentsView.addSubviews([userProfileImageView, userNicknameLabel, invitedMessage, seeDetailButton])
         
         
         contentsView.snp.makeConstraints {
             let paddingTB = 12
-            let paddingLR = 16
             
             $0.top.equalTo(contentView.snp.top).offset(paddingTB)
-            $0.left.equalTo(contentView.snp.left).offset(paddingLR)
-            $0.right.equalTo(contentView.snp.right).inset(paddingLR)
+            $0.horizontalEdges.equalTo(contentView).inset(16)
             $0.bottom.equalTo(contentView.snp.bottom).inset(paddingTB / 2)
         }
         
-        timeStatusButton.snp.makeConstraints {
+        timeStatusLabel.snp.makeConstraints {
             $0.width.equalTo(48)
-            $0.height.equalTo(timeStatusButton.layer.cornerRadius * 2)
+            $0.height.equalTo(timeStatusLabel.layer.cornerRadius * 2)
             
             $0.top.equalTo(contentsView.snp.top).offset(16)
             $0.left.equalTo(contentsView.snp.left).offset(12)
@@ -142,14 +131,14 @@ class InvitedChallengeTVC : BaseTableViewCell {
         challengeNameLabel.snp.makeConstraints {
             $0.height.equalTo(18)
             
-            $0.centerY.equalTo(timeStatusButton)
-            $0.left.equalTo(timeStatusButton.snp.right).offset(8)
+            $0.centerY.equalTo(timeStatusLabel)
+            $0.left.equalTo(timeStatusLabel.snp.right).offset(8)
             $0.right.equalTo(timeAgoLabel.snp.left).inset(-8)
         }
         timeAgoLabel.snp.makeConstraints {
             $0.height.equalTo(13)
 
-            $0.centerY.equalTo(timeStatusButton)
+            $0.centerY.equalTo(timeStatusLabel)
             $0.right.equalTo(notYetCheckDetailCircleView.snp.left).inset(-4)
         }
         notYetCheckDetailCircleView.snp.makeConstraints {
@@ -164,8 +153,8 @@ class InvitedChallengeTVC : BaseTableViewCell {
             $0.height.equalTo(userProfileImageView.layer.cornerRadius * 2)
             $0.width.equalTo(userProfileImageView.snp.height)
             
-            $0.top.equalTo(timeStatusButton.snp.bottom).offset(4)
-            $0.left.equalTo(timeStatusButton.snp.left)
+            $0.top.equalTo(timeStatusLabel.snp.bottom).offset(4)
+            $0.left.equalTo(timeStatusLabel.snp.left)
         }
         userNicknameLabel.snp.makeConstraints {
             $0.top.equalTo(userProfileImageView.snp.top).offset(3)
