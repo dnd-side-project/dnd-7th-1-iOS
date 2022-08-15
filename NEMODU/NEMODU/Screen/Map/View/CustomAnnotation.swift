@@ -14,6 +14,8 @@ class CustomAnnotation: NSObject, MKAnnotation {
     
     var title: String?
     
+    var color: UIColor?
+    
     var imageName: String?
     
     init(coordinate: CLLocationCoordinate2D) {

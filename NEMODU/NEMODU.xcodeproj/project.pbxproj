@@ -65,6 +65,7 @@
 		23F5717928A94AA5005F2E21 /* UIString+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5717828A94AA5005F2E21 /* UIString+.swift */; };
 		23F5717C28AA19E2005F2E21 /* CustomAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5717B28AA19E2005F2E21 /* CustomAnnotation.swift */; };
 		23F5717E28AA1A11005F2E21 /* CustomAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5717D28AA1A11005F2E21 /* CustomAnnotationView.swift */; };
+		23F5718228AA6038005F2E21 /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5718128AA6038005F2E21 /* UIImage+.swift */; };
 		37783E39C7DFB38581CA78A2 /* Pods_NEMODU.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7400965811C32403A72B2B0 /* Pods_NEMODU.framework */; };
 /* End PBXBuildFile section */
 
@@ -131,6 +132,7 @@
 		23F5717828A94AA5005F2E21 /* UIString+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIString+.swift"; sourceTree = "<group>"; };
 		23F5717B28AA19E2005F2E21 /* CustomAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotation.swift; sourceTree = "<group>"; };
 		23F5717D28AA1A11005F2E21 /* CustomAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotationView.swift; sourceTree = "<group>"; };
+		23F5718128AA6038005F2E21 /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		E7400965811C32403A72B2B0 /* Pods_NEMODU.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NEMODU.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -317,6 +319,7 @@
 				23B7208528A23A2100D3A410 /* UIFont+.swift */,
 				238C4DE428A4BFE2000BEE36 /* UIScrollView+.swift */,
 				23F5716828A6802C005F2E21 /* UIStackView+.swift */,
+				23F5718128AA6038005F2E21 /* UIImage+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -594,6 +597,7 @@
 				2348B4192892DEED001095BC /* ChallengeVC.swift in Sources */,
 				2348B3F92892D151001095BC /* Input.swift in Sources */,
 				23B7207028A12DBB00D3A410 /* RecodeView.swift in Sources */,
+				23F5718228AA6038005F2E21 /* UIImage+.swift in Sources */,
 				2348B4252892E007001095BC /* NEMODUTBC.swift in Sources */,
 				23B7206D28A12BE800D3A410 /* WalkingVC.swift in Sources */,
 				2348B3E92892D0BF001095BC /* BaseNavigationController.swift in Sources */,

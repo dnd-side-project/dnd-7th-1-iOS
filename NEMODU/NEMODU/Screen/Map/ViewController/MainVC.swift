@@ -11,7 +11,6 @@ import RxGesture
 import RxSwift
 import SnapKit
 import Then
-import MapKit
 
 class MainVC: BaseViewController {
     private let mapVC = MapVC()
@@ -66,7 +65,8 @@ class MainVC: BaseViewController {
         // TODO: - 서버 연결 후 수정
         mapVC.addFriendAnnotation(coordinate: [37.329314, -122.019744],
                                   nickname: "가나다라마바사",
-                                  profileImage: "defaultThumbnail")
+                                  profileImage: "defaultThumbnail",
+                                  color: .main)
     }
     
     override func layoutView() {

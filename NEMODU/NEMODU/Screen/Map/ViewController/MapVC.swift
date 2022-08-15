@@ -261,11 +261,12 @@ extension MapVC: CLLocationManagerDelegate {
     }
     
     /// 친구 핀을 설치하는 함수
-    func addFriendAnnotation(coordinate: [Double], nickname: String, profileImage: String) {
+    func addFriendAnnotation(coordinate: [Double], nickname: String, profileImage: String, color: UIColor) {
         let annotation = CustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate[0],
                                                                              longitude: coordinate[1]))
         annotation.title = nickname
         annotation.imageName = profileImage
+        annotation.color = color
         mapView.addAnnotation(annotation)
     }
     
@@ -343,6 +344,8 @@ extension MapVC: MKMapViewDelegate {
     }
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        view.setSelected(true, animated: true)
+        
         let friendBottomSheet = FriendProfileBottomSheet()
         self.present(friendBottomSheet, animated: true)
     }

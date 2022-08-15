@@ -43,9 +43,11 @@ class CustomAnnotationView: MKAnnotationView {
     
     private lazy var challengeCntImageView = UIImageView()
     
+    var color: UIColor!
+    
     override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
-        configureAnnotation()
+        addViews()
         configureLayout()
     }
     
@@ -69,6 +71,12 @@ class CustomAnnotationView: MKAnnotationView {
         configureFrame()
     }
     
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        pinImageView.image = selected
+        ? pinImageView.image?.drawOutlie(color: color)
+        : UIImage(named: "friend_none")
+    }
+    
     override var intrinsicContentSize: CGSize {
         let size = stackView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
         return size
@@ -78,7 +86,7 @@ class CustomAnnotationView: MKAnnotationView {
 // MARK: Configure
 
 extension CustomAnnotationView {
-    private func configureAnnotation() {
+    private func addViews() {
         addSubview(stackView)
         [title, pinImageView].forEach {
             stackView.addArrangedSubview($0)
@@ -89,6 +97,7 @@ extension CustomAnnotationView {
     private func configureContent() {
         if let annotation = annotation as? CustomAnnotation {
             title.text = annotation.title
+            color = annotation.color
             
             if let imageName = annotation.imageName,
                let image = UIImage(named: imageName) {
