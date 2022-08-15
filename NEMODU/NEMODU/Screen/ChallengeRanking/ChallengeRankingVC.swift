@@ -59,7 +59,6 @@ class ChallengeRankingVC: BaseViewController {
             $0.register(ChallengeContainerCVC.self, forCellWithReuseIdentifier: ChallengeContainerCVC.className)
             $0.register(RankingContainerCVC.self, forCellWithReuseIdentifier: RankingContainerCVC.className)
         }
-        
     }
     
     override func layoutView() {
@@ -69,22 +68,25 @@ class ChallengeRankingVC: BaseViewController {
         view.addSubview(challengeRankingContainerCollectionView)
         
         challengeRankingMenuBar.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            $0.left.equalTo(view.snp.left)
-            $0.right.equalTo(view.snp.right)
             $0.height.equalTo(59)
+            
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            $0.horizontalEdges.equalTo(view)
         }
         challengeRankingContainerCollectionView.snp.makeConstraints {
             $0.top.equalTo(challengeRankingMenuBar.snp.bottom)
-            $0.left.equalTo(view.snp.left)
-            $0.right.equalTo(view.snp.right)
+            $0.horizontalEdges.equalTo(view)
             $0.bottom.equalTo(view.snp.bottom)
         }
     }
     
 }
 
-// MARK: - Challenge/Ranking CollectionView Container FlowLayout/Delegate/DataSource
+// MARK: - Challenge/Ranking CollectionView Delegate
+
+extension ChallengeRankingVC : UICollectionViewDelegate { }
+
+// MARK: - Challenge/Ranking CollectionView FlowLayout
 
 extension ChallengeRankingVC : UICollectionViewDelegateFlowLayout {
     
@@ -94,7 +96,9 @@ extension ChallengeRankingVC : UICollectionViewDelegateFlowLayout {
 
 }
 
-extension ChallengeRankingVC : UICollectionViewDelegate, UICollectionViewDataSource {
+// MARK: - Challenge/Ranking CollectionView DataSource
+
+extension ChallengeRankingVC : UICollectionViewDataSource {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         challengeRankingMenuBar.positionBarView.frame.origin.x = scrollView.contentOffset.x / CGFloat(challengeRankingMenuBar.menuList.count)
