@@ -60,15 +60,12 @@ class InvitedChallengeTVHV : UITableViewHeaderFooterView {
         invitedChallengeLabel.snp.makeConstraints {
             $0.centerY.equalTo(contentView)
             
-            let paddingLR = 16
-            $0.left.equalTo(contentView.snp.left).offset(paddingLR)
-            $0.right.equalTo(contentView.snp.right).inset(paddingLR)
+            $0.horizontalEdges.equalTo(contentView).inset(16)
         }
         invitedChallengeBorderLineView.snp.makeConstraints {
             $0.height.equalTo(1)
             
-            $0.left.equalTo(contentView.snp.left)
-            $0.right.equalTo(contentView.snp.right)
+            $0.horizontalEdges.equalTo(contentView)
             $0.bottom.equalTo(contentView.snp.bottom)
         }
     }
