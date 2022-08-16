@@ -61,6 +61,16 @@ class MainVC: BaseViewController {
         configureNaviBar()
         // TODO: - 서버 연결 후 이동
         configureBlocksCnt(72)
+        
+        // TODO: - 서버 연결 후 수정
+        mapVC.addFriendAnnotation(coordinate: [37.329314, -122.019744],
+                                  profileImage: UIImage(named: "defaultThumbnail")!,
+                                  nickname: "가나다라마바사",
+                                  color: .pink100,
+                                  challengeCnt: 3)
+        
+        mapVC.addMyAnnotation(coordinate: [37.329314, -122.017744],
+                              profileImage: UIImage(named: "defaultThumbnail")!)
     }
     
     override func layoutView() {

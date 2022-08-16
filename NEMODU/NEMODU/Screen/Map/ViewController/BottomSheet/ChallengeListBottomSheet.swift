@@ -49,7 +49,8 @@ class ChallengeListBottomSheet: DynamicBottomSheetViewController {
         .then {
             $0.isScrollEnabled = false
             $0.separatorStyle = .singleLine
-            $0.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+            $0.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+            $0.backgroundColor = .white
         }
     
     var challengeCnt: Int?
@@ -63,7 +64,7 @@ class ChallengeListBottomSheet: DynamicBottomSheetViewController {
 // MARK: - Layout
 
 extension ChallengeListBottomSheet {
-    func configureBottomSheet() {
+    private func configureBottomSheet() {
         contentView.addSubviews([viewBar,
                                  sheetTitle])
         
@@ -88,7 +89,7 @@ extension ChallengeListBottomSheet {
         ? configureNoneData() : configureChallengeListTV()
     }
     
-    func configureChallengeListTV() {
+    private func configureChallengeListTV() {
         contentView.addSubview(proceedingChallengeTV)
         
         proceedingChallengeTV.register(ProceedingChallengeTVC.self,
@@ -98,13 +99,12 @@ extension ChallengeListBottomSheet {
         
         proceedingChallengeTV.snp.makeConstraints {
             $0.top.equalTo(sheetTitle.snp.bottom).offset(12)
-            $0.leading.equalToSuperview().offset(16)
-            $0.trailing.equalToSuperview().offset(-16)
+            $0.leading.trailing.equalToSuperview()
             $0.bottom.equalToSuperview()
         }
     }
     
-    func configureNoneData() {
+    private func configureNoneData() {
         contentView.addSubviews([noneMessage,
                                  makeChallengeBtn])
         
@@ -157,7 +157,7 @@ extension ChallengeListBottomSheet: UITableViewDataSource {
 
 extension ChallengeListBottomSheet: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        61.0
+        69.0
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

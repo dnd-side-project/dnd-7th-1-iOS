@@ -22,6 +22,13 @@ extension UIView {
         layer.mask = mask
     }
     
+    /// UIView 상단에만 round를 주는 함수
+    func roundCorners(radius: CGFloat) {
+        layer.cornerRadius = radius
+        layer.maskedCorners = [.layerMaxXMinYCorner,
+                               .layerMinXMinYCorner]
+    }
+    
     /// view를 담당하는 viewController를 찾는 함수
     func findViewController() -> UIViewController? {
         if let nextResponder = self.next as? UIViewController {
@@ -45,5 +52,13 @@ extension UIView {
     func calculateHeightbyScreenHeight(originalHeight: CGFloat) -> CGFloat {
         let screenHeight = UIScreen.main.bounds.height
         return originalHeight * (screenHeight / 812)
+    }
+    
+    /// view에 shadow를 추가하는 함수
+    func addShadow(opacity: Float = 0.15) {
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowOpacity = opacity
+        layer.shadowOffset = .zero
+        layer.shadowRadius = 3
     }
 }

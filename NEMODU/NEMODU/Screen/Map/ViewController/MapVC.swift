@@ -68,6 +68,7 @@ class MapVC: BaseViewController {
     override func configureView() {
         super.configureView()
         configureMap()
+        registerMapAnnotationViews()
     }
     
     override func layoutView() {
@@ -106,6 +107,21 @@ extension MapVC {
         
         // 버튼
         view.addSubview(currentLocationBtn)
+    }
+    
+    private func registerMapAnnotationViews() {
+        mapView.register(FriendAnnotationView.self,
+                         forAnnotationViewWithReuseIdentifier: NSStringFromClass(FriendAnnotation.self))
+        mapView.register(MyAnnotationView.self,
+                         forAnnotationViewWithReuseIdentifier: NSStringFromClass(MyAnnotation.self))
+    }
+    
+    private func setupFriendAnnotationView(for annotation: FriendAnnotation, on mapView: MKMapView) -> MKAnnotationView {
+        return mapView.dequeueReusableAnnotationView(withIdentifier: NSStringFromClass(FriendAnnotation.self), for: annotation)
+    }
+    
+    private func setupMyAnnotationView(for annotation: MyAnnotation, on mapView: MKMapView) -> MKAnnotationView {
+        return mapView.dequeueReusableAnnotationView(withIdentifier: NSStringFromClass(MyAnnotation.self), for: annotation)
     }
 }
 
@@ -250,18 +266,22 @@ extension MapVC: CLLocationManagerDelegate {
         return pLocation
     }
     
-    /// 특정 위도와 경도에 핀 설치하고 핀에 타이틀과 서브 타이틀의 문자열 표시
-    func setAnnotation(latitudeValue: CLLocationDegrees,
-                       longitudeValue: CLLocationDegrees,
-                       delta span: Double,
-                       title strTitle: String,
-                       subtitle strSubtitle: String) {
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = goLocation(latitudeValue: latitudeValue,
-                                           longitudeValue: longitudeValue,
-                                           delta: span)
-        annotation.title = strTitle
-        annotation.subtitle = strSubtitle
+    /// 내 핀을 설치하는 함수
+    func addMyAnnotation(coordinate: [Double], profileImage: UIImage) {
+        let annotation = MyAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate[0],
+                                                                         longitude: coordinate[1]))
+        annotation.profileImage = profileImage
+        mapView.addAnnotation(annotation)
+    }
+    
+    /// 친구 핀을 설치하는 함수
+    func addFriendAnnotation(coordinate: [Double], profileImage: UIImage, nickname: String, color: UIColor, challengeCnt: Int) {
+        let annotation = FriendAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate[0],
+                                                                             longitude: coordinate[1]))
+        annotation.title = nickname
+        annotation.profileImage = profileImage
+        annotation.color = color
+        annotation.challengeCnt = challengeCnt
         mapView.addAnnotation(annotation)
     }
     
@@ -323,6 +343,29 @@ extension MapVC: MKMapViewDelegate {
             // TODO: - Alert 띄우기
             print("영역을 그릴 수 없습니다")
             return MKOverlayRenderer()
+        }
+    }
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        guard !annotation.isKind(of: MKUserLocation.self) else { return nil }
+        
+        var annotationView: MKAnnotationView?
+        
+        if let annotation = annotation as? FriendAnnotation {
+            annotationView = setupFriendAnnotationView(for: annotation, on: mapView)
+        } else if let annotation = annotation as? MyAnnotation {
+            annotationView = setupMyAnnotationView(for: annotation, on: mapView)
+        }
+        
+        return annotationView
+    }
+    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        if let annotation = view as? FriendAnnotationView {
+            annotation.setSelected(true, animated: true)
+            
+            let friendBottomSheet = FriendProfileBottomSheet()
+            self.present(friendBottomSheet, animated: true)
         }
     }
 }
