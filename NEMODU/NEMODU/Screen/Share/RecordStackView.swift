@@ -1,5 +1,5 @@
 //
-//  RecodeStackView.swift
+//  RecordStackView.swift
 //  NEMODU
 //
 //  Created by 황윤경 on 2022/08/13.
@@ -9,8 +9,8 @@ import UIKit
 import SnapKit
 import Then
 
-class RecodeStackView: BaseView {
-    private let recodeStackView = UIStackView()
+class RecordStackView: BaseView {
+    private let recordStackView = UIStackView()
         .then {
             $0.axis = .horizontal
             $0.spacing = 0
@@ -18,24 +18,24 @@ class RecodeStackView: BaseView {
             $0.distribution = .equalSpacing
         }
     
-    var distanceView = RecodeView()
+    var distanceView = RecordView()
         .then {
-            $0.recodeTitle.text = "거리"
+            $0.recordTitle.text = "거리"
         }
     
-    var timeView = RecodeView()
+    var timeView = RecordView()
         .then {
-            $0.recodeTitle.text = "시간"
+            $0.recordTitle.text = "시간"
         }
     
-    var stepCntView = RecodeView()
+    var stepCntView = RecordView()
         .then {
-            $0.recodeTitle.text = "걸음수"
+            $0.recordTitle.text = "걸음수"
         }
     
     override func configureView() {
         super.configureView()
-        configureRecodeStackView()
+        configureRecordStackView()
     }
     
     override func layoutView() {
@@ -47,16 +47,16 @@ class RecodeStackView: BaseView {
 
 // MARK: - Configure
 
-extension RecodeStackView {
-    private func configureRecodeStackView() {
-        addSubview(recodeStackView)
+extension RecordStackView {
+    private func configureRecordStackView() {
+        addSubview(recordStackView)
         [distanceView, timeView, stepCntView].forEach {
-            $0.recodeValue.font = .title3SB
-            $0.recodeTitle.font = .caption1
-            recodeStackView.addArrangedSubview($0)
+            $0.recordValue.font = .title3SB
+            $0.recordTitle.font = .caption1
+            recordStackView.addArrangedSubview($0)
         }
         
-        recodeStackView.addVerticalSeparators(color: .gray300,
+        recordStackView.addVerticalSeparators(color: .gray300,
                                               width: 1,
                                               multiplier: 0.2)
     }
@@ -64,9 +64,9 @@ extension RecodeStackView {
 
 // MARK: - Layout
 
-extension RecodeStackView {
+extension RecordStackView {
     private func configureLayout() {
-        recodeStackView.snp.makeConstraints {
+        recordStackView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
         

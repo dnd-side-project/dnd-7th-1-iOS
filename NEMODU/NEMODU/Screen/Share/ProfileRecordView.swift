@@ -1,5 +1,5 @@
 //
-//  ProfileRecodeView.swift
+//  ProfileRecordView.swift
 //  NEMODU
 //
 //  Created by 황윤경 on 2022/08/14.
@@ -9,8 +9,8 @@ import UIKit
 import Then
 import SnapKit
 
-class ProfileRecodeView: BaseView {
-    var recodeTitle = UILabel()
+class ProfileRecordView: BaseView {
+    var recordTitle = UILabel()
         .then {
             $0.font = .caption1
             $0.textColor = .gray700
@@ -24,7 +24,7 @@ class ProfileRecodeView: BaseView {
             $0.alignment = .center
         }
 
-    var recodeValue = UILabel()
+    var recordValue = UILabel()
         .then {
             $0.font = .title1
             $0.textColor = .gray900
@@ -52,22 +52,22 @@ class ProfileRecodeView: BaseView {
 
 // MARK: - Configure
 
-extension ProfileRecodeView {
+extension ProfileRecordView {
     private func configureContent() {
-        addSubviews([recodeTitle, valueStackView])
-        [recodeValue, valueUnit].forEach {
+        addSubviews([recordTitle, valueStackView])
+        [recordValue, valueUnit].forEach {
             valueStackView.addArrangedSubview($0)
         }
     }
     
     private func configureLayout() {
-        recodeTitle.snp.makeConstraints {
+        recordTitle.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.centerX.equalToSuperview()
         }
 
         valueStackView.snp.makeConstraints {
-            $0.top.equalTo(recodeTitle.snp.bottom).offset(10)
+            $0.top.equalTo(recordTitle.snp.bottom).offset(10)
             $0.centerX.equalToSuperview()
             $0.bottom.equalToSuperview()
         }

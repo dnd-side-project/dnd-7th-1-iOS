@@ -82,12 +82,12 @@ class FriendProfileBottomSheet: DynamicBottomSheetViewController {
             $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 8)
         }
     
-    private let recodeStackView = ProfileRecodeStackView()
+    private let recordStackView = ProfileRecordStackView()
         .then {
-            $0.firstView.recodeTitle.text = "이번주 영역"
+            $0.firstView.recordTitle.text = "이번주 영역"
             $0.firstView.valueUnit.text = "칸"
-            $0.secondView.recodeTitle.text = "역대 누적 칸 수"
-            $0.thirdView.recodeTitle.text = "랭킹"
+            $0.secondView.recordTitle.text = "역대 누적 칸 수"
+            $0.thirdView.recordTitle.text = "랭킹"
             $0.thirdView.valueUnit.text = "위"
         }
     
@@ -139,7 +139,7 @@ extension FriendProfileBottomSheet {
                                  lastAccessTime,
                                  profileMessage,
                                  addFriendBtn,
-                                 recodeStackView])
+                                 recordStackView])
         challengeListView.addSubview(listTitle)
         
         
@@ -147,10 +147,10 @@ extension FriendProfileBottomSheet {
         ? configureNoneData() : configureChallengeListTV()
         
         // TODO: - 서버 연결 후 수정
-        recodeStackView.setRecodeData(value1: 9,
+        recordStackView.setRecordData(value1: 9,
                                       value2: 1030,
                                       value3: 1)
-        recodeStackView.secondView.recodeValue.insertComma()
+        recordStackView.secondView.recordValue.insertComma()
     }
     
     private func configureNoneData() {
@@ -227,7 +227,7 @@ extension FriendProfileBottomSheet {
             $0.height.equalTo(34)
         }
         
-        recodeStackView.snp.makeConstraints {
+        recordStackView.snp.makeConstraints {
             $0.top.equalTo(addFriendBtn.snp.bottom).offset(16)
             $0.leading.equalToSuperview().offset(16)
             $0.bottom.trailing.equalToSuperview().offset(-16)

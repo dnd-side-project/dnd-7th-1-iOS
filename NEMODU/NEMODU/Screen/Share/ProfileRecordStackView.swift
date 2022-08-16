@@ -1,5 +1,5 @@
 //
-//  ProfileRecodeStackView.swift
+//  ProfileRecordStackView.swift
 //  NEMODU
 //
 //  Created by 황윤경 on 2022/08/14.
@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import Then
 
-class ProfileRecodeStackView: BaseView {
+class ProfileRecordStackView: BaseView {
     private let stackView = UIStackView()
         .then {
             $0.axis = .horizontal
@@ -20,13 +20,13 @@ class ProfileRecodeStackView: BaseView {
             $0.layer.cornerRadius = 8
         }
     
-    var firstView = ProfileRecodeView()
-    var secondView = ProfileRecodeView()
-    var thirdView = ProfileRecodeView()
+    var firstView = ProfileRecordView()
+    var secondView = ProfileRecordView()
+    var thirdView = ProfileRecordView()
     
     override func configureView() {
         super.configureView()
-        configureRecodeStackView()
+        configureRecordStackView()
     }
     
     override func layoutView() {
@@ -37,8 +37,8 @@ class ProfileRecodeStackView: BaseView {
 
 // MARK: - Configure
 
-extension ProfileRecodeStackView {
-    private func configureRecodeStackView() {
+extension ProfileRecordStackView {
+    private func configureRecordStackView() {
         addSubview(stackView)
         [firstView, secondView, thirdView].forEach {
             stackView.addArrangedSubview($0)
@@ -46,16 +46,16 @@ extension ProfileRecodeStackView {
     }
     
     /// stackView 세 영역의 값을 지정하는 함수입니다.
-    func setRecodeData(value1: Int, value2: Int, value3: Int) {
-        firstView.recodeValue.text = String(value1)
-        secondView.recodeValue.text = String(value2)
-        thirdView.recodeValue.text = String(value3)
+    func setRecordData(value1: Int, value2: Int, value3: Int) {
+        firstView.recordValue.text = String(value1)
+        secondView.recordValue.text = String(value2)
+        thirdView.recordValue.text = String(value3)
     }
 }
 
 // MARK: - Layout
 
-extension ProfileRecodeStackView {
+extension ProfileRecordStackView {
     private func configureLayout() {
         stackView.snp.makeConstraints {
             $0.edges.equalToSuperview()

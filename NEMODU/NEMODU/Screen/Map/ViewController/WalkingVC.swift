@@ -18,7 +18,7 @@ class WalkingVC: BaseViewController {
             $0.isWalking = true
         }
     
-    private let recodeBaseView = UIView()
+    private let recordBaseView = UIView()
         .then {
             $0.backgroundColor = .white
             $0.layer.cornerRadius = 20
@@ -46,7 +46,7 @@ class WalkingVC: BaseViewController {
             $0.isHidden = true
         }
     
-    private let recodeStackView = UIStackView()
+    private let recordStackView = UIStackView()
         .then {
             $0.axis = .horizontal
             $0.spacing = 0
@@ -54,23 +54,23 @@ class WalkingVC: BaseViewController {
             $0.distribution = .fillEqually
         }
     
-    private let blocksNumView = RecodeView()
+    private let blocksNumView = RecordView()
         .then {
-            $0.recodeValue.text = "0"
-            $0.recodeTitle.text = "채운 칸의 수"
-            $0.recodeSubtitle.text = "이번주 영역: 0칸"
+            $0.recordValue.text = "0"
+            $0.recordTitle.text = "채운 칸의 수"
+            $0.recordSubtitle.text = "이번주 영역: 0칸"
         }
     
-    private let distanceView = RecodeView()
+    private let distanceView = RecordView()
         .then {
-            $0.recodeValue.text = "0m"
-            $0.recodeTitle.text = "거리"
+            $0.recordValue.text = "0m"
+            $0.recordTitle.text = "거리"
         }
     
-    private let timeView = RecodeView()
+    private let timeView = RecordView()
         .then {
-            $0.recodeValue.text = "0:00"
-            $0.recodeTitle.text = "시간"
+            $0.recordValue.text = "0:00"
+            $0.recordTitle.text = "시간"
         }
     
     private var secondTimeValue: Int = 0
@@ -103,7 +103,7 @@ class WalkingVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
-        bindRecodeValue()
+        bindRecordValue()
     }
 }
 
@@ -113,10 +113,10 @@ extension WalkingVC {
     private func configureWalkingView() {
         addChild(mapVC)
         view.addSubviews([mapVC.view,
-                          recodeBaseView])
-        recodeBaseView.addSubviews([stopPlayView, pauseBtn, recodeStackView])
+                          recordBaseView])
+        recordBaseView.addSubviews([stopPlayView, pauseBtn, recordStackView])
         [blocksNumView, distanceView, timeView].forEach {
-            recodeStackView.addArrangedSubview($0)
+            recordStackView.addArrangedSubview($0)
         }
         stopPlayView.addSubviews([stopBtn, playBtn])
     }
@@ -128,17 +128,17 @@ extension WalkingVC {
     private func configureLayout() {
         mapVC.view.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(recodeBaseView.snp.top).offset(22 )
+            $0.bottom.equalTo(recordBaseView.snp.top).offset(22 )
         }
         
-        recodeBaseView.snp.makeConstraints {
+        recordBaseView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(view.safeAreaLayoutGuide)
             $0.height.equalTo(240)
         }
         
         mapVC.currentLocationBtn.snp.makeConstraints {
-            $0.bottom.equalTo(recodeBaseView.snp.top).offset(-16)
+            $0.bottom.equalTo(recordBaseView.snp.top).offset(-16)
             $0.trailing.equalToSuperview().offset(-16)
             $0.width.height.equalTo(48)
         }
@@ -151,7 +151,7 @@ extension WalkingVC {
             $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-24)
         }
         
-        recodeStackView.snp.makeConstraints {
+        recordStackView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(24)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
@@ -184,7 +184,7 @@ extension WalkingVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                self.setRecodeBtnStatus(isWalking: false)
+                self.setRecordBtnStatus(isWalking: false)
                 self.mapVC.stopUpdateStep()
             })
             .disposed(by: bag)
@@ -194,15 +194,15 @@ extension WalkingVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                let recodeResultVC = RecodeResultVC()
-                recodeResultVC.modalPresentationStyle = .fullScreen
-                recodeResultVC.configureRecodeValue(blocks: self.mapVC.blocks,
+                let recordResultVC = RecordResultVC()
+                recordResultVC.modalPresentationStyle = .fullScreen
+                recordResultVC.configureRecordValue(blocks: self.mapVC.blocks,
                                                     weekBlockCnt: self.weekBlockCnt,
                                                     distance: self.mapVC.updateDistance.value,
                                                     second: self.secondTimeValue,
                                                     stepCnt: self.mapVC.stepCnt)
                 self.mapVC.stopUpdateStep()
-                self.present(recodeResultVC, animated: true)
+                self.present(recordResultVC, animated: true)
             })
             .disposed(by: bag)
         
@@ -211,7 +211,7 @@ extension WalkingVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                self.setRecodeBtnStatus(isWalking: true)
+                self.setRecordBtnStatus(isWalking: true)
                 self.mapVC.updateStep()
             })
             .disposed(by: bag)
@@ -221,13 +221,13 @@ extension WalkingVC {
 // MARK: - Output
 
 extension WalkingVC {
-    func bindRecodeValue() {
+    func bindRecordValue() {
         // 이동 거리 기록
         mapVC.updateDistance
             .asDriver()
             .drive(onNext: { [weak self] distance in
                 guard let self = self else { return }
-                self.distanceView.recodeValue.text = "\(distance)m"
+                self.distanceView.recordValue.text = "\(distance)m"
             })
             .disposed(by: bag)
         
@@ -237,7 +237,7 @@ extension WalkingVC {
                 guard let self = self else { return }
                 if self.mapVC.isWalking ?? false {
                     self.secondTimeValue += second
-                    self.timeView.recodeValue.text
+                    self.timeView.recordValue.text
                     = "\(self.secondTimeValue / 60):"
                     + String(format: "%02d", self.secondTimeValue % 60)
                 }
@@ -249,7 +249,7 @@ extension WalkingVC {
             .asDriver()
             .drive(onNext: { [weak self] blocksCnt in
                 guard let self = self else { return }
-                self.blocksNumView.recodeValue.text = "\(blocksCnt)"
+                self.blocksNumView.recordValue.text = "\(blocksCnt)"
             })
             .disposed(by: bag)
     }
@@ -259,7 +259,7 @@ extension WalkingVC {
 
 extension WalkingVC {
     /// 기록 중 상태에 따라 일시정지, 멈춤, 재시작 버튼의 상태를 지정하는 함수
-    private func setRecodeBtnStatus(isWalking: Bool) {
+    private func setRecordBtnStatus(isWalking: Bool) {
         stopPlayView.isHidden = isWalking
         pauseBtn.isHidden = !isWalking
         mapVC.isWalking = isWalking
