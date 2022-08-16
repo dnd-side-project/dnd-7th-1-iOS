@@ -275,12 +275,13 @@ extension MapVC: CLLocationManagerDelegate {
     }
     
     /// 친구 핀을 설치하는 함수
-    func addFriendAnnotation(coordinate: [Double], profileImage: UIImage, nickname: String, color: UIColor) {
+    func addFriendAnnotation(coordinate: [Double], profileImage: UIImage, nickname: String, color: UIColor, challengeCnt: Int) {
         let annotation = FriendAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate[0],
                                                                              longitude: coordinate[1]))
         annotation.title = nickname
         annotation.profileImage = profileImage
         annotation.color = color
+        annotation.challengeCnt = challengeCnt
         mapView.addAnnotation(annotation)
     }
     

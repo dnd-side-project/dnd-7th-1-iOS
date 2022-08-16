@@ -18,6 +18,8 @@ class FriendAnnotation: NSObject, MKAnnotation {
     
     var profileImage: UIImage?
     
+    var challengeCnt: Int?
+    
     init(coordinate: CLLocationCoordinate2D) {
         self.coordinate = coordinate
         super.init()

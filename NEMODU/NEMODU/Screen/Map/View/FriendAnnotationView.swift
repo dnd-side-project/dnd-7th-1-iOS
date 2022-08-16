@@ -19,8 +19,7 @@ class FriendAnnotationView: MKAnnotationView {
             $0.spacing = 4
         }
     
-    private lazy var pinImageView = UIImageView(frame: CGRect(origin: .zero,
-                                                              size: CGSize(width: 46, height: 62)))
+    private lazy var pinImageView = UIImageView()
         .then {
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.image = UIImage(named: "friend_none")
@@ -43,6 +42,11 @@ class FriendAnnotationView: MKAnnotationView {
         }
     
     private lazy var challengeCntImageView = UIImageView()
+        .then {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.layer.cornerRadius = 7.5
+            $0.backgroundColor = .white
+        }
     
     var color: UIColor!
     
@@ -60,6 +64,8 @@ class FriendAnnotationView: MKAnnotationView {
         super.prepareForReuse()
         profileImage.image = nil
         nickname.text = nil
+        challengeCntImageView.image = nil
+        challengeCntImageView.isHidden = true
     }
     
     override func prepareForDisplay() {
@@ -92,13 +98,21 @@ extension FriendAnnotationView {
         [nickname, pinImageView].forEach {
             stackView.addArrangedSubview($0)
         }
-        pinImageView.addSubview(profileImage)
+        pinImageView.addSubviews([profileImage, challengeCntImageView])
     }
     
     private func configureContent() {
         if let annotation = annotation as? FriendAnnotation {
             nickname.text = annotation.title
             color = annotation.color
+            
+            challengeCntImageView.image
+            = annotation.challengeCnt == 0
+            ? nil
+            : UIImage(named: "challengeCnt\(annotation.challengeCnt!)")?
+                .withTintColor(annotation.color!, renderingMode: .alwaysOriginal)
+            
+            challengeCntImageView.isHidden = annotation.challengeCnt == 0
             
             if let image = annotation.profileImage {
                 profileImage.image = image
@@ -129,6 +143,12 @@ extension FriendAnnotationView {
             $0.top.leading.equalToSuperview().offset(2)
             $0.trailing.equalToSuperview().offset(-2)
             $0.height.width.equalTo(42)
+        }
+        
+        challengeCntImageView.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.trailing.equalToSuperview()
+            $0.width.height.equalTo(15)
         }
         
         profileImage.layer.cornerRadius = 21

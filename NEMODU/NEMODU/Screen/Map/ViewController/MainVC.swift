@@ -66,7 +66,8 @@ class MainVC: BaseViewController {
         mapVC.addFriendAnnotation(coordinate: [37.329314, -122.019744],
                                   profileImage: UIImage(named: "defaultThumbnail")!,
                                   nickname: "가나다라마바사",
-                                  color: .main)
+                                  color: .pink100,
+                                  challengeCnt: 3)
         
         mapVC.addMyAnnotation(coordinate: [37.329314, -122.017744],
                               profileImage: UIImage(named: "defaultThumbnail")!)
