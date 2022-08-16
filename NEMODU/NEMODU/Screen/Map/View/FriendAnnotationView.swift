@@ -26,7 +26,7 @@ class FriendAnnotationView: MKAnnotationView {
             $0.addShadow()
         }
     
-    private lazy var title = UILabel()
+    private lazy var nickname = UILabel()
         .then {
             $0.setLineBreakMode()
             $0.font = .caption1
@@ -36,7 +36,7 @@ class FriendAnnotationView: MKAnnotationView {
             $0.preferredMaxLayoutWidth = 83
         }
     
-    private lazy var imageView = UIImageView()
+    private lazy var profileImage = UIImageView()
         .then {
             $0.clipsToBounds = true
         }
@@ -57,8 +57,8 @@ class FriendAnnotationView: MKAnnotationView {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        imageView.image = nil
-        title.text = nil
+        profileImage.image = nil
+        nickname.text = nil
     }
     
     override func prepareForDisplay() {
@@ -88,20 +88,19 @@ class FriendAnnotationView: MKAnnotationView {
 extension FriendAnnotationView {
     private func addViews() {
         addSubview(stackView)
-        [title, pinImageView].forEach {
+        [nickname, pinImageView].forEach {
             stackView.addArrangedSubview($0)
         }
-        pinImageView.addSubview(imageView)
+        pinImageView.addSubview(profileImage)
     }
     
     private func configureContent() {
         if let annotation = annotation as? FriendAnnotation {
-            title.text = annotation.title
+            nickname.text = annotation.title
             color = annotation.color
             
-            if let imageName = annotation.imageName,
-               let image = UIImage(named: imageName) {
-                imageView.image = image
+            if let image = annotation.profileImage {
+                profileImage.image = image
             }
         }
     }
@@ -115,18 +114,18 @@ extension FriendAnnotationView {
             $0.edges.equalToSuperview()
         }
         
-        title.snp.makeConstraints {
+        nickname.snp.makeConstraints {
             $0.height.equalTo(14)
             $0.centerX.equalToSuperview()
         }
         
-        imageView.snp.makeConstraints {
+        profileImage.snp.makeConstraints {
             $0.top.leading.equalToSuperview().offset(2)
             $0.trailing.equalToSuperview().offset(-2)
             $0.height.width.equalTo(42)
         }
         
-        imageView.layer.cornerRadius = 21
+        profileImage.layer.cornerRadius = 21
     }
     
     private func configureFrame() {

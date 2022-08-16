@@ -64,8 +64,8 @@ class MainVC: BaseViewController {
         
         // TODO: - 서버 연결 후 수정
         mapVC.addFriendAnnotation(coordinate: [37.329314, -122.019744],
+                                  profileImage: UIImage(named: "defaultThumbnail")!,
                                   nickname: "가나다라마바사",
-                                  profileImage: "defaultThumbnail",
                                   color: .main)
         
         mapVC.addMyAnnotation(coordinate: [37.329314, -122.017744],

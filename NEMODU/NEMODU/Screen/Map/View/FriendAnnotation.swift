@@ -16,7 +16,7 @@ class FriendAnnotation: NSObject, MKAnnotation {
     
     var color: UIColor?
     
-    var imageName: String?
+    var profileImage: UIImage?
     
     init(coordinate: CLLocationCoordinate2D) {
         self.coordinate = coordinate
