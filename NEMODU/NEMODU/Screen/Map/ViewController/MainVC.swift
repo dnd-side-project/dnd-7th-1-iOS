@@ -170,9 +170,9 @@ extension MainVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                let walkingVC = WalkingVC()
-                walkingVC.modalPresentationStyle = .fullScreen
-                self.present(walkingVC, animated: false)
+                let countdownVC = CountdownVC()
+                countdownVC.modalPresentationStyle = .fullScreen
+                self.present(countdownVC, animated: true)
             })
             .disposed(by: bag)
         
