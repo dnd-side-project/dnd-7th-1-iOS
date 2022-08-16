@@ -11,16 +11,14 @@ import SnapKit
 import MapKit
 
 class MyAnnotationView: MKAnnotationView {
-    private lazy var pinImageView = UIImageView(frame: CGRect(origin: .zero, size: CGSize(width: 56, height: 74)))
+    private lazy var pinImageView = UIImageView()
         .then {
-            $0.translatesAutoresizingMaskIntoConstraints = false
             $0.image = UIImage(named: "marker_me")
             $0.addShadow()
         }
     
     private lazy var profileImage = UIImageView()
         .then {
-            $0.translatesAutoresizingMaskIntoConstraints = false
             $0.clipsToBounds = true
         }
     
@@ -74,6 +72,11 @@ extension MyAnnotationView {
 
 extension MyAnnotationView {
     private func configureLayout() {
+        self.snp.makeConstraints {
+            $0.width.equalTo(56)
+            $0.height.equalTo(74)
+        }
+        
         pinImageView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }

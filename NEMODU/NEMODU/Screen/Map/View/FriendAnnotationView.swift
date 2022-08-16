@@ -13,7 +13,6 @@ import MapKit
 class FriendAnnotationView: MKAnnotationView {
     private lazy var stackView = UIStackView()
         .then {
-            $0.translatesAutoresizingMaskIntoConstraints = false
             $0.axis = .vertical
             $0.alignment = .center
             $0.spacing = 4
@@ -21,7 +20,6 @@ class FriendAnnotationView: MKAnnotationView {
     
     private lazy var pinImageView = UIImageView()
         .then {
-            $0.translatesAutoresizingMaskIntoConstraints = false
             $0.image = UIImage(named: "friend_none")
             $0.addShadow()
         }
@@ -32,7 +30,6 @@ class FriendAnnotationView: MKAnnotationView {
             $0.font = .caption1
             $0.textColor = .gray800
             $0.textAlignment = .center
-            $0.translatesAutoresizingMaskIntoConstraints = false
             $0.preferredMaxLayoutWidth = 83
         }
     
@@ -43,7 +40,6 @@ class FriendAnnotationView: MKAnnotationView {
     
     private lazy var challengeCntImageView = UIImageView()
         .then {
-            $0.translatesAutoresizingMaskIntoConstraints = false
             $0.layer.cornerRadius = 7.5
             $0.backgroundColor = .white
         }
@@ -125,6 +121,10 @@ extension FriendAnnotationView {
 
 extension FriendAnnotationView {
     private func configureLayout() {
+        self.snp.makeConstraints {
+            $0.height.equalTo(80)
+        }
+        
         stackView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
