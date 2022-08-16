@@ -22,6 +22,7 @@ class FriendAnnotationView: MKAnnotationView {
     private lazy var pinImageView = UIImageView(frame: CGRect(origin: .zero,
                                                               size: CGSize(width: 46, height: 62)))
         .then {
+            $0.translatesAutoresizingMaskIntoConstraints = false
             $0.image = UIImage(named: "friend_none")
             $0.addShadow()
         }
@@ -112,6 +113,11 @@ extension FriendAnnotationView {
     private func configureLayout() {
         stackView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+        
+        pinImageView.snp.makeConstraints {
+            $0.width.equalTo(46)
+            $0.height.equalTo(62)
         }
         
         nickname.snp.makeConstraints {
