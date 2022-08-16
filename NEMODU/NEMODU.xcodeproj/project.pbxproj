@@ -66,6 +66,8 @@
 		23F5717C28AA19E2005F2E21 /* FriendAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5717B28AA19E2005F2E21 /* FriendAnnotation.swift */; };
 		23F5717E28AA1A11005F2E21 /* FriendAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5717D28AA1A11005F2E21 /* FriendAnnotationView.swift */; };
 		23F5718228AA6038005F2E21 /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5718128AA6038005F2E21 /* UIImage+.swift */; };
+		23F5718628AA6DAD005F2E21 /* MyAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5718528AA6DAD005F2E21 /* MyAnnotation.swift */; };
+		23F5718828AA6DEE005F2E21 /* MyAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5718728AA6DEE005F2E21 /* MyAnnotationView.swift */; };
 		37783E39C7DFB38581CA78A2 /* Pods_NEMODU.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7400965811C32403A72B2B0 /* Pods_NEMODU.framework */; };
 /* End PBXBuildFile section */
 
@@ -133,6 +135,8 @@
 		23F5717B28AA19E2005F2E21 /* FriendAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendAnnotation.swift; sourceTree = "<group>"; };
 		23F5717D28AA1A11005F2E21 /* FriendAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendAnnotationView.swift; sourceTree = "<group>"; };
 		23F5718128AA6038005F2E21 /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
+		23F5718528AA6DAD005F2E21 /* MyAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAnnotation.swift; sourceTree = "<group>"; };
+		23F5718728AA6DEE005F2E21 /* MyAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAnnotationView.swift; sourceTree = "<group>"; };
 		E7400965811C32403A72B2B0 /* Pods_NEMODU.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NEMODU.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -461,6 +465,8 @@
 			children = (
 				23F5717B28AA19E2005F2E21 /* FriendAnnotation.swift */,
 				23F5717D28AA1A11005F2E21 /* FriendAnnotationView.swift */,
+				23F5718528AA6DAD005F2E21 /* MyAnnotation.swift */,
+				23F5718728AA6DEE005F2E21 /* MyAnnotationView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -616,6 +622,7 @@
 				2348B3E72892D08D001095BC /* BaseViewModel.swift in Sources */,
 				2348B4092892D2E5001095BC /* UIViewController+.swift in Sources */,
 				2348B3DB2892CF29001095BC /* MapVM.swift in Sources */,
+				23F5718828AA6DEE005F2E21 /* MyAnnotationView.swift in Sources */,
 				23F5717728A92E38005F2E21 /* ProfileRecodeView.swift in Sources */,
 				2348B4032892D1D9001095BC /* UITextView+.swift in Sources */,
 				2348B4072892D286001095BC /* UIView+.swift in Sources */,
@@ -632,6 +639,7 @@
 				2348B3E52892D075001095BC /* BaseViewController.swift in Sources */,
 				23B7207428A2227000D3A410 /* WalkingVM.swift in Sources */,
 				2348B40D2892D360001095BC /* UIColor+.swift in Sources */,
+				23F5718628AA6DAD005F2E21 /* MyAnnotation.swift in Sources */,
 				23B72058289808EB00D3A410 /* MapFilterBottomSheet.swift in Sources */,
 				2348B3FD2892D16C001095BC /* Loadable.swift in Sources */,
 				2348B4012892D1A6001095BC /* UITextField+.swift in Sources */,

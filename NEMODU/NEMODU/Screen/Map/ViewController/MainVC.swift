@@ -67,6 +67,9 @@ class MainVC: BaseViewController {
                                   nickname: "가나다라마바사",
                                   profileImage: "defaultThumbnail",
                                   color: .main)
+        
+        mapVC.addMyAnnotation(coordinate: [37.329314, -122.017744],
+                              profileImage: UIImage(named: "defaultThumbnail")!)
     }
     
     override func layoutView() {

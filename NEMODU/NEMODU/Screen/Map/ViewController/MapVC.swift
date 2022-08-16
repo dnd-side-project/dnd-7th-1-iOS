@@ -112,10 +112,16 @@ extension MapVC {
     private func registerMapAnnotationViews() {
         mapView.register(FriendAnnotationView.self,
                          forAnnotationViewWithReuseIdentifier: NSStringFromClass(FriendAnnotation.self))
+        mapView.register(MyAnnotationView.self,
+                         forAnnotationViewWithReuseIdentifier: NSStringFromClass(MyAnnotation.self))
     }
     
-    private func setupCustomAnnotationView(for annotation: FriendAnnotation, on mapView: MKMapView) -> MKAnnotationView {
+    private func setupFriendAnnotationView(for annotation: FriendAnnotation, on mapView: MKMapView) -> MKAnnotationView {
         return mapView.dequeueReusableAnnotationView(withIdentifier: NSStringFromClass(FriendAnnotation.self), for: annotation)
+    }
+    
+    private func setupMyAnnotationView(for annotation: MyAnnotation, on mapView: MKMapView) -> MKAnnotationView {
+        return mapView.dequeueReusableAnnotationView(withIdentifier: NSStringFromClass(MyAnnotation.self), for: annotation)
     }
 }
 
@@ -260,6 +266,14 @@ extension MapVC: CLLocationManagerDelegate {
         return pLocation
     }
     
+    /// 내 핀을 설치하는 함수
+    func addMyAnnotation(coordinate: [Double], profileImage: UIImage) {
+        let annotation = MyAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate[0],
+                                                                         longitude: coordinate[1]))
+        annotation.profileImage = profileImage
+        mapView.addAnnotation(annotation)
+    }
+    
     /// 친구 핀을 설치하는 함수
     func addFriendAnnotation(coordinate: [Double], nickname: String, profileImage: String, color: UIColor) {
         let annotation = FriendAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate[0],
@@ -337,16 +351,20 @@ extension MapVC: MKMapViewDelegate {
         var annotationView: MKAnnotationView?
         
         if let annotation = annotation as? FriendAnnotation {
-            annotationView = setupCustomAnnotationView(for: annotation, on: mapView)
+            annotationView = setupFriendAnnotationView(for: annotation, on: mapView)
+        } else if let annotation = annotation as? MyAnnotation {
+            annotationView = setupMyAnnotationView(for: annotation, on: mapView)
         }
         
         return annotationView
     }
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        view.setSelected(true, animated: true)
-        
-        let friendBottomSheet = FriendProfileBottomSheet()
-        self.present(friendBottomSheet, animated: true)
+        if let annotation = view as? FriendAnnotationView {
+            annotation.setSelected(true, animated: true)
+            
+            let friendBottomSheet = FriendProfileBottomSheet()
+            self.present(friendBottomSheet, animated: true)
+        }
     }
 }
