@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		230CB2CB28ABB7B400B11270 /* CountdownVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230CB2CA28ABB7B400B11270 /* CountdownVC.swift */; };
 		230CB2D428ABEC4D00B11270 /* countdown.json in Resources */ = {isa = PBXBuildFile; fileRef = 230CB2D328ABEC4D00B11270 /* countdown.json */; };
+		230CB2D828AD042300B11270 /* MainMapResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230CB2D728AD042300B11270 /* MainMapResponseModel.swift */; };
+		230CB2DF28AD473100B11270 /* UserBlockResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230CB2DE28AD473100B11270 /* UserBlockResponseModel.swift */; };
+		230CB2E128AD474E00B11270 /* ChallengeBlockResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230CB2E028AD474E00B11270 /* ChallengeBlockResponseModel.swift */; };
+		230CB2E428AD478000B11270 /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230CB2E328AD478000B11270 /* Matrix.swift */; };
 		2348B3BF2892C675001095BC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348B3BE2892C675001095BC /* AppDelegate.swift */; };
 		2348B3C82892C676001095BC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2348B3C72892C676001095BC /* Assets.xcassets */; };
 		2348B3CB2892C676001095BC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2348B3C92892C676001095BC /* LaunchScreen.storyboard */; };
@@ -89,6 +93,10 @@
 		1EBADEEBC1D77F44700E20E8 /* Pods-NEMODU.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEMODU.release.xcconfig"; path = "Target Support Files/Pods-NEMODU/Pods-NEMODU.release.xcconfig"; sourceTree = "<group>"; };
 		230CB2CA28ABB7B400B11270 /* CountdownVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownVC.swift; sourceTree = "<group>"; };
 		230CB2D328ABEC4D00B11270 /* countdown.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = countdown.json; sourceTree = "<group>"; };
+		230CB2D728AD042300B11270 /* MainMapResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMapResponseModel.swift; sourceTree = "<group>"; };
+		230CB2DE28AD473100B11270 /* UserBlockResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBlockResponseModel.swift; sourceTree = "<group>"; };
+		230CB2E028AD474E00B11270 /* ChallengeBlockResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeBlockResponseModel.swift; sourceTree = "<group>"; };
+		230CB2E328AD478000B11270 /* Matrix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Matrix.swift; sourceTree = "<group>"; };
 		2348B3BB2892C675001095BC /* NEMODU.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NEMODU.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2348B3BE2892C675001095BC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2348B3C72892C676001095BC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -199,6 +207,32 @@
 				230CB2D328ABEC4D00B11270 /* countdown.json */,
 			);
 			path = Lottie;
+			sourceTree = "<group>";
+		};
+		230CB2D928AD05E600B11270 /* Response */ = {
+			isa = PBXGroup;
+			children = (
+				230CB2D728AD042300B11270 /* MainMapResponseModel.swift */,
+				230CB2DE28AD473100B11270 /* UserBlockResponseModel.swift */,
+				230CB2E028AD474E00B11270 /* ChallengeBlockResponseModel.swift */,
+				230CB2E328AD478000B11270 /* Matrix.swift */,
+			);
+			path = Response;
+			sourceTree = "<group>";
+		};
+		230CB2DA28AD06DA00B11270 /* DataSource */ = {
+			isa = PBXGroup;
+			children = (
+				23B7206228A0DCAA00D3A410 /* ProceedingChallengeDataSource.swift */,
+			);
+			path = DataSource;
+			sourceTree = "<group>";
+		};
+		230CB2DB28AD06E300B11270 /* Request */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Request;
 			sourceTree = "<group>";
 		};
 		2348B3B22892C675001095BC = {
@@ -421,7 +455,9 @@
 		239B52CC2892ED7A0030E8C0 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				23B7206228A0DCAA00D3A410 /* ProceedingChallengeDataSource.swift */,
+				230CB2DB28AD06E300B11270 /* Request */,
+				230CB2D928AD05E600B11270 /* Response */,
+				230CB2DA28AD06DA00B11270 /* DataSource */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -753,6 +789,7 @@
 				2348B3EE2892D0ED001095BC /* APIService.swift in Sources */,
 				238C4DE328A3F0D6000BEE36 /* NemoduTextView.swift in Sources */,
 				23F5717E28AA1A11005F2E21 /* FriendAnnotationView.swift in Sources */,
+				230CB2DF28AD473100B11270 /* UserBlockResponseModel.swift in Sources */,
 				23B7208628A23A2100D3A410 /* UIFont+.swift in Sources */,
 				23F5717C28AA19E2005F2E21 /* FriendAnnotation.swift in Sources */,
 				2348B3E12892D046001095BC /* BaseView.swift in Sources */,
@@ -771,7 +808,9 @@
 				3C08138028A91C00009F854B /* InvitedChallengeTV.swift in Sources */,
 				23B72058289808EB00D3A410 /* MapFilterBottomSheet.swift in Sources */,
 				3C08137F28A91C00009F854B /* InvitedChallengeTVC.swift in Sources */,
+				230CB2E428AD478000B11270 /* Matrix.swift in Sources */,
 				3CB9DB9F28A93F19007BC1BE /* ChallengeRankingMenuBarCVC.swift in Sources */,
+				230CB2D828AD042300B11270 /* MainMapResponseModel.swift in Sources */,
 				2348B3FD2892D16C001095BC /* Loadable.swift in Sources */,
 				2348B4012892D1A6001095BC /* UITextField+.swift in Sources */,
 				23F5717528A92D4A005F2E21 /* ProfileRecordStackView.swift in Sources */,
@@ -780,6 +819,7 @@
 				23F5716D28A6A61E005F2E21 /* MiniMapVC.swift in Sources */,
 				23F5717928A94AA5005F2E21 /* UIString+.swift in Sources */,
 				3CB9DB9C28A92528007BC1BE /* MenuBarCVC.swift in Sources */,
+				230CB2E128AD474E00B11270 /* ChallengeBlockResponseModel.swift in Sources */,
 				2348B3F22892D116001095BC /* urlResource.swift in Sources */,
 				23B7206328A0DCAA00D3A410 /* ProceedingChallengeDataSource.swift in Sources */,
 				238C4DE528A4BFE2000BEE36 /* UIScrollView+.swift in Sources */,
