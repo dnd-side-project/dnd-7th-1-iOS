@@ -8,7 +8,7 @@
 import Foundation
 
 struct urlResource<T: Decodable> {
-    let baseURL = URL(string: "")
+    let baseURL = URL(string: "http://43.200.33.109:8080/")
     let path: String
     var resultURL: URL {
         return path.contains("http")
@@ -20,7 +20,7 @@ struct urlResource<T: Decodable> {
         switch statusCode {
         case 400...409: return .failure(.decode)
         case 500: return .failure(.http(status: statusCode))
-        default: return .failure(.unknown)
+        default: return .failure(.unknown(status: statusCode))
         }
     }
 }
