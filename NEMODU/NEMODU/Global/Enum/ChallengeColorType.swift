@@ -14,7 +14,7 @@ enum ChallengeColorType: String {
 }
 
 extension ChallengeColorType {
-    var annotationColor: UIColor {
+    var primaryColor: UIColor {
         switch self {
         case .red:
             return .red100

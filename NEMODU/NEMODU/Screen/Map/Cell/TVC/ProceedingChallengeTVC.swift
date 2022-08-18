@@ -90,7 +90,7 @@ extension ProceedingChallengeTVC {
     
     // TODO: - 서버 연결 후 수정
     func configureCell(with element: ChallengeElementResponseModel) {
-        challengeIcon.tintColor = ChallengeColorType(rawValue: element.color)?.annotationColor ?? .gray500
+        challengeIcon.tintColor = ChallengeColorType(rawValue: element.color)?.primaryColor ?? .gray500
         challengeTitle.text = element.name
         rank.text = "현재 내 순위: \(element.rank)위"
     }

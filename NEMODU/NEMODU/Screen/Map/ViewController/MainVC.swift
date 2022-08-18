@@ -268,7 +268,7 @@ extension MainVC {
                                                                 $0.longitude - self.mapVC.blockSizePoint / 2],
                                                    profileImage: UIImage(named: "defaultThumbnail")!,
                                                    nickname: $0.nickname,
-                                                   color: ChallengeColorType(rawValue: $0.challengeColor)?.annotationColor ?? .main,
+                                                   color: ChallengeColorType(rawValue: $0.challengeColor)?.primaryColor ?? .main,
                                                    challengeCnt: $0.challengeNumber)
                     self.drawBlockArea(blocks: $0.matrices,
                                        blockColor: ChallengeColorType(rawValue: $0.challengeColor)?.blockColor ?? .gray25)
