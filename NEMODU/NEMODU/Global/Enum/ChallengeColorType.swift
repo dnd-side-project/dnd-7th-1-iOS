@@ -28,9 +28,9 @@ extension ChallengeColorType {
     var blockColor: UIColor {
         switch self {
         case .red:
-            return .red50
+            return .red30
         case .pink:
-            return .pink30
+            return .pink25
         case .yellow:
             return .yellow20
         }
