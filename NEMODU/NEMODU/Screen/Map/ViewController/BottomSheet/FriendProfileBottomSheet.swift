@@ -319,7 +319,7 @@ extension FriendProfileBottomSheet {
                     fatalError()
                 }
                 // 등록
-                cell.configureCell(with: item)
+                cell.configureCell(with: item, isMyList: false)
                 
                 return cell
             })

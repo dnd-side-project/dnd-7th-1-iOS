@@ -156,7 +156,7 @@ extension ChallengeListBottomSheet {
                     fatalError()
                 }
                 // 등록
-                cell.configureCell(with: item)
+                cell.configureCell(with: item, isMyList: true)
                 
                 return cell
             })
