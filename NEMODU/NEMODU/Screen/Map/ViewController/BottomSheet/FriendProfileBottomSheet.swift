@@ -49,7 +49,7 @@ class FriendProfileBottomSheet: DynamicBottomSheetViewController {
     private let lastAccessTime = UILabel()
         .then {
             $0.font = .caption1
-            $0.textColor = .gray500
+            $0.textColor = .gray600
             $0.textAlignment = .center
             $0.text = "최근 활동: -분 전"
         }
@@ -57,7 +57,7 @@ class FriendProfileBottomSheet: DynamicBottomSheetViewController {
     private let profileMessage = UILabel()
         .then {
             $0.font = .caption1
-            $0.textColor = .gray400
+            $0.textColor = .gray700
             $0.textAlignment = .center
             $0.text = "-"
         }
@@ -189,7 +189,7 @@ extension FriendProfileBottomSheet {
     
     private func setProfile(_ profile: ProfileResponseModel) {
         nicknameLabel.text = profile.nickname
-        lastAccessTime.text = profile.lasted
+        lastAccessTime.text = "최근 활동 : \(profile.lasted.relativeDateTime())"
         profileMessage.text = profile.intro
         addFriendBtn.isSelected = profile.isFriend
         recordStackView.setRecordData(value1: profile.areas,
