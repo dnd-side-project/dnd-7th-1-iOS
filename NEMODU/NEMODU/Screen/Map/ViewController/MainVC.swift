@@ -67,10 +67,6 @@ class MainVC: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         viewModel.getAllBlocks()
     }
     
@@ -127,10 +123,10 @@ extension MainVC {
     }
     
     private func drawBlockArea(blocks: [Matrix], blockColor: UIColor) {
-        mapVC.blockColor = blockColor
         blocks.forEach {
             mapVC.drawBlock(latitude: $0.latitude,
-                            longitude: $0.longitude)
+                            longitude: $0.longitude,
+                            color: blockColor)
         }
     }
 }
@@ -240,7 +236,7 @@ extension MainVC {
                                                         user.longitude - self.mapVC.blockSizePoint / 2],
                                            profileImage: UIImage(named: "defaultThumbnail")!)
                 self.drawBlockArea(blocks: user.matrices,
-                                   blockColor: .main)
+                                   blockColor: .main30)
             })
             .disposed(by: bag)
     }
@@ -257,7 +253,7 @@ extension MainVC {
                                                    color: .main,
                                                    challengeCnt: 0)
                     self.drawBlockArea(blocks: $0.matrices,
-                                       blockColor: .gray500)
+                                       blockColor: .gray25)
                 }
             })
             .disposed(by: bag)
@@ -272,10 +268,10 @@ extension MainVC {
                                                                 $0.longitude - self.mapVC.blockSizePoint / 2],
                                                    profileImage: UIImage(named: "defaultThumbnail")!,
                                                    nickname: $0.nickname,
-                                                   color: ChallengeColorType(rawValue: $0.challengeColor)?.annotationColor ?? .gray500,
+                                                   color: ChallengeColorType(rawValue: $0.challengeColor)?.annotationColor ?? .main,
                                                    challengeCnt: $0.challengeNumber)
                     self.drawBlockArea(blocks: $0.matrices,
-                                       blockColor: ChallengeColorType(rawValue: $0.challengeColor)?.blockColor ?? .gray500)
+                                       blockColor: ChallengeColorType(rawValue: $0.challengeColor)?.blockColor ?? .gray25)
                 }
             })
             .disposed(by: bag)

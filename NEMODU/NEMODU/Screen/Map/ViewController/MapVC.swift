@@ -59,7 +59,6 @@ class MapVC: BaseViewController {
     var isFocusOn = true
     var isWalking: Bool?
     var blocks: [[Double]] = []
-    var blockColor: UIColor = .main
     var blocksCnt = BehaviorRelay<Int>(value: 0)
     var updateDistance = BehaviorRelay<Int>(value: 0)
     
@@ -214,7 +213,7 @@ extension MapVC {
     }
     
     /// 특정 좌표에 블록을 그리는 함수
-    func drawBlock(latitude: Double, longitude: Double) {
+    func drawBlock(latitude: Double, longitude: Double, color: UIColor) {
         let latPoint = Int(latitude * mul) / blockSize
         let longPoint = Int(longitude * mul) / blockSize
         
@@ -228,10 +227,12 @@ extension MapVC {
         let overlayBottomRightCoordinate = CLLocationCoordinate2D(latitude: Double((latPoint + 1) * blockSize) / mul,
                                                                   longitude: Double((longPoint) * blockSize) / mul)
         
-        let blockDraw = MKPolygon(coordinates: [overlayTopLeftCoordinate,
-                                                overlayTopRightCoordinate,
-                                                overlayBottomRightCoordinate,
-                                                overlayBottomLeftCoordinate], count: 4)
+        let blockDraw = Block(coordinate: [overlayTopLeftCoordinate,
+                                           overlayTopRightCoordinate,
+                                           overlayBottomRightCoordinate,
+                                           overlayBottomLeftCoordinate],
+                              count: 4,
+                              color: color)
         
         mapView.addOverlay(blockDraw)
     }
@@ -313,7 +314,9 @@ extension MapVC: CLLocationManagerDelegate {
                 // block Point 저장
                 blocks.append([Double((latPoint) * blockSize) / mul, Double((longPoint) * blockSize) / mul])
                 
-                drawBlock(latitude: latitude, longitude: longitude)
+                drawBlock(latitude: latitude,
+                          longitude: longitude,
+                          color: .main30)
 
                 blocksCnt.accept(blocks.count)
             }
@@ -336,11 +339,10 @@ extension MapVC: CLLocationManagerDelegate {
 extension MapVC: MKMapViewDelegate {
     /// 사용자 땅을 칠하는 함수
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-        if overlay is MKPolygon {
-            let block = MKPolygonRenderer(overlay: overlay)
-            block.fillColor = blockColor
-            block.alpha = 0.5
-            return block
+        if let block = overlay as? Block {
+            let blockRenderer = MKPolygonRenderer(overlay: overlay)
+            blockRenderer.fillColor = block.color
+            return blockRenderer
         } else {
             // TODO: - Alert 띄우기
             print("영역을 그릴 수 없습니다")
