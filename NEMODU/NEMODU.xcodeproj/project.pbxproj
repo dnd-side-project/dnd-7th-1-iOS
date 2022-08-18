@@ -221,7 +221,6 @@
 				230CB2D728AD042300B11270 /* MainMapResponseModel.swift */,
 				230CB2DE28AD473100B11270 /* UserBlockResponseModel.swift */,
 				230CB2E028AD474E00B11270 /* ChallengeBlockResponseModel.swift */,
-				230CB2E328AD478000B11270 /* Matrix.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -240,6 +239,29 @@
 				23412FD728AE245D00B73D62 /* Block.swift */,
 			);
 			path = Request;
+			sourceTree = "<group>";
+		};
+		23412FD928AE2A9200B73D62 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				2348B4112892D901001095BC /* LoadingView.swift */,
+				23B86D2028A26F0F00B1630E /* NavigationBar.swift */,
+				238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */,
+				23F5716C28A6A61D005F2E21 /* MiniMapVC.swift */,
+				23F5716E28A6AD01005F2E21 /* RecordStackView.swift */,
+				23B7206F28A12DBB00D3A410 /* RecordView.swift */,
+				23F5717428A92D4A005F2E21 /* ProfileRecordStackView.swift */,
+				23F5717628A92E38005F2E21 /* ProfileRecordView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		23412FDA28AE2A9B00B73D62 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				230CB2E328AD478000B11270 /* Matrix.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		2348B3B22892C675001095BC = {
@@ -418,14 +440,8 @@
 		2348B4102892D8F8001095BC /* Share */ = {
 			isa = PBXGroup;
 			children = (
-				2348B4112892D901001095BC /* LoadingView.swift */,
-				23B86D2028A26F0F00B1630E /* NavigationBar.swift */,
-				238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */,
-				23F5716C28A6A61D005F2E21 /* MiniMapVC.swift */,
-				23F5716E28A6AD01005F2E21 /* RecordStackView.swift */,
-				23B7206F28A12DBB00D3A410 /* RecordView.swift */,
-				23F5717428A92D4A005F2E21 /* ProfileRecordStackView.swift */,
-				23F5717628A92E38005F2E21 /* ProfileRecordView.swift */,
+				23412FDA28AE2A9B00B73D62 /* Model */,
+				23412FD928AE2A9200B73D62 /* View */,
 			);
 			path = Share;
 			sourceTree = "<group>";
