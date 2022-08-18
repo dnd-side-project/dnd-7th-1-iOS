@@ -44,9 +44,10 @@ class MapVC: BaseViewController {
             $0.setImage(UIImage(named: "location"), for: .normal)
             $0.addShadow()
         }
-    
-    private let mapZoomScale = 0.003
+
+    let blockSizePoint: Double = 0.0003740
     private let blockSize: Int = 37400
+    private let mapZoomScale = 0.003
     private let mul: Double = 100000000
     private let bag = DisposeBag()
     

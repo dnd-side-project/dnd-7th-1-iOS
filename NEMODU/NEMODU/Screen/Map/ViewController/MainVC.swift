@@ -44,23 +44,28 @@ class MainVC: BaseViewController {
     
     private let blocksCnt = UILabel()
         .then {
+            $0.text = "현재 나의 영역: -칸"
             $0.font = .headline2
             $0.textColor = .gray800
         }
     
     private let naviBar = NavigationBar()
+    private let viewModel = MainVM()
     private let bag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.getAllBlocks()
+    }
+    
     override func configureView() {
         super.configureView()
         configureMainView()
         configureNaviBar()
-        // TODO: - 서버 연결 후 이동
-        configureBlocksCnt(72)
         
         // TODO: - 서버 연결 후 수정
         mapVC.addFriendAnnotation(coordinate: [37.329314, -122.019744],
@@ -68,9 +73,6 @@ class MainVC: BaseViewController {
                                   nickname: "가나다라마바사",
                                   color: .pink100,
                                   challengeCnt: 3)
-        
-        mapVC.addMyAnnotation(coordinate: [37.329314, -122.017744],
-                              profileImage: UIImage(named: "defaultThumbnail")!)
     }
     
     override func layoutView() {
@@ -85,6 +87,7 @@ class MainVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        bindMyBlocks()
     }
     
 }
@@ -94,7 +97,7 @@ class MainVC: BaseViewController {
 extension MainVC {
     private func configureMainView() {
         addChild(mapVC)
-        view.addSubviews([mapVC.view, filterBtn, challengeListBtn, startWalkBtn])
+        view.addSubviews([mapVC.view, blocksCnt, filterBtn, challengeListBtn, startWalkBtn])
     }
     
     private func configureNaviBar() {
@@ -106,8 +109,14 @@ extension MainVC {
     }
     
     private func configureBlocksCnt(_ cnt: Int) {
-        view.addSubview(blocksCnt)
         blocksCnt.text = "현재 나의 영역: \(cnt)칸"
+    }
+    
+    private func drawBlockArea(blocks: [Matrix]) {
+        blocks.forEach {
+            mapVC.drawBlock(latitude: $0.latitude,
+                            longitude: $0.longitude)
+        }
     }
 }
 
@@ -191,5 +200,16 @@ extension MainVC {
 // MARK: - Output
 
 extension MainVC {
-    
+    private func bindMyBlocks() {
+        viewModel.output.myBlocks
+            .subscribe(onNext: { [weak self] user in
+                guard let self = self else { return }
+                self.configureBlocksCnt(user.matricesNumber ?? 0)
+                self.mapVC.addMyAnnotation(coordinate: [user.latitude + self.mapVC.blockSizePoint / 2,
+                                                        user.longitude - self.mapVC.blockSizePoint / 2],
+                                           profileImage: UIImage(named: "defaultThumbnail")!)
+                self.drawBlockArea(blocks: user.matrices)
+            })
+            .disposed(by: bag)
+    }
 }
