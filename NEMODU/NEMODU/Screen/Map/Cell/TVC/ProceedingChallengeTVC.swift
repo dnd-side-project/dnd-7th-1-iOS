@@ -23,7 +23,7 @@ class ProceedingChallengeTVC: UITableViewCell {
     
     let rank = UILabel()
         .then {
-            $0.font = .caption2M
+            $0.font = .caption1
             $0.textColor = .gray500
         }
     

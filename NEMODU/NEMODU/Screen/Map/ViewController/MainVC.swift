@@ -29,6 +29,18 @@ class MainVC: BaseViewController {
             $0.setImage(UIImage(named: "challenge"), for: .normal)
             $0.addShadow()
         }
+    private let challengeCnt = UILabel()
+        .then {
+            $0.isHidden = true
+            $0.backgroundColor = .main
+            $0.textColor = .secondary
+            $0.textAlignment = .center
+            $0.font = .caption1
+            $0.layer.borderColor = UIColor.white.cgColor
+            $0.layer.borderWidth = 1
+            $0.layer.cornerRadius = 10
+            $0.clipsToBounds = true
+        }
     
     private var startWalkBtn = UIButton()
         .then {
@@ -44,33 +56,24 @@ class MainVC: BaseViewController {
     
     private let blocksCnt = UILabel()
         .then {
+            $0.text = "현재 나의 영역: -칸"
             $0.font = .headline2
             $0.textColor = .gray800
         }
     
     private let naviBar = NavigationBar()
+    private let viewModel = MainVM()
     private let bag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel.getAllBlocks()
     }
     
     override func configureView() {
         super.configureView()
         configureMainView()
         configureNaviBar()
-        // TODO: - 서버 연결 후 이동
-        configureBlocksCnt(72)
-        
-        // TODO: - 서버 연결 후 수정
-        mapVC.addFriendAnnotation(coordinate: [37.329314, -122.019744],
-                                  profileImage: UIImage(named: "defaultThumbnail")!,
-                                  nickname: "가나다라마바사",
-                                  color: .pink100,
-                                  challengeCnt: 3)
-        
-        mapVC.addMyAnnotation(coordinate: [37.329314, -122.017744],
-                              profileImage: UIImage(named: "defaultThumbnail")!)
     }
     
     override func layoutView() {
@@ -85,6 +88,10 @@ class MainVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        bindChallengeCnt()
+        bindMyBlocks()
+        bindFriendBlocks()
+        bindChallengeFriendBlocks()
     }
     
 }
@@ -94,7 +101,8 @@ class MainVC: BaseViewController {
 extension MainVC {
     private func configureMainView() {
         addChild(mapVC)
-        view.addSubviews([mapVC.view, filterBtn, challengeListBtn, startWalkBtn])
+        view.addSubviews([mapVC.view, blocksCnt, filterBtn, challengeListBtn, startWalkBtn])
+        challengeListBtn.addSubview(challengeCnt)
     }
     
     private func configureNaviBar() {
@@ -106,8 +114,20 @@ extension MainVC {
     }
     
     private func configureBlocksCnt(_ cnt: Int) {
-        view.addSubview(blocksCnt)
         blocksCnt.text = "현재 나의 영역: \(cnt)칸"
+    }
+    
+    private func configureChallengeListBtn(cnt: Int) {
+        challengeCnt.isHidden = cnt == 0
+        challengeCnt.text = String(cnt)
+    }
+    
+    private func drawBlockArea(blocks: [Matrix], blockColor: UIColor) {
+        blocks.forEach {
+            mapVC.drawBlock(latitude: $0.latitude,
+                            longitude: $0.longitude,
+                            color: blockColor)
+        }
     }
 }
 
@@ -135,6 +155,12 @@ extension MainVC {
             $0.top.equalTo(mapVC.currentLocationBtn.snp.bottom).offset(20)
             $0.trailing.equalToSuperview().offset(-20)
             $0.width.height.equalTo(48)
+        }
+        
+        challengeCnt.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.trailing.equalToSuperview().offset(6)
+            $0.width.height.equalTo(20)
         }
         
         startWalkBtn.snp.makeConstraints {
@@ -191,5 +217,63 @@ extension MainVC {
 // MARK: - Output
 
 extension MainVC {
+    private func bindChallengeCnt() {
+        viewModel.output.challengeCnt
+            .subscribe(onNext: { [weak self] cnt in
+                guard let self = self else { return }
+                self.configureChallengeListBtn(cnt: cnt)
+            })
+            .disposed(by: bag)
+    }
     
+    // TODO: - 서버 프로필 이미지 추가 후 수정
+    private func bindMyBlocks() {
+        viewModel.output.myBlocks
+            .subscribe(onNext: { [weak self] user in
+                guard let self = self else { return }
+                self.configureBlocksCnt(user.matricesNumber ?? 0)
+                self.mapVC.addMyAnnotation(coordinate: [user.latitude + self.mapVC.blockSizePoint / 2,
+                                                        user.longitude - self.mapVC.blockSizePoint / 2],
+                                           profileImage: UIImage(named: "defaultThumbnail")!)
+                self.drawBlockArea(blocks: user.matrices,
+                                   blockColor: .main30)
+            })
+            .disposed(by: bag)
+    }
+    
+    private func bindFriendBlocks() {
+        viewModel.output.friendBlocks
+            .subscribe(onNext: { [weak self] friends in
+                guard let self = self else { return }
+                friends.forEach {
+                    self.mapVC.addFriendAnnotation(coordinate: [$0.latitude + self.mapVC.blockSizePoint / 2,
+                                                                $0.longitude - self.mapVC.blockSizePoint / 2],
+                                                   profileImage: UIImage(named: "defaultThumbnail")!,
+                                                   nickname: $0.nickname,
+                                                   color: .main,
+                                                   challengeCnt: 0)
+                    self.drawBlockArea(blocks: $0.matrices,
+                                       blockColor: .gray25)
+                }
+            })
+            .disposed(by: bag)
+    }
+    
+    private func bindChallengeFriendBlocks() {
+        viewModel.output.challengeFriendBlocks
+            .subscribe(onNext: { [weak self] friends in
+                guard let self = self else { return }
+                friends.forEach {
+                    self.mapVC.addFriendAnnotation(coordinate: [$0.latitude + self.mapVC.blockSizePoint / 2,
+                                                                $0.longitude - self.mapVC.blockSizePoint / 2],
+                                                   profileImage: UIImage(named: "defaultThumbnail")!,
+                                                   nickname: $0.nickname,
+                                                   color: ChallengeColorType(rawValue: $0.challengeColor)?.annotationColor ?? .main,
+                                                   challengeCnt: $0.challengeNumber)
+                    self.drawBlockArea(blocks: $0.matrices,
+                                       blockColor: ChallengeColorType(rawValue: $0.challengeColor)?.blockColor ?? .gray25)
+                }
+            })
+            .disposed(by: bag)
+    }
 }

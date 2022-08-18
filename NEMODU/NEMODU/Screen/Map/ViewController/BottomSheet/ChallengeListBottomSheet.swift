@@ -30,7 +30,7 @@ class ChallengeListBottomSheet: DynamicBottomSheetViewController {
     private let noneMessage = UILabel()
         .then {
             $0.text = "지금 진행중인 챌린지가 없습니다.\n친구들과 일주일 챌린지, 실시간 챌린지를 할 수 있어요!"
-            $0.font = .caption2R
+            $0.font = .caption1
             $0.textColor = .gray500
             $0.setLineBreakMode()
             $0.textAlignment = .center

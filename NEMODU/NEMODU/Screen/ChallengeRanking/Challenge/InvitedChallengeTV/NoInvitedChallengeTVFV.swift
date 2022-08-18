@@ -18,7 +18,7 @@ class NoInvitedChallengeTVFV : UITableViewHeaderFooterView {
     let invitedChallengeLabel = UILabel()
         .then {
             $0.text = "초대받은 챌린지가 없습니다."
-            $0.font = .caption2R
+            $0.font = .caption1
             $0.textColor = .gray500
         }
     

@@ -62,14 +62,6 @@ extension UIFont {
         PretendardRegular(size: 12)
     }
     
-    @nonobjc class var caption2R: UIFont{
-        PretendardRegular(size: 11)
-    }
-    
-    @nonobjc class var caption2M: UIFont{
-        PretendardMedium(size: 11)
-    }
-    
     
     // Basic
     class func PretendardBlack(size: CGFloat) -> UIFont {

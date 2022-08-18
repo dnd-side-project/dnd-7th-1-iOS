@@ -129,10 +129,14 @@ extension RecordResultVC {
         let sortedLatitude = blocks.sorted(by: { $0[0] < $1[0] })
         let sortedLongitude = blocks.sorted(by: { $0[1] < $1[1] })
         
-        _ = miniMap.goLocation(latitudeValue: sortedLatitude[blocks.count/2][0], longitudeValue: sortedLongitude[blocks.count/2][1] - 0.0001, delta: 0.003)
+        _ = miniMap.goLocation(latitudeValue: sortedLatitude[blocks.count/2][0],
+                               longitudeValue: sortedLongitude[blocks.count/2][1] - 0.0001,
+                               delta: 0.003)
         
         blocks.forEach {
-            miniMap.drawBlock(latitude: $0[0], longitude: $0[1])
+            miniMap.drawBlock(latitude: $0[0],
+                              longitude: $0[1],
+                              color: .main30)
         }
     }
     

@@ -34,6 +34,7 @@ class FriendProfileBottomSheet: DynamicBottomSheetViewController {
         .then {
             $0.setImage(UIImage(named: "defaultThumbnail"), for: .normal)
             $0.layer.cornerRadius = 48
+            $0.clipsToBounds = true
         }
     
     private let nickname = UILabel()
@@ -101,7 +102,7 @@ class FriendProfileBottomSheet: DynamicBottomSheetViewController {
     private let noneMessage = UILabel()
         .then {
             $0.text = "함께 진행중인 챌린지가 없습니다.\n일주일 챌린지, 실시간 챌린지를 신청해 함께 시작해보세요!"
-            $0.font = .caption2R
+            $0.font = .caption1
             $0.textColor = .gray500
             $0.setLineBreakMode()
             $0.textAlignment = .center

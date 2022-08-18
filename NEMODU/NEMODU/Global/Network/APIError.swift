@@ -10,7 +10,7 @@ import Foundation
 enum APIError: Error {
     case decode
     case http(status: Int)
-    case unknown
+    case unknown(status: Int)
 }
 
 extension APIError: CustomStringConvertible {
@@ -20,8 +20,8 @@ extension APIError: CustomStringConvertible {
             return "Decode Error"
         case let .http(status):
             return "HTTP Error: \(status)"
-        case .unknown:
-            return "Unknown Error"
+        case let .unknown(status):
+            return "Unknown Error: \(status)"
         }
     }
 }
