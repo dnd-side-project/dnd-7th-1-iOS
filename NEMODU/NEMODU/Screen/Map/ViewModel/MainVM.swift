@@ -80,10 +80,8 @@ extension MainVM {
             .subscribe(onNext: { owner, result in
                 switch result {
                 case .failure(let error):
-                    dump(error)
                     owner.apiError.onNext(error)
                 case .success(let data):
-                    dump(data)
                     owner.output.challengeCnt.accept(data.challengesNumber)
                     owner.output.myBlocks.accept(data.userMatrices)
                     owner.output.friendBlocks.accept(data.friendMatrices)
