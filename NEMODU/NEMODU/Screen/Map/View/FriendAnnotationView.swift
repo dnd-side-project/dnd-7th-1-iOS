@@ -157,5 +157,6 @@ extension FriendAnnotationView {
     private func configureFrame() {
         invalidateIntrinsicContentSize()
         frame.size = intrinsicContentSize
+        centerOffset = CGPoint(x: 0, y: -frame.size.height / 2)
     }
 }
