@@ -272,7 +272,6 @@ extension FriendProfileBottomSheet: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ProceedingChallengeTVC.className, for: indexPath)
                 as? ProceedingChallengeTVC else { fatalError() }
-        cell.configureCell()
         return cell
     }
 }

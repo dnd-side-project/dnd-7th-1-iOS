@@ -16,6 +16,8 @@
 		23412FD228AD494500B73D62 /* MainVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23412FD128AD494500B73D62 /* MainVM.swift */; };
 		23412FD628AE080000B73D62 /* ChallengeColorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23412FD528AE080000B73D62 /* ChallengeColorType.swift */; };
 		23412FD828AE245D00B73D62 /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23412FD728AE245D00B73D62 /* Block.swift */; };
+		23412FDC28AE375D00B73D62 /* ChallengeElementResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23412FDB28AE375D00B73D62 /* ChallengeElementResponseModel.swift */; };
+		23412FDE28AE396D00B73D62 /* ChallengeListVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23412FDD28AE396D00B73D62 /* ChallengeListVM.swift */; };
 		2348B3BF2892C675001095BC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348B3BE2892C675001095BC /* AppDelegate.swift */; };
 		2348B3C82892C676001095BC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2348B3C72892C676001095BC /* Assets.xcassets */; };
 		2348B3CB2892C676001095BC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2348B3C92892C676001095BC /* LaunchScreen.storyboard */; };
@@ -103,6 +105,8 @@
 		23412FD128AD494500B73D62 /* MainVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVM.swift; sourceTree = "<group>"; };
 		23412FD528AE080000B73D62 /* ChallengeColorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeColorType.swift; sourceTree = "<group>"; };
 		23412FD728AE245D00B73D62 /* Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
+		23412FDB28AE375D00B73D62 /* ChallengeElementResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeElementResponseModel.swift; sourceTree = "<group>"; };
+		23412FDD28AE396D00B73D62 /* ChallengeListVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeListVM.swift; sourceTree = "<group>"; };
 		2348B3BB2892C675001095BC /* NEMODU.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NEMODU.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2348B3BE2892C675001095BC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2348B3C72892C676001095BC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -221,6 +225,7 @@
 				230CB2D728AD042300B11270 /* MainMapResponseModel.swift */,
 				230CB2DE28AD473100B11270 /* UserBlockResponseModel.swift */,
 				230CB2E028AD474E00B11270 /* ChallengeBlockResponseModel.swift */,
+				23412FDB28AE375D00B73D62 /* ChallengeElementResponseModel.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -357,6 +362,7 @@
 				2348B3DA2892CF29001095BC /* MapVM.swift */,
 				23412FD128AD494500B73D62 /* MainVM.swift */,
 				23B7207328A2227000D3A410 /* WalkingVM.swift */,
+				23412FDD28AE396D00B73D62 /* ChallengeListVM.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -783,6 +789,7 @@
 			files = (
 				2348B3F92892D151001095BC /* Input.swift in Sources */,
 				3C08137B28A91C00009F854B /* ChallengeRankingMenuBarCV.swift in Sources */,
+				23412FDE28AE396D00B73D62 /* ChallengeListVM.swift in Sources */,
 				23B7207028A12DBB00D3A410 /* RecordView.swift in Sources */,
 				23F5718228AA6038005F2E21 /* UIImage+.swift in Sources */,
 				2348B4252892E007001095BC /* NEMODUTBC.swift in Sources */,
@@ -814,6 +821,7 @@
 				2348B4032892D1D9001095BC /* UITextView+.swift in Sources */,
 				2348B4072892D286001095BC /* UIView+.swift in Sources */,
 				2348B3EE2892D0ED001095BC /* APIService.swift in Sources */,
+				23412FDC28AE375D00B73D62 /* ChallengeElementResponseModel.swift in Sources */,
 				23412FD828AE245D00B73D62 /* Block.swift in Sources */,
 				238C4DE328A3F0D6000BEE36 /* NemoduTextView.swift in Sources */,
 				23F5717E28AA1A11005F2E21 /* FriendAnnotationView.swift in Sources */,

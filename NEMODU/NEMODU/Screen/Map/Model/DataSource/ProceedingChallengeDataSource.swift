@@ -14,7 +14,7 @@ struct ProceedingChallengeDataSource {
 }
 
 extension ProceedingChallengeDataSource: SectionModelType {
-    typealias Item = String
+    typealias Item = ChallengeElementResponseModel
     
     init(original: ProceedingChallengeDataSource, items: [Item]) {
         self = original
