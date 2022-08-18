@@ -33,17 +33,17 @@ class MapVC: BaseViewController {
             $0.startUpdatingLocation()
             $0.activityType = .fitness
         }
-    
-    let activityManager = CMMotionActivityManager()
-    let pedoMeter = CMPedometer()
-    var stepCnt = 0
-    var pauseCnt = 0
 
     var currentLocationBtn = UIButton()
         .then {
             $0.setImage(UIImage(named: "location"), for: .normal)
             $0.addShadow()
         }
+    
+    let activityManager = CMMotionActivityManager()
+    let pedoMeter = CMPedometer()
+    var stepCnt = 0
+    var pauseCnt = 0
 
     let blockSizePoint: Double = 0.0003740
     private let blockSize: Int = 37400
@@ -59,6 +59,7 @@ class MapVC: BaseViewController {
     var isFocusOn = true
     var isWalking: Bool?
     var blocks: [[Double]] = []
+    var blockColor: UIColor = .main
     var blocksCnt = BehaviorRelay<Int>(value: 0)
     var updateDistance = BehaviorRelay<Int>(value: 0)
     
@@ -337,7 +338,7 @@ extension MapVC: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKPolygon {
             let block = MKPolygonRenderer(overlay: overlay)
-            block.fillColor = .main
+            block.fillColor = blockColor
             block.alpha = 0.5
             return block
         } else {

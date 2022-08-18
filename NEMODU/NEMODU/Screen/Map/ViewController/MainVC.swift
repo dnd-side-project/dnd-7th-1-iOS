@@ -78,13 +78,6 @@ class MainVC: BaseViewController {
         super.configureView()
         configureMainView()
         configureNaviBar()
-        
-        // TODO: - 서버 연결 후 수정
-        mapVC.addFriendAnnotation(coordinate: [37.329314, -122.019744],
-                                  profileImage: UIImage(named: "defaultThumbnail")!,
-                                  nickname: "가나다라마바사",
-                                  color: .pink100,
-                                  challengeCnt: 3)
     }
     
     override func layoutView() {
@@ -101,6 +94,8 @@ class MainVC: BaseViewController {
         super.bindOutput()
         bindChallengeCnt()
         bindMyBlocks()
+        bindFriendBlocks()
+        bindChallengeFriendBlocks()
     }
     
 }
@@ -131,7 +126,8 @@ extension MainVC {
         challengeCnt.text = String(cnt)
     }
     
-    private func drawBlockArea(blocks: [Matrix]) {
+    private func drawBlockArea(blocks: [Matrix], blockColor: UIColor) {
+        mapVC.blockColor = blockColor
         blocks.forEach {
             mapVC.drawBlock(latitude: $0.latitude,
                             longitude: $0.longitude)
@@ -234,6 +230,7 @@ extension MainVC {
             .disposed(by: bag)
     }
     
+    // TODO: - 서버 프로필 이미지 추가 후 수정
     private func bindMyBlocks() {
         viewModel.output.myBlocks
             .subscribe(onNext: { [weak self] user in
@@ -242,7 +239,44 @@ extension MainVC {
                 self.mapVC.addMyAnnotation(coordinate: [user.latitude + self.mapVC.blockSizePoint / 2,
                                                         user.longitude - self.mapVC.blockSizePoint / 2],
                                            profileImage: UIImage(named: "defaultThumbnail")!)
-                self.drawBlockArea(blocks: user.matrices)
+                self.drawBlockArea(blocks: user.matrices,
+                                   blockColor: .main)
+            })
+            .disposed(by: bag)
+    }
+    
+    private func bindFriendBlocks() {
+        viewModel.output.friendBlocks
+            .subscribe(onNext: { [weak self] friends in
+                guard let self = self else { return }
+                friends.forEach {
+                    self.mapVC.addFriendAnnotation(coordinate: [$0.latitude + self.mapVC.blockSizePoint / 2,
+                                                                $0.longitude - self.mapVC.blockSizePoint / 2],
+                                                   profileImage: UIImage(named: "defaultThumbnail")!,
+                                                   nickname: $0.nickname,
+                                                   color: .main,
+                                                   challengeCnt: 0)
+                    self.drawBlockArea(blocks: $0.matrices,
+                                       blockColor: .gray500)
+                }
+            })
+            .disposed(by: bag)
+    }
+    
+    private func bindChallengeFriendBlocks() {
+        viewModel.output.challengeFriendBlocks
+            .subscribe(onNext: { [weak self] friends in
+                guard let self = self else { return }
+                friends.forEach {
+                    self.mapVC.addFriendAnnotation(coordinate: [$0.latitude + self.mapVC.blockSizePoint / 2,
+                                                                $0.longitude - self.mapVC.blockSizePoint / 2],
+                                                   profileImage: UIImage(named: "defaultThumbnail")!,
+                                                   nickname: $0.nickname,
+                                                   color: ChallengeColorType(rawValue: $0.challengeColor)?.annotationColor ?? .gray500,
+                                                   challengeCnt: $0.challengeNumber)
+                    self.drawBlockArea(blocks: $0.matrices,
+                                       blockColor: ChallengeColorType(rawValue: $0.challengeColor)?.blockColor ?? .gray500)
+                }
             })
             .disposed(by: bag)
     }

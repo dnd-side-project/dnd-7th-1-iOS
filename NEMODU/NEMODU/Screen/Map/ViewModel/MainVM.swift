@@ -86,6 +86,8 @@ extension MainVM {
                     dump(data)
                     owner.output.challengeCnt.accept(data.challengesNumber)
                     owner.output.myBlocks.accept(data.userMatrices)
+                    owner.output.friendBlocks.accept(data.friendMatrices)
+                    owner.output.challengeFriendBlocks.accept(data.challengeMatrices)
                 }
             })
             .disposed(by: bag)
