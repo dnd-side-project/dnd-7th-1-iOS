@@ -106,7 +106,8 @@ extension RecordResultVC {
         naviBar.configureNaviBar(targetVC: self,
                                  title: "\(month)월 \(day)일의 기록")
         naviBar.configureRightBarBtn(targetVC: self,
-                                     image: naviBar.naviType.backBtnImage)
+                                     title: "저장",
+                                     titleColor: .main)
     }
     
     private func configureContentView() {
