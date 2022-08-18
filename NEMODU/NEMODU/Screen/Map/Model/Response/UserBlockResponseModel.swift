@@ -9,7 +9,7 @@ import Foundation
 
 struct UserBlockResponseModel: Codable {
     let nickname: String
-    let latitude, longitude: Double
-    let matrices: [Matrix]
+    let latitude, longitude: Double?
+    let matrices: [Matrix]?
     let matricesNumber: Int?
 }
