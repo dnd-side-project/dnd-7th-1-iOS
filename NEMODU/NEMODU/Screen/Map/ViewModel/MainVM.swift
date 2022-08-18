@@ -9,7 +9,6 @@ import RxCocoa
 import RxSwift
 
 protocol MainViewModelOutput: Lodable {
-    var onError: PublishSubject<APIError> { get }
     var challengeCnt: PublishRelay<Int> { get }
     var myBlocks: PublishRelay<UserBlockResponseModel> { get }
     var friendBlocks: PublishRelay<[UserBlockResponseModel]> { get }
@@ -30,7 +29,6 @@ final class MainVM: BaseViewModel {
     // MARK: - Output
     
     struct Output: MainViewModelOutput {
-        var onError = PublishSubject<APIError>()
         var loading = BehaviorRelay<Bool>(value: false)
         var challengeCnt = PublishRelay<Int>()
         var myBlocks = PublishRelay<UserBlockResponseModel>()

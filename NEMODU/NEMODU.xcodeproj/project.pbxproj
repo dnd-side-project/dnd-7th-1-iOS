@@ -23,7 +23,6 @@
 		2348B3BF2892C675001095BC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348B3BE2892C675001095BC /* AppDelegate.swift */; };
 		2348B3C82892C676001095BC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2348B3C72892C676001095BC /* Assets.xcassets */; };
 		2348B3CB2892C676001095BC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2348B3C92892C676001095BC /* LaunchScreen.storyboard */; };
-		2348B3DB2892CF29001095BC /* MapVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348B3DA2892CF29001095BC /* MapVM.swift */; };
 		2348B3DD2892CF92001095BC /* MapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348B3DC2892CF92001095BC /* MapVC.swift */; };
 		2348B3E12892D046001095BC /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348B3E02892D046001095BC /* BaseView.swift */; };
 		2348B3E32892D064001095BC /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348B3E22892D064001095BC /* BaseCollectionViewCell.swift */; };
@@ -116,7 +115,6 @@
 		2348B3C72892C676001095BC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2348B3CA2892C676001095BC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2348B3CC2892C676001095BC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2348B3DA2892CF29001095BC /* MapVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapVM.swift; sourceTree = "<group>"; };
 		2348B3DC2892CF92001095BC /* MapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapVC.swift; sourceTree = "<group>"; };
 		2348B3E02892D046001095BC /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 		2348B3E22892D064001095BC /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -364,7 +362,6 @@
 		2348B3D92892CF10001095BC /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				2348B3DA2892CF29001095BC /* MapVM.swift */,
 				23412FD128AD494500B73D62 /* MainVM.swift */,
 				23B7207328A2227000D3A410 /* WalkingVM.swift */,
 				23412FDD28AE396D00B73D62 /* ChallengeListVM.swift */,
@@ -821,7 +818,6 @@
 				23B86D1F28A26EEF00B1630E /* NaviType.swift in Sources */,
 				2348B3E72892D08D001095BC /* BaseViewModel.swift in Sources */,
 				2348B4092892D2E5001095BC /* UIViewController+.swift in Sources */,
-				2348B3DB2892CF29001095BC /* MapVM.swift in Sources */,
 				23F5718828AA6DEE005F2E21 /* MyAnnotationView.swift in Sources */,
 				23F5717728A92E38005F2E21 /* ProfileRecordView.swift in Sources */,
 				23412FD628AE080000B73D62 /* ChallengeColorType.swift in Sources */,

@@ -9,7 +9,6 @@ import RxCocoa
 import RxSwift
 
 protocol ChallengeListViewModelOutput: Lodable {
-    var onError: PublishSubject<APIError> { get }
     var challengeList: BehaviorRelay<[ChallengeElementResponseModel]> { get }
     var dataSource: Observable<[ProceedingChallengeDataSource]> { get }
 }
@@ -28,7 +27,6 @@ final class ChallengeListVM: BaseViewModel {
     // MARK: - Output
     
     struct Output: ChallengeListViewModelOutput {
-        var onError = PublishSubject<APIError>()
         var loading = BehaviorRelay<Bool>(value: false)
         var challengeList: BehaviorRelay<[ChallengeElementResponseModel]> = BehaviorRelay(value: [])
         var dataSource: Observable<[ProceedingChallengeDataSource]> {
