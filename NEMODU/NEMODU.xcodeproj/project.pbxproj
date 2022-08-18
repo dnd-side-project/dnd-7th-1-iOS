@@ -18,6 +18,8 @@
 		23412FD828AE245D00B73D62 /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23412FD728AE245D00B73D62 /* Block.swift */; };
 		23412FDC28AE375D00B73D62 /* ChallengeElementResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23412FDB28AE375D00B73D62 /* ChallengeElementResponseModel.swift */; };
 		23412FDE28AE396D00B73D62 /* ChallengeListVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23412FDD28AE396D00B73D62 /* ChallengeListVM.swift */; };
+		23412FE028AE648300B73D62 /* ProfileResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23412FDF28AE648300B73D62 /* ProfileResponseModel.swift */; };
+		23412FE228AE64D100B73D62 /* FriendProfileVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23412FE128AE64D100B73D62 /* FriendProfileVM.swift */; };
 		2348B3BF2892C675001095BC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348B3BE2892C675001095BC /* AppDelegate.swift */; };
 		2348B3C82892C676001095BC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2348B3C72892C676001095BC /* Assets.xcassets */; };
 		2348B3CB2892C676001095BC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2348B3C92892C676001095BC /* LaunchScreen.storyboard */; };
@@ -107,6 +109,8 @@
 		23412FD728AE245D00B73D62 /* Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
 		23412FDB28AE375D00B73D62 /* ChallengeElementResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeElementResponseModel.swift; sourceTree = "<group>"; };
 		23412FDD28AE396D00B73D62 /* ChallengeListVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeListVM.swift; sourceTree = "<group>"; };
+		23412FDF28AE648300B73D62 /* ProfileResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileResponseModel.swift; sourceTree = "<group>"; };
+		23412FE128AE64D100B73D62 /* FriendProfileVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendProfileVM.swift; sourceTree = "<group>"; };
 		2348B3BB2892C675001095BC /* NEMODU.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NEMODU.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2348B3BE2892C675001095BC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2348B3C72892C676001095BC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -226,6 +230,7 @@
 				230CB2DE28AD473100B11270 /* UserBlockResponseModel.swift */,
 				230CB2E028AD474E00B11270 /* ChallengeBlockResponseModel.swift */,
 				23412FDB28AE375D00B73D62 /* ChallengeElementResponseModel.swift */,
+				23412FDF28AE648300B73D62 /* ProfileResponseModel.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -363,6 +368,7 @@
 				23412FD128AD494500B73D62 /* MainVM.swift */,
 				23B7207328A2227000D3A410 /* WalkingVM.swift */,
 				23412FDD28AE396D00B73D62 /* ChallengeListVM.swift */,
+				23412FE128AE64D100B73D62 /* FriendProfileVM.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -803,6 +809,7 @@
 				2348B3E32892D064001095BC /* BaseCollectionViewCell.swift in Sources */,
 				23B7206128A0D53200D3A410 /* ProceedingChallengeTVC.swift in Sources */,
 				230CB2CB28ABB7B400B11270 /* CountdownVC.swift in Sources */,
+				23412FE028AE648300B73D62 /* ProfileResponseModel.swift in Sources */,
 				3CB9DB9D28A92528007BC1BE /* MenuBarCV.swift in Sources */,
 				2348B3BF2892C675001095BC /* AppDelegate.swift in Sources */,
 				23B7205D28A0CBAC00D3A410 /* ChallengeListBottomSheet.swift in Sources */,
@@ -842,6 +849,7 @@
 				23F5718628AA6DAD005F2E21 /* MyAnnotation.swift in Sources */,
 				3C393FFD28A684DD0012B2B8 /* BaseTableViewCell.swift in Sources */,
 				3C08138028A91C00009F854B /* InvitedChallengeTV.swift in Sources */,
+				23412FE228AE64D100B73D62 /* FriendProfileVM.swift in Sources */,
 				23B72058289808EB00D3A410 /* MapFilterBottomSheet.swift in Sources */,
 				3C08137F28A91C00009F854B /* InvitedChallengeTVC.swift in Sources */,
 				230CB2E428AD478000B11270 /* Matrix.swift in Sources */,

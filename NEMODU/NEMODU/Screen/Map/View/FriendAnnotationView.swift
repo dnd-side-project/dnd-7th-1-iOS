@@ -24,7 +24,7 @@ class FriendAnnotationView: MKAnnotationView {
             $0.addShadow()
         }
     
-    private lazy var nickname = UILabel()
+    lazy var nickname = UILabel()
         .then {
             $0.setLineBreakMode()
             $0.font = .caption1
