@@ -10,6 +10,7 @@ import RxSwift
 
 protocol MainViewModelOutput: Lodable {
     var onError: PublishSubject<APIError> { get }
+    var challengeCnt: PublishRelay<Int> { get }
     var myBlocks: PublishRelay<UserBlockResponseModel> { get }
     var friendBlocks: PublishRelay<[UserBlockResponseModel]> { get }
     var challengeFriendBlocks: PublishRelay<[ChallengeBlockResponseModel]> { get }
@@ -31,6 +32,7 @@ final class MainVM: BaseViewModel {
     struct Output: MainViewModelOutput {
         var onError = PublishSubject<APIError>()
         var loading = BehaviorRelay<Bool>(value: false)
+        var challengeCnt = PublishRelay<Int>()
         var myBlocks = PublishRelay<UserBlockResponseModel>()
         var friendBlocks = PublishRelay<[UserBlockResponseModel]>()
         var challengeFriendBlocks = PublishRelay<[ChallengeBlockResponseModel]>()
@@ -82,6 +84,7 @@ extension MainVM {
                     owner.apiError.onNext(error)
                 case .success(let data):
                     dump(data)
+                    owner.output.challengeCnt.accept(data.challengesNumber)
                     owner.output.myBlocks.accept(data.userMatrices)
                 }
             })

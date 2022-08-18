@@ -29,6 +29,18 @@ class MainVC: BaseViewController {
             $0.setImage(UIImage(named: "challenge"), for: .normal)
             $0.addShadow()
         }
+    private let challengeCnt = UILabel()
+        .then {
+            $0.isHidden = true
+            $0.backgroundColor = .main
+            $0.textColor = .secondary
+            $0.textAlignment = .center
+            $0.font = .caption1
+            $0.layer.borderColor = UIColor.white.cgColor
+            $0.layer.borderWidth = 1
+            $0.layer.cornerRadius = 10
+            $0.clipsToBounds = true
+        }
     
     private var startWalkBtn = UIButton()
         .then {
@@ -87,6 +99,7 @@ class MainVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        bindChallengeCnt()
         bindMyBlocks()
     }
     
@@ -98,6 +111,7 @@ extension MainVC {
     private func configureMainView() {
         addChild(mapVC)
         view.addSubviews([mapVC.view, blocksCnt, filterBtn, challengeListBtn, startWalkBtn])
+        challengeListBtn.addSubview(challengeCnt)
     }
     
     private func configureNaviBar() {
@@ -110,6 +124,11 @@ extension MainVC {
     
     private func configureBlocksCnt(_ cnt: Int) {
         blocksCnt.text = "현재 나의 영역: \(cnt)칸"
+    }
+    
+    private func configureChallengeListBtn(cnt: Int) {
+        challengeCnt.isHidden = cnt == 0
+        challengeCnt.text = String(cnt)
     }
     
     private func drawBlockArea(blocks: [Matrix]) {
@@ -144,6 +163,12 @@ extension MainVC {
             $0.top.equalTo(mapVC.currentLocationBtn.snp.bottom).offset(20)
             $0.trailing.equalToSuperview().offset(-20)
             $0.width.height.equalTo(48)
+        }
+        
+        challengeCnt.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.trailing.equalToSuperview().offset(6)
+            $0.width.height.equalTo(20)
         }
         
         startWalkBtn.snp.makeConstraints {
@@ -200,6 +225,15 @@ extension MainVC {
 // MARK: - Output
 
 extension MainVC {
+    private func bindChallengeCnt() {
+        viewModel.output.challengeCnt
+            .subscribe(onNext: { [weak self] cnt in
+                guard let self = self else { return }
+                self.configureChallengeListBtn(cnt: cnt)
+            })
+            .disposed(by: bag)
+    }
+    
     private func bindMyBlocks() {
         viewModel.output.myBlocks
             .subscribe(onNext: { [weak self] user in
