@@ -114,7 +114,9 @@ extension MiniMapVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                // TODO: - 상세 지도 연결
+                let detailMapVC = DetailMapVC()
+                detailMapVC.getBlocks(blocks: self.blocks)
+                self.navigationController?.pushViewController(detailMapVC, animated: true)
             })
             .disposed(by: bag)
     }

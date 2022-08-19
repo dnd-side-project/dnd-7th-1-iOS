@@ -194,15 +194,15 @@ extension WalkingVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                let recordResultVC = RecordResultVC()
-                recordResultVC.modalPresentationStyle = .fullScreen
-                recordResultVC.configureRecordValue(recordData: RecordDataRequest(distance: self.mapVC.updateDistance.value,
-                                                                                  exerciseTime: self.secondTimeValue,
-                                                                                  blocks: self.mapVC.blocks,
-                                                                                  stepCount: self.mapVC.stepCnt),
-                                                    weekBlockCnt: self.weekBlockCnt)
+                let recordResultNC = RecordResultNC()
+                recordResultNC.modalPresentationStyle = .fullScreen
+                recordResultNC.recordResultVC.configureRecordValue(recordData: RecordDataRequest(distance: self.mapVC.updateDistance.value,
+                                                                                                 exerciseTime: self.secondTimeValue,
+                                                                                                 blocks: self.mapVC.blocks,
+                                                                                                 stepCount: self.mapVC.stepCnt),
+                                                                   weekBlockCnt: self.weekBlockCnt)
                 self.mapVC.stopUpdateStep()
-                self.present(recordResultVC, animated: true)
+                self.present(recordResultNC, animated: true)
             })
             .disposed(by: bag)
         
