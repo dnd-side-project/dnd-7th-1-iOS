@@ -79,7 +79,7 @@ class WalkingVC: BaseViewController {
     
     // TODO: - 서버 연결 후 수정
     private var weekBlockCnt = 0
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         mapVC.updateStep()
@@ -196,11 +196,11 @@ extension WalkingVC {
                 guard let self = self else { return }
                 let recordResultVC = RecordResultVC()
                 recordResultVC.modalPresentationStyle = .fullScreen
-                recordResultVC.configureRecordValue(blocks: self.mapVC.blocks,
-                                                    weekBlockCnt: self.weekBlockCnt,
-                                                    distance: self.mapVC.updateDistance.value,
-                                                    second: self.secondTimeValue,
-                                                    stepCnt: self.mapVC.stepCnt)
+                recordResultVC.configureRecordValue(recordData: RecordDataRequest(distance: self.mapVC.updateDistance.value,
+                                                                                  exerciseTime: self.secondTimeValue,
+                                                                                  blocks: self.mapVC.blocks,
+                                                                                  stepCount: self.mapVC.stepCnt),
+                                                    weekBlockCnt: self.weekBlockCnt)
                 self.mapVC.stopUpdateStep()
                 self.present(recordResultVC, animated: true)
             })
