@@ -22,6 +22,7 @@
 		23412FE228AE64D100B73D62 /* FriendProfileVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23412FE128AE64D100B73D62 /* FriendProfileVM.swift */; };
 		23412FEA28AF795600B73D62 /* RecordDataRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23412FE928AF795600B73D62 /* RecordDataRequest.swift */; };
 		23412FEC28AF81F700B73D62 /* RecordResultVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23412FEB28AF81F700B73D62 /* RecordResultVM.swift */; };
+		23412FEE28AFB5BB00B73D62 /* DetailMapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23412FED28AFB5BB00B73D62 /* DetailMapVC.swift */; };
 		2348B3BF2892C675001095BC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348B3BE2892C675001095BC /* AppDelegate.swift */; };
 		2348B3C82892C676001095BC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2348B3C72892C676001095BC /* Assets.xcassets */; };
 		2348B3CB2892C676001095BC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2348B3C92892C676001095BC /* LaunchScreen.storyboard */; };
@@ -114,6 +115,7 @@
 		23412FE128AE64D100B73D62 /* FriendProfileVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendProfileVM.swift; sourceTree = "<group>"; };
 		23412FE928AF795600B73D62 /* RecordDataRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDataRequest.swift; sourceTree = "<group>"; };
 		23412FEB28AF81F700B73D62 /* RecordResultVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordResultVM.swift; sourceTree = "<group>"; };
+		23412FED28AFB5BB00B73D62 /* DetailMapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailMapVC.swift; sourceTree = "<group>"; };
 		2348B3BB2892C675001095BC /* NEMODU.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NEMODU.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2348B3BE2892C675001095BC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2348B3C72892C676001095BC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -359,6 +361,7 @@
 				23B7206C28A12BE800D3A410 /* WalkingVC.swift */,
 				238C4DDE28A3AC18000BEE36 /* RecordResultVC.swift */,
 				230CB2CA28ABB7B400B11270 /* CountdownVC.swift */,
+				23412FED28AFB5BB00B73D62 /* DetailMapVC.swift */,
 				23B7205B28A0CB8D00D3A410 /* BottomSheet */,
 			);
 			path = ViewController;
@@ -846,6 +849,7 @@
 				2348B3F02892D0FE001095BC /* APISession.swift in Sources */,
 				2348B3E52892D075001095BC /* BaseViewController.swift in Sources */,
 				3C08138428A91C00009F854B /* ChallengeContainerCVC.swift in Sources */,
+				23412FEE28AFB5BB00B73D62 /* DetailMapVC.swift in Sources */,
 				23B7207428A2227000D3A410 /* WalkingVM.swift in Sources */,
 				2348B40D2892D360001095BC /* UIColor+.swift in Sources */,
 				23F5718628AA6DAD005F2E21 /* MyAnnotation.swift in Sources */,
