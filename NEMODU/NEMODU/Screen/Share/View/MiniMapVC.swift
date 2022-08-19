@@ -44,7 +44,6 @@ class MiniMapVC: MapVC {
     override func bindOutput() {
         super.bindOutput()
     }
-    
 }
 
 // MARK: - Configure
@@ -56,11 +55,39 @@ extension MiniMapVC {
         isFocusOn = false
         isWalking = false
         
+        // configure map as read only
         mapView.mapType = .standard
         mapView.showsUserLocation = false
-        mapView.isZoomEnabled = false
-        mapView.isScrollEnabled = false
         mapView.layer.cornerRadius = 15
+        isUserInteractionEnabled(false)
+    }
+    
+    /// 영역 전체가 한 눈에 보이게 지도에 그려주는 함수
+    func drawMiniMap() {
+        let sortedLatitude = blocks.sorted(by: { $0[0] < $1[0] })
+        let sortedLongitude = blocks.sorted(by: { $0[1] < $1[1] })
+        
+        // TODO: - 모든 영역이 보일 수 있도록 delta 값 수정
+        _ = goLocation(latitudeValue: sortedLatitude[blocks.count/2][0],
+                       longitudeValue: sortedLongitude[blocks.count/2][1],
+                       delta: 0.003)
+        
+        blocks.forEach {
+            drawBlock(latitude: $0[0],
+                      longitude: $0[1],
+                      color: .main30)
+        }
+    }
+    
+    /// 영역 전체와 마지막 위치를 지정하는 annotation을 한 눈에 보이게 지도에 그려주는 함수
+    func drawDetailMap(latitude: Double, longitude: Double) {
+        addMyAnnotation(coordinate: [latitude, longitude],
+                        profileImage: UIImage(named: "defaultThumbnail")!)
+        drawMiniMap()
+    }
+    
+    func hideMagnificationBtn() {
+        magnificationBtn.isHidden = true
     }
 }
 
@@ -95,6 +122,4 @@ extension MiniMapVC {
 
 // MARK: - Output
 
-extension MiniMapVC {
-    
-}
+extension MiniMapVC {}
