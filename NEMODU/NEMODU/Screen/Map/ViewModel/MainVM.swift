@@ -9,7 +9,6 @@ import RxCocoa
 import RxSwift
 
 protocol MainViewModelOutput: Lodable {
-    var onError: PublishSubject<APIError> { get }
     var challengeCnt: PublishRelay<Int> { get }
     var myBlocks: PublishRelay<UserBlockResponseModel> { get }
     var friendBlocks: PublishRelay<[UserBlockResponseModel]> { get }
@@ -30,7 +29,6 @@ final class MainVM: BaseViewModel {
     // MARK: - Output
     
     struct Output: MainViewModelOutput {
-        var onError = PublishSubject<APIError>()
         var loading = BehaviorRelay<Bool>(value: false)
         var challengeCnt = PublishRelay<Int>()
         var myBlocks = PublishRelay<UserBlockResponseModel>()
@@ -83,9 +81,15 @@ extension MainVM {
                     owner.apiError.onNext(error)
                 case .success(let data):
                     owner.output.challengeCnt.accept(data.challengesNumber)
-                    owner.output.myBlocks.accept(data.userMatrices)
-                    owner.output.friendBlocks.accept(data.friendMatrices)
-                    owner.output.challengeFriendBlocks.accept(data.challengeMatrices)
+                    if let userMatrices = data.userMatrices {
+                        owner.output.myBlocks.accept(userMatrices)
+                    }
+                    if let friendMatrices = data.friendMatrices {
+                        owner.output.friendBlocks.accept(friendMatrices)
+                    }
+                    if let challengeMatrices = data.challengeMatrices {
+                        owner.output.challengeFriendBlocks.accept(challengeMatrices)
+                    }
                 }
             })
             .disposed(by: bag)

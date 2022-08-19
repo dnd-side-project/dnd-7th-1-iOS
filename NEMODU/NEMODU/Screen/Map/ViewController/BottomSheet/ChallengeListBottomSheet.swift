@@ -53,11 +53,18 @@ class ChallengeListBottomSheet: DynamicBottomSheetViewController {
             $0.backgroundColor = .white
         }
     
-    var challengeCnt: Int?
+    private let viewModel = ChallengeListVM()
+    private let bag = DisposeBag()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.getProceedingChallengeList()
+    }
     
     override func configureView() {
         super.configureView()
         configureBottomSheet()
+        bindTableView()
     }
 }
 
@@ -84,9 +91,6 @@ extension ChallengeListBottomSheet {
             $0.centerX.equalToSuperview()
             $0.top.equalTo(viewBar.snp.bottom).offset(8)
         }
-        
-        challengeCnt == 0 || challengeCnt == nil
-        ? configureNoneData() : configureChallengeListTV()
     }
     
     private func configureChallengeListTV() {
@@ -94,7 +98,6 @@ extension ChallengeListBottomSheet {
         
         proceedingChallengeTV.register(ProceedingChallengeTVC.self,
                                        forCellReuseIdentifier: ProceedingChallengeTVC.className)
-        proceedingChallengeTV.dataSource = self
         proceedingChallengeTV.delegate = self
         
         proceedingChallengeTV.snp.makeConstraints {
@@ -122,35 +125,42 @@ extension ChallengeListBottomSheet {
     }
 }
 
-// MARK: - UITableViewDataSource
-extension ChallengeListBottomSheet: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        challengeCnt ?? 0
+// MARK: - Output
+extension ChallengeListBottomSheet {
+    func bindTableView() {
+        viewModel.output.dataSource
+            .bind(to: proceedingChallengeTV.rx.items(dataSource: tableViewDataSource()))
+            .disposed(by: bag)
+        
+        viewModel.output.challengeList
+            .withUnretained(self)
+            .subscribe(onNext: { owner, item in
+                item.count == 0
+                ? owner.configureNoneData()
+                : owner.configureChallengeListTV()
+                owner.proceedingChallengeTV.reloadData()
+            })
+            .disposed(by: bag)
     }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: ProceedingChallengeTVC.className, for: indexPath)
-                as? ProceedingChallengeTVC else { fatalError() }
-        cell.configureCell()
-        return cell
+}
+
+// MARK: - DataSource
+extension ChallengeListBottomSheet {
+    func tableViewDataSource() -> RxTableViewSectionedReloadDataSource<ProceedingChallengeDataSource> {
+        RxTableViewSectionedReloadDataSource<ProceedingChallengeDataSource>(
+            configureCell: { dataSource, tableView, indexPath, item in
+                guard let cell = tableView.dequeueReusableCell(
+                    withIdentifier: ProceedingChallengeTVC.className,
+                    for: indexPath
+                ) as? ProceedingChallengeTVC else {
+                    fatalError()
+                }
+                // 등록
+                cell.configureCell(with: item, isMyList: true)
+                
+                return cell
+            })
     }
-    
-    // TODO: - 서버 연결 후 dataSource 수정
-//    func tableViewDataSource() -> RxTableViewSectionedReloadDataSource<ProceedingChallengeDataSource> {
-//        RxTableViewSectionedReloadDataSource<ProceedingChallengeDataSource>(
-//            configureCell: { dataSource, tableView, indexPath, item in
-//                guard let cell = tableView.dequeueReusableCell(
-//                    withIdentifier: ProceedingChallengeTVC.className,
-//                    for: indexPath
-//                ) as? ProceedingChallengeTVC else {
-//                    fatalError()
-//                }
-//                // 등록
-//                cell.configureCell()
-//
-//                return cell
-//            })
-//    }
 }
 
 // MARK: - UITableViewDelegate

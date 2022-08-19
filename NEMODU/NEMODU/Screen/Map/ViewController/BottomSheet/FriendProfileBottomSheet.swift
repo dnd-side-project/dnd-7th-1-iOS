@@ -10,6 +10,7 @@ import Then
 import SnapKit
 import RxSwift
 import RxCocoa
+import RxDataSources
 import DynamicBottomSheet
 
 class FriendProfileBottomSheet: DynamicBottomSheetViewController {
@@ -37,7 +38,7 @@ class FriendProfileBottomSheet: DynamicBottomSheetViewController {
             $0.clipsToBounds = true
         }
     
-    private let nickname = UILabel()
+    private let nicknameLabel = UILabel()
         .then {
             $0.font = .title3SB
             $0.textColor = .gray900
@@ -48,7 +49,7 @@ class FriendProfileBottomSheet: DynamicBottomSheetViewController {
     private let lastAccessTime = UILabel()
         .then {
             $0.font = .caption1
-            $0.textColor = .gray500
+            $0.textColor = .gray600
             $0.textAlignment = .center
             $0.text = "최근 활동: -분 전"
         }
@@ -56,7 +57,7 @@ class FriendProfileBottomSheet: DynamicBottomSheetViewController {
     private let profileMessage = UILabel()
         .then {
             $0.font = .caption1
-            $0.textColor = .gray400
+            $0.textColor = .gray700
             $0.textAlignment = .center
             $0.text = "-"
         }
@@ -116,42 +117,49 @@ class FriendProfileBottomSheet: DynamicBottomSheetViewController {
             $0.backgroundColor = .white
         }
     
+    var nickname: String?
+    private let viewModel = FriendProfileVM()
     private let bag = DisposeBag()
-    var challengeCnt: Int?
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        getFriendProfile()
+    }
     
     override func configureView() {
         super.configureView()
         configureBottomSheet()
         configureLayout()
         bindBtn()
+        bindProfile()
+        bindTableView()
     }
 }
 
 // MARK: - Configure
 
 extension FriendProfileBottomSheet {
+    private func getFriendProfile() {
+        guard let nickname = nickname else {
+            // TODO: - 오류 Popup 띄우기
+            dismiss(animated: false)
+            return
+        }
+        viewModel.getFriendProfile(friendNickname: nickname)
+    }
+    
     private func configureBottomSheet() {
         contentView.backgroundColor = UIColor.clear
         contentView.addSubview(baseView)
         baseView.addSubviews([profileView,
                               challengeListView])
-        profileView.addSubviews([nickname,
+        profileView.addSubviews([nicknameLabel,
                                  profileImgBtn,
                                  lastAccessTime,
                                  profileMessage,
                                  addFriendBtn,
                                  recordStackView])
         challengeListView.addSubview(listTitle)
-        
-        
-        challengeCnt == 0 || challengeCnt == nil
-        ? configureNoneData() : configureChallengeListTV()
-        
-        // TODO: - 서버 연결 후 수정
-        recordStackView.setRecordData(value1: 9,
-                                      value2: 1030,
-                                      value3: 1)
-        recordStackView.secondView.recordValue.insertComma()
     }
     
     private func configureNoneData() {
@@ -164,24 +172,30 @@ extension FriendProfileBottomSheet {
         }
     }
     
-    private func configureChallengeListTV() {
+    private func configureChallengeListTV(challengeCnt: Int) {
         challengeListView.addSubview(proceedingChallengeTV)
         
         proceedingChallengeTV.register(ProceedingChallengeTVC.self,
                                        forCellReuseIdentifier: ProceedingChallengeTVC.className)
-        proceedingChallengeTV.dataSource = self
         proceedingChallengeTV.delegate = self
         
         proceedingChallengeTV.snp.makeConstraints {
             $0.top.equalTo(listTitle.snp.bottom)
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(view.safeAreaLayoutGuide)
-            $0.height.equalTo(69 * (challengeCnt ?? 0))
+            $0.height.equalTo(69 * challengeCnt)
         }
     }
     
-    func setProfile() {
-        // TODO: - friend Model 생성 후 연결
+    private func setProfile(_ profile: ProfileResponseModel) {
+        nicknameLabel.text = profile.nickname
+        lastAccessTime.text = "최근 활동 : \(profile.lasted.relativeDateTime())"
+        profileMessage.text = profile.intro
+        addFriendBtn.isSelected = profile.isFriend
+        recordStackView.setRecordData(value1: profile.areas,
+                                      value2: profile.allMatrixNumber,
+                                      value3: profile.rank)
+        recordStackView.secondView.recordValue.insertComma()
     }
 }
 
@@ -204,14 +218,14 @@ extension FriendProfileBottomSheet {
             $0.height.width.equalTo(96)
         }
         
-        nickname.snp.makeConstraints {
+        nicknameLabel.snp.makeConstraints {
             $0.top.equalTo(profileImgBtn.snp.bottom).offset(12)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(24)
         }
         
         lastAccessTime.snp.makeConstraints {
-            $0.top.equalTo(nickname.snp.bottom).offset(4)
+            $0.top.equalTo(nicknameLabel.snp.bottom).offset(4)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(14)
         }
@@ -263,17 +277,52 @@ extension FriendProfileBottomSheet {
     }
 }
 
-// MARK: - UITableViewDataSource
-extension FriendProfileBottomSheet: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        challengeCnt ?? 0
+// MARK: - Output
+
+extension FriendProfileBottomSheet {
+    func bindProfile() {
+        viewModel.output.profileData
+            .withUnretained(self)
+            .subscribe(onNext: { owner, item in
+                owner.setProfile(item)
+            })
+            .disposed(by: bag)
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: ProceedingChallengeTVC.className, for: indexPath)
-                as? ProceedingChallengeTVC else { fatalError() }
-        cell.configureCell()
-        return cell
+    func bindTableView() {
+        viewModel.output.dataSource
+            .bind(to: proceedingChallengeTV.rx.items(dataSource: tableViewDataSource()))
+            .disposed(by: bag)
+        
+        viewModel.output.challengeList
+            .withUnretained(self)
+            .subscribe(onNext: { owner, item in
+                item.count == 0
+                ? owner.configureNoneData()
+                : owner.configureChallengeListTV(challengeCnt: item.count)
+                owner.proceedingChallengeTV.reloadData()
+            })
+            .disposed(by: bag)
+    }
+}
+
+// MARK: - DataSource
+
+extension FriendProfileBottomSheet {
+    func tableViewDataSource() -> RxTableViewSectionedReloadDataSource<ProceedingChallengeDataSource> {
+        RxTableViewSectionedReloadDataSource<ProceedingChallengeDataSource>(
+            configureCell: { dataSource, tableView, indexPath, item in
+                guard let cell = tableView.dequeueReusableCell(
+                    withIdentifier: ProceedingChallengeTVC.className,
+                    for: indexPath
+                ) as? ProceedingChallengeTVC else {
+                    fatalError()
+                }
+                // 등록
+                cell.configureCell(with: item, isMyList: false)
+                
+                return cell
+            })
     }
 }
 

@@ -12,6 +12,8 @@ import Then
 class ProceedingChallengeTVC: UITableViewCell {
     let challengeIcon = UIImageView()
         .then {
+            $0.image = UIImage(named: "badge_flag")?.withRenderingMode(.alwaysTemplate)
+            $0.backgroundColor = .white
             $0.layer.cornerRadius = 8
         }
     
@@ -68,7 +70,7 @@ extension ProceedingChallengeTVC {
         }
         
         challengeTitle.snp.makeConstraints {
-            $0.top.equalTo(challengeIcon)
+            $0.top.equalTo(challengeIcon).offset(-2)
             $0.leading.equalTo(challengeIcon.snp.trailing).offset(8)
             $0.trailing.equalTo(arrow.snp.leading)
         }
@@ -86,10 +88,11 @@ extension ProceedingChallengeTVC {
         }
     }
     
-    // TODO: - 서버 연결 후 수정
-    func configureCell() {
-        challengeIcon.image = UIImage(systemName: "person.circle")
-        challengeTitle.text = "챌린지 이름"
-        rank.text = "현재 내 순위: 1위"
+    func configureCell(with element: ChallengeElementResponseModel, isMyList: Bool) {
+        challengeIcon.tintColor = ChallengeColorType(rawValue: element.color)?.primaryColor ?? .gray500
+        challengeTitle.text = element.name
+        rank.text = isMyList
+        ? "현재 내 순위: \(element.rank)위"
+        : "현재 순위: \(element.rank)위"
     }
 }

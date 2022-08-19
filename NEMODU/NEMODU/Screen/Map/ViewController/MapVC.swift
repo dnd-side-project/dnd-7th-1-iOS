@@ -369,6 +369,7 @@ extension MapVC: MKMapViewDelegate {
             annotation.setSelected(true, animated: true)
             
             let friendBottomSheet = FriendProfileBottomSheet()
+            friendBottomSheet.nickname = annotation.nickname.text
             self.present(friendBottomSheet, animated: true)
         }
     }

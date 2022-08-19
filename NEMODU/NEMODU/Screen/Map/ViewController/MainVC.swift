@@ -232,10 +232,13 @@ extension MainVC {
             .subscribe(onNext: { [weak self] user in
                 guard let self = self else { return }
                 self.configureBlocksCnt(user.matricesNumber ?? 0)
-                self.mapVC.addMyAnnotation(coordinate: [user.latitude + self.mapVC.blockSizePoint / 2,
-                                                        user.longitude - self.mapVC.blockSizePoint / 2],
+                
+                guard let latitude = user.latitude,
+                      let longitude = user.longitude else { return }
+                self.mapVC.addMyAnnotation(coordinate: [latitude + self.mapVC.blockSizePoint / 2,
+                                                        longitude - self.mapVC.blockSizePoint / 2],
                                            profileImage: UIImage(named: "defaultThumbnail")!)
-                self.drawBlockArea(blocks: user.matrices,
+                self.drawBlockArea(blocks: user.matrices ?? [],
                                    blockColor: .main30)
             })
             .disposed(by: bag)
@@ -246,13 +249,15 @@ extension MainVC {
             .subscribe(onNext: { [weak self] friends in
                 guard let self = self else { return }
                 friends.forEach {
-                    self.mapVC.addFriendAnnotation(coordinate: [$0.latitude + self.mapVC.blockSizePoint / 2,
-                                                                $0.longitude - self.mapVC.blockSizePoint / 2],
+                    guard let latitude = $0.latitude,
+                          let longitude = $0.longitude else { return }
+                    self.mapVC.addFriendAnnotation(coordinate: [latitude + self.mapVC.blockSizePoint / 2,
+                                                                longitude - self.mapVC.blockSizePoint / 2],
                                                    profileImage: UIImage(named: "defaultThumbnail")!,
                                                    nickname: $0.nickname,
                                                    color: .main,
                                                    challengeCnt: 0)
-                    self.drawBlockArea(blocks: $0.matrices,
+                    self.drawBlockArea(blocks: $0.matrices ?? [],
                                        blockColor: .gray25)
                 }
             })
@@ -268,7 +273,7 @@ extension MainVC {
                                                                 $0.longitude - self.mapVC.blockSizePoint / 2],
                                                    profileImage: UIImage(named: "defaultThumbnail")!,
                                                    nickname: $0.nickname,
-                                                   color: ChallengeColorType(rawValue: $0.challengeColor)?.annotationColor ?? .main,
+                                                   color: ChallengeColorType(rawValue: $0.challengeColor)?.primaryColor ?? .main,
                                                    challengeCnt: $0.challengeNumber)
                     self.drawBlockArea(blocks: $0.matrices,
                                        blockColor: ChallengeColorType(rawValue: $0.challengeColor)?.blockColor ?? .gray25)
