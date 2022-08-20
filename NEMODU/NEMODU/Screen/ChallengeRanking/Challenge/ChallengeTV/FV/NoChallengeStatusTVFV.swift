@@ -1,5 +1,5 @@
 //
-//  NoInvitedChallengeTVFV.swift
+//  NoChallengeStatusTVFV.swift
 //  NEMODU
 //
 //  Created by Kim HeeJae on 2022/08/09.
@@ -11,13 +11,13 @@ import RxSwift
 import Then
 import SnapKit
 
-class NoInvitedChallengeTVFV : UITableViewHeaderFooterView {
+class NoChallengeStatusTVFV : UITableViewHeaderFooterView {
     
     // MARK: - UI components
     
     let invitedChallengeLabel = UILabel()
         .then {
-            $0.text = "초대받은 챌린지가 없습니다."
+            $0.text = "챌린지 정보를 불러올 수 없습니다."
             $0.font = .caption2R
             $0.textColor = .gray500
         }

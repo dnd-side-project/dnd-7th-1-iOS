@@ -15,12 +15,16 @@ class ChallengeListTypeMenuBarCV : MenuBarCV {
     
     let itemSpacing: CGFloat = 10
     
+    var challengeContainerCVC: ChallengeContainerCVC?
+    
     // MARK: - Life Cycle
     
     override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        positionBarView.removeFromSuperview()
+        _ = menuBarCollectionView.then {
+            // 선택되어 있는 위치 지정
+            let indexPath = IndexPath(item: challengeContainerCVC?.reloadCellIndex ?? 0, section: 0)
+            $0.selectItem(at: indexPath, animated: false, scrollPosition: .left)
+        }
     }
     
     // MARK: - Function
@@ -55,8 +59,8 @@ extension ChallengeListTypeMenuBarCV {
     override func collectionView(_ collectionView:UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let menuTitleSize = menuList[indexPath.item].size(withAttributes: [NSAttributedString.Key.font : UIFont.title3SB])
         
-        return CGSize(width: menuTitleSize.width + itemSpacing
-                      , height: menuTitleSize.height + itemSpacing)
+        return CGSize(width: menuTitleSize.width + itemSpacing,
+                      height: menuTitleSize.height + itemSpacing)
     }
     
 }
@@ -71,7 +75,23 @@ extension ChallengeListTypeMenuBarCV {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("selected : ", indexPath.item)
+        print("ChallengeType selected : ", indexPath.item)
+        
+        let targetItemIndex = indexPath.item
+        let currentItemIndex = challengeContainerCVC?.reloadCellIndex ?? 0
+        let targetReloadSection = IndexSet(2...2)
+        
+        challengeContainerCVC?.reloadCellIndex = targetItemIndex
+        
+        if targetItemIndex == currentItemIndex {
+            // do nothing
+        } else {
+            if targetItemIndex > currentItemIndex {
+                challengeContainerCVC?.challengeTableView.reloadSections(targetReloadSection, with: .left)
+            } else {
+                challengeContainerCVC?.challengeTableView.reloadSections(targetReloadSection, with: .right)
+            }
+        }
     }
     
 }

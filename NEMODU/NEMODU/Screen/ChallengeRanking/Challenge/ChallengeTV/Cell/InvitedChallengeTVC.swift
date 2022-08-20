@@ -57,7 +57,7 @@ class InvitedChallengeTVC : BaseTableViewCell {
     
     let userProfileImageView = UIImageView()
         .then {
-            $0.image = UIImage(named: "userDefaultProfileImage")
+            $0.image = UIImage(named: "userDefaultProfile_L")
             $0.layer.cornerRadius = 20
             $0.layer.masksToBounds = true
         }

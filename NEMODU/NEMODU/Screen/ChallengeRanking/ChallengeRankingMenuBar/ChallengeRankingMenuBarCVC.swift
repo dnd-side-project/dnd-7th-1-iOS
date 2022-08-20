@@ -11,6 +11,16 @@ import SnapKit
 
 class ChallengeRankingMenuBarCVC: MenuBarCVC {
     
+    // MARK: - Functions
+    
+    override func configureCell() {
+        _ = menuTitle
+            .then {
+                $0.font = .headline1
+                $0.textColor = .gray400
+            }
+    }
+    
     // MARK: - Override Function
     
     /// Set button highlighted status
