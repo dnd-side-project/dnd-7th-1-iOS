@@ -58,7 +58,7 @@ class WalkingVC: BaseViewController {
         .then {
             $0.recordValue.text = "0"
             $0.recordTitle.text = "채운 칸의 수"
-            $0.recordSubtitle.text = "이번주 영역: 0칸"
+            $0.recordSubtitle.text = "이번주 영역: -칸"
         }
     
     private let distanceView = RecordView()
@@ -73,16 +73,19 @@ class WalkingVC: BaseViewController {
             $0.recordTitle.text = "시간"
         }
     
+    private var weekBlockCnt = 0
     private var secondTimeValue: Int = 0
     private let viewModel = WalkingVM()
     private let bag = DisposeBag()
     
-    // TODO: - 서버 연결 후 수정
-    private var weekBlockCnt = 0
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         mapVC.updateStep()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.getBlocksCnt()
     }
     
     override func configureView() {
@@ -104,6 +107,7 @@ class WalkingVC: BaseViewController {
     override func bindOutput() {
         super.bindOutput()
         bindRecordValue()
+        bindWeekBlocksCnt()
     }
 }
 
@@ -119,6 +123,11 @@ extension WalkingVC {
             recordStackView.addArrangedSubview($0)
         }
         stopPlayView.addSubviews([stopBtn, playBtn])
+    }
+    
+    private func configureWeekBlockCnt(_ cnt: Int) {
+        weekBlockCnt = cnt
+        blocksNumView.recordSubtitle.text = "이번주 영역: \(cnt)칸"
     }
 }
 
@@ -196,11 +205,12 @@ extension WalkingVC {
                 guard let self = self else { return }
                 let recordResultNC = RecordResultNC()
                 recordResultNC.modalPresentationStyle = .fullScreen
-                recordResultNC.recordResultVC.configureRecordValue(recordData: RecordDataRequest(distance: self.mapVC.updateDistance.value,
-                                                                                                 exerciseTime: self.secondTimeValue,
-                                                                                                 blocks: self.mapVC.blocks,
-                                                                                                 stepCount: self.mapVC.stepCnt),
-                                                                   weekBlockCnt: self.weekBlockCnt)
+                recordResultNC.recordResultVC.configureRecordValue(
+                    recordData: RecordDataRequest(distance: self.mapVC.updateDistance.value,
+                                                  exerciseTime: self.secondTimeValue,
+                                                  blocks: self.mapVC.blocks,
+                                                  stepCount: self.mapVC.stepCnt),
+                    weekBlockCnt: self.weekBlockCnt)
                 self.mapVC.stopUpdateStep()
                 self.present(recordResultNC, animated: true)
             })
@@ -221,7 +231,7 @@ extension WalkingVC {
 // MARK: - Output
 
 extension WalkingVC {
-    func bindRecordValue() {
+    private func bindRecordValue() {
         // 이동 거리 기록
         mapVC.updateDistance
             .asDriver()
@@ -250,6 +260,16 @@ extension WalkingVC {
             .drive(onNext: { [weak self] blocksCnt in
                 guard let self = self else { return }
                 self.blocksNumView.recordValue.text = "\(blocksCnt)"
+            })
+            .disposed(by: bag)
+    }
+    
+    private func bindWeekBlocksCnt() {
+        viewModel.output.blocksCnt
+            .asDriver(onErrorJustReturn: 0)
+            .drive(onNext: { [weak self] cnt in
+                guard let self = self else { return }
+                self.configureWeekBlockCnt(cnt)
             })
             .disposed(by: bag)
     }
