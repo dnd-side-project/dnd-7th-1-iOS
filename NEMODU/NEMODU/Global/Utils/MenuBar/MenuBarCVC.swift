@@ -14,16 +14,13 @@ class MenuBarCVC: UICollectionViewCell {
     // MARK: - UI components
     
     let menuTitle = UILabel()
-        .then {
-            $0.font = .systemFont(ofSize: 17)
-            $0.textColor = .gray
-        }
     
     // MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        configureCell()
         layoutView()
     }
     
@@ -32,6 +29,15 @@ class MenuBarCVC: UICollectionViewCell {
     }
     
     // MARK: - Functions
+    
+    func configureCell() {
+        // 최초 실행시 기본설정 폰트가 안 맞는 문제를 방지하기 위해 최초 셀의 폰트와 색깔을 override한 isHighlighted, isSelect와의 통일 
+        _ = menuTitle
+            .then {
+                $0.font = .systemFont(ofSize: 17)
+                $0.textColor = .gray
+            }
+    }
     
     func layoutView() {
         contentView.addSubview(menuTitle)

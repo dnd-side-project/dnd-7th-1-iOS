@@ -1,22 +1,26 @@
 //
-//  ChallengeRankingMenuBarCVC.swift
+//  ChallengeListTypeMenuBarCVC.swift
 //  NEMODU
 //
-//  Created by Kim HeeJae on 2022/08/02.
+//  Created by Kim HeeJae on 2022/08/18.
 //
 
 import UIKit
 import Then
 import SnapKit
 
-class ChallengeRankingMenuBarCVC: MenuBarCVC {
+class ChallengeListTypeMenuBarCVC: MenuBarCVC {
+    
+    // MARK: - UI components
+    
+    // MARK: - Life Cycle
     
     // MARK: - Functions
     
     override func configureCell() {
         _ = menuTitle
             .then {
-                $0.font = .headline1
+                $0.font = .title3SB
                 $0.textColor = .gray400
             }
     }
@@ -29,12 +33,12 @@ class ChallengeRankingMenuBarCVC: MenuBarCVC {
         didSet {
             if isSelected == true {
                 _ = menuTitle.then {
-                    $0.font = .headline1
+                    $0.font = .title3SB
                     $0.textColor = .gray900
                 }
             } else {
                 _ = menuTitle.then {
-                    $0.font = .headline1
+                    $0.font = .title3SB
                     $0.textColor = .gray400
                 }
             }
@@ -45,12 +49,12 @@ class ChallengeRankingMenuBarCVC: MenuBarCVC {
         didSet {
             if isSelected == true {
                 _ = menuTitle.then {
-                    $0.font = .headline1
+                    $0.font = .title3SB
                     $0.textColor = .gray900
                 }
             } else {
                 _ = menuTitle.then {
-                    $0.font = .headline1
+                    $0.font = .title3SB
                     $0.textColor = .gray400
                 }
             }
