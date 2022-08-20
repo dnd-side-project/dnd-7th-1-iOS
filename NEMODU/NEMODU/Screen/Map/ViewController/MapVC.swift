@@ -45,7 +45,7 @@ class MapVC: BaseViewController {
     private var pauseCnt = 0
     var stepCnt = 0
     
-    private let blockSizePoint: Double = 0.0003740
+    let blockSizePoint: Double = 0.0003740
     private let blockSize: Int = 37400
     private let mapZoomScale = 0.003
     private let mul: Double = 100000000

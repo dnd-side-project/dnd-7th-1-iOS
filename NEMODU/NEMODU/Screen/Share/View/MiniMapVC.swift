@@ -67,10 +67,14 @@ extension MiniMapVC {
         let sortedLatitude = blocks.sorted(by: { $0[0] < $1[0] })
         let sortedLongitude = blocks.sorted(by: { $0[1] < $1[1] })
         
-        // TODO: - 모든 영역이 보일 수 있도록 delta 값 수정
+        let spanX = Int((sortedLatitude.last![0] - sortedLatitude.first![0]) / blockSizePoint)
+        let spanY = Int((sortedLongitude.last![1] - sortedLongitude.first![1]) / blockSizePoint)
+        var span = Double(spanX > spanY ? spanX : spanY)
+        span = (span + 3) * blockSizePoint
+        
         _ = goLocation(latitudeValue: sortedLatitude[blocks.count/2][0],
                        longitudeValue: sortedLongitude[blocks.count/2][1],
-                       delta: 0.003)
+                       delta: span)
         
         blocks.forEach {
             drawBlock(latitude: $0[0],
