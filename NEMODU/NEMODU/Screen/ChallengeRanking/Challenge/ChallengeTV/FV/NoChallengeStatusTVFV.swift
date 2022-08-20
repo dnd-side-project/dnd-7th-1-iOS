@@ -17,7 +17,7 @@ class NoChallengeStatusTVFV : UITableViewHeaderFooterView {
     
     let invitedChallengeLabel = UILabel()
         .then {
-            $0.text = "챌린지 정보를 불러올 수 없습니다."
+            $0.text = NoChallengeStatusMessageType(rawValue: 3)?.message ?? ""
             $0.font = .caption1
             $0.textColor = .gray500
         }

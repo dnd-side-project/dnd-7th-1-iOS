@@ -79,18 +79,10 @@ extension ChallengeListTypeMenuBarCV {
         
         let targetItemIndex = indexPath.item
         let currentItemIndex = challengeContainerCVC?.reloadCellIndex ?? 0
-        let targetReloadSection = IndexSet(2...2)
         
         challengeContainerCVC?.reloadCellIndex = targetItemIndex
-        
-        if targetItemIndex == currentItemIndex {
-            // do nothing
-        } else {
-            if targetItemIndex > currentItemIndex {
-                challengeContainerCVC?.challengeTableView.reloadSections(targetReloadSection, with: .left)
-            } else {
-                challengeContainerCVC?.challengeTableView.reloadSections(targetReloadSection, with: .right)
-            }
+        if targetItemIndex != currentItemIndex {
+            challengeContainerCVC?.challengeTableView.reloadSections(IndexSet(2...2), with: targetItemIndex > currentItemIndex ? .left : .right)
         }
     }
     

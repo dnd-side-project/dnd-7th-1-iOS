@@ -40,7 +40,8 @@ class ChallengeWaitingTVC : ChallengeListTVC {
         
         _ = challengeNameImage
             .then {
-                $0.image = UIImage(named: "badge_orange")
+                $0.image = UIImage(named: "badge_flag")?.withRenderingMode(.alwaysTemplate)
+                $0.tintColor = ChallengeColorType(rawValue: "Red")?.primaryColor
             }
         
         _ = currentStateLabel

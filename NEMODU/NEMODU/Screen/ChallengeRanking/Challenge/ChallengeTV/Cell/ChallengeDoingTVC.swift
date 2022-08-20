@@ -35,7 +35,8 @@ class ChallengeDoingTVC : ChallengeListTVC {
         
         _ = challengeNameImage
             .then {
-                $0.image = UIImage(named: "badge_red")
+                $0.image = UIImage(named: "badge_flag")?.withRenderingMode(.alwaysTemplate)
+                $0.tintColor = ChallengeColorType(rawValue: "Yellow")?.primaryColor
             }
         
         _ = currentStateLabel

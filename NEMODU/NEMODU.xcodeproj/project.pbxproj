@@ -90,6 +90,7 @@
 		3C09AE3928AF6345005DD125 /* ChallengeDoingTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C09AE3828AF6345005DD125 /* ChallengeDoingTVC.swift */; };
 		3C09AE3B28AF6450005DD125 /* ChallengeFinishTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C09AE3A28AF6450005DD125 /* ChallengeFinishTVC.swift */; };
 		3C393FFD28A684DD0012B2B8 /* BaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C393FFC28A684DD0012B2B8 /* BaseTableViewCell.swift */; };
+		3C48920528B0C8A800B11207 /* NoChallengeStatusMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C48920428B0C8A800B11207 /* NoChallengeStatusMessage.swift */; };
 		3C4FB96328AA92C800A429B8 /* InvitedChallengeTVHV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4FB96228AA92C800A429B8 /* InvitedChallengeTVHV.swift */; };
 		3C4FB96528AA937100A429B8 /* ChallengeListTVHV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4FB96428AA937100A429B8 /* ChallengeListTVHV.swift */; };
 		3C992F1528AE61FC00D96E21 /* ChallengeListTypeMenuBarCV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C992F1428AE61FC00D96E21 /* ChallengeListTypeMenuBarCV.swift */; };
@@ -192,6 +193,7 @@
 		3C393FF628A6581B0012B2B8 /* InvitedChallengeTVHV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitedChallengeTVHV.swift; sourceTree = "<group>"; };
 		3C393FF828A659C90012B2B8 /* NoInvitedChallengeTVFV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoInvitedChallengeTVFV.swift; sourceTree = "<group>"; };
 		3C393FFC28A684DD0012B2B8 /* BaseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewCell.swift; sourceTree = "<group>"; };
+		3C48920428B0C8A800B11207 /* NoChallengeStatusMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoChallengeStatusMessage.swift; sourceTree = "<group>"; };
 		3C4FB96228AA92C800A429B8 /* InvitedChallengeTVHV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitedChallengeTVHV.swift; sourceTree = "<group>"; };
 		3C4FB96428AA937100A429B8 /* ChallengeListTVHV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeListTVHV.swift; sourceTree = "<group>"; };
 		3C7FC21C289B9FE00071A752 /* ChallengeRankingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeRankingVC.swift; sourceTree = "<group>"; };
@@ -553,6 +555,7 @@
 			children = (
 				23B86D1E28A26EEF00B1630E /* NaviType.swift */,
 				23412FD528AE080000B73D62 /* ChallengeColorType.swift */,
+				3C48920428B0C8A800B11207 /* NoChallengeStatusMessage.swift */,
 			);
 			path = Enum;
 			sourceTree = "<group>";
@@ -848,7 +851,7 @@
 				23412FDE28AE396D00B73D62 /* ChallengeListVM.swift in Sources */,
 				23B7207028A12DBB00D3A410 /* RecordView.swift in Sources */,
 				23F5718228AA6038005F2E21 /* UIImage+.swift in Sources */,
-				23B7207028A12DBB00D3A410 /* RecodeView.swift in Sources */,
+				23B7207028A12DBB00D3A410 /* RecordView.swift in Sources */,
 				3C09AE3B28AF6450005DD125 /* ChallengeFinishTVC.swift in Sources */,
 				2348B4252892E007001095BC /* NEMODUTBC.swift in Sources */,
 				23B7206D28A12BE800D3A410 /* WalkingVC.swift in Sources */,
@@ -861,6 +864,7 @@
 				23F5716928A6802C005F2E21 /* UIStackView+.swift in Sources */,
 				23B7206B28A12BCD00D3A410 /* MainVC.swift in Sources */,
 				2348B3F52892D131001095BC /* Service.swift in Sources */,
+				3C48920528B0C8A800B11207 /* NoChallengeStatusMessage.swift in Sources */,
 				2348B3E32892D064001095BC /* BaseCollectionViewCell.swift in Sources */,
 				23B7206128A0D53200D3A410 /* ProceedingChallengeTVC.swift in Sources */,
 				230CB2CB28ABB7B400B11270 /* CountdownVC.swift in Sources */,
@@ -876,7 +880,6 @@
 				23B86D1F28A26EEF00B1630E /* NaviType.swift in Sources */,
 				2348B3E72892D08D001095BC /* BaseViewModel.swift in Sources */,
 				2348B4092892D2E5001095BC /* UIViewController+.swift in Sources */,
-				2348B3DB2892CF29001095BC /* MapVM.swift in Sources */,
 				3C992F1528AE61FC00D96E21 /* ChallengeListTypeMenuBarCV.swift in Sources */,
 				23F5718828AA6DEE005F2E21 /* MyAnnotationView.swift in Sources */,
 				23F5717728A92E38005F2E21 /* ProfileRecordView.swift in Sources */,

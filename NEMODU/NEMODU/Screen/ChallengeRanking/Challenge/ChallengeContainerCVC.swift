@@ -124,19 +124,11 @@ extension ChallengeContainerCVC : UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 2 {
-            return .leastNormalMagnitude
-        } else {
-            return UITableView.automaticDimension
-        }
+        section == 2 ? .leastNormalMagnitude : UITableView.automaticDimension
     }
 
     func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        if section == 2 {
-            return .leastNormalMagnitude
-        } else {
-            return UITableView.automaticDimension
-        }
+        section == 2 ? .leastNormalMagnitude : UITableView.automaticDimension
     }
 
     // Cell
@@ -207,18 +199,9 @@ extension ChallengeContainerCVC : UITableViewDataSource {
 
             return fakeView
         case 2:
-            switch reloadCellIndex {
-            case 0:
-                message = "진행 대기중인 챌린지가 없습니다."
-            case 1:
-                message = "진행 중인 챌린지가 없습니다."
-            case 2:
-                message = "진행완료 된 챌린지가 없습니다."
-            default:
-                message = "챌린지 정보를 불러올 수 없습니다."
-            }
+            message = NoChallengeStatusMessageType(rawValue: reloadCellIndex)?.message ?? "챌린지 정보를 불러올 수 없습니다."
         default:
-            message = "챌린지 정보를 불러올 수 없습니다."
+            message = NoChallengeStatusMessageType(rawValue: 3)?.message ?? "챌린지 정보를 불러올 수 없습니다."
         }
         
         let footerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: NoChallengeStatusTVFV.className) as? NoChallengeStatusTVFV
@@ -228,19 +211,11 @@ extension ChallengeContainerCVC : UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if section == 1 {
-            return .leastNormalMagnitude
-        } else {
-            return 93
-        }
+        section == 1 ? .leastNormalMagnitude : 93
     }
 
     func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
-        if section == 1 {
-            return .leastNormalMagnitude
-        } else {
-            return 93
-        }
+        section == 1 ? .leastNormalMagnitude : 93
     }
 
 }

@@ -55,7 +55,8 @@ class ChallengeListTVC : BaseTableViewCell {
     
     let challengeNameImage = UIImageView()
         .then {
-            $0.image = UIImage(named: "badge_pink")
+            $0.image = UIImage(named: "badge_flag")?.withRenderingMode(.alwaysTemplate)
+            $0.tintColor = ChallengeColorType(rawValue: "Pink")?.primaryColor
         }
     let challengeNameLabel = UILabel()
         .then {
@@ -84,7 +85,7 @@ class ChallengeListTVC : BaseTableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        makeUserImageViews(numberOfUser: 4, userImageURL: "userDefaultProfile_S")
+        makeUserImageViews(numberOfUser: 4, userImageURL: "defaultThumbnail")
     }
     
     required init?(coder: NSCoder) {
@@ -147,7 +148,6 @@ class ChallengeListTVC : BaseTableViewCell {
         challengeNameImage.snp.makeConstraints {
             $0.width.equalTo(16)
             $0.height.equalTo(challengeNameImage.snp.width)
-            
             
             $0.top.equalTo(challengeTypeLabel.snp.bottom).offset(8)
             $0.left.equalTo(challengeTypeLabel.snp.left)
