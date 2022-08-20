@@ -1,5 +1,5 @@
 //
-//  RecodeView.swift
+//  RecordView.swift
 //  NEMODU
 //
 //  Created by 황윤경 on 2022/08/08.
@@ -9,20 +9,20 @@ import UIKit
 import Then
 import SnapKit
 
-class RecodeView: BaseView {
-    var recodeValue = UILabel()
+class RecordView: BaseView {
+    var recordValue = UILabel()
         .then {
             $0.font = .title1
             $0.textColor = .gray900
         }
     
-    var recodeTitle = UILabel()
+    var recordTitle = UILabel()
         .then {
             $0.font = .caption1
             $0.textColor = .gray800
         }
     
-    var recodeSubtitle = UILabel()
+    var recordSubtitle = UILabel()
         .then {
             $0.font = .caption1
             $0.textColor = .gray500
@@ -40,24 +40,24 @@ class RecodeView: BaseView {
     }
 }
 
-extension RecodeView {
+extension RecordView {
     private func configureContent() {
-        addSubviews([recodeValue, recodeTitle, recodeSubtitle])
+        addSubviews([recordValue, recordTitle, recordSubtitle])
     }
     
     private func configureLayout() {
-        recodeValue.snp.makeConstraints {
+        recordValue.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.centerX.equalToSuperview()
         }
         
-        recodeTitle.snp.makeConstraints {
-            $0.top.equalTo(recodeValue.snp.bottom).offset(10)
+        recordTitle.snp.makeConstraints {
+            $0.top.equalTo(recordValue.snp.bottom).offset(10)
             $0.centerX.equalToSuperview()
         }
         
-        recodeSubtitle.snp.makeConstraints {
-            $0.top.equalTo(recodeTitle.snp.bottom).offset(4)
+        recordSubtitle.snp.makeConstraints {
+            $0.top.equalTo(recordTitle.snp.bottom).offset(4)
             $0.bottom.equalToSuperview()
             $0.centerX.equalToSuperview()
         }

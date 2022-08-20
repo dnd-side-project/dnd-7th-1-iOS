@@ -45,7 +45,7 @@ class InvitedChallengeTVC : BaseTableViewCell {
     let timeAgoLabel = UILabel()
         .then {
             $0.text = "- 분 전"
-            $0.font = .caption2R
+            $0.font = .caption1
             $0.textColor = .gray500
         }
     let notYetCheckDetailCircleView = UIView()

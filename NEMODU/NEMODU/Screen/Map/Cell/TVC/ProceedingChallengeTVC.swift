@@ -12,6 +12,8 @@ import Then
 class ProceedingChallengeTVC: UITableViewCell {
     let challengeIcon = UIImageView()
         .then {
+            $0.image = UIImage(named: "badge_flag")?.withRenderingMode(.alwaysTemplate)
+            $0.backgroundColor = .white
             $0.layer.cornerRadius = 8
         }
     
@@ -23,7 +25,7 @@ class ProceedingChallengeTVC: UITableViewCell {
     
     let rank = UILabel()
         .then {
-            $0.font = .caption2M
+            $0.font = .caption1
             $0.textColor = .gray500
         }
     
@@ -62,13 +64,13 @@ extension ProceedingChallengeTVC {
     
     private func configureLayout() {
         challengeIcon.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(12)
-            $0.leading.equalToSuperview()
+            $0.top.equalToSuperview().offset(16)
+            $0.leading.equalToSuperview().offset(16)
             $0.height.width.equalTo(16)
         }
         
         challengeTitle.snp.makeConstraints {
-            $0.top.equalTo(challengeIcon)
+            $0.top.equalTo(challengeIcon).offset(-2)
             $0.leading.equalTo(challengeIcon.snp.trailing).offset(8)
             $0.trailing.equalTo(arrow.snp.leading)
         }
@@ -79,16 +81,18 @@ extension ProceedingChallengeTVC {
         }
         
         arrow.snp.makeConstraints {
-            $0.centerY.trailing.equalToSuperview()
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview().offset(-16)
             $0.height.equalTo(14)
             $0.width.equalTo(8)
         }
     }
     
-    // TODO: - 서버 연결 후 수정
-    func configureCell() {
-        challengeIcon.image = UIImage(systemName: "person.circle")
-        challengeTitle.text = "챌린지 이름"
-        rank.text = "현재 내 순위: 1위"
+    func configureCell(with element: ChallengeElementResponseModel, isMyList: Bool) {
+        challengeIcon.tintColor = ChallengeColorType(rawValue: element.color)?.primaryColor ?? .gray500
+        challengeTitle.text = element.name
+        rank.text = isMyList
+        ? "현재 내 순위: \(element.rank)위"
+        : "현재 순위: \(element.rank)위"
     }
 }

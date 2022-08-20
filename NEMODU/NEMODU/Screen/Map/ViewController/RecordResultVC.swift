@@ -1,5 +1,5 @@
 //
-//  RecodeResultVC.swift
+//  RecordResultVC.swift
 //  NEMODU
 //
 //  Created by 황윤경 on 2022/08/10.
@@ -13,7 +13,7 @@ import SnapKit
 import Then
 import CoreLocation
 
-class RecodeResultVC: BaseViewController {
+class RecordResultVC: BaseViewController {
     private let baseScrollView = UIScrollView()
         .then {
             $0.showsVerticalScrollIndicator = false
@@ -24,7 +24,7 @@ class RecodeResultVC: BaseViewController {
             $0.backgroundColor = .gray50
         }
     
-    private let recodeBaseView = UIView()
+    private let recordBaseView = UIView()
         .then {
             $0.backgroundColor = UIColor.systemBackground
         }
@@ -34,17 +34,17 @@ class RecodeResultVC: BaseViewController {
             $0.backgroundColor = UIColor.systemBackground
         }
     
-    private var blocksCntView = RecodeView()
+    private var blocksCntView = RecordView()
         .then {
-            $0.recodeValue.font = .number1
-            $0.recodeTitle.font = .body3
-            $0.recodeSubtitle.font = .body4
-            $0.recodeTitle.text = "채운 칸의 수"
+            $0.recordValue.font = .number1
+            $0.recordTitle.font = .body3
+            $0.recordSubtitle.font = .body4
+            $0.recordTitle.text = "채운 칸의 수"
         }
     
     private var miniMap = MiniMapVC()
     
-    private let recodeStackView = RecodeStackView()
+    private let recordStackView = RecordStackView()
     
     private let viewSeparator = UIView()
         .then {
@@ -97,7 +97,7 @@ class RecodeResultVC: BaseViewController {
 
 // MARK: - Configure
 
-extension RecodeResultVC {
+extension RecordResultVC {
     private func configureNaviBar() {
         view.addSubview(naviBar)
         let month = Calendar.current.component(.month, from: Date.now)
@@ -113,11 +113,11 @@ extension RecodeResultVC {
         addChild(miniMap)
         view.addSubview(baseScrollView)
         baseScrollView.addSubview(contentView)
-        contentView.addSubviews([recodeBaseView,
+        contentView.addSubviews([recordBaseView,
                                  memoView])
-        recodeBaseView.addSubviews([blocksCntView,
+        recordBaseView.addSubviews([blocksCntView,
                                     miniMap.view,
-                                    recodeStackView])
+                                    recordStackView])
         memoView.addSubviews([memoLabel,
                               viewSeparator,
                               memoTextView])
@@ -129,26 +129,30 @@ extension RecodeResultVC {
         let sortedLatitude = blocks.sorted(by: { $0[0] < $1[0] })
         let sortedLongitude = blocks.sorted(by: { $0[1] < $1[1] })
         
-        _ = miniMap.goLocation(latitudeValue: sortedLatitude[blocks.count/2][0], longitudeValue: sortedLongitude[blocks.count/2][1] - 0.0001, delta: 0.003)
+        _ = miniMap.goLocation(latitudeValue: sortedLatitude[blocks.count/2][0],
+                               longitudeValue: sortedLongitude[blocks.count/2][1] - 0.0001,
+                               delta: 0.003)
         
         blocks.forEach {
-            miniMap.drawBlock(latitude: $0[0], longitude: $0[1])
+            miniMap.drawBlock(latitude: $0[0],
+                              longitude: $0[1],
+                              color: .main30)
         }
     }
     
-    func configureRecodeValue(blocks: [[Double]], weekBlockCnt: Int, distance: Int, second: Int, stepCnt: Int) {
+    func configureRecordValue(blocks: [[Double]], weekBlockCnt: Int, distance: Int, second: Int, stepCnt: Int) {
         self.blocks = blocks
-        blocksCntView.recodeValue.text = "\(blocks.count)"
-        blocksCntView.recodeSubtitle.text = "이번주 영역 : \(weekBlockCnt + blocks.count)칸"
-        recodeStackView.distanceView.recodeValue.text = "\(distance)m"
-        recodeStackView.timeView.recodeValue.text = "\(second / 60):" + String(format: "%02d", second % 60)
-        recodeStackView.stepCntView.recodeValue.text = "\(stepCnt)"
+        blocksCntView.recordValue.text = "\(blocks.count)"
+        blocksCntView.recordSubtitle.text = "이번주 영역 : \(weekBlockCnt + blocks.count)칸"
+        recordStackView.distanceView.recordValue.text = "\(distance)m"
+        recordStackView.timeView.recordValue.text = "\(second / 60):" + String(format: "%02d", second % 60)
+        recordStackView.stepCntView.recordValue.text = "\(stepCnt)"
     }
 }
 
 // MARK: - Layout
 
-extension RecodeResultVC {
+extension RecordResultVC {
     private func configureLayout() {
         baseScrollView.snp.makeConstraints {
             $0.top.equalTo(naviBar.snp.bottom)
@@ -161,12 +165,12 @@ extension RecodeResultVC {
             $0.height.equalToSuperview().priority(.low)
         }
         
-        recodeBaseView.snp.makeConstraints {
+        recordBaseView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
         }
         
         memoView.snp.makeConstraints {
-            $0.top.equalTo(recodeBaseView.snp.bottom).offset(8)
+            $0.top.equalTo(recordBaseView.snp.bottom).offset(8)
             $0.leading.trailing.bottom.equalToSuperview()
         }
         
@@ -183,7 +187,7 @@ extension RecodeResultVC {
             $0.height.equalTo(miniMap.view.snp.width).multipliedBy(0.76)
         }
         
-        recodeStackView.snp.makeConstraints {
+        recordStackView.snp.makeConstraints {
             $0.top.equalTo(miniMap.view.snp.bottom).offset(40)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
@@ -214,7 +218,7 @@ extension RecodeResultVC {
 
 // MARK: - Input
 
-extension RecodeResultVC {
+extension RecordResultVC {
     private func bindDismissBtn() {
         // dismiss to rootViewController
         naviBar.rightBtn.rx.tap
@@ -229,7 +233,7 @@ extension RecodeResultVC {
 
 // MARK: - Output
 
-extension RecodeResultVC {
+extension RecordResultVC {
     private func bindKeyboardScroll() {
         keyboardWillShow
             .subscribe(onNext: { [weak self] _ in

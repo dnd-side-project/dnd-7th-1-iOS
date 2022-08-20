@@ -47,12 +47,4 @@ extension UIButton {
         titleEdgeInsets = UIEdgeInsets(top: spacing, left: -image.size.width, bottom: -image.size.height, right: 0)
         imageEdgeInsets = UIEdgeInsets(top: -(titleSize.height + spacing), left: 0, bottom: 0, right: -titleSize.width)
     }
-    
-    /// 버튼에 shadow를 추가하는 함수
-    func addShadow() {
-        layer.shadowColor = UIColor.gray.cgColor
-        layer.shadowOpacity = 0.5
-        layer.shadowOffset = .zero
-        layer.shadowRadius = 3
-    }
 }
