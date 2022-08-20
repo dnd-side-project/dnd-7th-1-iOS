@@ -215,20 +215,16 @@ extension MapVC {
         pauseCnt = stepCnt
     }
     
-    /// 특정 좌표에 블록을 그리는 함수
+    /// 기준 처리된 좌표를 입력받고 해당 위치에 블록을 그리는 함수
     func drawBlock(latitude: Double, longitude: Double, color: UIColor) {
-        let latPoint = Int(latitude * mul) / blockSize
-        let longPoint = Int(longitude * mul) / blockSize
-        
-        // TODO: - 백엔드와 회의 후 클래스화 진행
-        let overlayTopLeftCoordinate = CLLocationCoordinate2D(latitude: Double((latPoint) * blockSize) / mul,
-                                                              longitude: Double((longPoint - 1) * blockSize) / mul)
-        let overlayTopRightCoordinate = CLLocationCoordinate2D(latitude: Double((latPoint) * blockSize) / mul,
-                                                               longitude: Double((longPoint) * blockSize) / mul)
-        let overlayBottomLeftCoordinate = CLLocationCoordinate2D(latitude: Double((latPoint + 1) * blockSize) / mul,
-                                                                 longitude: Double((longPoint - 1) * blockSize) / mul)
-        let overlayBottomRightCoordinate = CLLocationCoordinate2D(latitude: Double((latPoint + 1) * blockSize) / mul,
-                                                                  longitude: Double((longPoint) * blockSize) / mul)
+        let overlayTopLeftCoordinate = CLLocationCoordinate2D(latitude: latitude,
+                                                              longitude: longitude - blockSizePoint)
+        let overlayTopRightCoordinate = CLLocationCoordinate2D(latitude: latitude,
+                                                               longitude: longitude)
+        let overlayBottomLeftCoordinate = CLLocationCoordinate2D(latitude: latitude + blockSizePoint,
+                                                                 longitude: longitude - blockSizePoint)
+        let overlayBottomRightCoordinate = CLLocationCoordinate2D(latitude: latitude + blockSizePoint,
+                                                                  longitude: longitude)
         
         let blockDraw = Block(coordinate: [overlayTopLeftCoordinate,
                                            overlayTopRightCoordinate,
@@ -298,9 +294,9 @@ extension MapVC: CLLocationManagerDelegate {
         let latitude = location.coordinate.latitude
         let longitude = location.coordinate.longitude
         
-        // 실제 좌표가 범위에 따라 저장되는 영역값
-        let latPoint = Int(latitude * mul) / blockSize
-        let longPoint = Int(longitude * mul) / blockSize
+        // 영역 이동 판단을 위한 단위값
+        let latitudeUnit = Int(latitude * mul) / blockSize
+        let longitudeUnit = Int(longitude * mul) / blockSize
         
         // 사용자 이동에 맞춰 화면 이동
         if isFocusOn {
@@ -311,16 +307,20 @@ extension MapVC: CLLocationManagerDelegate {
         
         // 기록 중이고
         // block 경계 이동 시 좌표 판단 및 block overlay 추가
-        if (isWalking ?? false) && (prevLatitude != latPoint || prevLongitude != longPoint) {
-            prevLatitude = latPoint
-            prevLongitude = longPoint
+        if (isWalking ?? false) && (prevLatitude != latitudeUnit || prevLongitude != longitudeUnit) {
+            prevLatitude = latitudeUnit
+            prevLongitude = longitudeUnit
             
-            if !blocks.contains([Double((latPoint) * blockSize) / mul, Double((longPoint) * blockSize) / mul]) {
+            // 실제 저장되고 그려지는 기준 좌표값
+            let latitudePoint = Double((latitudeUnit) * blockSize) / mul
+            let longitudePoint = Double((longitudeUnit) * blockSize) / mul
+            
+            if !blocks.contains([latitudePoint, longitudePoint]) {
                 // block Point 저장
-                blocks.append([Double((latPoint) * blockSize) / mul, Double((longPoint) * blockSize) / mul])
+                blocks.append([latitudePoint, longitudePoint])
                 
-                drawBlock(latitude: latitude,
-                          longitude: longitude,
+                drawBlock(latitude: latitudePoint,
+                          longitude: longitudePoint,
                           color: .main30)
                 
                 blocksCnt.accept(blocks.count)
