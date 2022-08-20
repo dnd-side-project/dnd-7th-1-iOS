@@ -34,6 +34,14 @@ class ChallengeRankingMenuBarCV : MenuBarCV {
     
     // MARK: - Function
     
+    override func configureView() {
+        // register ChallengeRankingMenuBarCVC
+        menuBarCollectionView.register(ChallengeRankingMenuBarCVC.self, forCellWithReuseIdentifier: ChallengeRankingMenuBarCVC.className)
+        
+        menuBarCollectionView.delegate = self
+        menuBarCollectionView.dataSource = self
+    }
+    
     override func layoutView() {
         super.layoutView()
         
@@ -51,6 +59,13 @@ class ChallengeRankingMenuBarCV : MenuBarCV {
 // MARK: - ChallengeRanking MenuBar CollectionView
 
 extension ChallengeRankingMenuBarCV {
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = menuBarCollectionView.dequeueReusableCell(withReuseIdentifier: ChallengeRankingMenuBarCVC.className, for: indexPath) as! ChallengeRankingMenuBarCVC
+        cell.menuTitle.text = menuList[indexPath.item]
+
+        return cell
+    }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         challengeRankingVC?.challengeRankingContainerCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)

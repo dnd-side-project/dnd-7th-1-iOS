@@ -40,7 +40,6 @@ class MenuBarCV: BaseView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
     }
     
     required init?(coder: NSCoder) {
@@ -115,7 +114,6 @@ extension MenuBarCV : UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = menuBarCollectionView.dequeueReusableCell(withReuseIdentifier: MenuBarCVC.className, for: indexPath) as! MenuBarCVC
-
         cell.menuTitle.text = menuList[indexPath.item]
 
         return cell
