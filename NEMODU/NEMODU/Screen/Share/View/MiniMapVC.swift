@@ -44,7 +44,6 @@ class MiniMapVC: MapVC {
     override func bindOutput() {
         super.bindOutput()
     }
-    
 }
 
 // MARK: - Configure
@@ -56,11 +55,43 @@ extension MiniMapVC {
         isFocusOn = false
         isWalking = false
         
+        // configure map as read only
         mapView.mapType = .standard
         mapView.showsUserLocation = false
-        mapView.isZoomEnabled = false
-        mapView.isScrollEnabled = false
         mapView.layer.cornerRadius = 15
+        isUserInteractionEnabled(false)
+    }
+    
+    /// 영역 전체가 한 눈에 보이게 지도에 그려주는 함수
+    func drawMiniMap() {
+        let sortedLatitude = blocks.sorted(by: { $0[0] < $1[0] })
+        let sortedLongitude = blocks.sorted(by: { $0[1] < $1[1] })
+        
+        let spanX = Int((sortedLatitude.last![0] - sortedLatitude.first![0]) / blockSizePoint)
+        let spanY = Int((sortedLongitude.last![1] - sortedLongitude.first![1]) / blockSizePoint)
+        var span = Double(spanX > spanY ? spanX : spanY)
+        span = (span + 3) * blockSizePoint
+        
+        _ = goLocation(latitudeValue: sortedLatitude[blocks.count/2][0],
+                       longitudeValue: sortedLongitude[blocks.count/2][1],
+                       delta: span)
+        
+        blocks.forEach {
+            drawBlock(latitude: $0[0],
+                      longitude: $0[1],
+                      color: .main30)
+        }
+    }
+    
+    /// 영역 전체와 마지막 위치를 지정하는 annotation을 한 눈에 보이게 지도에 그려주는 함수
+    func drawDetailMap(latitude: Double, longitude: Double) {
+        addMyAnnotation(coordinate: [latitude, longitude],
+                        profileImage: UIImage(named: "defaultThumbnail")!)
+        drawMiniMap()
+    }
+    
+    func hideMagnificationBtn() {
+        magnificationBtn.isHidden = true
     }
 }
 
@@ -87,7 +118,9 @@ extension MiniMapVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                // TODO: - 상세 지도 연결
+                let detailMapVC = DetailMapVC()
+                detailMapVC.getBlocks(blocks: self.blocks)
+                self.navigationController?.pushViewController(detailMapVC, animated: true)
             })
             .disposed(by: bag)
     }
@@ -95,6 +128,4 @@ extension MiniMapVC {
 
 // MARK: - Output
 
-extension MiniMapVC {
-    
-}
+extension MiniMapVC {}

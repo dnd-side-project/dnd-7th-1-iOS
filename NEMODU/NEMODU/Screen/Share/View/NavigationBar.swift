@@ -83,10 +83,10 @@ extension NavigationBar {
     }
     
     /// naviBar의 우측 버튼(글자)을 추가하는 함수입니다.
-    func configureRightBarBtn(targetVC: UIViewController, title: String) {
+    func configureRightBarBtn(targetVC: UIViewController, title: String, titleColor: UIColor?) {
         rightBtnLayout()
         rightBtn.setTitle(title, for: .normal)
-        rightBtn.setTitleColor(.label, for: .normal)
+        rightBtn.setTitleColor(titleColor ?? .label, for: .normal)
         rightBtn.titleLabel?.font = .title3SB
     }
 }
@@ -106,7 +106,6 @@ extension NavigationBar {
         rightBtn.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().offset(-20)
-            $0.height.width.equalTo(26)
         }
     }
     
