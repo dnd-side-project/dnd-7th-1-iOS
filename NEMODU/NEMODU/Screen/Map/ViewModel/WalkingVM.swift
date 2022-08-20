@@ -9,6 +9,10 @@ import Foundation
 import RxCocoa
 import RxSwift
 
+protocol WalkingViewModelOutput: Lodable {
+    var blocksCnt: PublishRelay<Int> { get }
+}
+
 final class WalkingVM: BaseViewModel {
     var apiSession: APIService = APISession()
     let apiError = PublishSubject<APIError>()
@@ -22,12 +26,16 @@ final class WalkingVM: BaseViewModel {
     
     // MARK: - Output
     
-    struct Output {
+    struct Output: WalkingViewModelOutput {
+        var loading = BehaviorRelay<Bool>(value: false)
+        
         let driver = Driver<Int>
             .interval(.seconds(1))
             .map { _ in
                 return 1
             }
+        
+        var blocksCnt = PublishRelay<Int>()
     }
     
     // MARK: - Init
@@ -56,4 +64,28 @@ extension WalkingVM: Input {
 
 extension WalkingVM: Output {
     func bindOutput() { }
+}
+
+// MARK: - Networking
+
+extension WalkingVM {
+    // TODO: - UserDefaults 수정
+    func getBlocksCnt() {
+        let nickname = "NickA"
+        let path = "record/start?nickname=\(nickname)"
+        let resource = urlResource<BlocksCntResponseModel>(path: path)
+        
+        apiSession.getRequest(with: resource)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, result in
+                dump(result)
+                switch result {
+                case .failure(let error):
+                    owner.apiError.onNext(error)
+                case .success(let data):
+                    owner.output.blocksCnt.accept(data.areaNumber)
+                }
+            })
+            .disposed(by: bag)
+    }
 }
