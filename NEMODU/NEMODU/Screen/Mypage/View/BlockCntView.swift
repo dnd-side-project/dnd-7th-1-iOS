@@ -20,7 +20,7 @@ class BlockCntView: BaseView {
     private let blockCnt = UILabel()
         .then {
             $0.text = "- 칸"
-            $0.font = .title3SB
+            $0.font = .title2
             $0.textColor = .gray900
         }
     

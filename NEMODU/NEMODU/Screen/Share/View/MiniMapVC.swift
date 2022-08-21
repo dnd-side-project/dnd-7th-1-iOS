@@ -79,7 +79,7 @@ extension MiniMapVC {
         blocks.forEach {
             drawBlock(latitude: $0[0],
                       longitude: $0[1],
-                      color: .main30)
+                      color: .main40)
         }
     }
     
