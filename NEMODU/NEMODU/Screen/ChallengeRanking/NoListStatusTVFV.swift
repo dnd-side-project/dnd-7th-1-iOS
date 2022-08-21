@@ -1,5 +1,5 @@
 //
-//  NoChallengeStatusTVFV.swift
+//  NoListStatusTVFV.swift
 //  NEMODU
 //
 //  Created by Kim HeeJae on 2022/08/09.
@@ -11,11 +11,11 @@ import RxSwift
 import Then
 import SnapKit
 
-class NoChallengeStatusTVFV : UITableViewHeaderFooterView {
+class NoListStatusTVFV : UITableViewHeaderFooterView {
     
     // MARK: - UI components
     
-    let invitedChallengeLabel = UILabel()
+    let statusLabel = UILabel()
         .then {
             $0.text = NoChallengeStatusMessageType(rawValue: 3)?.message ?? ""
             $0.font = .caption1
@@ -44,9 +44,9 @@ class NoChallengeStatusTVFV : UITableViewHeaderFooterView {
     }
     
     func layoutView() {
-        contentView.addSubview(invitedChallengeLabel)
+        contentView.addSubview(statusLabel)
         
-        invitedChallengeLabel.snp.makeConstraints {
+        statusLabel.snp.makeConstraints {
             $0.center.equalToSuperview()
         }
     }

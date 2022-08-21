@@ -15,7 +15,7 @@ class NEMODUTBC: UITabBarController {
         super.viewDidLoad()
         
         setTabBar()
-        setStartTabIndex(index: 1)
+        setStartTabIndex(index: 0)
     }
     
 }

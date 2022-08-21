@@ -1,5 +1,5 @@
 //
-//  ChallengeListTypeMenuBarCV.swift
+//  ListTypeMenuBarCV.swift
 //  NEMODU
 //
 //  Created by Kim HeeJae on 2022/08/18.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ChallengeListTypeMenuBarCV : MenuBarCV {
+class ListTypeMenuBarCV : MenuBarCV {
     
     // MARK: - UI components
     
@@ -15,17 +15,7 @@ class ChallengeListTypeMenuBarCV : MenuBarCV {
     
     let itemSpacing: CGFloat = 10
     
-    var challengeContainerCVC: ChallengeContainerCVC?
-    
     // MARK: - Life Cycle
-    
-    override func layoutSubviews() {
-        _ = menuBarCollectionView.then {
-            // 선택되어 있는 위치 지정
-            let indexPath = IndexPath(item: challengeContainerCVC?.reloadCellIndex ?? 0, section: 0)
-            $0.selectItem(at: indexPath, animated: false, scrollPosition: .left)
-        }
-    }
     
     // MARK: - Function
     
@@ -44,7 +34,7 @@ class ChallengeListTypeMenuBarCV : MenuBarCV {
             }
         
         // register ChallengeRankingMenuBarCVC
-        menuBarCollectionView.register(ChallengeListTypeMenuBarCVC.self, forCellWithReuseIdentifier: ChallengeListTypeMenuBarCVC.className)
+        menuBarCollectionView.register(ListTypeMenuBarCVC.self, forCellWithReuseIdentifier: ListTypeMenuBarCVC.className)
         
         menuBarCollectionView.delegate = self
         menuBarCollectionView.dataSource = self
@@ -52,9 +42,9 @@ class ChallengeListTypeMenuBarCV : MenuBarCV {
     
 }
 
-// MARK: - ChallengeListType MenuBar CollectionView
+// MARK: - ListType MenuBar CollectionView FlowLayout
 
-extension ChallengeListTypeMenuBarCV {
+extension ListTypeMenuBarCV {
     
     override func collectionView(_ collectionView:UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let menuTitleSize = menuList[indexPath.item].size(withAttributes: [NSAttributedString.Key.font : UIFont.title3SB])
@@ -65,25 +55,19 @@ extension ChallengeListTypeMenuBarCV {
     
 }
 
-extension ChallengeListTypeMenuBarCV {
+// MARK: - ListType MenuBar CollectionView DataSource
+
+extension ListTypeMenuBarCV {
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = menuBarCollectionView.dequeueReusableCell(withReuseIdentifier: ChallengeListTypeMenuBarCVC.className, for: indexPath) as! ChallengeListTypeMenuBarCVC
+        let cell = menuBarCollectionView.dequeueReusableCell(withReuseIdentifier: ListTypeMenuBarCVC.className, for: indexPath) as! ListTypeMenuBarCVC
         cell.menuTitle.text = menuList[indexPath.item]
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("ChallengeType selected : ", indexPath.item)
-        
-        let targetItemIndex = indexPath.item
-        let currentItemIndex = challengeContainerCVC?.reloadCellIndex ?? 0
-        
-        challengeContainerCVC?.reloadCellIndex = targetItemIndex
-        if targetItemIndex != currentItemIndex {
-            challengeContainerCVC?.challengeTableView.reloadSections(IndexSet(2...2), with: targetItemIndex > currentItemIndex ? .left : .right)
-        }
+        // override to custom item selected action
     }
     
 }
