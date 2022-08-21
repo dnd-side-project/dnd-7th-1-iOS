@@ -64,7 +64,7 @@ class ChallengeContainerCVC : BaseCollectionViewCell {
                 $0.register(ChallengeFinishTVC.self, forCellReuseIdentifier: ChallengeFinishTVC.className)
                 
                 // footerView
-                $0.register(NoChallengeStatusTVFV.self, forHeaderFooterViewReuseIdentifier: NoChallengeStatusTVFV.className)
+                $0.register(NoListStatusTVFV.self, forHeaderFooterViewReuseIdentifier: NoListStatusTVFV.className)
                 
                 
                 // footerView 하단 여백이 생기는 것을 방지(tableView 내의 scrollView의 inset 값 때문인 것으로 추정)
@@ -204,8 +204,8 @@ extension ChallengeContainerCVC : UITableViewDataSource {
             message = NoChallengeStatusMessageType(rawValue: 3)?.message ?? "챌린지 정보를 불러올 수 없습니다."
         }
         
-        let footerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: NoChallengeStatusTVFV.className) as? NoChallengeStatusTVFV
-        footerView?.invitedChallengeLabel.text = message
+        let footerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: NoListStatusTVFV.className) as? NoListStatusTVFV
+        footerView?.statusLabel.text = message
         
         return footerView
     }
