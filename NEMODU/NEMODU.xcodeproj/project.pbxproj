@@ -17,6 +17,8 @@
 		231A2B8F28B20B5600FF884B /* BlockCntView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231A2B8E28B20B5600FF884B /* BlockCntView.swift */; };
 		231A2B9128B2787200FF884B /* MypageVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231A2B9028B2787200FF884B /* MypageVM.swift */; };
 		231A2B9328B2790300FF884B /* MypageUserDataResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231A2B9228B2790300FF884B /* MypageUserDataResponse.swift */; };
+		2339D74E28B2849F0018013D /* MyRecordDataVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2339D74D28B2849F0018013D /* MyRecordDataVC.swift */; };
+		2339D75028B284C20018013D /* MypageNC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2339D74F28B284C20018013D /* MypageNC.swift */; };
 		23412FD228AD494500B73D62 /* MainVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23412FD128AD494500B73D62 /* MainVM.swift */; };
 		23412FD628AE080000B73D62 /* ChallengeColorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23412FD528AE080000B73D62 /* ChallengeColorType.swift */; };
 		23412FD828AE245D00B73D62 /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23412FD728AE245D00B73D62 /* Block.swift */; };
@@ -130,6 +132,8 @@
 		231A2B8E28B20B5600FF884B /* BlockCntView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockCntView.swift; sourceTree = "<group>"; };
 		231A2B9028B2787200FF884B /* MypageVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MypageVM.swift; sourceTree = "<group>"; };
 		231A2B9228B2790300FF884B /* MypageUserDataResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MypageUserDataResponse.swift; sourceTree = "<group>"; };
+		2339D74D28B2849F0018013D /* MyRecordDataVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordDataVC.swift; sourceTree = "<group>"; };
+		2339D74F28B284C20018013D /* MypageNC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MypageNC.swift; sourceTree = "<group>"; };
 		23412FD128AD494500B73D62 /* MainVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVM.swift; sourceTree = "<group>"; };
 		23412FD528AE080000B73D62 /* ChallengeColorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeColorType.swift; sourceTree = "<group>"; };
 		23412FD728AE245D00B73D62 /* Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
@@ -536,7 +540,9 @@
 		2348B41B2892DEF6001095BC /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				2339D74F28B284C20018013D /* MypageNC.swift */,
 				2348B41D2892DF0D001095BC /* MypageVC.swift */,
+				2339D74D28B2849F0018013D /* MyRecordDataVC.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -976,11 +982,13 @@
 				2348B3E12892D046001095BC /* BaseView.swift in Sources */,
 				23F5716F28A6AD01005F2E21 /* RecordStackView.swift in Sources */,
 				3C08138328A91C00009F854B /* ChallengeRankingVC.swift in Sources */,
+				2339D75028B284C20018013D /* MypageNC.swift in Sources */,
 				2348B3FB2892D15C001095BC /* Output.swift in Sources */,
+				2339D74E28B2849F0018013D /* MyRecordDataVC.swift in Sources */,
 				3C08137D28A91C00009F854B /* NoListStatusTVFV.swift in Sources */,
 				235CD76B28B0F8C5000EBAD9 /* OnboardingVC.swift in Sources */,
-				3C08137D28A91C00009F854B /* NoChallengeStatusTVFV.swift in Sources */,
-				3C08137D28A91C00009F854B /* NoChallengeStatusTVFV.swift in Sources */,
+				3C08137D28A91C00009F854B /* NoListStatusTVFV.swift in Sources */,
+				3C08137D28A91C00009F854B /* NoListStatusTVFV.swift in Sources */,
 				23F5717128A7CFD5005F2E21 /* FriendProfileBottomSheet.swift in Sources */,
 				2348B3F02892D0FE001095BC /* APISession.swift in Sources */,
 				2348B3E52892D075001095BC /* BaseViewController.swift in Sources */,
