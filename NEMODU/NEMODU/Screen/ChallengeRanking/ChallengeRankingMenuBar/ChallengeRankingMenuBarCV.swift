@@ -30,18 +30,6 @@ class ChallengeRankingMenuBarCV : MenuBarCV {
         positionBarView.snp.makeConstraints {
             $0.height.equalTo(positionBarHeight)
         }
-        
-        
-        // 랭킹탭 개발을 위한 임시코드 //
-        let indexPath = IndexPath(row: 1, section: 0)
-        
-        _ = menuBarCollectionView.then {
-            // 최초 실행 시 선택되어 있는 위치 지정
-            $0.selectItem(at: indexPath, animated: false, scrollPosition: .left)
-        }
-        challengeRankingVC?.challengeRankingContainerCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-        // 랭킹탭 개발을 위한 임시코드 //
-        
     }
     
     // MARK: - Function
