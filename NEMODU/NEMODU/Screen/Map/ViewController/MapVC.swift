@@ -33,18 +33,18 @@ class MapVC: BaseViewController {
             $0.startUpdatingLocation()
             $0.activityType = .fitness
         }
-
+    
     var currentLocationBtn = UIButton()
         .then {
             $0.setImage(UIImage(named: "location"), for: .normal)
             $0.addShadow()
         }
     
-    let activityManager = CMMotionActivityManager()
-    let pedoMeter = CMPedometer()
+    private let activityManager = CMMotionActivityManager()
+    private let pedoMeter = CMPedometer()
+    private var pauseCnt = 0
     var stepCnt = 0
-    var pauseCnt = 0
-
+    
     let blockSizePoint: Double = 0.0003740
     private let blockSize: Int = 37400
     private let mapZoomScale = 0.003
@@ -97,7 +97,8 @@ class MapVC: BaseViewController {
 
 extension MapVC {
     private func configureMap() {
-        view.addSubview(mapView)
+        view.addSubviews([mapView,
+                          currentLocationBtn])
         locationManager.delegate = self
         mapView.delegate = self
         
@@ -105,9 +106,6 @@ extension MapVC {
         _ = goLocation(latitudeValue: locationManager.location?.coordinate.latitude ?? 0,
                        longitudeValue: locationManager.location?.coordinate.longitude ?? 0,
                        delta: mapZoomScale)
-        
-        // 버튼
-        view.addSubview(currentLocationBtn)
     }
     
     private func registerMapAnnotationViews() {
@@ -123,6 +121,13 @@ extension MapVC {
     
     private func setupMyAnnotationView(for annotation: MyAnnotation, on mapView: MKMapView) -> MKAnnotationView {
         return mapView.dequeueReusableAnnotationView(withIdentifier: NSStringFromClass(MyAnnotation.self), for: annotation)
+    }
+    
+    func isUserInteractionEnabled(_ isEnabled: Bool) {
+        mapView.isZoomEnabled = isEnabled
+        mapView.isScrollEnabled = isEnabled
+        mapView.isRotateEnabled = isEnabled
+        mapView.isUserInteractionEnabled = isEnabled
     }
 }
 
@@ -155,7 +160,7 @@ extension MapVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self,
-                let coordinate = self.locationManager.location?.coordinate else { return }
+                      let coordinate = self.locationManager.location?.coordinate else { return }
                 _ = self.goLocation(latitudeValue: coordinate.latitude,
                                     longitudeValue: coordinate.longitude,
                                     delta: self.mapZoomScale)
@@ -169,9 +174,7 @@ extension MapVC {
 
 // MARK: - Output
 
-extension MapVC {
-    
-}
+extension MapVC {}
 
 // MARK: - Custom Methods
 
@@ -212,20 +215,16 @@ extension MapVC {
         pauseCnt = stepCnt
     }
     
-    /// 특정 좌표에 블록을 그리는 함수
+    /// 기준 처리된 좌표를 입력받고 해당 위치에 블록을 그리는 함수
     func drawBlock(latitude: Double, longitude: Double, color: UIColor) {
-        let latPoint = Int(latitude * mul) / blockSize
-        let longPoint = Int(longitude * mul) / blockSize
-        
-        // TODO: - 백엔드와 회의 후 클래스화 진행
-        let overlayTopLeftCoordinate = CLLocationCoordinate2D(latitude: Double((latPoint) * blockSize) / mul,
-                                                              longitude: Double((longPoint - 1) * blockSize) / mul)
-        let overlayTopRightCoordinate = CLLocationCoordinate2D(latitude: Double((latPoint) * blockSize) / mul,
-                                                               longitude: Double((longPoint) * blockSize) / mul)
-        let overlayBottomLeftCoordinate = CLLocationCoordinate2D(latitude: Double((latPoint + 1) * blockSize) / mul,
-                                                                 longitude: Double((longPoint - 1) * blockSize) / mul)
-        let overlayBottomRightCoordinate = CLLocationCoordinate2D(latitude: Double((latPoint + 1) * blockSize) / mul,
-                                                                  longitude: Double((longPoint) * blockSize) / mul)
+        let overlayTopLeftCoordinate = CLLocationCoordinate2D(latitude: latitude,
+                                                              longitude: longitude - blockSizePoint)
+        let overlayTopRightCoordinate = CLLocationCoordinate2D(latitude: latitude,
+                                                               longitude: longitude)
+        let overlayBottomLeftCoordinate = CLLocationCoordinate2D(latitude: latitude + blockSizePoint,
+                                                                 longitude: longitude - blockSizePoint)
+        let overlayBottomRightCoordinate = CLLocationCoordinate2D(latitude: latitude + blockSizePoint,
+                                                                  longitude: longitude)
         
         let blockDraw = Block(coordinate: [overlayTopLeftCoordinate,
                                            overlayTopRightCoordinate,
@@ -257,7 +256,7 @@ extension MapVC: CLLocationManagerDelegate {
             print("GPS: Default")
         }
     }
-
+    
     /// 위도, 경도, 스팬(영역 폭)을 입력받아 지도에 표시
     func goLocation(latitudeValue: CLLocationDegrees,
                     longitudeValue: CLLocationDegrees,
@@ -271,16 +270,16 @@ extension MapVC: CLLocationManagerDelegate {
     
     /// 내 핀을 설치하는 함수
     func addMyAnnotation(coordinate: [Double], profileImage: UIImage) {
-        let annotation = MyAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate[0],
-                                                                         longitude: coordinate[1]))
+        let annotation = MyAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate[0] + blockSizePoint / 2,
+                                                                         longitude: coordinate[1] - blockSizePoint / 2))
         annotation.profileImage = profileImage
         mapView.addAnnotation(annotation)
     }
     
     /// 친구 핀을 설치하는 함수
     func addFriendAnnotation(coordinate: [Double], profileImage: UIImage, nickname: String, color: UIColor, challengeCnt: Int) {
-        let annotation = FriendAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate[0],
-                                                                             longitude: coordinate[1]))
+        let annotation = FriendAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate[0] + blockSizePoint / 2,
+                                                                             longitude: coordinate[1] - blockSizePoint / 2))
         annotation.title = nickname
         annotation.profileImage = profileImage
         annotation.color = color
@@ -294,8 +293,10 @@ extension MapVC: CLLocationManagerDelegate {
         // 실제 위치 좌표
         let latitude = location.coordinate.latitude
         let longitude = location.coordinate.longitude
-        let latPoint = Int(latitude * mul) / blockSize
-        let longPoint = Int(longitude * mul) / blockSize
+        
+        // 영역 이동 판단을 위한 단위값
+        let latitudeUnit = Int(latitude * mul) / blockSize
+        let longitudeUnit = Int(longitude * mul) / blockSize
         
         // 사용자 이동에 맞춰 화면 이동
         if isFocusOn {
@@ -306,18 +307,22 @@ extension MapVC: CLLocationManagerDelegate {
         
         // 기록 중이고
         // block 경계 이동 시 좌표 판단 및 block overlay 추가
-        if (isWalking ?? false) && (prevLatitude != latPoint || prevLongitude != longPoint) {
-            prevLatitude = latPoint
-            prevLongitude = longPoint
+        if (isWalking ?? false) && (prevLatitude != latitudeUnit || prevLongitude != longitudeUnit) {
+            prevLatitude = latitudeUnit
+            prevLongitude = longitudeUnit
             
-            if !blocks.contains([Double((latPoint) * blockSize) / mul, Double((longPoint) * blockSize) / mul]) {
+            // 실제 저장되고 그려지는 기준 좌표값
+            let latitudePoint = Double((latitudeUnit) * blockSize) / mul
+            let longitudePoint = Double((longitudeUnit) * blockSize) / mul
+            
+            if !blocks.contains([latitudePoint, longitudePoint]) {
                 // block Point 저장
-                blocks.append([Double((latPoint) * blockSize) / mul, Double((longPoint) * blockSize) / mul])
+                blocks.append([latitudePoint, longitudePoint])
                 
-                drawBlock(latitude: latitude,
-                          longitude: longitude,
+                drawBlock(latitude: latitudePoint,
+                          longitude: longitudePoint,
                           color: .main30)
-
+                
                 blocksCnt.accept(blocks.count)
             }
         }
@@ -350,6 +355,7 @@ extension MapVC: MKMapViewDelegate {
         }
     }
     
+    /// custom annotationView를 반환하는 함수
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         guard !annotation.isKind(of: MKUserLocation.self) else { return nil }
         
@@ -364,6 +370,7 @@ extension MapVC: MKMapViewDelegate {
         return annotationView
     }
     
+    /// annotation을 select 했을때 나타나는 이벤트를 지정하는 함수
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         if let annotation = view as? FriendAnnotationView {
             annotation.setSelected(true, animated: true)

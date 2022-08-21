@@ -64,8 +64,9 @@ class RecordResultVC: BaseViewController {
         }
     
     private let naviBar = NavigationBar()
+    private let viewModel = RecordResultVM()
     private let bag = DisposeBag()
-    private var blocks: [[Double]]?
+    private var recordData: RecordDataRequest?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,7 +76,7 @@ class RecordResultVC: BaseViewController {
         super.configureView()
         configureNaviBar()
         configureContentView()
-        configureMiniMap()
+        miniMap.drawMiniMap()
     }
     
     override func layoutView() {
@@ -85,12 +86,13 @@ class RecordResultVC: BaseViewController {
     
     override func bindInput() {
         super.bindInput()
-        bindDismissBtn()
+        bindSaveBtn()
     }
     
     override func bindOutput() {
         super.bindOutput()
         bindKeyboardScroll()
+        bindDismiss()
     }
     
 }
@@ -106,7 +108,8 @@ extension RecordResultVC {
         naviBar.configureNaviBar(targetVC: self,
                                  title: "\(month)월 \(day)일의 기록")
         naviBar.configureRightBarBtn(targetVC: self,
-                                     image: naviBar.naviType.backBtnImage)
+                                     title: "저장",
+                                     titleColor: .main)
     }
     
     private func configureContentView() {
@@ -123,30 +126,14 @@ extension RecordResultVC {
                               memoTextView])
     }
     
-    private func configureMiniMap() {
-        guard let blocks = blocks else { return }
-        
-        let sortedLatitude = blocks.sorted(by: { $0[0] < $1[0] })
-        let sortedLongitude = blocks.sorted(by: { $0[1] < $1[1] })
-        
-        _ = miniMap.goLocation(latitudeValue: sortedLatitude[blocks.count/2][0],
-                               longitudeValue: sortedLongitude[blocks.count/2][1] - 0.0001,
-                               delta: 0.003)
-        
-        blocks.forEach {
-            miniMap.drawBlock(latitude: $0[0],
-                              longitude: $0[1],
-                              color: .main30)
-        }
-    }
-    
-    func configureRecordValue(blocks: [[Double]], weekBlockCnt: Int, distance: Int, second: Int, stepCnt: Int) {
-        self.blocks = blocks
-        blocksCntView.recordValue.text = "\(blocks.count)"
-        blocksCntView.recordSubtitle.text = "이번주 영역 : \(weekBlockCnt + blocks.count)칸"
-        recordStackView.distanceView.recordValue.text = "\(distance)m"
-        recordStackView.timeView.recordValue.text = "\(second / 60):" + String(format: "%02d", second % 60)
-        recordStackView.stepCntView.recordValue.text = "\(stepCnt)"
+    func configureRecordValue(recordData: RecordDataRequest, weekBlockCnt: Int) {
+        self.recordData = recordData
+        miniMap.blocks = recordData.blocks
+        blocksCntView.recordValue.text = "\(recordData.blocks.count)"
+        blocksCntView.recordSubtitle.text = "이번주 영역 : \(weekBlockCnt + recordData.blocks.count)칸"
+        recordStackView.distanceView.recordValue.text = "\(recordData.distance)m"
+        recordStackView.timeView.recordValue.text = "\(recordData.exerciseTime / 60):" + String(format: "%02d", recordData.exerciseTime % 60)
+        recordStackView.stepCntView.recordValue.text = "\(recordData.stepCount)"
     }
 }
 
@@ -219,13 +206,13 @@ extension RecordResultVC {
 // MARK: - Input
 
 extension RecordResultVC {
-    private func bindDismissBtn() {
-        // dismiss to rootViewController
+    private func bindSaveBtn() {
         naviBar.rightBtn.rx.tap
-            .asDriver()
-            .drive(onNext: { [weak self] _ in
-                guard let self = self else { return }
-                self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self,
+                      var recordData = self.recordData else { return }
+                recordData.message = self.memoTextView.tv.text
+                self.viewModel.postRecordData(with: recordData)
             })
             .disposed(by: bag)
     }
@@ -239,6 +226,19 @@ extension RecordResultVC {
             .subscribe(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.baseScrollView.scrollToBottom(animated: true)
+            })
+            .disposed(by: bag)
+    }
+    
+    private func bindDismiss() {
+        // dismiss to rootViewController
+        // TODO: - error alert 추가
+        viewModel.output.isValidPost
+            .subscribe(onNext: { [weak self] validation in
+                guard let self = self else { return }
+                validation
+                ? self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
+                : print("네트워크 연결 상태가 좋지 않습니다.")
             })
             .disposed(by: bag)
     }
