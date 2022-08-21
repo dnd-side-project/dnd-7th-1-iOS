@@ -1,5 +1,5 @@
 //
-//  ChallengeListTypeMenuBarCVC.swift
+//  ListTypeMenuBarCVC.swift
 //  NEMODU
 //
 //  Created by Kim HeeJae on 2022/08/18.
@@ -9,7 +9,7 @@ import UIKit
 import Then
 import SnapKit
 
-class ChallengeListTypeMenuBarCVC: MenuBarCVC {
+class ListTypeMenuBarCVC: MenuBarCVC {
     
     // MARK: - UI components
     
