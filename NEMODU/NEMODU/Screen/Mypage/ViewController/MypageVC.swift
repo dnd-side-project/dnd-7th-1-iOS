@@ -16,18 +16,16 @@ class MypageVC: BaseViewController {
     private let baseScrollView = UIScrollView()
         .then {
             $0.showsVerticalScrollIndicator = false
-            $0.backgroundColor = .gray50
         }
     
     private let dataView = UIView()
+    
+    private let separatorView = UIView()
         .then {
-            $0.backgroundColor = .systemBackground
+            $0.backgroundColor = .gray50
         }
     
     private let btnView = UIView()
-        .then {
-            $0.backgroundColor = .systemBackground
-        }
     
     private let profileView = ProfileView()
     
@@ -46,7 +44,48 @@ class MypageVC: BaseViewController {
             $0.layer.cornerRadius = 8
         }
     
+    private let friendBtn = UIButton()
+        .then {
+            $0.setImage(UIImage(named: "friendsList"), for: .normal)
+            $0.setTitle("친구 -명", for: .normal)
+        }
+    
+    private let myRecordBtn = UIButton()
+        .then {
+            $0.setImage(UIImage(named: "myRecordList"), for: .normal)
+            $0.setTitle("나의 활동 기록", for: .normal)
+        }
+    
+    private let settingBtnStackView = UIStackView()
+        .then {
+            $0.axis = .vertical
+            $0.spacing = 0
+            $0.distribution = .equalCentering
+        }
+    
+    private let setLocationBtn = UIButton()
+        .then {
+            $0.setTitle("위치 정보 동의 설정", for: .normal)
+        }
+    
+    private let setAlarmBtn = UIButton()
+        .then {
+            $0.setTitle("알림 설정", for: .normal)
+        }
+    
+    private let termsBtn = UIButton()
+        .then {
+            $0.setTitle("이용 약관", for: .normal)
+        }
+    
+    private let inquiryBtn = UIButton()
+        .then {
+            $0.setTitle("문의하기", for: .normal)
+        }
+    
     private let naviBar = NavigationBar()
+    
+    private let bag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,6 +104,7 @@ class MypageVC: BaseViewController {
     
     override func bindInput() {
         super.bindInput()
+        bindBtn()
     }
     
     override func bindOutput() {
@@ -86,10 +126,40 @@ extension MypageVC {
     private func configureMypage() {
         view.addSubview(baseScrollView)
         baseScrollView.addSubviews([dataView,
+                                    separatorView,
                                     btnView])
         dataView.addSubviews([profileView,
                               blockCntView,
                               recordView])
+        btnView.addSubviews([friendBtn,
+                             myRecordBtn,
+                             settingBtnStackView])
+        [friendBtn, myRecordBtn].forEach {
+            $0.layer.borderWidth = 2
+            $0.layer.borderColor = UIColor.gray200.cgColor
+            $0.layer.cornerRadius = 8
+            $0.setTitleColor(.gray900, for: .normal)
+            $0.titleLabel?.font = .body4
+            $0.centerVertically(spacing: 4)
+            $0.setBackgroundColor(.gray50, for: .highlighted)
+        }
+        
+        [setLocationBtn, setAlarmBtn, termsBtn, inquiryBtn].forEach {
+            $0.titleLabel?.font = .body1
+            $0.setTitleColor(.gray900, for: .normal)
+            $0.contentHorizontalAlignment = .left
+            
+            let arrowImage = UIImageView(image: UIImage(systemName: "chevron.right")?
+                .withTintColor(.gray300, renderingMode: .alwaysOriginal))
+            $0.addSubview(arrowImage)
+            arrowImage.snp.makeConstraints {
+                $0.trailing.equalToSuperview().offset(-16)
+                $0.centerY.equalToSuperview()
+                $0.height.equalTo(14)
+                $0.width.equalTo(8)
+            }
+            settingBtnStackView.addArrangedSubview($0)
+        }
     }
 }
 
@@ -107,8 +177,14 @@ extension MypageVC {
             $0.height.equalTo(307)
         }
         
+        separatorView.snp.makeConstraints {
+            $0.top.equalTo(dataView.snp.bottom)
+            $0.width.equalToSuperview()
+            $0.height.equalTo(8)
+        }
+        
         btnView.snp.makeConstraints {
-            $0.top.equalTo(dataView.snp.bottom).offset(8)
+            $0.top.equalTo(separatorView.snp.bottom)
             $0.height.equalTo(430)
             $0.width.bottom.equalToSuperview()
         }
@@ -132,13 +208,41 @@ extension MypageVC {
             $0.trailing.equalToSuperview().offset(-16)
             $0.height.equalTo(114)
         }
+        
+        friendBtn.snp.makeConstraints {
+            $0.top.leading.equalToSuperview().offset(16)
+            $0.height.equalTo(98)
+        }
+        
+        myRecordBtn.snp.makeConstraints {
+            $0.centerY.equalTo(friendBtn.snp.centerY)
+            $0.leading.equalTo(friendBtn.snp.trailing).offset(16)
+            $0.trailing.equalToSuperview().offset(-16)
+            $0.height.equalTo(98)
+            $0.width.equalTo(friendBtn.snp.width)
+        }
+        
+        settingBtnStackView.snp.makeConstraints {
+            $0.top.equalTo(friendBtn.snp.bottom).offset(16)
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview().offset(-16)
+            $0.bottom.equalToSuperview().offset(-68)
+        }
     }
 }
 
 // MARK: - Input
 
 extension MypageVC {
-    
+    private func bindBtn() {
+        myRecordBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                // TODO: - 화면 전환
+            })
+            .disposed(by: bag)
+    }
 }
 
 // MARK: - Output
