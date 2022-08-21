@@ -44,6 +44,10 @@ extension BlockCntView {
         backgroundColor = .gray50
         layer.cornerRadius = 8
     }
+    
+    func configureBlockCnt(_ cnt: Int) {
+        blockCnt.text = "\(cnt)칸"
+    }
 }
 
 // MARK: - Layout

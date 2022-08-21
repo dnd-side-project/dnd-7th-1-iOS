@@ -85,10 +85,16 @@ class MypageVC: BaseViewController {
     
     private let naviBar = NavigationBar()
     
+    private let viewModel = MypageVM()
     private let bag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.getMypageData()
     }
     
     override func configureView() {
@@ -109,6 +115,7 @@ class MypageVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        bindUserData()
     }
     
 }
@@ -161,6 +168,18 @@ extension MypageVC {
             settingBtnStackView.addArrangedSubview($0)
         }
         settingBtnStackView.addHorizontalSeparators(color: .gray50, height: 1)
+    }
+    
+    private func configureUserData(_ userData: MypageUserDataResponseModel) {
+        // TODO: - 서버 프로필 이미지 추가 후 수정
+//        profileView.profileImage.image =
+        profileView.nickname.text = userData.nickname
+        profileView.profileMessage.text = userData.intro
+        blockCntView.configureBlockCnt(userData.allMatrixNumber)
+        recordView.firstView.recordValue.text = "\(userData.matrixNumber) 칸"
+        recordView.secondView.recordValue.text = "\(userData.stepCount)"
+        recordView.thirdView.recordValue.text = "\(userData.distance) m"
+        friendBtn.setTitle("친구 \(userData.friendNumber)명", for: .normal)
     }
 }
 
@@ -249,5 +268,12 @@ extension MypageVC {
 // MARK: - Output
 
 extension MypageVC {
-    
+    private func bindUserData() {
+        viewModel.output.userData
+            .subscribe(onNext: { [weak self] data in
+                guard let self = self else { return }
+                self.configureUserData(data)
+            })
+            .disposed(by: bag)
+    }
 }
