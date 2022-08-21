@@ -84,9 +84,6 @@ class RankingContainerCVC : BaseCollectionViewCell {
             $0.horizontalEdges.equalTo(contentView)
         }
         rankingTableView.snp.makeConstraints {
-//            $0.height.equalTo(200)
-
-//            $0.top.equalTo(contentView.snp.top)
             $0.top.equalTo(rankingListTypeMenuBar.snp.bottom)
             $0.horizontalEdges.equalTo(rankingListTypeMenuBar)
             $0.bottom.equalTo(contentView.snp.bottom)

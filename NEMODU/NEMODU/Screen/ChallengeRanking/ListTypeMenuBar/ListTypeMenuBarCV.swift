@@ -60,7 +60,10 @@ extension ListTypeMenuBarCV {
 extension ListTypeMenuBarCV {
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = menuBarCollectionView.dequeueReusableCell(withReuseIdentifier: ListTypeMenuBarCVC.className, for: indexPath) as! ListTypeMenuBarCVC
+        guard let cell = menuBarCollectionView.dequeueReusableCell(withReuseIdentifier: ListTypeMenuBarCVC.className, for: indexPath) as? ListTypeMenuBarCVC else {
+            return UICollectionViewCell()
+        }
+        
         cell.menuTitle.text = menuList[indexPath.item]
         
         return cell
