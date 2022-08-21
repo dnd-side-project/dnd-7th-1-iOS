@@ -13,6 +13,8 @@
 		230CB2DF28AD473100B11270 /* UserBlockResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230CB2DE28AD473100B11270 /* UserBlockResponseModel.swift */; };
 		230CB2E128AD474E00B11270 /* ChallengeBlockResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230CB2E028AD474E00B11270 /* ChallengeBlockResponseModel.swift */; };
 		230CB2E428AD478000B11270 /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230CB2E328AD478000B11270 /* Matrix.swift */; };
+		231A2B8D28B20B3E00FF884B /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231A2B8C28B20B3E00FF884B /* ProfileView.swift */; };
+		231A2B8F28B20B5600FF884B /* BlockCntView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231A2B8E28B20B5600FF884B /* BlockCntView.swift */; };
 		23412FD228AD494500B73D62 /* MainVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23412FD128AD494500B73D62 /* MainVM.swift */; };
 		23412FD628AE080000B73D62 /* ChallengeColorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23412FD528AE080000B73D62 /* ChallengeColorType.swift */; };
 		23412FD828AE245D00B73D62 /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23412FD728AE245D00B73D62 /* Block.swift */; };
@@ -118,6 +120,8 @@
 		230CB2DE28AD473100B11270 /* UserBlockResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBlockResponseModel.swift; sourceTree = "<group>"; };
 		230CB2E028AD474E00B11270 /* ChallengeBlockResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeBlockResponseModel.swift; sourceTree = "<group>"; };
 		230CB2E328AD478000B11270 /* Matrix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Matrix.swift; sourceTree = "<group>"; };
+		231A2B8C28B20B3E00FF884B /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		231A2B8E28B20B5600FF884B /* BlockCntView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockCntView.swift; sourceTree = "<group>"; };
 		23412FD128AD494500B73D62 /* MainVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVM.swift; sourceTree = "<group>"; };
 		23412FD528AE080000B73D62 /* ChallengeColorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeColorType.swift; sourceTree = "<group>"; };
 		23412FD728AE245D00B73D62 /* Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
@@ -281,6 +285,15 @@
 			path = Request;
 			sourceTree = "<group>";
 		};
+		231A2B8B28B20B1A00FF884B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				231A2B8C28B20B3E00FF884B /* ProfileView.swift */,
+				231A2B8E28B20B5600FF884B /* BlockCntView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		23412FD928AE2A9200B73D62 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -373,6 +386,7 @@
 			isa = PBXGroup;
 			children = (
 				2348B41C2892DEFD001095BC /* ViewModel */,
+				231A2B8B28B20B1A00FF884B /* View */,
 				2348B41B2892DEF6001095BC /* ViewController */,
 				2348B41A2892DEF0001095BC /* Model */,
 			);
@@ -879,6 +893,7 @@
 				3C08137B28A91C00009F854B /* ChallengeRankingMenuBarCV.swift in Sources */,
 				23412FDE28AE396D00B73D62 /* ChallengeListVM.swift in Sources */,
 				23B7207028A12DBB00D3A410 /* RecordView.swift in Sources */,
+				231A2B8D28B20B3E00FF884B /* ProfileView.swift in Sources */,
 				23F5718228AA6038005F2E21 /* UIImage+.swift in Sources */,
 				23B7207028A12DBB00D3A410 /* RecordView.swift in Sources */,
 				3C09AE3B28AF6450005DD125 /* ChallengeFinishTVC.swift in Sources */,
@@ -917,6 +932,7 @@
 				23412FD628AE080000B73D62 /* ChallengeColorType.swift in Sources */,
 				2348B4032892D1D9001095BC /* UITextView+.swift in Sources */,
 				2348B4072892D286001095BC /* UIView+.swift in Sources */,
+				231A2B8F28B20B5600FF884B /* BlockCntView.swift in Sources */,
 				2348B3EE2892D0ED001095BC /* APIService.swift in Sources */,
 				23412FDC28AE375D00B73D62 /* ChallengeElementResponseModel.swift in Sources */,
 				23412FF028AFB74800B73D62 /* RecordResultNC.swift in Sources */,
