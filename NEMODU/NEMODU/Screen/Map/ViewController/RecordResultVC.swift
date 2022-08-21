@@ -45,6 +45,11 @@ class RecordResultVC: BaseViewController {
     private var miniMap = MiniMapVC()
     
     private let recordStackView = RecordStackView()
+        .then {
+            $0.firstView.recordTitle.text = "거리"
+            $0.secondView.recordTitle.text = "시간"
+            $0.thirdView.recordTitle.text = "걸음수"
+        }
     
     private let viewSeparator = UIView()
         .then {
@@ -131,9 +136,9 @@ extension RecordResultVC {
         miniMap.blocks = recordData.blocks
         blocksCntView.recordValue.text = "\(recordData.blocks.count)"
         blocksCntView.recordSubtitle.text = "이번주 영역 : \(weekBlockCnt + recordData.blocks.count)칸"
-        recordStackView.distanceView.recordValue.text = "\(recordData.distance)m"
-        recordStackView.timeView.recordValue.text = "\(recordData.exerciseTime / 60):" + String(format: "%02d", recordData.exerciseTime % 60)
-        recordStackView.stepCntView.recordValue.text = "\(recordData.stepCount)"
+        recordStackView.firstView.recordValue.text = "\(recordData.distance)m"
+        recordStackView.secondView.recordValue.text = "\(recordData.exerciseTime / 60):" + String(format: "%02d", recordData.exerciseTime % 60)
+        recordStackView.thirdView.recordValue.text = "\(recordData.stepCount)"
     }
 }
 
@@ -176,8 +181,7 @@ extension RecordResultVC {
         
         recordStackView.snp.makeConstraints {
             $0.top.equalTo(miniMap.view.snp.bottom).offset(40)
-            $0.leading.equalToSuperview().offset(16)
-            $0.trailing.equalToSuperview().offset(-16)
+            $0.leading.trailing.equalToSuperview()
             $0.bottom.equalToSuperview().offset(-40)
             $0.height.equalTo(50)
         }

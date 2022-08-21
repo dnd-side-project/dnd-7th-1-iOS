@@ -18,20 +18,15 @@ class RecordStackView: BaseView {
             $0.distribution = .equalSpacing
         }
     
-    var distanceView = RecordView()
+    private var recordTitleLabel = UILabel()
         .then {
-            $0.recordTitle.text = "거리"
+            $0.font = .body4
+            $0.textColor = .gray900
         }
     
-    var timeView = RecordView()
-        .then {
-            $0.recordTitle.text = "시간"
-        }
-    
-    var stepCntView = RecordView()
-        .then {
-            $0.recordTitle.text = "걸음수"
-        }
+    var firstView = RecordView()
+    var secondView = RecordView()
+    var thirdView = RecordView()
     
     override func configureView() {
         super.configureView()
@@ -49,16 +44,28 @@ class RecordStackView: BaseView {
 
 extension RecordStackView {
     private func configureRecordStackView() {
-        addSubview(recordStackView)
-        [distanceView, timeView, stepCntView].forEach {
-            $0.recordValue.font = .title3SB
+        addSubviews([recordTitleLabel, recordStackView])
+        [firstView, secondView, thirdView].forEach {
+            $0.recordValue.font = .title2
             $0.recordTitle.font = .caption1
+            $0.recordTitle.textColor = .gray600
             recordStackView.addArrangedSubview($0)
         }
         
         recordStackView.addVerticalSeparators(color: .gray300,
                                               width: 1,
                                               multiplier: 0.2)
+    }
+    
+    /// stackView에 titleLabel을 추가하는 함수입니다.
+    func configureStackViewTitle(title: String) {
+        recordTitleLabel.text = title
+        recordTitleLabel.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview().offset(-16)
+            $0.height.equalTo(48)
+        }
     }
 }
 
@@ -67,10 +74,13 @@ extension RecordStackView {
 extension RecordStackView {
     private func configureLayout() {
         recordStackView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.top.equalTo(recordTitleLabel.snp.bottom)
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview().offset(-16)
+            $0.bottom.equalToSuperview()
         }
         
-        [distanceView, timeView, stepCntView].forEach {
+        [firstView, secondView, thirdView].forEach {
             $0.widthAnchor.constraint(equalToConstant: 86).isActive = true
         }
     }
