@@ -182,8 +182,7 @@ extension RecordResultVC {
         recordStackView.snp.makeConstraints {
             $0.top.equalTo(miniMap.view.snp.bottom).offset(40)
             $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview().offset(-40)
-            $0.height.equalTo(50)
+            $0.bottom.equalToSuperview().offset(-24)
         }
         
         memoLabel.snp.makeConstraints {

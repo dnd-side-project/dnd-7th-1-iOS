@@ -60,10 +60,7 @@ extension RecordStackView {
     /// stackView에 titleLabel을 추가하는 함수입니다.
     func configureStackViewTitle(title: String) {
         recordTitleLabel.text = title
-        recordTitleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview()
-            $0.leading.equalToSuperview().offset(16)
-            $0.trailing.equalToSuperview().offset(-16)
+        recordTitleLabel.snp.updateConstraints {
             $0.height.equalTo(48)
         }
     }
@@ -73,11 +70,18 @@ extension RecordStackView {
 
 extension RecordStackView {
     private func configureLayout() {
+        recordTitleLabel.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview().offset(-16)
+            $0.height.equalTo(0)
+        }
+        
         recordStackView.snp.makeConstraints {
             $0.top.equalTo(recordTitleLabel.snp.bottom)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
-            $0.bottom.equalToSuperview()
+            $0.bottom.equalToSuperview().offset(-16)
         }
         
         [firstView, secondView, thirdView].forEach {
