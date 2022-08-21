@@ -160,6 +160,7 @@ extension MypageVC {
             }
             settingBtnStackView.addArrangedSubview($0)
         }
+        settingBtnStackView.addHorizontalSeparators(color: .gray50, height: 1)
     }
 }
 
