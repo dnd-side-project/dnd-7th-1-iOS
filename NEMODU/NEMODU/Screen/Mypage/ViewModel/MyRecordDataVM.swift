@@ -55,20 +55,22 @@ final class MyRecordDataVM: BaseViewModel {
 // MARK: - Custom Methods
 
 extension MyRecordDataVM {
-    func startDateFormatter() -> String {
+    func startDateFormatter(_ today: Date) -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'"
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'00:00:00"
         dateFormatter.timeZone = TimeZone(identifier: "KST")
-        let date = dateFormatter.string(from: Date.now)
-        return date + "00:00:00"
+        let date = dateFormatter.string(from: today)
+        print(date)
+        return date
     }
     
-    func endDateFormatter() -> String {
+    func endDateFormatter(_ today: Date) -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'"
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'23:59:59"
         dateFormatter.timeZone = TimeZone(identifier: "KST")
-        let date = dateFormatter.string(from: Date.now)
-        return date + "23:59:59"
+        let date = dateFormatter.string(from: today)
+        print(date)
+        return date
     }
 }
 

@@ -9,8 +9,8 @@ import Foundation
 import Alamofire
 
 struct MyRecordListRequestModel {
-    var end: String
     var start: String
+    var end: String
 }
 
 extension MyRecordListRequestModel {

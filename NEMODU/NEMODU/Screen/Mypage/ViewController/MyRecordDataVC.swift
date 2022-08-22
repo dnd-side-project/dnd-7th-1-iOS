@@ -72,7 +72,7 @@ class MyRecordDataVC: BaseViewController {
         .then {
             $0.backgroundColor = .gray50
         }
-
+    
     private let recordTitle = UILabel()
         .then {
             $0.text = "활동 내역"
@@ -104,8 +104,9 @@ class MyRecordDataVC: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.getMyRecordDataList(with: MyRecordListRequestModel(end: viewModel.startDateFormatter(),
-                                                                     start: viewModel.endDateFormatter()))
+        viewModel.getMyRecordDataList(
+            with: MyRecordListRequestModel(start: viewModel.startDateFormatter(calendar.selectedDate ?? Date.now),
+                                           end: viewModel.endDateFormatter(calendar.selectedDate ?? Date.now)))
     }
     
     override func configureView() {
@@ -289,5 +290,21 @@ extension MyRecordDataVC: FSCalendarDelegate {
             $0.height.equalTo(116)
         }
         self.view.layoutIfNeeded()
+    }
+    
+    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        print(date, Date.now)
+        // 선택 일자 색 구별
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        calendar.appearance.titleSelectionColor
+        = dateFormatter.string(from: date) == dateFormatter.string(from: Date.now)
+        ? .white : .black
+        
+        // 일자별 tableView 연결
+        viewModel.getMyRecordDataList(
+            with: MyRecordListRequestModel(start: viewModel.startDateFormatter(date),
+                                           end: viewModel.endDateFormatter(date)))
+        recordTableView.reloadData()
     }
 }
