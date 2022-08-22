@@ -25,6 +25,7 @@ class MyRecordDataVC: BaseViewController {
         .then {
             $0.setImage(UIImage(named: "arrow_right")?
                 .withTintColor(.gray300, renderingMode: .alwaysOriginal), for: .normal)
+            $0.isUserInteractionEnabled = false
         }
     
     private let prevWeekBtn = UIButton()
@@ -94,7 +95,6 @@ class MyRecordDataVC: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        calendar.scope = .week
     }
     
     override func configureView() {
@@ -183,8 +183,9 @@ extension MyRecordDataVC {
         
         calendar.snp.makeConstraints {
             $0.top.equalTo(recordStackView.snp.bottom)
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(116)
+            $0.leading.equalToSuperview().offset(10)
+            $0.trailing.equalToSuperview().offset(-10)
+            $0.height.equalTo(400)
         }
         
         recordListView.snp.makeConstraints {
@@ -225,7 +226,7 @@ extension MyRecordDataVC {
 extension MyRecordDataVC: FSCalendarDelegate {
     func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
         calendar.snp.updateConstraints {
-            $0.height.equalTo(bounds.height)
+            $0.height.equalTo(116)
         }
         self.view.layoutIfNeeded()
     }
