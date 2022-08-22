@@ -80,6 +80,11 @@
 		23B7208628A23A2100D3A410 /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B7208528A23A2100D3A410 /* UIFont+.swift */; };
 		23B86D1F28A26EEF00B1630E /* NaviType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B86D1E28A26EEF00B1630E /* NaviType.swift */; };
 		23B86D2128A26F0F00B1630E /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B86D2028A26F0F00B1630E /* NavigationBar.swift */; };
+		23D8B7D728B394FC00F48165 /* MyRecordListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7D628B394FC00F48165 /* MyRecordListDataSource.swift */; };
+		23D8B7D928B3961900F48165 /* MyRecordListResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7D828B3961900F48165 /* MyRecordListResponseModel.swift */; };
+		23D8B7DB28B396A100F48165 /* MyRecordDataVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7DA28B396A100F48165 /* MyRecordDataVM.swift */; };
+		23D8B7DE28B397DF00F48165 /* MyRecordListRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7DD28B397DF00F48165 /* MyRecordListRequestModel.swift */; };
+		23D8B7E128B3AC9C00F48165 /* MyRecordListTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7E028B3AC9C00F48165 /* MyRecordListTVC.swift */; };
 		23F5716928A6802C005F2E21 /* UIStackView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5716828A6802C005F2E21 /* UIStackView+.swift */; };
 		23F5716D28A6A61E005F2E21 /* MiniMapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5716C28A6A61D005F2E21 /* MiniMapVC.swift */; };
 		23F5716F28A6AD01005F2E21 /* RecordStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5716E28A6AD01005F2E21 /* RecordStackView.swift */; };
@@ -198,6 +203,11 @@
 		23B7208528A23A2100D3A410 /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
 		23B86D1E28A26EEF00B1630E /* NaviType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaviType.swift; sourceTree = "<group>"; };
 		23B86D2028A26F0F00B1630E /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
+		23D8B7D628B394FC00F48165 /* MyRecordListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordListDataSource.swift; sourceTree = "<group>"; };
+		23D8B7D828B3961900F48165 /* MyRecordListResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordListResponseModel.swift; sourceTree = "<group>"; };
+		23D8B7DA28B396A100F48165 /* MyRecordDataVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordDataVM.swift; sourceTree = "<group>"; };
+		23D8B7DD28B397DF00F48165 /* MyRecordListRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordListRequestModel.swift; sourceTree = "<group>"; };
+		23D8B7E028B3AC9C00F48165 /* MyRecordListTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordListTVC.swift; sourceTree = "<group>"; };
 		23F5716828A6802C005F2E21 /* UIStackView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+.swift"; sourceTree = "<group>"; };
 		23F5716C28A6A61D005F2E21 /* MiniMapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniMapVC.swift; sourceTree = "<group>"; };
 		23F5716E28A6AD01005F2E21 /* RecordStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordStackView.swift; sourceTree = "<group>"; };
@@ -314,6 +324,7 @@
 			isa = PBXGroup;
 			children = (
 				231A2B9228B2790300FF884B /* MypageUserDataResponse.swift */,
+				23D8B7D828B3961900F48165 /* MyRecordListResponseModel.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -413,6 +424,7 @@
 				231A2B8B28B20B1A00FF884B /* View */,
 				2348B41B2892DEF6001095BC /* ViewController */,
 				2348B41A2892DEF0001095BC /* Model */,
+				23D8B7DF28B3AC8500F48165 /* Cell */,
 			);
 			path = Mypage;
 			sourceTree = "<group>";
@@ -532,7 +544,9 @@
 		2348B41A2892DEF0001095BC /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				23D8B7DC28B397D000F48165 /* Request */,
 				231A2B9428B27E5200FF884B /* Response */,
+				23D8B7D528B3851100F48165 /* DataSource */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -551,6 +565,7 @@
 			isa = PBXGroup;
 			children = (
 				231A2B9028B2787200FF884B /* MypageVM.swift */,
+				23D8B7DA28B396A100F48165 /* MyRecordDataVM.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -629,6 +644,30 @@
 				3C48920428B0C8A800B11207 /* NoChallengeStatusMessage.swift */,
 			);
 			path = Enum;
+			sourceTree = "<group>";
+		};
+		23D8B7D528B3851100F48165 /* DataSource */ = {
+			isa = PBXGroup;
+			children = (
+				23D8B7D628B394FC00F48165 /* MyRecordListDataSource.swift */,
+			);
+			path = DataSource;
+			sourceTree = "<group>";
+		};
+		23D8B7DC28B397D000F48165 /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				23D8B7DD28B397DF00F48165 /* MyRecordListRequestModel.swift */,
+			);
+			path = Request;
+			sourceTree = "<group>";
+		};
+		23D8B7DF28B3AC8500F48165 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				23D8B7E028B3AC9C00F48165 /* MyRecordListTVC.swift */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 		23F5717A28AA19C8005F2E21 /* View */ = {
@@ -921,6 +960,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23D8B7DE28B397DF00F48165 /* MyRecordListRequestModel.swift in Sources */,
 				2348B3F92892D151001095BC /* Input.swift in Sources */,
 				3C08137B28A91C00009F854B /* ChallengeRankingMenuBarCV.swift in Sources */,
 				23412FDE28AE396D00B73D62 /* ChallengeListVM.swift in Sources */,
@@ -945,6 +985,8 @@
 				3C48920528B0C8A800B11207 /* NoChallengeStatusMessage.swift in Sources */,
 				2348B3E32892D064001095BC /* BaseCollectionViewCell.swift in Sources */,
 				3C5C2D4428B12AD700EB2799 /* RankingUserTVC.swift in Sources */,
+				23D8B7D728B394FC00F48165 /* MyRecordListDataSource.swift in Sources */,
+				23D8B7DB28B396A100F48165 /* MyRecordDataVM.swift in Sources */,
 				23B7206128A0D53200D3A410 /* ProceedingChallengeTVC.swift in Sources */,
 				230CB2CB28ABB7B400B11270 /* CountdownVC.swift in Sources */,
 				23412FE028AE648300B73D62 /* ProfileResponseModel.swift in Sources */,
@@ -985,6 +1027,7 @@
 				2339D75028B284C20018013D /* MypageNC.swift in Sources */,
 				2348B3FB2892D15C001095BC /* Output.swift in Sources */,
 				2339D74E28B2849F0018013D /* MyRecordDataVC.swift in Sources */,
+				23D8B7D928B3961900F48165 /* MyRecordListResponseModel.swift in Sources */,
 				3C08137D28A91C00009F854B /* NoListStatusTVFV.swift in Sources */,
 				235CD76B28B0F8C5000EBAD9 /* OnboardingVC.swift in Sources */,
 				3C08137D28A91C00009F854B /* NoListStatusTVFV.swift in Sources */,
@@ -1004,6 +1047,7 @@
 				3C08137F28A91C00009F854B /* InvitedChallengeTVC.swift in Sources */,
 				230CB2E428AD478000B11270 /* Matrix.swift in Sources */,
 				3CB9DB9F28A93F19007BC1BE /* ChallengeRankingMenuBarCVC.swift in Sources */,
+				23D8B7E128B3AC9C00F48165 /* MyRecordListTVC.swift in Sources */,
 				230CB2D828AD042300B11270 /* MainMapResponseModel.swift in Sources */,
 				23412FEC28AF81F700B73D62 /* RecordResultVM.swift in Sources */,
 				2348B3FD2892D16C001095BC /* Loadable.swift in Sources */,

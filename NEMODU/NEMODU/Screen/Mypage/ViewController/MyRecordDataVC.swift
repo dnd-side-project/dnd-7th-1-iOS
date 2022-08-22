@@ -9,6 +9,7 @@ import UIKit
 import RxCocoa
 import RxGesture
 import RxSwift
+import RxDataSources
 import SnapKit
 import Then
 import FSCalendar
@@ -89,12 +90,22 @@ class MyRecordDataVC: BaseViewController {
     private let recordTableView = UITableView(frame: .zero)
         .then {
             $0.backgroundColor = .clear
+            $0.separatorStyle = .none
         }
     
     private let naviBar = NavigationBar()
     
+    private let viewModel = MyRecordDataVM()
+    private let bag = DisposeBag()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.getMyRecordDataList(with: MyRecordListRequestModel(end: viewModel.startDateFormatter(),
+                                                                     start: viewModel.endDateFormatter()))
     }
     
     override func configureView() {
@@ -115,6 +126,7 @@ class MyRecordDataVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        bindTableView()
     }
     
 }
@@ -144,7 +156,11 @@ extension MyRecordDataVC {
          recordStackView.thirdView].forEach {
             $0.recordValue.font = .title3SB
         }
+        
         calendar.delegate = self
+        
+        recordTableView.register(MyRecordListTVC.self, forCellReuseIdentifier: MyRecordListTVC.className)
+        recordTableView.delegate = self
     }
     
     private func configureTitleDate() {
@@ -219,10 +235,54 @@ extension MyRecordDataVC {
 // MARK: - Output
 
 extension MyRecordDataVC {
+    private func bindTableView() {
+        viewModel.output.dataSource
+            .bind(to: recordTableView.rx.items(dataSource: tableViewDataSource()))
+            .disposed(by: bag)
+        
+        viewModel.output.myRecordData
+            .subscribe(onNext: { [weak self] data in
+                guard let self = self else { return }
+                self.noneMessage.isHidden = data.activityRecords.count != 0
+                self.recordStackView.firstView.recordValue.text = "\(data.totalMatrixNumber)"
+                self.recordStackView.secondView.recordValue.text = "\(data.totalDistance)m"
+                self.recordStackView.thirdView.recordValue.text = "\(data.totalExerciseTime)"
+            })
+            .disposed(by: bag)
+    }
+}
+
+// MARK: - DataSource
+
+extension MyRecordDataVC {
+    func tableViewDataSource() -> RxTableViewSectionedReloadDataSource<MyRecordListDataSource> {
+        RxTableViewSectionedReloadDataSource<MyRecordListDataSource>(configureCell: { dataSource, tableView, indexPath, item in
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: MyRecordListTVC.className,
+                for: indexPath
+            ) as? MyRecordListTVC else {
+                fatalError()
+            }
+            cell.configureCell(with: item)
+            return cell
+        })
+    }
+}
+
+// MARK: - UITableViewDelegate
+
+extension MyRecordDataVC: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        76.0 + 12.0
+    }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
 }
 
 // MARK: - FSCalendarDelegate
+
 extension MyRecordDataVC: FSCalendarDelegate {
     func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
         calendar.snp.updateConstraints {
