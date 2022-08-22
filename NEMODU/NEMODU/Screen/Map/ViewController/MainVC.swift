@@ -238,7 +238,7 @@ extension MainVC {
                 self.mapVC.addMyAnnotation(coordinate: [latitude, longitude],
                                            profileImage: UIImage(named: "defaultThumbnail")!)
                 self.drawBlockArea(blocks: user.matrices ?? [],
-                                   blockColor: .main30)
+                                   blockColor: .main40)
             })
             .disposed(by: bag)
     }

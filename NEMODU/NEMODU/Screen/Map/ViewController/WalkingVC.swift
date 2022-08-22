@@ -65,12 +65,14 @@ class WalkingVC: BaseViewController {
         .then {
             $0.recordValue.text = "0m"
             $0.recordTitle.text = "거리"
+            $0.recordSubtitle.text = " "
         }
     
     private let timeView = RecordView()
         .then {
             $0.recordValue.text = "0:00"
             $0.recordTitle.text = "시간"
+            $0.recordSubtitle.text = " "
         }
     
     private var weekBlockCnt = 0

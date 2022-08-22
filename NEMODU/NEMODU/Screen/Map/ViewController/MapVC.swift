@@ -321,7 +321,7 @@ extension MapVC: CLLocationManagerDelegate {
                 
                 drawBlock(latitude: latitudePoint,
                           longitude: longitudePoint,
-                          color: .main30)
+                          color: .main40)
                 
                 blocksCnt.accept(blocks.count)
             }

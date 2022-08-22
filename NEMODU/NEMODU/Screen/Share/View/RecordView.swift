@@ -26,7 +26,6 @@ class RecordView: BaseView {
         .then {
             $0.font = .caption1
             $0.textColor = .gray500
-            $0.text = " "
         }
     
     override func configureView() {
