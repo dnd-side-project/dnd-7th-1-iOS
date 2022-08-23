@@ -95,6 +95,16 @@ class MapFilterBottomSheet: DynamicBottomSheetViewController {
     }
 }
 
+// MARK: - Configure
+
+extension MapFilterBottomSheet {
+    func configureBtnStatus(myBlocks: Bool, friends: Bool, myLocation: Bool) {
+        showMyBlocksBtn.isSelected = myBlocks
+        showFriendsBtn.isSelected = friends
+        locationPermissionToggleBtn.isOn = myLocation
+    }
+}
+
 // MARK: - Layout
 
 extension MapFilterBottomSheet {

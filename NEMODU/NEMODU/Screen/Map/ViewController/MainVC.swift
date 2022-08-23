@@ -187,6 +187,9 @@ extension MainVC {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 let filterBottomSheet = MapFilterBottomSheet()
+                filterBottomSheet.configureBtnStatus(myBlocks: self.viewModel.output.myBlocksVisible.value,
+                                                     friends: self.viewModel.output.friendVisible.value,
+                                                     myLocation: self.viewModel.output.myLocationVisible.value)
                 self.present(filterBottomSheet, animated: true)
             })
             .disposed(by: bag)
