@@ -104,7 +104,6 @@ extension ProceedingChallengeTVC {
             dateFormatter.dateFormat = "dd일"
             let ended = dateFormatter.string(from: element.ended.toDate())
             
-            print(element.started, element.ended, started, ended)
             challengeSubtitle.text = "\(started) ~ \(ended)"
         }
     }
