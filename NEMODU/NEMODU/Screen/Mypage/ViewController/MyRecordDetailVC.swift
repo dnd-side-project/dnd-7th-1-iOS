@@ -85,6 +85,13 @@ class MyRecordDetailVC: BaseViewController {
             $0.textColor = .gray900
         }
     
+    private let noneMemoLabel = UILabel()
+        .then {
+            $0.text = "상세 기록이 없습니다."
+            $0.font = .caption1
+            $0.textColor = .gray500
+        }
+    
     private let memoEditBtn = UIButton()
         .then {
             $0.setImage(UIImage(named: "edit"), for: .normal)
@@ -188,6 +195,7 @@ extension MyRecordDetailVC {
         memoView.addSubviews([memoLabel,
                               memoEditBtn,
                               viewSeparator,
+                              noneMemoLabel,
                               memoTextView])
         challengeListView.addSubviews([challengeViewTitle,
                                        viewSeparator2,
@@ -209,6 +217,7 @@ extension MyRecordDetailVC {
         recordStackView.firstView.recordValue.text = "\(recordData.distance)m"
         recordStackView.secondView.recordValue.text = recordData.exerciseTime
         recordStackView.thirdView.recordValue.text = "\(recordData.stepCount)".insertComma
+        memoTextView.isHidden = recordData.message == ""
         memoTextView.tv.text = recordData.message
     }
 }
@@ -286,6 +295,11 @@ extension MyRecordDetailVC {
             $0.top.equalTo(memoLabel.snp.bottom)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(separatorHeight)
+        }
+        
+        noneMemoLabel.snp.makeConstraints {
+            $0.top.equalTo(viewSeparator.snp.bottom).offset(60)
+            $0.centerX.equalToSuperview()
         }
         
         memoTextView.snp.makeConstraints {
