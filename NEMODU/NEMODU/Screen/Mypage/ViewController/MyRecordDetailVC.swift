@@ -95,7 +95,7 @@ class MyRecordDetailVC: BaseViewController {
             $0.tv.placeholder = "상세 기록 남기기"
             $0.tv.backgroundColor = .systemBackground
             $0.tv.layer.borderColor = UIColor.gray200.cgColor
-            $0.tv.setTextViewToViewer()
+            $0.setTextViewToViewer()
         }
     
     private let challengeViewTitle = UILabel()
@@ -202,20 +202,12 @@ extension MyRecordDetailVC {
         recordDate.text = recordData.date
         recordTime.text = recordData.started + "-" + recordData.ended
         blocksCntView.recordValue.text = "\(recordData.matrixNumber)"
-        miniMap.blocks = changeMatriesToBlocks(matrices: recordData.matrices)
+        miniMap.blocks = miniMap.changeMatriesToBlocks(matrices: recordData.matrices)
         miniMap.drawMiniMap()
         recordStackView.firstView.recordValue.text = "\(recordData.distance)m"
         recordStackView.secondView.recordValue.text = recordData.exerciseTime
         recordStackView.thirdView.recordValue.text = "\(recordData.stepCount)".insertComma
         memoTextView.tv.text = recordData.message
-    }
-    
-    private func changeMatriesToBlocks(matrices: [Matrix]) -> [[Double]] {
-        var blocks: [[Double]] = []
-        matrices.forEach {
-            blocks.append([$0.latitude, $0.longitude])
-        }
-        return blocks
     }
 }
 

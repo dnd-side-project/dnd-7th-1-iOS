@@ -56,6 +56,16 @@ extension NemoduTextView {
         addSubviews([tv, memoCntLabel])
         memoCntLabel.text = "0 / \(maxTextCnt)"
     }
+    
+    /// setTextViewToViewer - textView를 드래그 불가 뷰어용으로 설정 & cnt 라벨 hidden
+    func setTextViewToViewer() {
+        tv.setTextViewToViewer()
+        memoCntLabel.isHidden = true
+        
+        tv.snp.makeConstraints {
+            $0.bottom.equalToSuperview()
+        }
+    }
 }
 
 // MARK: - Layout
