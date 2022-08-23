@@ -101,6 +101,10 @@
 		3C09AE3928AF6345005DD125 /* ChallengeDoingTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C09AE3828AF6345005DD125 /* ChallengeDoingTVC.swift */; };
 		3C09AE3B28AF6450005DD125 /* ChallengeFinishTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C09AE3A28AF6450005DD125 /* ChallengeFinishTVC.swift */; };
 		3C393FFD28A684DD0012B2B8 /* BaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C393FFC28A684DD0012B2B8 /* BaseTableViewCell.swift */; };
+		3C3BD76E28B36E1400AD55B6 /* AreaRankingListResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3BD76D28B36E1400AD55B6 /* AreaRankingListResponseModel.swift */; };
+		3C3BD77128B36FBE00AD55B6 /* ChallengeRankingVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3BD77028B36FBE00AD55B6 /* ChallengeRankingVM.swift */; };
+		3C3BD77428B3754A00AD55B6 /* AreaRankingListRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3BD77328B3754A00AD55B6 /* AreaRankingListRequestModel.swift */; };
+		3C3BD77C28B3B0F800AD55B6 /* StepRankingListResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3BD77B28B3B0F800AD55B6 /* StepRankingListResponseModel.swift */; };
 		3C48920528B0C8A800B11207 /* NoChallengeStatusMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C48920428B0C8A800B11207 /* NoChallengeStatusMessage.swift */; };
 		3C48920C28B101D100B11207 /* ChallengeListTypeMenuBarCV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C48920B28B101D100B11207 /* ChallengeListTypeMenuBarCV.swift */; };
 		3C48920E28B1049100B11207 /* RankingListTypeMenuBarCV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C48920D28B1049100B11207 /* RankingListTypeMenuBarCV.swift */; };
@@ -115,6 +119,7 @@
 		3CB9DB9D28A92528007BC1BE /* MenuBarCV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB9DB9B28A92527007BC1BE /* MenuBarCV.swift */; };
 		3CB9DB9F28A93F19007BC1BE /* ChallengeRankingMenuBarCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB9DB9E28A93F19007BC1BE /* ChallengeRankingMenuBarCVC.swift */; };
 		3CB9DBA628A954EE007BC1BE /* RankingContainerCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB9DBA528A954EE007BC1BE /* RankingContainerCVC.swift */; };
+		3CDEBB4328B4C86900C91A7F /* AccumulateRankingListResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDEBB4228B4C86900C91A7F /* AccumulateRankingListResponseModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -219,6 +224,10 @@
 		3C393FF628A6581B0012B2B8 /* InvitedChallengeTVHV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitedChallengeTVHV.swift; sourceTree = "<group>"; };
 		3C393FF828A659C90012B2B8 /* NoInvitedChallengeTVFV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoInvitedChallengeTVFV.swift; sourceTree = "<group>"; };
 		3C393FFC28A684DD0012B2B8 /* BaseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewCell.swift; sourceTree = "<group>"; };
+		3C3BD76D28B36E1400AD55B6 /* AreaRankingListResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AreaRankingListResponseModel.swift; sourceTree = "<group>"; };
+		3C3BD77028B36FBE00AD55B6 /* ChallengeRankingVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeRankingVM.swift; sourceTree = "<group>"; };
+		3C3BD77328B3754A00AD55B6 /* AreaRankingListRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AreaRankingListRequestModel.swift; sourceTree = "<group>"; };
+		3C3BD77B28B3B0F800AD55B6 /* StepRankingListResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepRankingListResponseModel.swift; sourceTree = "<group>"; };
 		3C48920428B0C8A800B11207 /* NoChallengeStatusMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoChallengeStatusMessage.swift; sourceTree = "<group>"; };
 		3C48920B28B101D100B11207 /* ChallengeListTypeMenuBarCV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeListTypeMenuBarCV.swift; sourceTree = "<group>"; };
 		3C48920D28B1049100B11207 /* RankingListTypeMenuBarCV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankingListTypeMenuBarCV.swift; sourceTree = "<group>"; };
@@ -236,6 +245,7 @@
 		3CB9DB9B28A92527007BC1BE /* MenuBarCV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuBarCV.swift; sourceTree = "<group>"; };
 		3CB9DB9E28A93F19007BC1BE /* ChallengeRankingMenuBarCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeRankingMenuBarCVC.swift; sourceTree = "<group>"; };
 		3CB9DBA528A954EE007BC1BE /* RankingContainerCVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RankingContainerCVC.swift; sourceTree = "<group>"; };
+		3CDEBB4228B4C86900C91A7F /* AccumulateRankingListResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccumulateRankingListResponseModel.swift; sourceTree = "<group>"; };
 		E7400965811C32403A72B2B0 /* Pods_NEMODU.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NEMODU.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -639,12 +649,11 @@
 		3C08136728A91C00009F854B /* ChallengeRanking */ = {
 			isa = PBXGroup;
 			children = (
-				3CB9DBA028A94648007BC1BE /* ChallengeRankingMenuBar */,
-				3C2FB44D28B0B0A7006A6819 /* ListTypeMenuBar */,
+				3C3BD77628B3850C00AD55B6 /* ViewController */,
+				3C3BD77528B384ED00AD55B6 /* View */,
 				3C08136F28A91C00009F854B /* NoListStatusTVFV.swift */,
-				3C08137728A91C00009F854B /* ChallengeRankingVC.swift */,
-				3C08136B28A91C00009F854B /* Challenge */,
-				3CB9DBA428A954EE007BC1BE /* Ranking */,
+				3C3BD76F28B36E5000AD55B6 /* ViewModel */,
+				3C3BD76B28B36DCE00AD55B6 /* Model */,
 			);
 			name = ChallengeRanking;
 			path = NEMODU/Screen/ChallengeRanking;
@@ -653,11 +662,8 @@
 		3C08136B28A91C00009F854B /* Challenge */ = {
 			isa = PBXGroup;
 			children = (
-				3C08137828A91C00009F854B /* ChallengeContainerCVC.swift */,
-				3C48920B28B101D100B11207 /* ChallengeListTypeMenuBarCV.swift */,
-				3C08136E28A91C00009F854B /* ChallengeTV */,
-				3C4FB95E28AA669900A429B8 /* ViewModel */,
-				3C4FB95F28AA66A000A429B8 /* ViewController */,
+				3C3BD77928B3A52900AD55B6 /* Request */,
+				3C3BD77A28B3A53400AD55B6 /* Response */,
 			);
 			path = Challenge;
 			sourceTree = "<group>";
@@ -669,13 +675,6 @@
 				3C2FB44B28B0A504006A6819 /* Cell */,
 			);
 			path = ChallengeTV;
-			sourceTree = "<group>";
-		};
-		3C08137328A91C00009F854B /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 		3C2FB44A28B0A4DE006A6819 /* HV */ = {
@@ -709,6 +708,94 @@
 			path = ListTypeMenuBar;
 			sourceTree = "<group>";
 		};
+		3C3BD76B28B36DCE00AD55B6 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				3C08136B28A91C00009F854B /* Challenge */,
+				3CB9DBA428A954EE007BC1BE /* Ranking */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		3C3BD76C28B36DD300AD55B6 /* Response */ = {
+			isa = PBXGroup;
+			children = (
+				3C3BD76D28B36E1400AD55B6 /* AreaRankingListResponseModel.swift */,
+				3C3BD77B28B3B0F800AD55B6 /* StepRankingListResponseModel.swift */,
+				3CDEBB4228B4C86900C91A7F /* AccumulateRankingListResponseModel.swift */,
+			);
+			path = Response;
+			sourceTree = "<group>";
+		};
+		3C3BD76F28B36E5000AD55B6 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				3C3BD77028B36FBE00AD55B6 /* ChallengeRankingVM.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		3C3BD77228B3749700AD55B6 /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				3C3BD77328B3754A00AD55B6 /* AreaRankingListRequestModel.swift */,
+			);
+			path = Request;
+			sourceTree = "<group>";
+		};
+		3C3BD77528B384ED00AD55B6 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				3CB9DBA028A94648007BC1BE /* ChallengeRankingMenuBar */,
+				3C2FB44D28B0B0A7006A6819 /* ListTypeMenuBar */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		3C3BD77628B3850C00AD55B6 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				3C08137728A91C00009F854B /* ChallengeRankingVC.swift */,
+				3C3BD77728B396B100AD55B6 /* Challenge */,
+				3C3BD77828B396B900AD55B6 /* Ranking */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		3C3BD77728B396B100AD55B6 /* Challenge */ = {
+			isa = PBXGroup;
+			children = (
+				3C08137828A91C00009F854B /* ChallengeContainerCVC.swift */,
+				3C48920B28B101D100B11207 /* ChallengeListTypeMenuBarCV.swift */,
+				3C08136E28A91C00009F854B /* ChallengeTV */,
+			);
+			path = Challenge;
+			sourceTree = "<group>";
+		};
+		3C3BD77828B396B900AD55B6 /* Ranking */ = {
+			isa = PBXGroup;
+			children = (
+				3CB9DBA528A954EE007BC1BE /* RankingContainerCVC.swift */,
+				3C48920D28B1049100B11207 /* RankingListTypeMenuBarCV.swift */,
+				3C48920F28B1087300B11207 /* RankingTV */,
+			);
+			path = Ranking;
+			sourceTree = "<group>";
+		};
+		3C3BD77928B3A52900AD55B6 /* Request */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Request;
+			sourceTree = "<group>";
+		};
+		3C3BD77A28B3A53400AD55B6 /* Response */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Response;
+			sourceTree = "<group>";
+		};
 		3C48920F28B1087300B11207 /* RankingTV */ = {
 			isa = PBXGroup;
 			children = (
@@ -716,21 +803,6 @@
 				3C5C2D4328B12AD700EB2799 /* RankingUserTVC.swift */,
 			);
 			path = RankingTV;
-			sourceTree = "<group>";
-		};
-		3C4FB95E28AA669900A429B8 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		3C4FB95F28AA66A000A429B8 /* ViewController */ = {
-			isa = PBXGroup;
-			children = (
-				3C08137328A91C00009F854B /* Model */,
-			);
-			path = ViewController;
 			sourceTree = "<group>";
 		};
 		3CB9DB9828A92527007BC1BE /* Utils */ = {
@@ -763,12 +835,11 @@
 		3CB9DBA428A954EE007BC1BE /* Ranking */ = {
 			isa = PBXGroup;
 			children = (
-				3CB9DBA528A954EE007BC1BE /* RankingContainerCVC.swift */,
-				3C48920D28B1049100B11207 /* RankingListTypeMenuBarCV.swift */,
-				3C48920F28B1087300B11207 /* RankingTV */,
+				3C3BD77228B3749700AD55B6 /* Request */,
+				3C3BD76C28B36DD300AD55B6 /* Response */,
 			);
 			name = Ranking;
-			path = NEMODU/Screen/ChallengeRanking/Ranking;
+			path = NEMODU/Screen/ChallengeRanking/Model/Ranking;
 			sourceTree = SOURCE_ROOT;
 		};
 		3CCBE27A28A916260000AC3D /* Recovered References */ = {
@@ -919,6 +990,7 @@
 				3C08137B28A91C00009F854B /* ChallengeRankingMenuBarCV.swift in Sources */,
 				23412FDE28AE396D00B73D62 /* ChallengeListVM.swift in Sources */,
 				3C48920E28B1049100B11207 /* RankingListTypeMenuBarCV.swift in Sources */,
+				3C3BD77428B3754A00AD55B6 /* AreaRankingListRequestModel.swift in Sources */,
 				23B7207028A12DBB00D3A410 /* RecordView.swift in Sources */,
 				231A2B8D28B20B3E00FF884B /* ProfileView.swift in Sources */,
 				23F5718228AA6038005F2E21 /* UIImage+.swift in Sources */,
@@ -939,6 +1011,7 @@
 				3C48920528B0C8A800B11207 /* NoChallengeStatusMessage.swift in Sources */,
 				2348B3E32892D064001095BC /* BaseCollectionViewCell.swift in Sources */,
 				3C5C2D4428B12AD700EB2799 /* RankingUserTVC.swift in Sources */,
+				3C3BD77C28B3B0F800AD55B6 /* StepRankingListResponseModel.swift in Sources */,
 				23B7206128A0D53200D3A410 /* ProceedingChallengeTVC.swift in Sources */,
 				230CB2CB28ABB7B400B11270 /* CountdownVC.swift in Sources */,
 				23412FE028AE648300B73D62 /* ProfileResponseModel.swift in Sources */,
@@ -951,6 +1024,7 @@
 				3C08137E28A91C00009F854B /* ChallengeTitleTVHV.swift in Sources */,
 				2348B3DD2892CF92001095BC /* MapVC.swift in Sources */,
 				23412FD228AD494500B73D62 /* MainVM.swift in Sources */,
+				3CDEBB4328B4C86900C91A7F /* AccumulateRankingListResponseModel.swift in Sources */,
 				2348B3FF2892D184001095BC /* UILabel+.swift in Sources */,
 				23B86D1F28A26EEF00B1630E /* NaviType.swift in Sources */,
 				2348B3E72892D08D001095BC /* BaseViewModel.swift in Sources */,
@@ -979,9 +1053,10 @@
 				2348B3FB2892D15C001095BC /* Output.swift in Sources */,
 				3C08137D28A91C00009F854B /* NoListStatusTVFV.swift in Sources */,
 				235CD76B28B0F8C5000EBAD9 /* OnboardingVC.swift in Sources */,
-				3C08137D28A91C00009F854B /* NoChallengeStatusTVFV.swift in Sources */,
-				3C08137D28A91C00009F854B /* NoChallengeStatusTVFV.swift in Sources */,
+				3C08137D28A91C00009F854B /* NoListStatusTVFV.swift in Sources */,
+				3C08137D28A91C00009F854B /* NoListStatusTVFV.swift in Sources */,
 				23F5717128A7CFD5005F2E21 /* FriendProfileBottomSheet.swift in Sources */,
+				3C3BD77128B36FBE00AD55B6 /* ChallengeRankingVM.swift in Sources */,
 				2348B3F02892D0FE001095BC /* APISession.swift in Sources */,
 				2348B3E52892D075001095BC /* BaseViewController.swift in Sources */,
 				3C08138428A91C00009F854B /* ChallengeContainerCVC.swift in Sources */,
@@ -989,6 +1064,7 @@
 				23B7207428A2227000D3A410 /* WalkingVM.swift in Sources */,
 				3C09AE3928AF6345005DD125 /* ChallengeDoingTVC.swift in Sources */,
 				2348B40D2892D360001095BC /* UIColor+.swift in Sources */,
+				3C3BD76E28B36E1400AD55B6 /* AreaRankingListResponseModel.swift in Sources */,
 				23F5718628AA6DAD005F2E21 /* MyAnnotation.swift in Sources */,
 				3C393FFD28A684DD0012B2B8 /* BaseTableViewCell.swift in Sources */,
 				23412FE228AE64D100B73D62 /* FriendProfileVM.swift in Sources */,
