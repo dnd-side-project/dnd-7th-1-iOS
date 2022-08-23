@@ -102,11 +102,21 @@ class MyRecordDetailVC: BaseViewController {
         }
     
     private let naviBar = NavigationBar()
-    private let viewModel = RecordResultVM()
+    private let viewModel = MyRecordDetailVM()
     private let bag = DisposeBag()
+    var recordID: Int?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        guard let recordID = recordID else {
+            // TODO: - ERROR Alert 띄우기
+            return
+        }
+        viewModel.getMyRecordDetailData(recordId: recordID)
     }
     
     override func configureView() {
@@ -127,6 +137,7 @@ class MyRecordDetailVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        bindRecordData()
     }
     
 }
@@ -163,6 +174,26 @@ extension MyRecordDetailVC {
         proceedingChallengeTV.register(ProceedingChallengeTVC.self,
                                        forCellReuseIdentifier: ProceedingChallengeTVC.className)
         proceedingChallengeTV.delegate = self
+    }
+    
+    private func configureRecordValue(recordData: DetailRecordDataResponseModel) {
+        recordDate.text = recordData.date
+        recordTime.text = recordData.started + "-" + recordData.ended
+        blocksCntView.recordValue.text = "\(recordData.matrixNumber)"
+        miniMap.blocks = changeMatriesToBlocks(matrices: recordData.matrices)
+        miniMap.drawMiniMap()
+        recordStackView.firstView.recordValue.text = "\(recordData.distance)m"
+        recordStackView.secondView.recordValue.text = recordData.exerciseTime
+        recordStackView.thirdView.recordValue.text = "\(recordData.stepCount)".insertComma
+        memoTextView.tv.text = recordData.message
+    }
+    
+    private func changeMatriesToBlocks(matrices: [Matrix]) -> [[Double]] {
+        var blocks: [[Double]] = []
+        matrices.forEach {
+            blocks.append([$0.latitude, $0.longitude])
+        }
+        return blocks
     }
 }
 
@@ -261,7 +292,14 @@ extension MyRecordDetailVC {
 // MARK: - Output
 
 extension MyRecordDetailVC {
-    
+    private func bindRecordData() {
+        viewModel.output.detailData
+            .subscribe(onNext: { [weak self] data in
+                guard let self = self else { return }
+                self.configureRecordValue(recordData: data)
+            })
+            .disposed(by: bag)
+    }
 }
 
 // MARK: - UITableViewDelegate

@@ -8,7 +8,7 @@
 import Foundation
 
 struct DetailRecordDataResponseModel: Codable {
-    let recordID: Int
+    let recordId: Int
     let date, started, ended: String
     let matrixNumber, stepCount, distance: Int
     let exerciseTime, message: String

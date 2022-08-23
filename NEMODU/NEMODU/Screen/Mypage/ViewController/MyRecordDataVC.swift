@@ -317,8 +317,12 @@ extension MyRecordDataVC {
         recordTableView.rx.itemSelected
             .asDriver()
             .drive(onNext: { [weak self] indexPath in
-                guard let self = self else { return }
+                guard let self = self,
+                      let cell = self.recordTableView.cellForRow(at: indexPath) as? MyRecordListTVC,
+                      let recordID = cell.recordID
+                else { return }
                 let myRecordDetailVC = MyRecordDetailVC()
+                myRecordDetailVC.recordID = recordID
                 self.navigationController?.pushViewController(myRecordDetailVC, animated: true)
             })
             .disposed(by: bag)
