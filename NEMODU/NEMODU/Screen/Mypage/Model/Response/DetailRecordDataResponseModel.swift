@@ -13,10 +13,5 @@ struct DetailRecordDataResponseModel: Codable {
     let matrixNumber, stepCount, distance: Int
     let exerciseTime, message: String
     let matrices: [Matrix]
-    let challenges: [Challenge]
-}
-
-// MARK: - Challenge
-struct Challenge: Codable {
-    let name, started, ended, color: String
+    let challenges: [ChallengeElementResponseModel]
 }

@@ -11,6 +11,8 @@ import RxSwift
 
 protocol MyRecordDetailViewModelOutput: Lodable {
     var detailData: PublishRelay<DetailRecordDataResponseModel> { get }
+    var challengeList: BehaviorRelay<[ChallengeElementResponseModel]> { get }
+    var dataSource: Observable<[ProceedingChallengeDataSource]> { get }
 }
 
 final class MyRecordDetailVM: BaseViewModel {
@@ -29,6 +31,13 @@ final class MyRecordDetailVM: BaseViewModel {
     struct Output: MyRecordDetailViewModelOutput {
         var loading = BehaviorRelay<Bool>(value: false)
         var detailData = PublishRelay<DetailRecordDataResponseModel>()
+        var challengeList: BehaviorRelay<[ChallengeElementResponseModel]> = BehaviorRelay(value: [])
+        var dataSource: Observable<[ProceedingChallengeDataSource]> {
+            challengeList
+                .map {
+                    [ProceedingChallengeDataSource(section: .zero, items: $0)]
+                }
+        }
     }
     
     // MARK: - Init
@@ -73,7 +82,8 @@ extension MyRecordDetailVM {
                 case .failure(let error):
                     owner.apiError.onNext(error)
                 case .success(let data):
-                    self.output.detailData.accept(data)
+                    owner.output.detailData.accept(data)
+                    owner.output.challengeList.accept(data.challenges)
                 }
             })
             .disposed(by: bag)

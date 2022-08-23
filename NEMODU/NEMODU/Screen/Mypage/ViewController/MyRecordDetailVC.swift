@@ -34,6 +34,11 @@ class MyRecordDetailVC: BaseViewController {
             $0.backgroundColor = UIColor.systemBackground
         }
     
+    private let challengeListView = UIView()
+        .then {
+            $0.backgroundColor = UIColor.systemBackground
+        }
+    
     private let recordDate = UILabel()
         .then {
             $0.text = "-월 -일 -요일"
@@ -93,6 +98,18 @@ class MyRecordDetailVC: BaseViewController {
             $0.tv.setTextViewToViewer()
         }
     
+    private let challengeViewTitle = UILabel()
+        .then {
+            $0.text = "참여한 챌린지"
+            $0.font = .body2
+            $0.textColor = .gray900
+        }
+    
+    private let viewSeparator2 = UIView()
+        .then {
+            $0.backgroundColor = .gray50
+        }
+    
     private let proceedingChallengeTV = UITableView(frame: .zero)
         .then {
             $0.isScrollEnabled = false
@@ -100,6 +117,8 @@ class MyRecordDetailVC: BaseViewController {
             $0.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
             $0.backgroundColor = .white
         }
+
+    private let challengeListCellHeight = 69.0
     
     private let naviBar = NavigationBar()
     private let viewModel = MyRecordDetailVM()
@@ -138,6 +157,7 @@ class MyRecordDetailVC: BaseViewController {
     override func bindOutput() {
         super.bindOutput()
         bindRecordData()
+        bindTableView()
     }
     
 }
@@ -156,7 +176,8 @@ extension MyRecordDetailVC {
         view.addSubview(baseScrollView)
         baseScrollView.addSubview(contentView)
         contentView.addSubviews([recordBaseView,
-                                 memoView])
+                                 memoView,
+                                 challengeListView])
         recordBaseView.addSubviews([recordDate,
                                     recordTime,
                                     blocksCntView,
@@ -166,11 +187,12 @@ extension MyRecordDetailVC {
                               memoEditBtn,
                               viewSeparator,
                               memoTextView])
+        challengeListView.addSubviews([challengeViewTitle,
+                                       viewSeparator2,
+                                       proceedingChallengeTV])
     }
     
     private func configureChallengeListTV() {
-        contentView.addSubview(proceedingChallengeTV)
-        
         proceedingChallengeTV.register(ProceedingChallengeTVC.self,
                                        forCellReuseIdentifier: ProceedingChallengeTVC.className)
         proceedingChallengeTV.delegate = self
@@ -203,8 +225,7 @@ extension MyRecordDetailVC {
     private func configureLayout() {
         baseScrollView.snp.makeConstraints {
             $0.top.equalTo(naviBar.snp.bottom)
-            $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(view.keyboardLayoutGuide.snp.top)
+            $0.leading.trailing.bottom.equalToSuperview()
         }
         
         contentView.snp.makeConstraints {
@@ -218,7 +239,13 @@ extension MyRecordDetailVC {
         
         memoView.snp.makeConstraints {
             $0.top.equalTo(recordBaseView.snp.bottom).offset(8)
+            $0.leading.trailing.equalToSuperview()
+        }
+        
+        challengeListView.snp.makeConstraints {
+            $0.top.equalTo(memoView.snp.bottom)
             $0.leading.trailing.bottom.equalToSuperview()
+            $0.height.equalTo(0)
         }
         
         recordDate.snp.makeConstraints {
@@ -275,10 +302,30 @@ extension MyRecordDetailVC {
             $0.bottom.equalToSuperview().offset(-12)
         }
         
-        proceedingChallengeTV.snp.makeConstraints {
-            $0.top.equalTo(memoView.snp.bottom)
+        challengeViewTitle.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview().offset(16)
+            $0.height.equalTo(56)
+        }
+        
+        viewSeparator2.snp.makeConstraints {
+            $0.top.equalTo(challengeViewTitle.snp.bottom)
             $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview().offset(-47)
+            $0.height.equalTo(2)
+        }
+        
+        proceedingChallengeTV.snp.makeConstraints {
+            $0.top.equalTo(viewSeparator2.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview()
+        }
+    }
+    
+    private func setChallengeListViewHeight(cnt: Int) {
+        let titleHeight = cnt == 0 ? 0 : 53
+        
+        challengeListView.snp.updateConstraints {
+            $0.height.equalTo(titleHeight + cnt * Int(challengeListCellHeight))
         }
     }
 }
@@ -300,13 +347,47 @@ extension MyRecordDetailVC {
             })
             .disposed(by: bag)
     }
+    
+    private func bindTableView() {
+        viewModel.output.dataSource
+            .bind(to: proceedingChallengeTV.rx.items(dataSource: tableViewDataSource()))
+            .disposed(by: bag)
+        
+        viewModel.output.challengeList
+            .withUnretained(self)
+            .subscribe(onNext: { owner, item in
+                owner.proceedingChallengeTV.reloadData()
+                owner.setChallengeListViewHeight(cnt: item.count)
+            })
+            .disposed(by: bag)
+    }
+}
+
+// MARK: - DataSource
+
+extension MyRecordDetailVC {
+    func tableViewDataSource() -> RxTableViewSectionedReloadDataSource<ProceedingChallengeDataSource> {
+        RxTableViewSectionedReloadDataSource<ProceedingChallengeDataSource>(
+            configureCell: { dataSource, tableView, indexPath, item in
+                guard let cell = tableView.dequeueReusableCell(
+                    withIdentifier: ProceedingChallengeTVC.className,
+                    for: indexPath
+                ) as? ProceedingChallengeTVC else {
+                    fatalError()
+                }
+                
+                cell.configureCell(with: item)
+                
+                return cell
+            })
+    }
 }
 
 // MARK: - UITableViewDelegate
 
 extension MyRecordDetailVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        69.0
+        challengeListCellHeight
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
