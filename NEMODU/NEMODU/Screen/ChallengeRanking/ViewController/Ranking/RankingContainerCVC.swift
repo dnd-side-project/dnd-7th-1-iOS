@@ -32,10 +32,21 @@ class RankingContainerCVC : BaseCollectionViewCell {
     
     var reloadRankingTypeIndex = 0
     
+    let viewModel = ChallengeRankingVM()
+    private let bag = DisposeBag()
+    
+    var areaRankings: AreaRankingListResponseModel?
+    var stepRankings: StepRankingListResponseModel?
+    var accumulateRankings: AccumulateRankingListResponseModel?
+    
     // MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        viewModel.getAreaRankingList(with: RankingListRequestModel(end: "2022-08-18T23:59:59",
+                                                                       nickname: "NickA",
+                                                                       start: "2022-08-15T00:00:00"))
+        bindAreaRankingTableView()
     }
     
     required init?(coder: NSCoder) {
@@ -129,38 +140,68 @@ extension RankingContainerCVC : UITableViewDataSource {
 
     // Cell
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        section == 1 ? 17 : 0
+        if section == 1 {
+            switch reloadRankingTypeIndex {
+            case 0:
+                return areaRankings?.areaRankings.count ?? 0
+            case 1:
+                return stepRankings?.stepRankings.count ?? 0
+            case 2:
+                return accumulateRankings?.matrixRankings.count ?? 0
+            default:
+                return 0
+            }
+        } else {
+            return 0
+        }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: RankingUserTVC.className, for: indexPath) as! RankingUserTVC
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: RankingUserTVC.className, for: indexPath) as? RankingUserTVC else {
+            return UITableViewCell()
+        }
         
-        switch indexPath.section {
-        case 1:
+        if indexPath.section == 1 {
+            
+            // 영역 타입별 테이블 셀 설정
+            switch reloadRankingTypeIndex {
+            case 0:
+                guard let areaRanking = areaRankings else { return cell }
+                cell.configureAreaRankingCell(with: areaRanking.areaRankings[indexPath.row])
+            case 1:
+                guard let stepRanking = stepRankings else { return cell }
+                cell.configureStepRankingCell(with: stepRanking.stepRankings[indexPath.row])
+            case 2:
+                guard let accumulateRanking = accumulateRankings else { return cell }
+                cell.configureAccumulateRankingCell(with: accumulateRanking.matrixRankings[indexPath.row])
+            default:
+                break
+            }
+            
+            
             // 걸음수 랭킹 설정
             if reloadRankingTypeIndex == 1 {
                 cell.blockLabel.text = "걸음"
             }
             
+            // 칸 혹은 걸음 콤마 설정
+            cell.blocksNumberLabel.insertComma()
+            
             // 내 기록 표시 설정
-            let ranking = indexPath.row + 1
-            let userRankIndex = 2
-            if userRankIndex == ranking {
+            let myNickname = "NickD" // 임시지정
+            if cell.userNicknameLabel.text == myNickname {
                 cell.markMyRankingCell()
-                cell.rankNumberLabel.text = String(userRankIndex)
-            } else {
-                cell.rankNumberLabel.text = String(ranking)
             }
             
             // 1, 2, 3등 표시 설정
+            let ranking = Int(cell.rankNumberLabel.text ?? "0")
             switch ranking {
             case 1, 2, 3:
                 cell.rankNumberLabel.textColor = .main
             default:
                 break
             }
-        default:
-            break
+            
         }
         
         return cell
@@ -187,11 +228,68 @@ extension RankingContainerCVC : UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        section == 1 ? 93 : .leastNormalMagnitude
+        var height: CGFloat = .leastNormalMagnitude
+        
+        if section == 1 {
+            switch reloadRankingTypeIndex {
+            case 0:
+                if areaRankings?.areaRankings.count == 0 {
+                    height = 93
+                }
+            case 1:
+                if stepRankings?.stepRankings.count == 0 {
+                    height = 93
+                }
+            case 2:
+                if accumulateRankings?.matrixRankings.count == 0 {
+                    height = 93
+                }
+            default:
+                break
+            }
+        }
+        
+        return height
     }
 
     func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
         section == 1 ? 93 : .leastNormalMagnitude
     }
 
+}
+
+// MARK: - bind
+
+extension RankingContainerCVC {
+    
+    func bindAreaRankingTableView() {
+        viewModel.output.areaRankings
+            .subscribe(onNext: { [weak self] data in
+                guard let self = self else { return }
+                self.areaRankings = data
+                self.rankingTableView.reloadData()
+            })
+            .disposed(by: bag)
+    }
+    
+    func bindStepRankingTableView() {
+        viewModel.output.stepRankings
+            .subscribe(onNext: { [weak self] data in
+                guard let self = self else { return }
+                self.stepRankings = data
+                self.rankingTableView.reloadSections(IndexSet(1...1), with: .fade)
+            })
+            .disposed(by: bag)
+    }
+    
+    func bindAccumulateRankingTableView() {
+        viewModel.output.accumulateRankings
+            .subscribe(onNext: { [weak self] data in
+                guard let self = self else { return }
+                self.accumulateRankings = data
+                self.rankingTableView.reloadSections(IndexSet(1...1), with: .fade)
+            })
+            .disposed(by: bag)
+    }
+    
 }
