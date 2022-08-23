@@ -86,6 +86,7 @@
 		23D8B7DE28B397DF00F48165 /* MyRecordListRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7DD28B397DF00F48165 /* MyRecordListRequestModel.swift */; };
 		23D8B7E128B3AC9C00F48165 /* MyRecordListTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7E028B3AC9C00F48165 /* MyRecordListTVC.swift */; };
 		23D8B7E528B4D5AA00F48165 /* CalendarSelectStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7E428B4D5AA00F48165 /* CalendarSelectStackView.swift */; };
+		23D8B7E728B4E44700F48165 /* MyRecordDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7E628B4E44700F48165 /* MyRecordDetailVC.swift */; };
 		23F5716928A6802C005F2E21 /* UIStackView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5716828A6802C005F2E21 /* UIStackView+.swift */; };
 		23F5716D28A6A61E005F2E21 /* MiniMapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5716C28A6A61D005F2E21 /* MiniMapVC.swift */; };
 		23F5716F28A6AD01005F2E21 /* RecordStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5716E28A6AD01005F2E21 /* RecordStackView.swift */; };
@@ -210,6 +211,7 @@
 		23D8B7DD28B397DF00F48165 /* MyRecordListRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordListRequestModel.swift; sourceTree = "<group>"; };
 		23D8B7E028B3AC9C00F48165 /* MyRecordListTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordListTVC.swift; sourceTree = "<group>"; };
 		23D8B7E428B4D5AA00F48165 /* CalendarSelectStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSelectStackView.swift; sourceTree = "<group>"; };
+		23D8B7E628B4E44700F48165 /* MyRecordDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordDetailVC.swift; sourceTree = "<group>"; };
 		23F5716828A6802C005F2E21 /* UIStackView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+.swift"; sourceTree = "<group>"; };
 		23F5716C28A6A61D005F2E21 /* MiniMapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniMapVC.swift; sourceTree = "<group>"; };
 		23F5716E28A6AD01005F2E21 /* RecordStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordStackView.swift; sourceTree = "<group>"; };
@@ -560,6 +562,7 @@
 				2339D74F28B284C20018013D /* MypageNC.swift */,
 				2348B41D2892DF0D001095BC /* MypageVC.swift */,
 				2339D74D28B2849F0018013D /* MyRecordDataVC.swift */,
+				23D8B7E628B4E44700F48165 /* MyRecordDetailVC.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -1031,6 +1034,7 @@
 				2339D75028B284C20018013D /* MypageNC.swift in Sources */,
 				2348B3FB2892D15C001095BC /* Output.swift in Sources */,
 				2339D74E28B2849F0018013D /* MyRecordDataVC.swift in Sources */,
+				23D8B7E728B4E44700F48165 /* MyRecordDetailVC.swift in Sources */,
 				23D8B7D928B3961900F48165 /* MyRecordListResponseModel.swift in Sources */,
 				3C08137D28A91C00009F854B /* NoListStatusTVFV.swift in Sources */,
 				235CD76B28B0F8C5000EBAD9 /* OnboardingVC.swift in Sources */,

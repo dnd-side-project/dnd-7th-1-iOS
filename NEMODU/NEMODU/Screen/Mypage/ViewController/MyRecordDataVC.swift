@@ -313,6 +313,15 @@ extension MyRecordDataVC {
                 self.recordStackView.thirdView.recordValue.text = "\(data.totalExerciseTime)"
             })
             .disposed(by: bag)
+        
+        recordTableView.rx.itemSelected
+            .asDriver()
+            .drive(onNext: { [weak self] indexPath in
+                guard let self = self else { return }
+                let myRecordDetailVC = MyRecordDetailVC()
+                self.navigationController?.pushViewController(myRecordDetailVC, animated: true)
+            })
+            .disposed(by: bag)
     }
 }
 
