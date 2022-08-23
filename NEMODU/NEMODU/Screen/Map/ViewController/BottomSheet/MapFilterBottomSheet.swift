@@ -85,6 +85,7 @@ class MapFilterBottomSheet: DynamicBottomSheetViewController {
             $0.onTintColor = .main
         }
     
+    private let viewModel = MapFilterVM()
     private let bag = DisposeBag()
     
     override func configureView() {
@@ -171,7 +172,8 @@ extension MapFilterBottomSheet {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.showMyBlocksBtn.isSelected.toggle()
-                // TODO: - 서버 연결 & 지도 UI 변경
+                // TODO: - 지도 UI 변경
+                self.viewModel.postMyAreaVisibleToggle()
             })
             .disposed(by: bag)
 
@@ -181,7 +183,8 @@ extension MapFilterBottomSheet {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.showFriendsBtn.isSelected.toggle()
-                // TODO: - 서버 연결 & 지도 UI 변경
+                // TODO: - 지도 UI 변경
+                self.viewModel.postFriendVisibleToggle()
             })
             .disposed(by: bag)
         
@@ -190,7 +193,7 @@ extension MapFilterBottomSheet {
             .changed
             .withUnretained(self)
             .subscribe(onNext: { owner, status in
-                // TODO: - 서버 연결
+                owner.viewModel.postMyLocationVisibleToggle()
             })
             .disposed(by: bag)
     }

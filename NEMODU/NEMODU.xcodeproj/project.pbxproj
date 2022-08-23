@@ -60,6 +60,7 @@
 		235CD76728B0B39B000EBAD9 /* BlocksCntResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235CD76628B0B39B000EBAD9 /* BlocksCntResponseModel.swift */; };
 		235CD76B28B0F8C5000EBAD9 /* OnboardingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235CD76A28B0F8C5000EBAD9 /* OnboardingVC.swift */; };
 		235CD76D28B0FA14000EBAD9 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235CD76C28B0FA14000EBAD9 /* OnboardingView.swift */; };
+		23602E0828B5581800B9DC9E /* MapFilteVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23602E0728B5581800B9DC9E /* MapFilteVM.swift */; };
 		238C4DDF28A3AC18000BEE36 /* RecordResultVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DDE28A3AC18000BEE36 /* RecordResultVC.swift */; };
 		238C4DE328A3F0D6000BEE36 /* NemoduTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */; };
 		238C4DE528A4BFE2000BEE36 /* UIScrollView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DE428A4BFE2000BEE36 /* UIScrollView+.swift */; };
@@ -189,6 +190,7 @@
 		235CD76628B0B39B000EBAD9 /* BlocksCntResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlocksCntResponseModel.swift; sourceTree = "<group>"; };
 		235CD76A28B0F8C5000EBAD9 /* OnboardingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingVC.swift; sourceTree = "<group>"; };
 		235CD76C28B0FA14000EBAD9 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		23602E0728B5581800B9DC9E /* MapFilteVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapFilteVM.swift; sourceTree = "<group>"; };
 		238C4DDE28A3AC18000BEE36 /* RecordResultVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordResultVC.swift; sourceTree = "<group>"; };
 		238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NemoduTextView.swift; sourceTree = "<group>"; };
 		238C4DE428A4BFE2000BEE36 /* UIScrollView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+.swift"; sourceTree = "<group>"; };
@@ -465,6 +467,7 @@
 				23412FDD28AE396D00B73D62 /* ChallengeListVM.swift */,
 				23412FE128AE64D100B73D62 /* FriendProfileVM.swift */,
 				23412FEB28AF81F700B73D62 /* RecordResultVM.swift */,
+				23602E0728B5581800B9DC9E /* MapFilteVM.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1046,6 +1049,7 @@
 				23B7207028A12DBB00D3A410 /* RecordView.swift in Sources */,
 				3C09AE3B28AF6450005DD125 /* ChallengeFinishTVC.swift in Sources */,
 				2348B4252892E007001095BC /* NEMODUTBC.swift in Sources */,
+				23602E0828B5581800B9DC9E /* MapFilteVM.swift in Sources */,
 				23B7206D28A12BE800D3A410 /* WalkingVC.swift in Sources */,
 				3C992F1728AE623B00D96E21 /* ListTypeMenuBarCVC.swift in Sources */,
 				3C09AE3728AF6071005DD125 /* ChallengeWaitingTVC.swift in Sources */,
