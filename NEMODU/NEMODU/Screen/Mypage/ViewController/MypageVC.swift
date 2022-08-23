@@ -259,7 +259,8 @@ extension MypageVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                // TODO: - 화면 전환
+                let myRecordDataView = MyRecordDataVC()
+                self.navigationController?.pushViewController(myRecordDataView, animated: true)
             })
             .disposed(by: bag)
     }
