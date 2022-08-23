@@ -118,7 +118,9 @@ class MyRecordDetailVC: BaseViewController {
             $0.backgroundColor = .white
         }
 
-    private let challengeListCellHeight = 69.0
+    private let challengeListCellHeight = 69
+    private let subTitleLabelHeight = 52
+    private let separatorHeight = 2
     
     private let naviBar = NavigationBar()
     private let viewModel = MyRecordDetailVM()
@@ -237,7 +239,6 @@ extension MyRecordDetailVC {
         challengeListView.snp.makeConstraints {
             $0.top.equalTo(memoView.snp.bottom)
             $0.leading.trailing.bottom.equalToSuperview()
-            $0.height.equalTo(0)
         }
         
         recordDate.snp.makeConstraints {
@@ -272,7 +273,7 @@ extension MyRecordDetailVC {
         memoLabel.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.leading.equalToSuperview().offset(16)
-            $0.height.equalTo(56)
+            $0.height.equalTo(subTitleLabelHeight)
         }
         
         memoEditBtn.snp.makeConstraints {
@@ -284,7 +285,7 @@ extension MyRecordDetailVC {
         viewSeparator.snp.makeConstraints {
             $0.top.equalTo(memoLabel.snp.bottom)
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(2)
+            $0.height.equalTo(separatorHeight)
         }
         
         memoTextView.snp.makeConstraints {
@@ -297,13 +298,13 @@ extension MyRecordDetailVC {
         challengeViewTitle.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.leading.equalToSuperview().offset(16)
-            $0.height.equalTo(56)
+            $0.height.equalTo(subTitleLabelHeight)
         }
         
         viewSeparator2.snp.makeConstraints {
             $0.top.equalTo(challengeViewTitle.snp.bottom)
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(2)
+            $0.height.equalTo(separatorHeight)
         }
         
         proceedingChallengeTV.snp.makeConstraints {
@@ -314,10 +315,11 @@ extension MyRecordDetailVC {
     }
     
     private func setChallengeListViewHeight(cnt: Int) {
-        let titleHeight = cnt == 0 ? 0 : 53
+        challengeListView.isHidden = cnt == 0
+        let titleHeight = cnt == 0 ? 0 : subTitleLabelHeight + separatorHeight
         
-        challengeListView.snp.updateConstraints {
-            $0.height.equalTo(titleHeight + cnt * Int(challengeListCellHeight))
+        challengeListView.snp.makeConstraints {
+            $0.height.equalTo(titleHeight + cnt * challengeListCellHeight)
         }
     }
 }
@@ -379,7 +381,7 @@ extension MyRecordDetailVC {
 
 extension MyRecordDetailVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        challengeListCellHeight
+        CGFloat(challengeListCellHeight)
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

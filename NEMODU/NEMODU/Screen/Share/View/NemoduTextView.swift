@@ -62,6 +62,7 @@ extension NemoduTextView {
         tv.setTextViewToViewer()
         memoCntLabel.isHidden = true
         
+        memoCntLabel.snp.removeConstraints()
         tv.snp.makeConstraints {
             $0.bottom.equalToSuperview()
         }
