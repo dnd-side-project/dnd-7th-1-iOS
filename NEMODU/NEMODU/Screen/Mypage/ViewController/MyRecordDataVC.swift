@@ -25,7 +25,8 @@ class MyRecordDataVC: BaseViewController {
     private let nextWeekBtn = UIButton()
         .then {
             $0.setImage(UIImage(named: "arrow_right")?
-                .withTintColor(.gray300, renderingMode: .alwaysOriginal), for: .normal)
+                .withRenderingMode(.alwaysTemplate), for: .normal)
+            $0.tintColor = .gray300
             $0.isUserInteractionEnabled = false
         }
     
@@ -49,7 +50,7 @@ class MyRecordDataVC: BaseViewController {
         .then {
             $0.locale = Locale(identifier: "ko_KR")
             $0.headerHeight = 0
-            $0.weekdayHeight = 40
+            $0.weekdayHeight = 32
             $0.firstWeekday = 2
             $0.scope = .week
             
@@ -57,7 +58,7 @@ class MyRecordDataVC: BaseViewController {
             $0.appearance.weekdayTextColor = .gray500
             
             $0.appearance.titleFont = .body1
-            $0.appearance.titleDefaultColor = .gray300
+            $0.appearance.titleDefaultColor = .gray400
             
             $0.appearance.selectionColor = .clear
             $0.appearance.titleSelectionColor = .black
@@ -65,8 +66,11 @@ class MyRecordDataVC: BaseViewController {
             $0.appearance.titleTodayColor = .white
             $0.appearance.todaySelectionColor = .main
             $0.appearance.todayColor = .main
+            
+            $0.collectionView.isScrollEnabled = false
         }
     
+    private let calendarSelectStackView = CalendarSelectStackView()
     
     private let recordListView = UIView()
         .then {
@@ -113,7 +117,7 @@ class MyRecordDataVC: BaseViewController {
         super.configureView()
         configureNaviBar()
         configureContentView()
-        configureTitleDate()
+        configureTitleDate(.now)
     }
     
     override func layoutView() {
@@ -123,6 +127,8 @@ class MyRecordDataVC: BaseViewController {
     
     override func bindInput() {
         super.bindInput()
+        bindBtn()
+        bindDaySelect()
     }
     
     override func bindOutput() {
@@ -159,17 +165,25 @@ extension MyRecordDataVC {
         }
         
         calendar.delegate = self
+        calendar.contentView.addSubview(calendarSelectStackView)
+        calendar.contentView.sendSubviewToBack(calendarSelectStackView)
         
         recordTableView.register(MyRecordListTVC.self, forCellReuseIdentifier: MyRecordListTVC.className)
         recordTableView.delegate = self
     }
     
-    private func configureTitleDate() {
+    private func configureTitleDate(_ date: Date) {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy.MM"
         
-        let week = Calendar.current.component(.weekOfMonth, from: Date.now)
-        dateLabel.text = "\(dateFormatter.string(from: Date.now)) \(week)주차"
+        let week = Calendar.current.component(.weekOfMonth, from: date)
+        dateLabel.text = "\(dateFormatter.string(from: date)) \(week)주차"
+    }
+    
+    private func setNextWeekBtn(_ date: Date) {
+        let active = Calendar.current.compare(date, to: .now, toGranularity: .weekOfYear) == .orderedSame ? false : true
+        nextWeekBtn.isUserInteractionEnabled = active
+        nextWeekBtn.tintColor = active ? .main : .gray300
     }
 }
 
@@ -199,14 +213,18 @@ extension MyRecordDataVC {
         }
         
         calendar.snp.makeConstraints {
-            $0.top.equalTo(recordStackView.snp.bottom)
+            $0.top.equalTo(recordStackView.snp.bottom).offset(16)
             $0.leading.equalToSuperview().offset(10)
             $0.trailing.equalToSuperview().offset(-10)
             $0.height.equalTo(400)
         }
         
+        calendarSelectStackView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
         recordListView.snp.makeConstraints {
-            $0.top.equalTo(calendar.snp.bottom)
+            $0.top.equalTo(calendar.snp.bottom).offset(16)
             $0.leading.trailing.bottom.equalToSuperview()
         }
         
@@ -230,7 +248,52 @@ extension MyRecordDataVC {
 // MARK: - Input
 
 extension MyRecordDataVC {
+    private func bindBtn() {
+        nextWeekBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.viewModel.input.moveWeek.accept(1)
+                self.calendar.select(self.viewModel.input.selectedDay.value, scrollToDate: true)
+            })
+            .disposed(by: bag)
+        
+        prevWeekBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.viewModel.input.moveWeek.accept(-1)
+                self.calendar.select(self.viewModel.input.selectedDay.value, scrollToDate: true)
+            })
+            .disposed(by: bag)
+    }
     
+    private func bindDaySelect() {
+        viewModel.input.selectedDay
+            .subscribe(onNext: { [weak self] day in
+                guard let self = self else { return }
+                // title 연결
+                self.configureTitleDate(day)
+                
+                // 다음주 버튼 활성화 상태
+                self.setNextWeekBtn(day)
+                
+                // 선택 일자 배경 지정
+                self.calendarSelectStackView.setSelectDay(dayIndex: self.viewModel.setSelected(date: day))
+                
+                // 선택 일자 색 구별
+                self.calendar.appearance.titleSelectionColor
+                = self.viewModel.isToday(day)
+                ? .white : .black
+                
+                // 일자별 tableView 연결
+                self.viewModel.getMyRecordDataList(
+                    with: MyRecordListRequestModel(start: self.viewModel.startDateFormatter(day),
+                                                   end: self.viewModel.endDateFormatter(day)))
+                self.recordTableView.reloadData()
+            })
+            .disposed(by: bag)
+    }
 }
 
 // MARK: - Output
@@ -287,24 +350,27 @@ extension MyRecordDataVC: UITableViewDelegate {
 extension MyRecordDataVC: FSCalendarDelegate {
     func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
         calendar.snp.updateConstraints {
-            $0.height.equalTo(116)
+            $0.height.equalTo(90)
         }
         self.view.layoutIfNeeded()
     }
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        print(date, Date.now)
-        // 선택 일자 색 구별
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        calendar.appearance.titleSelectionColor
-        = dateFormatter.string(from: date) == dateFormatter.string(from: Date.now)
-        ? .white : .black
-        
-        // 일자별 tableView 연결
-        viewModel.getMyRecordDataList(
-            with: MyRecordListRequestModel(start: viewModel.startDateFormatter(date),
-                                           end: viewModel.endDateFormatter(date)))
-        recordTableView.reloadData()
+        // 날짜 선택
+        viewModel.input.selectedDay.accept(date)
+    }
+    
+    // 미래 선택 불가능
+    func calendar(_ calendar: FSCalendar, shouldSelect date: Date, at monthPosition: FSCalendarMonthPosition) -> Bool {
+        !(date > .now)
+    }
+}
+
+// MARK: - FSCalendarDelegateAppearance
+
+extension MyRecordDataVC: FSCalendarDelegateAppearance {
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
+        if viewModel.isToday(date) { return .white }
+        else { return date > .now ? .gray300 : .gray400}
     }
 }

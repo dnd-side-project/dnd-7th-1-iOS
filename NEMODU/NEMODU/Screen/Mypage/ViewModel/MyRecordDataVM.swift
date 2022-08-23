@@ -24,7 +24,10 @@ final class MyRecordDataVM: BaseViewModel {
     
     // MARK: - Input
     
-    struct Input {}
+    struct Input {
+        var selectedDay = BehaviorRelay<Date>(value: Date.now)
+        var moveWeek = PublishRelay<Int>()
+    }
     
     // MARK: - Output
     
@@ -60,7 +63,6 @@ extension MyRecordDataVM {
         dateFormatter.dateFormat = "yyyy-MM-dd'T'00:00:00"
         dateFormatter.timeZone = TimeZone(identifier: "KST")
         let date = dateFormatter.string(from: today)
-        print(date)
         return date
     }
     
@@ -69,15 +71,37 @@ extension MyRecordDataVM {
         dateFormatter.dateFormat = "yyyy-MM-dd'T'23:59:59"
         dateFormatter.timeZone = TimeZone(identifier: "KST")
         let date = dateFormatter.string(from: today)
-        print(date)
         return date
+    }
+    
+    func setSelected(date: Date) -> Int {
+        var dayIndex = Calendar.current.component(.weekday, from: date) - 2
+        dayIndex = dayIndex < 0 ? 6 : dayIndex
+        return dayIndex
+    }
+    
+    func isToday(_ date: Date) -> Bool {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        return dateFormatter.string(from: date) == dateFormatter.string(from: Date.now)
     }
 }
 
 // MARK: - Input
 
 extension MyRecordDataVM: Input {
-    func bindInput() {}
+    func bindInput() {
+        input.moveWeek
+            .subscribe(onNext: { [weak self] value in
+                guard let self = self,
+                      let selectedDate = Calendar.current.date(byAdding: .weekOfMonth,
+                                                               value: value,
+                                                               to: self.input.selectedDay.value)
+                else { return }
+                self.input.selectedDay.accept(selectedDate > .now ? .now : selectedDate)
+            })
+            .disposed(by: bag)
+    }
 }
 
 // MARK: - Output
