@@ -350,6 +350,7 @@ extension MyRecordDetailVC {
         viewModel.output.challengeList
             .withUnretained(self)
             .subscribe(onNext: { owner, item in
+                if item.count == 0 { return }
                 owner.proceedingChallengeTV.reloadData()
                 owner.setChallengeListViewHeight(cnt: item.count)
             })
