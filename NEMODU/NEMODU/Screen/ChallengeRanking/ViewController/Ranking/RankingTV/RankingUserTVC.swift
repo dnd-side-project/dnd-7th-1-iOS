@@ -90,8 +90,14 @@ class RankingUserTVC : BaseTableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
+        // remove nickname
+        userNicknameLabel.text = ""
+        
         // remove 걸음수 랭킹 - '걸음'
         blockLabel.text = "칸"
+        
+        // remove 칸, 걸음 개수
+        blocksNumberLabel.text = ""
         
         // remove mrakMyRanking status
         _ = contentsView
@@ -173,4 +179,29 @@ class RankingUserTVC : BaseTableViewCell {
         showMeLabel.isHidden = false
     }
     
+    // MARK: - configure TVC acording to Ranking Type
+    
+    func configureAreaRankingCell(with data: AreaRanking) {
+        // TODO: - 서버 연결 후 프로필 이미지 추가
+//        userProfileImageView.image =
+        userNicknameLabel.text = data.nickname
+        blocksNumberLabel.text = "\(data.score)"
+        rankNumberLabel.text = "\(data.rank)"
+    }
+    
+    func configureStepRankingCell(with data: StepRanking) {
+        // TODO: - 서버 연결 후 프로필 이미지 추가
+//        userProfileImageView.image =
+        userNicknameLabel.text = data.nickname
+        blocksNumberLabel.text = "\(data.score)"
+        rankNumberLabel.text = "\(data.rank)"
+    }
+    
+    func configureAccumulateRankingCell(with data: MatrixRanking) {
+        // TODO: - 서버 연결 후 프로필 이미지 추가
+//        userProfileImageView.image =
+        userNicknameLabel.text = data.nickname
+        blocksNumberLabel.text = "\(data.score)"
+        rankNumberLabel.text = "\(data.rank)"
+    }
 }
