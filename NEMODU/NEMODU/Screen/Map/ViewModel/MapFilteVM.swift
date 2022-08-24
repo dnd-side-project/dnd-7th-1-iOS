@@ -9,6 +9,12 @@ import Foundation
 import RxCocoa
 import RxSwift
 
+protocol MapFilterViewModelOutput: Lodable {
+    var myBlocksVisible: PublishRelay<Bool> { get }
+    var friendVisible: PublishRelay<Bool> { get }
+    var myLocationVisible: PublishRelay<Bool> { get }
+}
+
 final class MapFilterVM: BaseViewModel {
     var apiSession: APIService = APISession()
     let apiError = PublishSubject<APIError>()
@@ -22,7 +28,12 @@ final class MapFilterVM: BaseViewModel {
     
     // MARK: - Output
     
-    struct Output {}
+    struct Output: MapFilterViewModelOutput {
+        var loading = BehaviorRelay<Bool>(value: false)
+        var myBlocksVisible = PublishRelay<Bool>()
+        var friendVisible = PublishRelay<Bool>()
+        var myLocationVisible = PublishRelay<Bool>()
+    }
     
     // MARK: - Init
     
@@ -59,7 +70,7 @@ extension MapFilterVM {
         // TODO: - UserDefaults 수정
         let nickname = "NickA"
         let path = "user/filter/friend?nickname=\(nickname)"
-        let resource = urlResource<String>(path: path)
+        let resource = urlResource<Bool>(path: path)
         
         apiSession.postRequest(with: resource, param: nil)
             .withUnretained(self)
@@ -68,7 +79,7 @@ extension MapFilterVM {
                 case .failure(let error):
                     owner.apiError.onNext(error)
                 case .success(let data):
-                    dump(data)
+                    owner.output.friendVisible.accept(data)
                 }
             })
             .disposed(by: bag)
@@ -78,7 +89,7 @@ extension MapFilterVM {
         // TODO: - UserDefaults 수정
         let nickname = "NickA"
         let path = "user/filter/mine?nickname=\(nickname)"
-        let resource = urlResource<String>(path: path)
+        let resource = urlResource<Bool>(path: path)
         
         apiSession.postRequest(with: resource, param: nil)
             .withUnretained(self)
@@ -87,7 +98,7 @@ extension MapFilterVM {
                 case .failure(let error):
                     owner.apiError.onNext(error)
                 case .success(let data):
-                    dump(data)
+                    owner.output.myBlocksVisible.accept(data)
                 }
             })
             .disposed(by: bag)
@@ -97,7 +108,7 @@ extension MapFilterVM {
         // TODO: - UserDefaults 수정
         let nickname = "NickA"
         let path = "user/filter/record?nickname=\(nickname)"
-        let resource = urlResource<String>(path: path)
+        let resource = urlResource<Bool>(path: path)
         
         apiSession.postRequest(with: resource, param: nil)
             .withUnretained(self)
@@ -106,7 +117,7 @@ extension MapFilterVM {
                 case .failure(let error):
                     owner.apiError.onNext(error)
                 case .success(let data):
-                    dump(data)
+                    owner.output.myLocationVisible.accept(data)
                 }
             })
             .disposed(by: bag)

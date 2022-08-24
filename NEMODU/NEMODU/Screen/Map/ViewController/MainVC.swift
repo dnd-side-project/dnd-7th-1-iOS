@@ -92,6 +92,7 @@ class MainVC: BaseViewController {
         bindMyBlocks()
         bindFriendBlocks()
         bindChallengeFriendBlocks()
+        bindVisible()
     }
     
 }
@@ -188,7 +189,8 @@ extension MainVC {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 let filterBottomSheet = MapFilterBottomSheet()
-                filterBottomSheet.configureBtnStatus(myBlocks: self.viewModel.output.myBlocksVisible.value,
+                filterBottomSheet.configureBtnStatus(mainVM: self.viewModel,
+                                                     myBlocks: self.viewModel.output.myBlocksVisible.value,
                                                      friends: self.viewModel.output.friendVisible.value,
                                                      myLocation: self.viewModel.output.myLocationVisible.value)
                 self.present(filterBottomSheet, animated: true)
@@ -244,6 +246,10 @@ extension MainVC {
                 self.drawBlockArea(blocks: user.matrices ?? [],
                                    owner: .mine,
                                    blockColor: .main40)
+                
+                if !self.viewModel.output.myBlocksVisible.value {
+                    self.mapVC.hideOverlay(of: .mine)
+                }
             })
             .disposed(by: bag)
     }
@@ -264,6 +270,10 @@ extension MainVC {
                                        owner: .friends,
                                        blockColor: .gray25)
                 }
+                
+                if !self.viewModel.output.friendVisible.value {
+                    self.mapVC.hideOverlay(of: .friends)
+                }
             })
             .disposed(by: bag)
     }
@@ -282,7 +292,35 @@ extension MainVC {
                                        owner: .friends,
                                        blockColor: ChallengeColorType(rawValue: $0.challengeColor)?.blockColor ?? .gray25)
                 }
+                
+                if !self.viewModel.output.friendVisible.value {
+                    self.mapVC.hideOverlay(of: .friends)
+                }
             })
             .disposed(by: bag)
+    }
+    
+    private func bindVisible() {
+        viewModel.output.myBlocksVisible
+            .asDriver()
+            .drive(onNext: { [weak self] isVisible in
+                guard let self = self else { return }
+                isVisible
+                ? self.mapVC.showOverlay(of: .mine)
+                : self.mapVC.hideOverlay(of: .mine)
+            })
+            .disposed(by: bag)
+        
+        viewModel.output.friendVisible
+            .asDriver()
+            .drive(onNext: { [weak self] isVisible in
+                guard let self = self else { return }
+                isVisible
+                ? self.mapVC.showOverlay(of: .friends)
+                : self.mapVC.hideOverlay(of: .friends)
+            })
+            .disposed(by: bag)
+        
+        // TODO: - myLocationVisible MVP2 부터 개발!!
     }
 }

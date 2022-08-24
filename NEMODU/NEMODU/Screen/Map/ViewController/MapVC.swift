@@ -236,6 +236,26 @@ extension MapVC {
         
         mapView.addOverlay(blockDraw)
     }
+    
+    /// 영역의 소유자를 입력받아 overlay를 숨기는 함수
+    func hideOverlay(of owner: BlocksType) {
+        mapView.overlays.forEach {
+            guard let overlay = $0 as? Block else { return }
+            if overlay.owner == owner {
+                mapView.renderer(for: overlay)?.alpha = 0
+            }
+        }
+    }
+    
+    /// 영역의 소유자를 입력받아 overlay를 보여주는 함수
+    func showOverlay(of owner: BlocksType) {
+        mapView.overlays.forEach {
+            guard let overlay = $0 as? Block else { return }
+            if overlay.owner == owner {
+                mapView.renderer(for: overlay)?.alpha = 1
+            }
+        }
+    }
 }
 
 // MARK: - CLLocationManagerDelegate

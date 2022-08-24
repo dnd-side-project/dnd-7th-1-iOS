@@ -85,6 +85,7 @@ class MapFilterBottomSheet: DynamicBottomSheetViewController {
             $0.onTintColor = .main
         }
     
+    private var mainVM: MainVM?
     private let viewModel = MapFilterVM()
     private let bag = DisposeBag()
     
@@ -92,13 +93,15 @@ class MapFilterBottomSheet: DynamicBottomSheetViewController {
         super.configureView()
         configureLayout()
         bindBtn()
+        bindVisible()
     }
 }
 
 // MARK: - Configure
 
 extension MapFilterBottomSheet {
-    func configureBtnStatus(myBlocks: Bool, friends: Bool, myLocation: Bool) {
+    func configureBtnStatus(mainVM: MainVM, myBlocks: Bool, friends: Bool, myLocation: Bool) {
+        self.mainVM = mainVM
         showMyBlocksBtn.isSelected = myBlocks
         showFriendsBtn.isSelected = friends
         locationPermissionToggleBtn.isOn = myLocation
@@ -182,7 +185,6 @@ extension MapFilterBottomSheet {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.showMyBlocksBtn.isSelected.toggle()
-                // TODO: - 지도 UI 변경
                 self.viewModel.postMyAreaVisibleToggle()
             })
             .disposed(by: bag)
@@ -193,7 +195,6 @@ extension MapFilterBottomSheet {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.showFriendsBtn.isSelected.toggle()
-                // TODO: - 지도 UI 변경
                 self.viewModel.postFriendVisibleToggle()
             })
             .disposed(by: bag)
@@ -204,6 +205,29 @@ extension MapFilterBottomSheet {
             .withUnretained(self)
             .subscribe(onNext: { owner, status in
                 owner.viewModel.postMyLocationVisibleToggle()
+            })
+            .disposed(by: bag)
+    }
+    
+    private func bindVisible() {
+        viewModel.output.myBlocksVisible
+            .subscribe(onNext: { [weak self] isVisible in
+                guard let self = self else { return }
+                self.mainVM?.output.myBlocksVisible.accept(isVisible)
+            })
+            .disposed(by: bag)
+        
+        viewModel.output.friendVisible
+            .subscribe(onNext: { [weak self] isVisible in
+                guard let self = self else { return }
+                self.mainVM?.output.friendVisible.accept(isVisible)
+            })
+            .disposed(by: bag)
+        
+        viewModel.output.myLocationVisible
+            .subscribe(onNext: { [weak self] isVisible in
+                guard let self = self else { return }
+                self.mainVM?.output.myLocationVisible.accept(isVisible)
             })
             .disposed(by: bag)
     }
