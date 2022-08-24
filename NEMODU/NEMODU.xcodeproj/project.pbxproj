@@ -13,6 +13,8 @@
 		230CB2DF28AD473100B11270 /* UserBlockResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230CB2DE28AD473100B11270 /* UserBlockResponseModel.swift */; };
 		230CB2E128AD474E00B11270 /* ChallengeBlockResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230CB2E028AD474E00B11270 /* ChallengeBlockResponseModel.swift */; };
 		230CB2E428AD478000B11270 /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230CB2E328AD478000B11270 /* Matrix.swift */; };
+		2312519428B6943B00DF1C69 /* ToastType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2312519328B6943B00DF1C69 /* ToastType.swift */; };
+		2312519628B6944B00DF1C69 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2312519528B6944B00DF1C69 /* ToastView.swift */; };
 		2315258D28B4F07D00B80E03 /* DetailRecordDataResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2315258C28B4F07D00B80E03 /* DetailRecordDataResponseModel.swift */; };
 		2315258F28B4F2A000B80E03 /* MyRecordDetailVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2315258E28B4F2A000B80E03 /* MyRecordDetailVM.swift */; };
 		231A2B8D28B20B3E00FF884B /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231A2B8C28B20B3E00FF884B /* ProfileView.swift */; };
@@ -146,6 +148,8 @@
 		230CB2DE28AD473100B11270 /* UserBlockResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBlockResponseModel.swift; sourceTree = "<group>"; };
 		230CB2E028AD474E00B11270 /* ChallengeBlockResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeBlockResponseModel.swift; sourceTree = "<group>"; };
 		230CB2E328AD478000B11270 /* Matrix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Matrix.swift; sourceTree = "<group>"; };
+		2312519328B6943B00DF1C69 /* ToastType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastType.swift; sourceTree = "<group>"; };
+		2312519528B6944B00DF1C69 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		2315258C28B4F07D00B80E03 /* DetailRecordDataResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRecordDataResponseModel.swift; sourceTree = "<group>"; };
 		2315258E28B4F2A000B80E03 /* MyRecordDetailVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordDetailVM.swift; sourceTree = "<group>"; };
 		231A2B8C28B20B3E00FF884B /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
@@ -369,6 +373,7 @@
 				23F5717428A92D4A005F2E21 /* ProfileRecordStackView.swift */,
 				23F5717628A92E38005F2E21 /* ProfileRecordView.swift */,
 				232F0B6228B6803C005C9A07 /* AlertVC.swift */,
+				2312519528B6944B00DF1C69 /* ToastView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -676,6 +681,7 @@
 				3C48920428B0C8A800B11207 /* NoChallengeStatusMessage.swift */,
 				23AB8F3228B5E5FA007E3A2F /* BlocksType.swift */,
 				232F0B6428B686C5005C9A07 /* AlertType.swift */,
+				2312519328B6943B00DF1C69 /* ToastType.swift */,
 			);
 			path = Enum;
 			sourceTree = "<group>";
@@ -1105,6 +1111,7 @@
 				23B86D1F28A26EEF00B1630E /* NaviType.swift in Sources */,
 				2348B3E72892D08D001095BC /* BaseViewModel.swift in Sources */,
 				2348B4092892D2E5001095BC /* UIViewController+.swift in Sources */,
+				2312519428B6943B00DF1C69 /* ToastType.swift in Sources */,
 				3C992F1528AE61FC00D96E21 /* ListTypeMenuBarCV.swift in Sources */,
 				23F5718828AA6DEE005F2E21 /* MyAnnotationView.swift in Sources */,
 				232F0B6328B6803C005C9A07 /* AlertVC.swift in Sources */,
@@ -1118,6 +1125,7 @@
 				2348B3EE2892D0ED001095BC /* APIService.swift in Sources */,
 				23412FDC28AE375D00B73D62 /* ChallengeElementResponseModel.swift in Sources */,
 				23412FF028AFB74800B73D62 /* RecordResultNC.swift in Sources */,
+				2312519628B6944B00DF1C69 /* ToastView.swift in Sources */,
 				23412FD828AE245D00B73D62 /* Block.swift in Sources */,
 				238C4DE328A3F0D6000BEE36 /* NemoduTextView.swift in Sources */,
 				23F5717E28AA1A11005F2E21 /* FriendAnnotationView.swift in Sources */,
