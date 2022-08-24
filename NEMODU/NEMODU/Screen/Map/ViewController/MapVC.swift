@@ -216,7 +216,7 @@ extension MapVC {
     }
     
     /// 기준 처리된 좌표를 입력받고 해당 위치에 블록을 그리는 함수
-    func drawBlock(latitude: Double, longitude: Double, color: UIColor) {
+    func drawBlock(latitude: Double, longitude: Double, owner: BlocksType, color: UIColor) {
         let overlayTopLeftCoordinate = CLLocationCoordinate2D(latitude: latitude,
                                                               longitude: longitude - blockSizePoint)
         let overlayTopRightCoordinate = CLLocationCoordinate2D(latitude: latitude,
@@ -231,6 +231,7 @@ extension MapVC {
                                            overlayBottomRightCoordinate,
                                            overlayBottomLeftCoordinate],
                               count: 4,
+                              owner: owner,
                               color: color)
         
         mapView.addOverlay(blockDraw)
@@ -321,6 +322,7 @@ extension MapVC: CLLocationManagerDelegate {
                 
                 drawBlock(latitude: latitudePoint,
                           longitude: longitudePoint,
+                          owner: .mine,
                           color: .main40)
                 
                 blocksCnt.accept(blocks.count)

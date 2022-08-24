@@ -122,10 +122,11 @@ extension MainVC {
         challengeCnt.text = String(cnt)
     }
     
-    private func drawBlockArea(blocks: [Matrix], blockColor: UIColor) {
+    private func drawBlockArea(blocks: [Matrix], owner: BlocksType, blockColor: UIColor) {
         blocks.forEach {
             mapVC.drawBlock(latitude: $0.latitude,
                             longitude: $0.longitude,
+                            owner: owner,
                             color: blockColor)
         }
     }
@@ -241,6 +242,7 @@ extension MainVC {
                 self.mapVC.addMyAnnotation(coordinate: [latitude, longitude],
                                            profileImage: UIImage(named: "defaultThumbnail")!)
                 self.drawBlockArea(blocks: user.matrices ?? [],
+                                   owner: .mine,
                                    blockColor: .main40)
             })
             .disposed(by: bag)
@@ -259,6 +261,7 @@ extension MainVC {
                                                    color: .main,
                                                    challengeCnt: 0)
                     self.drawBlockArea(blocks: $0.matrices ?? [],
+                                       owner: .friends,
                                        blockColor: .gray25)
                 }
             })
@@ -276,6 +279,7 @@ extension MainVC {
                                                    color: ChallengeColorType(rawValue: $0.challengeColor)?.primaryColor ?? .main,
                                                    challengeCnt: $0.challengeNumber)
                     self.drawBlockArea(blocks: $0.matrices,
+                                       owner: .friends,
                                        blockColor: ChallengeColorType(rawValue: $0.challengeColor)?.blockColor ?? .gray25)
                 }
             })

@@ -64,6 +64,7 @@
 		238C4DDF28A3AC18000BEE36 /* RecordResultVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DDE28A3AC18000BEE36 /* RecordResultVC.swift */; };
 		238C4DE328A3F0D6000BEE36 /* NemoduTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */; };
 		238C4DE528A4BFE2000BEE36 /* UIScrollView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DE428A4BFE2000BEE36 /* UIScrollView+.swift */; };
+		23AB8F3328B5E5FA007E3A2F /* BlocksType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AB8F3228B5E5FA007E3A2F /* BlocksType.swift */; };
 		23B72058289808EB00D3A410 /* MapFilterBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B72057289808EB00D3A410 /* MapFilterBottomSheet.swift */; };
 		23B7205D28A0CBAC00D3A410 /* ChallengeListBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B7205C28A0CBAC00D3A410 /* ChallengeListBottomSheet.swift */; };
 		23B7206128A0D53200D3A410 /* ProceedingChallengeTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B7206028A0D53200D3A410 /* ProceedingChallengeTVC.swift */; };
@@ -194,6 +195,7 @@
 		238C4DDE28A3AC18000BEE36 /* RecordResultVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordResultVC.swift; sourceTree = "<group>"; };
 		238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NemoduTextView.swift; sourceTree = "<group>"; };
 		238C4DE428A4BFE2000BEE36 /* UIScrollView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+.swift"; sourceTree = "<group>"; };
+		23AB8F3228B5E5FA007E3A2F /* BlocksType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlocksType.swift; sourceTree = "<group>"; };
 		23B72057289808EB00D3A410 /* MapFilterBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapFilterBottomSheet.swift; sourceTree = "<group>"; };
 		23B7205C28A0CBAC00D3A410 /* ChallengeListBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeListBottomSheet.swift; sourceTree = "<group>"; };
 		23B7206028A0D53200D3A410 /* ProceedingChallengeTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProceedingChallengeTVC.swift; sourceTree = "<group>"; };
@@ -658,6 +660,7 @@
 				23B86D1E28A26EEF00B1630E /* NaviType.swift */,
 				23412FD528AE080000B73D62 /* ChallengeColorType.swift */,
 				3C48920428B0C8A800B11207 /* NoChallengeStatusMessage.swift */,
+				23AB8F3228B5E5FA007E3A2F /* BlocksType.swift */,
 			);
 			path = Enum;
 			sourceTree = "<group>";
@@ -1063,6 +1066,7 @@
 				2348B3F52892D131001095BC /* Service.swift in Sources */,
 				3C48920528B0C8A800B11207 /* NoChallengeStatusMessage.swift in Sources */,
 				23D8B7E528B4D5AA00F48165 /* CalendarSelectStackView.swift in Sources */,
+				23AB8F3328B5E5FA007E3A2F /* BlocksType.swift in Sources */,
 				2348B3E32892D064001095BC /* BaseCollectionViewCell.swift in Sources */,
 				3C5C2D4428B12AD700EB2799 /* RankingUserTVC.swift in Sources */,
 				23D8B7D728B394FC00F48165 /* MyRecordListDataSource.swift in Sources */,

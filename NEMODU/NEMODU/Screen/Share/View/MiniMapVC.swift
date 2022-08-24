@@ -79,6 +79,7 @@ extension MiniMapVC {
         blocks.forEach {
             drawBlock(latitude: $0[0],
                       longitude: $0[1],
+                      owner: .mine,
                       color: .main40)
         }
     }
