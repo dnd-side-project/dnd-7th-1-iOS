@@ -16,9 +16,9 @@ extension NaviType {
     var backBtnImage: UIImage {
         switch self {
         case .push:
-            return UIImage(systemName: "chevron.backward") ?? UIImage()
+            return UIImage(named: "pop") ?? UIImage()
         case .present:
-            return UIImage(systemName: "xmark") ?? UIImage()
+            return UIImage(named: "dismiss") ?? UIImage()
         }
     }
 }

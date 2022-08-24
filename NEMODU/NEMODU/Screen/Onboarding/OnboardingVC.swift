@@ -67,8 +67,7 @@ class OnboardingVC: BaseViewController {
             $0.tintColor = .gray400
             $0.setTitle("시작하기 ", for: .normal)
             $0.setTitleColor(.gray400, for: .normal)
-            $0.setImage(UIImage(systemName: "chevron.right"), for: .normal)
-            $0.imageView?.layer.transform = CATransform3DMakeScale(0.7, 0.7, 0.7)
+            $0.setImage(UIImage(named: "arrow_right")?.withRenderingMode(.alwaysTemplate), for: .normal)
             $0.layer.cornerRadius = 8
             $0.semanticContentAttribute = .forceRightToLeft
         }

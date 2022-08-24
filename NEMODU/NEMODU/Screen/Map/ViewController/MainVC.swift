@@ -49,7 +49,7 @@ class MainVC: BaseViewController {
             $0.tintColor = .main
             $0.setTitleColor(.main, for: .normal)
             $0.setTitle("기록 시작하기  ", for: .normal)
-            $0.setImage(UIImage(systemName: "chevron.right"), for: .normal)
+            $0.setImage(UIImage(named: "arrow_right")?.withRenderingMode(.alwaysTemplate), for: .normal)
             $0.layer.cornerRadius = 24
             $0.semanticContentAttribute = .forceRightToLeft
         }

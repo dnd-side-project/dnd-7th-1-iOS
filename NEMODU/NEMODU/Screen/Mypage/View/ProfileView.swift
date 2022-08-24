@@ -39,7 +39,7 @@ class ProfileView: BaseView {
     
     let arrow = UIImageView()
         .then {
-            $0.image = UIImage(systemName: "chevron.right")
+            $0.image = UIImage(named: "arrow_right")?.withRenderingMode(.alwaysTemplate)
             $0.tintColor = .gray300
         }
     
@@ -88,8 +88,7 @@ extension ProfileView {
             $0.leading.equalTo(textStackView.snp.trailing).offset(16)
             $0.trailing.equalToSuperview().offset(-16)
             $0.centerY.equalTo(profileImage.snp.centerY)
-            $0.width.equalTo(9)
-            $0.height.equalTo(16)
+            $0.width.height.equalTo(24)
         }
     }
 }

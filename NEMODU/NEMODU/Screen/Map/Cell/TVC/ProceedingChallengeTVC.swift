@@ -31,7 +31,7 @@ class ProceedingChallengeTVC: UITableViewCell {
     
     let arrow = UIImageView()
         .then {
-            $0.image = UIImage(systemName: "chevron.right")
+            $0.image = UIImage(named: "arrow_right")?.withRenderingMode(.alwaysTemplate)
             $0.tintColor = .gray300
         }
     
@@ -83,8 +83,7 @@ extension ProceedingChallengeTVC {
         arrow.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().offset(-16)
-            $0.height.equalTo(14)
-            $0.width.equalTo(8)
+            $0.width.height.equalTo(24)
         }
     }
     
