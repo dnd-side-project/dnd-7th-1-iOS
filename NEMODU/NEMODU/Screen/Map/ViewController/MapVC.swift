@@ -237,6 +237,15 @@ extension MapVC {
         mapView.addOverlay(blockDraw)
     }
     
+    /// [Matrix]형 모델을 [[Double]]형 blocks로 변환해주는 함수
+    func changeMatriesToBlocks(matrices: [Matrix]) -> [[Double]] {
+        var blocks: [[Double]] = []
+        matrices.forEach {
+            blocks.append([$0.latitude, $0.longitude])
+        }
+        return blocks
+    }
+    
     /// 영역의 소유자를 입력받아 visible 상태를 지정하는 함수
     func setOverlayVisible(of owner: BlocksType, visible: Bool) {
         mapView.overlays.forEach {

@@ -9,6 +9,6 @@ import Foundation
 
 struct ChallengeElementResponseModel: Codable {
     let name, started, ended: String
-    let rank: Int
+    let rank: Int?
     let color: String
 }
