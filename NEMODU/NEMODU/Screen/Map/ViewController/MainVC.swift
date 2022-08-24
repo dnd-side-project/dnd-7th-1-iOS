@@ -70,6 +70,11 @@ class MainVC: BaseViewController {
         viewModel.getAllBlocks()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        deselectAnnotation()
+    }
+    
     override func configureView() {
         super.configureView()
         configureMainView()
@@ -92,6 +97,8 @@ class MainVC: BaseViewController {
         bindMyBlocks()
         bindFriendBlocks()
         bindChallengeFriendBlocks()
+        bindVisible()
+        bindMapGesture()
     }
     
 }
@@ -122,12 +129,23 @@ extension MainVC {
         challengeCnt.text = String(cnt)
     }
     
-    private func drawBlockArea(blocks: [Matrix], blockColor: UIColor) {
+    private func drawBlockArea(blocks: [Matrix], owner: BlocksType, blockColor: UIColor) {
         blocks.forEach {
             mapVC.drawBlock(latitude: $0.latitude,
                             longitude: $0.longitude,
+                            owner: owner,
                             color: blockColor)
         }
+    }
+    
+    private func setMyArea(visible: Bool) {
+        mapVC.setOverlayVisible(of: .mine, visible: visible)
+        mapVC.setMyAnnotation(visible: visible)
+    }
+    
+    private func setFriendsArea(visible: Bool) {
+        mapVC.setOverlayVisible(of: .friends, visible: visible)
+        mapVC.setFriendsAnnotation(visible: visible)
     }
 }
 
@@ -187,6 +205,10 @@ extension MainVC {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 let filterBottomSheet = MapFilterBottomSheet()
+                filterBottomSheet.configureBtnStatus(mainVM: self.viewModel,
+                                                     myBlocks: self.viewModel.output.myBlocksVisible.value,
+                                                     friends: self.viewModel.output.friendVisible.value,
+                                                     myLocation: self.viewModel.output.myLocationVisible.value)
                 self.present(filterBottomSheet, animated: true)
             })
             .disposed(by: bag)
@@ -217,6 +239,18 @@ extension MainVC {
 // MARK: - Output
 
 extension MainVC {
+    /// span 값에 따라 visible 상태가 적용 안되는 경우를 고려하여 scroll시마다 visible 상태 적용
+    private func bindMapGesture() {
+        mapVC.mapView.rx.anyGesture(.pan(), .pinch())
+            .when(.began)
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.setMyArea(visible: self.viewModel.output.myBlocksVisible.value)
+                self.setFriendsArea(visible: self.viewModel.output.friendVisible.value)
+            })
+            .disposed(by: bag)
+    }
+    
     private func bindChallengeCnt() {
         viewModel.output.challengeCnt
             .subscribe(onNext: { [weak self] cnt in
@@ -238,7 +272,10 @@ extension MainVC {
                 self.mapVC.addMyAnnotation(coordinate: [latitude, longitude],
                                            profileImage: UIImage(named: "defaultThumbnail")!)
                 self.drawBlockArea(blocks: user.matrices ?? [],
+                                   owner: .mine,
                                    blockColor: .main40)
+                
+                self.setMyArea(visible: self.viewModel.output.myBlocksVisible.value)
             })
             .disposed(by: bag)
     }
@@ -256,8 +293,11 @@ extension MainVC {
                                                    color: .main,
                                                    challengeCnt: 0)
                     self.drawBlockArea(blocks: $0.matrices ?? [],
+                                       owner: .friends,
                                        blockColor: .gray25)
                 }
+                
+                self.setFriendsArea(visible: self.viewModel.output.friendVisible.value)
             })
             .disposed(by: bag)
     }
@@ -273,9 +313,38 @@ extension MainVC {
                                                    color: ChallengeColorType(rawValue: $0.challengeColor)?.primaryColor ?? .main,
                                                    challengeCnt: $0.challengeNumber)
                     self.drawBlockArea(blocks: $0.matrices,
+                                       owner: .friends,
                                        blockColor: ChallengeColorType(rawValue: $0.challengeColor)?.blockColor ?? .gray25)
                 }
+                
+                self.setFriendsArea(visible: self.viewModel.output.friendVisible.value)
             })
             .disposed(by: bag)
+    }
+    
+    private func bindVisible() {
+        viewModel.output.myBlocksVisible
+            .asDriver()
+            .drive(onNext: { [weak self] isVisible in
+                guard let self = self else { return }
+                self.setMyArea(visible: isVisible)
+            })
+            .disposed(by: bag)
+        
+        viewModel.output.friendVisible
+            .asDriver()
+            .drive(onNext: { [weak self] isVisible in
+                guard let self = self else { return }
+                self.setFriendsArea(visible: isVisible)
+            })
+            .disposed(by: bag)
+        
+        // TODO: - myLocationVisible MVP2 부터 개발!!
+    }
+    
+    private func deselectAnnotation() {
+        mapVC.mapView.selectedAnnotations.forEach {
+            mapVC.mapView.deselectAnnotation($0, animated: true)
+        }
     }
 }

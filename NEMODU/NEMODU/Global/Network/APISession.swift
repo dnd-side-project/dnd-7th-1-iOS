@@ -36,7 +36,7 @@ struct APISession: APIService {
         }
     }
     
-    func postRequest<T: Decodable>(with urlResource: urlResource<T>, param: Parameters) -> Observable<Result<T, APIError>> {
+    func postRequest<T: Decodable>(with urlResource: urlResource<T>, param: Parameters?) -> Observable<Result<T, APIError>> {
         
         Observable<Result<T, APIError>>.create { observer in
             let headers: HTTPHeaders = [

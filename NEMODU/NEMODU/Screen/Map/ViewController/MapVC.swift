@@ -216,7 +216,7 @@ extension MapVC {
     }
     
     /// 기준 처리된 좌표를 입력받고 해당 위치에 블록을 그리는 함수
-    func drawBlock(latitude: Double, longitude: Double, color: UIColor) {
+    func drawBlock(latitude: Double, longitude: Double, owner: BlocksType, color: UIColor) {
         let overlayTopLeftCoordinate = CLLocationCoordinate2D(latitude: latitude,
                                                               longitude: longitude - blockSizePoint)
         let overlayTopRightCoordinate = CLLocationCoordinate2D(latitude: latitude,
@@ -231,6 +231,7 @@ extension MapVC {
                                            overlayBottomRightCoordinate,
                                            overlayBottomLeftCoordinate],
                               count: 4,
+                              owner: owner,
                               color: color)
         
         mapView.addOverlay(blockDraw)
@@ -243,6 +244,40 @@ extension MapVC {
             blocks.append([$0.latitude, $0.longitude])
         }
         return blocks
+    }
+    
+    /// 영역의 소유자를 입력받아 visible 상태를 지정하는 함수
+    func setOverlayVisible(of owner: BlocksType, visible: Bool) {
+        mapView.overlays.forEach {
+            guard let overlay = $0 as? Block else { return }
+            if overlay.owner == owner {
+                mapView.renderer(for: overlay)?.alpha = visible ? 1 : 0
+            }
+        }
+    }
+    
+    /// 내 annotation의 visible 상태를 지정하는 함수
+    func setMyAnnotation(visible: Bool) {
+        mapView.annotations.forEach {
+            if $0 is MyAnnotation {
+                if let annotationView = mapView.view(for: $0) {
+                    annotationView.isHidden = !visible
+                    annotationView.alpha = visible ? 1 : 0
+                }
+            }
+        }
+    }
+    
+    /// 친구들의 annotation의 visible 상태를 지정하는 함수
+    func setFriendsAnnotation(visible: Bool) {
+        mapView.annotations.forEach {
+            if $0 is FriendAnnotation {
+                if let annotationView = mapView.view(for: $0) {
+                    annotationView.isHidden = !visible
+                    annotationView.alpha = visible ? 1 : 0
+                }
+            }
+        }
     }
 }
 
@@ -330,6 +365,7 @@ extension MapVC: CLLocationManagerDelegate {
                 
                 drawBlock(latitude: latitudePoint,
                           longitude: longitudePoint,
+                          owner: .mine,
                           color: .main40)
                 
                 blocksCnt.accept(blocks.count)
