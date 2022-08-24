@@ -70,6 +70,11 @@ class MainVC: BaseViewController {
         viewModel.getAllBlocks()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        deselectAnnotation()
+    }
+    
     override func configureView() {
         super.configureView()
         configureMainView()
@@ -336,5 +341,10 @@ extension MainVC {
         
         // TODO: - myLocationVisible MVP2 부터 개발!!
     }
+    
+    private func deselectAnnotation() {
+        mapVC.mapView.selectedAnnotations.forEach {
+            mapVC.mapView.deselectAnnotation($0, animated: true)
+        }
+    }
 }
-

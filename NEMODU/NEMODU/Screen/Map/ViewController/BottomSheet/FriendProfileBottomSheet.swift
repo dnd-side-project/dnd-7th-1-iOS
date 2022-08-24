@@ -123,7 +123,13 @@ class FriendProfileBottomSheet: DynamicBottomSheetViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        presentingViewController?.viewWillDisappear(true)
         getFriendProfile()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        presentingViewController?.viewWillAppear(true)
     }
     
     override func configureView() {
