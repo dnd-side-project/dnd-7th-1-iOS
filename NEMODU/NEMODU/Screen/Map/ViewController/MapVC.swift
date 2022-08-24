@@ -14,6 +14,7 @@ import Then
 import MapKit
 import CoreLocation
 import CoreMotion
+import Lottie
 
 class MapVC: BaseViewController {
     var mapView = MKMapView()
@@ -38,6 +39,21 @@ class MapVC: BaseViewController {
         .then {
             $0.setImage(UIImage(named: "location"), for: .normal)
             $0.addShadow()
+        }
+    
+    let animationView = AnimationView(name: "concentricCircles")
+        .then {
+            $0.play()
+            $0.loopMode = .loop
+            $0.contentMode = .scaleToFill
+        }
+
+    let userProfileImage = UIImageView(image: UIImage(named: "defaultThumbnail"))
+        .then {
+            $0.layer.cornerRadius = 15
+            $0.layer.borderWidth = 4
+            $0.layer.borderColor = UIColor.white.cgColor
+            $0.clipsToBounds = true
         }
     
     private let activityManager = CMMotionActivityManager()
@@ -402,17 +418,32 @@ extension MapVC: MKMapViewDelegate {
     
     /// custom annotationView를 반환하는 함수
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        guard !annotation.isKind(of: MKUserLocation.self) else { return nil }
-        
-        var annotationView: MKAnnotationView?
-        
-        if let annotation = annotation as? FriendAnnotation {
-            annotationView = setupFriendAnnotationView(for: annotation, on: mapView)
-        } else if let annotation = annotation as? MyAnnotation {
-            annotationView = setupMyAnnotationView(for: annotation, on: mapView)
+        if annotation is MKUserLocation {
+            let pin = mapView.view(for: annotation) as? MKPinAnnotationView ?? MKPinAnnotationView(annotation: annotation, reuseIdentifier: nil)
+            pin.image = nil
+            pin.addSubview(animationView)
+            animationView.addSubview(userProfileImage)
+            animationView.snp.makeConstraints {
+                $0.center.equalToSuperview()
+                $0.width.height.equalTo(120)
+            }
+            userProfileImage.snp.makeConstraints {
+                $0.center.equalToSuperview()
+                $0.width.height.equalTo(30)
+            }
+            
+            return pin
+        } else {
+            var annotationView: MKAnnotationView?
+            
+            if let annotation = annotation as? FriendAnnotation {
+                annotationView = setupFriendAnnotationView(for: annotation, on: mapView)
+            } else if let annotation = annotation as? MyAnnotation {
+                annotationView = setupMyAnnotationView(for: annotation, on: mapView)
+            }
+            
+            return annotationView
         }
-        
-        return annotationView
     }
     
     /// annotation을 select 했을때 나타나는 이벤트를 지정하는 함수
