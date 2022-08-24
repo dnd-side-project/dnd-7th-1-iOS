@@ -237,22 +237,36 @@ extension MapVC {
         mapView.addOverlay(blockDraw)
     }
     
-    /// 영역의 소유자를 입력받아 overlay를 숨기는 함수
-    func hideOverlay(of owner: BlocksType) {
+    /// 영역의 소유자를 입력받아 visible 상태를 지정하는 함수
+    func setOverlayVisible(of owner: BlocksType, visible: Bool) {
         mapView.overlays.forEach {
             guard let overlay = $0 as? Block else { return }
             if overlay.owner == owner {
-                mapView.renderer(for: overlay)?.alpha = 0
+                mapView.renderer(for: overlay)?.alpha = visible ? 1 : 0
             }
         }
     }
     
-    /// 영역의 소유자를 입력받아 overlay를 보여주는 함수
-    func showOverlay(of owner: BlocksType) {
-        mapView.overlays.forEach {
-            guard let overlay = $0 as? Block else { return }
-            if overlay.owner == owner {
-                mapView.renderer(for: overlay)?.alpha = 1
+    /// 내 annotation의 visible 상태를 지정하는 함수
+    func setMyAnnotation(visible: Bool) {
+        mapView.annotations.forEach {
+            if $0 is MyAnnotation {
+                if let annotationView = mapView.view(for: $0) {
+                    annotationView.isHidden = !visible
+                    annotationView.alpha = visible ? 1 : 0
+                }
+            }
+        }
+    }
+    
+    /// 친구들의 annotation의 visible 상태를 지정하는 함수
+    func setFriendsAnnotation(visible: Bool) {
+        mapView.annotations.forEach {
+            if $0 is FriendAnnotation {
+                if let annotationView = mapView.view(for: $0) {
+                    annotationView.isHidden = !visible
+                    annotationView.alpha = visible ? 1 : 0
+                }
             }
         }
     }

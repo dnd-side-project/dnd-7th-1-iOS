@@ -131,6 +131,16 @@ extension MainVC {
                             color: blockColor)
         }
     }
+    
+    private func setMyArea(visible: Bool) {
+        mapVC.setOverlayVisible(of: .mine, visible: visible)
+        mapVC.setMyAnnotation(visible: visible)
+    }
+    
+    private func setFriendsArea(visible: Bool) {
+        mapVC.setOverlayVisible(of: .friends, visible: visible)
+        mapVC.setFriendsAnnotation(visible: visible)
+    }
 }
 
 // MARK: - Layout
@@ -247,9 +257,7 @@ extension MainVC {
                                    owner: .mine,
                                    blockColor: .main40)
                 
-                if !self.viewModel.output.myBlocksVisible.value {
-                    self.mapVC.hideOverlay(of: .mine)
-                }
+                self.setMyArea(visible: self.viewModel.output.myBlocksVisible.value)
             })
             .disposed(by: bag)
     }
@@ -271,9 +279,7 @@ extension MainVC {
                                        blockColor: .gray25)
                 }
                 
-                if !self.viewModel.output.friendVisible.value {
-                    self.mapVC.hideOverlay(of: .friends)
-                }
+                self.setFriendsArea(visible: self.viewModel.output.friendVisible.value)
             })
             .disposed(by: bag)
     }
@@ -293,9 +299,7 @@ extension MainVC {
                                        blockColor: ChallengeColorType(rawValue: $0.challengeColor)?.blockColor ?? .gray25)
                 }
                 
-                if !self.viewModel.output.friendVisible.value {
-                    self.mapVC.hideOverlay(of: .friends)
-                }
+                self.setFriendsArea(visible: self.viewModel.output.friendVisible.value)
             })
             .disposed(by: bag)
     }
@@ -305,9 +309,7 @@ extension MainVC {
             .asDriver()
             .drive(onNext: { [weak self] isVisible in
                 guard let self = self else { return }
-                isVisible
-                ? self.mapVC.showOverlay(of: .mine)
-                : self.mapVC.hideOverlay(of: .mine)
+                self.setMyArea(visible: isVisible)
             })
             .disposed(by: bag)
         
@@ -315,12 +317,11 @@ extension MainVC {
             .asDriver()
             .drive(onNext: { [weak self] isVisible in
                 guard let self = self else { return }
-                isVisible
-                ? self.mapVC.showOverlay(of: .friends)
-                : self.mapVC.hideOverlay(of: .friends)
+                self.setFriendsArea(visible: isVisible)
             })
             .disposed(by: bag)
         
         // TODO: - myLocationVisible MVP2 부터 개발!!
     }
 }
+
