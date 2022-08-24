@@ -61,8 +61,10 @@ class MapVC: BaseViewController {
     private var pauseCnt = 0
     var stepCnt = 0
     
-    let blockSizePoint: Double = 0.0003740
-    private let blockSize: Int = 37400
+    let latitudeBlockSizePoint: Double = 0.0003040
+    let longitudeBlockSizePoint: Double = 0.0003740
+    private let latitudeBlockSize: Int = 30400
+    private let longitudeBlockSize: Int = 37400
     private let mapZoomScale = 0.003
     private let mul: Double = 100000000
     private let bag = DisposeBag()
@@ -234,12 +236,12 @@ extension MapVC {
     /// 기준 처리된 좌표를 입력받고 해당 위치에 블록을 그리는 함수
     func drawBlock(latitude: Double, longitude: Double, owner: BlocksType, color: UIColor) {
         let overlayTopLeftCoordinate = CLLocationCoordinate2D(latitude: latitude,
-                                                              longitude: longitude - blockSizePoint)
+                                                              longitude: longitude - longitudeBlockSizePoint)
         let overlayTopRightCoordinate = CLLocationCoordinate2D(latitude: latitude,
                                                                longitude: longitude)
-        let overlayBottomLeftCoordinate = CLLocationCoordinate2D(latitude: latitude + blockSizePoint,
-                                                                 longitude: longitude - blockSizePoint)
-        let overlayBottomRightCoordinate = CLLocationCoordinate2D(latitude: latitude + blockSizePoint,
+        let overlayBottomLeftCoordinate = CLLocationCoordinate2D(latitude: latitude + latitudeBlockSizePoint,
+                                                                 longitude: longitude - longitudeBlockSizePoint)
+        let overlayBottomRightCoordinate = CLLocationCoordinate2D(latitude: latitude + latitudeBlockSizePoint,
                                                                   longitude: longitude)
         
         let blockDraw = Block(coordinate: [overlayTopLeftCoordinate,
@@ -330,16 +332,16 @@ extension MapVC: CLLocationManagerDelegate {
     
     /// 내 핀을 설치하는 함수
     func addMyAnnotation(coordinate: [Double], profileImage: UIImage) {
-        let annotation = MyAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate[0] + blockSizePoint / 2,
-                                                                         longitude: coordinate[1] - blockSizePoint / 2))
+        let annotation = MyAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate[0] + latitudeBlockSizePoint / 2,
+                                                                         longitude: coordinate[1] - longitudeBlockSizePoint / 2))
         annotation.profileImage = profileImage
         mapView.addAnnotation(annotation)
     }
     
     /// 친구 핀을 설치하는 함수
     func addFriendAnnotation(coordinate: [Double], profileImage: UIImage, nickname: String, color: UIColor, challengeCnt: Int) {
-        let annotation = FriendAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate[0] + blockSizePoint / 2,
-                                                                             longitude: coordinate[1] - blockSizePoint / 2))
+        let annotation = FriendAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate[0] + latitudeBlockSizePoint / 2,
+                                                                             longitude: coordinate[1] - longitudeBlockSizePoint / 2))
         annotation.title = nickname
         annotation.profileImage = profileImage
         annotation.color = color
@@ -355,8 +357,8 @@ extension MapVC: CLLocationManagerDelegate {
         let longitude = location.coordinate.longitude
         
         // 영역 이동 판단을 위한 단위값
-        let latitudeUnit = Int(latitude * mul) / blockSize
-        let longitudeUnit = Int(longitude * mul) / blockSize
+        let latitudeUnit = Int(latitude * mul) / latitudeBlockSize
+        let longitudeUnit = Int(longitude * mul) / longitudeBlockSize
         
         // 사용자 이동에 맞춰 화면 이동
         if isFocusOn {
@@ -372,8 +374,8 @@ extension MapVC: CLLocationManagerDelegate {
             prevLongitude = longitudeUnit
             
             // 실제 저장되고 그려지는 기준 좌표값
-            let latitudePoint = Double((latitudeUnit) * blockSize) / mul
-            let longitudePoint = Double((longitudeUnit) * blockSize) / mul
+            let latitudePoint = Double((latitudeUnit) * latitudeBlockSize) / mul
+            let longitudePoint = Double((longitudeUnit) * longitudeBlockSize) / mul
             
             if !blocks.contains([latitudePoint, longitudePoint]) {
                 // block Point 저장
