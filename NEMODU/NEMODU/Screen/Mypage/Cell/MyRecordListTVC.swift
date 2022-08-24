@@ -25,6 +25,8 @@ class MyRecordListTVC: UITableViewCell {
     private let arrow = UIImageView(image: UIImage(named: "arrow_right")?
         .withTintColor(.gray300, renderingMode: .alwaysOriginal))
     
+    var recordID: Int?
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configureView()
@@ -44,6 +46,7 @@ class MyRecordListTVC: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        recordID = nil
         dateLabel.text = "-월 -일 -요일 --:--"
         recordDataLabel.text = "-칸, -보, -M, -분"
     }
@@ -84,6 +87,7 @@ extension MyRecordListTVC {
     }
     
     func configureCell(with element: ActivityRecord) {
+        recordID = element.recordID
         dateLabel.text = element.started
         recordDataLabel.text = "\(element.matrixNumber)칸, \(element.stepCount)보, \(element.distance)M, \(element.exerciseTime)"
     }

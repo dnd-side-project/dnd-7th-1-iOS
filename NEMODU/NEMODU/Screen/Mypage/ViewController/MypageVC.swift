@@ -260,6 +260,7 @@ extension MypageVC {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 let myRecordDataView = MyRecordDataVC()
+                myRecordDataView.hidesBottomBarWhenPushed = true
                 self.navigationController?.pushViewController(myRecordDataView, animated: true)
             })
             .disposed(by: bag)

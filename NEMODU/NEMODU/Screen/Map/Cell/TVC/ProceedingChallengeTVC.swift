@@ -23,7 +23,7 @@ class ProceedingChallengeTVC: UITableViewCell {
             $0.textColor = .gray900
         }
     
-    let rank = UILabel()
+    let challengeSubtitle = UILabel()
         .then {
             $0.font = .caption1
             $0.textColor = .gray500
@@ -51,7 +51,7 @@ class ProceedingChallengeTVC: UITableViewCell {
         super.prepareForReuse()
         challengeIcon.image = nil
         challengeTitle.text = nil
-        rank.text = nil
+        challengeSubtitle.text = nil
     }
 }
 
@@ -59,7 +59,7 @@ class ProceedingChallengeTVC: UITableViewCell {
 
 extension ProceedingChallengeTVC {
     private func configureView() {
-        addSubviews([challengeIcon, challengeTitle, rank, arrow])
+        addSubviews([challengeIcon, challengeTitle, challengeSubtitle, arrow])
     }
     
     private func configureLayout() {
@@ -75,7 +75,7 @@ extension ProceedingChallengeTVC {
             $0.trailing.equalTo(arrow.snp.leading)
         }
         
-        rank.snp.makeConstraints {
+        challengeSubtitle.snp.makeConstraints {
             $0.top.equalTo(challengeTitle.snp.bottom).offset(4)
             $0.leading.trailing.equalTo(challengeTitle)
         }
@@ -88,11 +88,23 @@ extension ProceedingChallengeTVC {
         }
     }
     
-    func configureCell(with element: ChallengeElementResponseModel, isMyList: Bool) {
+    func configureCell(with element: ChallengeElementResponseModel, isMyList: Bool = false) {
         challengeIcon.tintColor = ChallengeColorType(rawValue: element.color)?.primaryColor ?? .gray500
         challengeTitle.text = element.name
-        rank.text = isMyList
-        ? "현재 내 순위: \(element.rank)위"
-        : "현재 순위: \(element.rank)위"
+        
+        if let rank = element.rank {
+            challengeSubtitle.text = isMyList
+            ? "현재 내 순위: \(rank)위"
+            : "현재 순위: \(rank)위"
+        } else {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "M월 dd일"
+            let started = dateFormatter.string(from: element.started.toDate())
+            
+            dateFormatter.dateFormat = "dd일"
+            let ended = dateFormatter.string(from: element.ended.toDate())
+            
+            challengeSubtitle.text = "\(started) ~ \(ended)"
+        }
     }
 }

@@ -235,6 +235,15 @@ extension MapVC {
         
         mapView.addOverlay(blockDraw)
     }
+    
+    /// [Matrix]형 모델을 [[Double]]형 blocks로 변환해주는 함수
+    func changeMatriesToBlocks(matrices: [Matrix]) -> [[Double]] {
+        var blocks: [[Double]] = []
+        matrices.forEach {
+            blocks.append([$0.latitude, $0.longitude])
+        }
+        return blocks
+    }
 }
 
 // MARK: - CLLocationManagerDelegate
