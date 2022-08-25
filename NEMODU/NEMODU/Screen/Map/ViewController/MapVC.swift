@@ -211,8 +211,12 @@ extension MapVC {
                     print("걷는중!")
                 } else if deviceActivity.running {
                     print("뛰는중!")
-                } else if deviceActivity.automotive {
-                    print("자동차!")
+                } else if deviceActivity.cycling || deviceActivity.automotive {
+                    print("자전거 or 자동차!")
+                    self.popUpAlert(alertType: .speedWarning,
+                                    targetVC: self,
+                                    highlightBtnAction: #selector(self.dismissAlert),
+                                    normalBtnAction: nil)
                 }
             }
         )
