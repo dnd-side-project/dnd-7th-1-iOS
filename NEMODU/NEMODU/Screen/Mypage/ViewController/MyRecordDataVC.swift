@@ -309,7 +309,7 @@ extension MyRecordDataVC {
                 guard let self = self else { return }
                 self.noneMessage.isHidden = data.activityRecords.count != 0
                 self.recordStackView.firstView.recordValue.text = "\(data.totalMatrixNumber)"
-                self.recordStackView.secondView.recordValue.text = "\(data.totalDistance)m"
+                self.recordStackView.secondView.recordValue.text = "\(data.totalDistance.toKilometer)"
                 self.recordStackView.thirdView.recordValue.text = "\(data.totalExerciseTime)"
             })
             .disposed(by: bag)

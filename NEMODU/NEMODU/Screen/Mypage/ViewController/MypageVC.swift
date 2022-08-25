@@ -177,7 +177,7 @@ extension MypageVC {
         blockCntView.configureBlockCnt(userData.allMatrixNumber)
         recordView.firstView.recordValue.text = "\(userData.matrixNumber) 칸"
         recordView.secondView.recordValue.text = "\(userData.stepCount)"
-        recordView.thirdView.recordValue.text = "\(userData.distance) m"
+        recordView.thirdView.recordValue.text = "\(userData.distance.toKilometer)"
         friendBtn.setTitle("친구 \(userData.friendNumber)명", for: .normal)
     }
 }

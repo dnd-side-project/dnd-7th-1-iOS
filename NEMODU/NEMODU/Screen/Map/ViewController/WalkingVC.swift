@@ -239,7 +239,7 @@ extension WalkingVC {
             .asDriver()
             .drive(onNext: { [weak self] distance in
                 guard let self = self else { return }
-                self.distanceView.recordValue.text = "\(distance)m"
+                self.distanceView.recordValue.text = "\(distance.toKilometer)"
             })
             .disposed(by: bag)
         
