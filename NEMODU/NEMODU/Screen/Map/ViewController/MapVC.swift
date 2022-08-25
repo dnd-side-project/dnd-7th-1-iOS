@@ -48,12 +48,12 @@ class MapVC: BaseViewController {
             $0.contentMode = .scaleToFill
         }
 
-    let userProfileImage = UIImageView(image: UIImage(named: "defaultThumbnail"))
+    let userLocationView = UIView()
         .then {
+            $0.backgroundColor = .userLocation
             $0.layer.cornerRadius = 15
             $0.layer.borderWidth = 4
             $0.layer.borderColor = UIColor.white.cgColor
-            $0.clipsToBounds = true
         }
     
     private let activityManager = CMMotionActivityManager()
@@ -424,12 +424,12 @@ extension MapVC: MKMapViewDelegate {
             let pin = mapView.view(for: annotation) as? MKPinAnnotationView ?? MKPinAnnotationView(annotation: annotation, reuseIdentifier: nil)
             pin.image = nil
             pin.addSubview(animationView)
-            animationView.addSubview(userProfileImage)
+            animationView.addSubview(userLocationView)
             animationView.snp.makeConstraints {
                 $0.center.equalToSuperview()
                 $0.width.height.equalTo(120)
             }
-            userProfileImage.snp.makeConstraints {
+            userLocationView.snp.makeConstraints {
                 $0.center.equalToSuperview()
                 $0.width.height.equalTo(30)
             }
