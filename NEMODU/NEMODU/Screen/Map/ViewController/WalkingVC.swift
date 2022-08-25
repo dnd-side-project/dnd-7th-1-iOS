@@ -297,7 +297,7 @@ extension WalkingVC {
                 if !self.viewModel.output.myBlocksVisible.value { return }
                 self.drawBlockArea(blocks: user.matrices ?? [],
                                    owner: .mine,
-                                   blockColor: .main40)
+                                   blockColor: .main20)
             })
             .disposed(by: bag)
     }
