@@ -121,7 +121,7 @@ extension MainVC {
     }
     
     private func configureBlocksCnt(_ cnt: Int) {
-        blocksCnt.text = "현재 나의 영역: \(cnt)칸"
+        blocksCnt.text = "현재 나의 영역: \(cnt.insertComma)칸"
     }
     
     private func configureChallengeListBtn(cnt: Int) {

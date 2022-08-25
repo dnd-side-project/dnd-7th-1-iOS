@@ -46,10 +46,10 @@ extension ProfileRecordStackView {
     }
     
     /// stackView 세 영역의 값을 지정하는 함수입니다.
-    func setRecordData(value1: Int, value2: Int, value3: Int) {
-        firstView.recordValue.text = String(value1)
-        secondView.recordValue.text = String(value2)
-        thirdView.recordValue.text = String(value3)
+    func setRecordData(value1: String, value2: String, value3: String) {
+        firstView.recordValue.text = value1
+        secondView.recordValue.text = value2
+        thirdView.recordValue.text = value3
     }
 }
 

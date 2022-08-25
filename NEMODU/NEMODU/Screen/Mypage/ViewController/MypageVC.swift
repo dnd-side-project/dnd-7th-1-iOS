@@ -174,11 +174,11 @@ extension MypageVC {
 //        profileView.profileImage.image =
         profileView.nickname.text = userData.nickname
         profileView.profileMessage.text = userData.intro
-        blockCntView.configureBlockCnt(userData.allMatrixNumber)
-        recordView.firstView.recordValue.text = "\(userData.matrixNumber) 칸"
-        recordView.secondView.recordValue.text = "\(userData.stepCount)"
+        blockCntView.configureBlockCnt(userData.allMatrixNumber.insertComma)
+        recordView.firstView.recordValue.text = "\(userData.matrixNumber.insertComma) 칸"
+        recordView.secondView.recordValue.text = "\(userData.stepCount.insertComma)"
         recordView.thirdView.recordValue.text = "\(userData.distance.toKilometer)"
-        friendBtn.setTitle("친구 \(userData.friendNumber)명", for: .normal)
+        friendBtn.setTitle("친구 \(userData.friendNumber.insertComma)명", for: .normal)
     }
 }
 
