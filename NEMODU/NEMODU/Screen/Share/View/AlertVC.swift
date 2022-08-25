@@ -140,10 +140,14 @@ extension AlertVC {
         }
     }
     
-    func configureAlert(of alertType: AlertType, targetVC: UIViewController) {
+    func configureAlert(of alertType: AlertType, targetVC: UIViewController, highlightBtnAction: Selector, normalBtnAction: Selector?) {
         setTitle(of: alertType)
         setMessage(of: alertType)
         setBtn(of: alertType)
+        highlightBtn.addTarget(targetVC, action: highlightBtnAction, for: .touchUpInside)
+        
+        guard let normalBtnAction = normalBtnAction else { return }
+        normalBtn.addTarget(targetVC, action: normalBtnAction, for: .touchUpInside)
     }
 }
 
