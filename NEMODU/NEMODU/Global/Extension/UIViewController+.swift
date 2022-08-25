@@ -45,6 +45,10 @@ extension UIViewController {
         dismiss(animated: true)
     }
     
+    @objc func dismissAlert() {
+        dismiss(animated: false)
+    }
+    
     /// 기기 스크린 hight에 맞춰 비율을 계산해 height를 리턴하는 함수
     func calculateHeightbyScreenHeight(originalHeight: CGFloat) -> CGFloat {
         let screenHeight = UIScreen.main.bounds.height
@@ -87,5 +91,16 @@ extension UIViewController {
         
         guard let loadingView = view.subviews.compactMap({ $0 as? LoadingView }).first else { return }
         loadingView.removeFromSuperview()
+    }
+    
+    /// 알람창을 띄우는 메서드
+    func popUpAlert(alertType: AlertType, targetVC: UIViewController, highlightBtnAction: Selector, normalBtnAction: Selector?) {
+        let alertVC = AlertVC()
+        alertVC.configureAlert(of: alertType,
+                               targetVC: targetVC,
+                               highlightBtnAction: highlightBtnAction,
+                               normalBtnAction: normalBtnAction)
+        alertVC.modalPresentationStyle = .overFullScreen
+        targetVC.present(alertVC, animated: false, completion: nil)
     }
 }
