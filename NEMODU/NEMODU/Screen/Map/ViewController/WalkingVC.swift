@@ -224,18 +224,25 @@ extension WalkingVC {
             .drive(onNext: { [weak self] _ in
                 guard let self = self,
                       let startTime = self.startTime else { return }
-                let recordResultNC = RecordResultNC()
-                recordResultNC.modalPresentationStyle = .fullScreen
-                recordResultNC.recordResultVC.configureRecordValue(
-                    recordData: RecordDataRequest(distance: self.mapVC.updateDistance.value,
-                                                  exerciseTime: self.secondTimeValue,
-                                                  blocks: self.mapVC.blocks,
-                                                  stepCount: self.mapVC.stepCnt,
-                                                  started: startTime.toString(),
-                                                  ended: Date.now.toString()),
-                    weekBlockCnt: self.weekBlockCnt)
-                self.mapVC.stopUpdateStep()
-                self.present(recordResultNC, animated: true)
+                if self.mapVC.blocks.count < 5 {
+                    self.popUpAlert(alertType: .minimumBlocks,
+                                    targetVC: self,
+                                    highlightBtnAction: #selector(self.dismissAlert),
+                                    normalBtnAction: #selector(self.dismissToRootVC))
+                } else {
+                    let recordResultNC = RecordResultNC()
+                    recordResultNC.modalPresentationStyle = .fullScreen
+                    recordResultNC.recordResultVC.configureRecordValue(
+                        recordData: RecordDataRequest(distance: self.mapVC.updateDistance.value,
+                                                      exerciseTime: self.secondTimeValue,
+                                                      blocks: self.mapVC.blocks,
+                                                      stepCount: self.mapVC.stepCnt,
+                                                      started: startTime.toString(),
+                                                      ended: Date.now.toString()),
+                        weekBlockCnt: self.weekBlockCnt)
+                    self.mapVC.stopUpdateStep()
+                    self.present(recordResultNC, animated: true)
+                }
             })
             .disposed(by: bag)
         
@@ -362,5 +369,9 @@ extension WalkingVC {
         stopPlayView.isHidden = isWalking
         pauseBtn.isHidden = !isWalking
         mapVC.isWalking = isWalking
+    }
+    
+    @objc func dismissToRootVC() {
+        view.window?.rootViewController?.dismiss(animated: true, completion: nil)
     }
 }
