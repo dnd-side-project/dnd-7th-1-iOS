@@ -110,6 +110,9 @@ class WalkingVC: BaseViewController {
         super.bindOutput()
         bindRecordValue()
         bindWeekBlocksCnt()
+        bindMyBlocks()
+        bindFriendBlocks()
+        bindChallengeFriendBlocks()
     }
 }
 
@@ -130,6 +133,15 @@ extension WalkingVC {
     private func configureWeekBlockCnt(_ cnt: Int) {
         weekBlockCnt = cnt
         blocksNumView.recordSubtitle.text = "이번주 영역: \(cnt.insertComma)칸"
+    }
+    
+    private func drawBlockArea(blocks: [Matrix], owner: BlocksType, blockColor: UIColor) {
+        blocks.forEach {
+            mapVC.drawBlock(latitude: $0.latitude,
+                            longitude: $0.longitude,
+                            owner: owner,
+                            color: blockColor)
+        }
     }
 }
 
@@ -272,6 +284,60 @@ extension WalkingVC {
             .drive(onNext: { [weak self] cnt in
                 guard let self = self else { return }
                 self.configureWeekBlockCnt(cnt)
+            })
+            .disposed(by: bag)
+    }
+    
+    private func bindMyBlocks() {
+        viewModel.output.myBlocks
+            .subscribe(onNext: { [weak self] user in
+                guard let self = self else { return }
+                self.configureWeekBlockCnt(user.matricesNumber ?? 0)
+                
+                if !self.viewModel.output.myBlocksVisible.value { return }
+                self.drawBlockArea(blocks: user.matrices ?? [],
+                                   owner: .mine,
+                                   blockColor: .main40)
+            })
+            .disposed(by: bag)
+    }
+    
+    private func bindFriendBlocks() {
+        viewModel.output.friendBlocks
+            .subscribe(onNext: { [weak self] friends in
+                guard let self = self else { return }
+                if !self.viewModel.output.friendVisible.value { return }
+                friends.forEach {
+                    guard let latitude = $0.latitude,
+                          let longitude = $0.longitude else { return }
+                    self.mapVC.addFriendAnnotation(coordinate: [latitude, longitude],
+                                                   profileImage: UIImage(named: "defaultThumbnail")!,
+                                                   nickname: $0.nickname,
+                                                   color: .main,
+                                                   challengeCnt: 0)
+                    self.drawBlockArea(blocks: $0.matrices ?? [],
+                                       owner: .friends,
+                                       blockColor: .gray25)
+                }
+            })
+            .disposed(by: bag)
+    }
+    
+    private func bindChallengeFriendBlocks() {
+        viewModel.output.challengeFriendBlocks
+            .subscribe(onNext: { [weak self] friends in
+                guard let self = self else { return }
+                if !self.viewModel.output.friendVisible.value { return }
+                friends.forEach {
+                    self.mapVC.addFriendAnnotation(coordinate: [$0.latitude, $0.longitude],
+                                                   profileImage: UIImage(named: "defaultThumbnail")!,
+                                                   nickname: $0.nickname,
+                                                   color: ChallengeColorType(rawValue: $0.challengeColor)?.primaryColor ?? .main,
+                                                   challengeCnt: $0.challengeNumber)
+                    self.drawBlockArea(blocks: $0.matrices,
+                                       owner: .friends,
+                                       blockColor: ChallengeColorType(rawValue: $0.challengeColor)?.blockColor ?? .gray25)
+                }
             })
             .disposed(by: bag)
     }

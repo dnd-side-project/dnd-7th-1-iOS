@@ -89,7 +89,7 @@ extension MainVM {
                     owner.output.myBlocksVisible.accept(data.isShowMine)
                     owner.output.friendVisible.accept(data.isShowFriend)
                     owner.output.myLocationVisible.accept(data.isPublicRecord)
-                    owner.output.challengeCnt.accept(data.challengesNumber)
+                    owner.output.challengeCnt.accept(data.challengesNumber ?? 0)
                     if let userMatrices = data.userMatrices {
                         owner.output.myBlocks.accept(userMatrices)
                     }

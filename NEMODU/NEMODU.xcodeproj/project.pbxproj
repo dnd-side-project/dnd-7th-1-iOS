@@ -63,7 +63,6 @@
 		2348B4122892D901001095BC /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348B4112892D901001095BC /* LoadingView.swift */; };
 		2348B41E2892DF0D001095BC /* MypageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348B41D2892DF0D001095BC /* MypageVC.swift */; };
 		2348B4252892E007001095BC /* NEMODUTBC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348B4242892E007001095BC /* NEMODUTBC.swift */; };
-		235CD76728B0B39B000EBAD9 /* BlocksCntResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235CD76628B0B39B000EBAD9 /* BlocksCntResponseModel.swift */; };
 		235CD76B28B0F8C5000EBAD9 /* OnboardingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235CD76A28B0F8C5000EBAD9 /* OnboardingVC.swift */; };
 		235CD76D28B0FA14000EBAD9 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235CD76C28B0FA14000EBAD9 /* OnboardingView.swift */; };
 		23602E0828B5581800B9DC9E /* MapFilteVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23602E0728B5581800B9DC9E /* MapFilteVM.swift */; };
@@ -203,7 +202,6 @@
 		2348B4182892DEED001095BC /* ChallengeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeVC.swift; sourceTree = "<group>"; };
 		2348B41D2892DF0D001095BC /* MypageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MypageVC.swift; sourceTree = "<group>"; };
 		2348B4242892E007001095BC /* NEMODUTBC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NEMODUTBC.swift; sourceTree = "<group>"; };
-		235CD76628B0B39B000EBAD9 /* BlocksCntResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlocksCntResponseModel.swift; sourceTree = "<group>"; };
 		235CD76A28B0F8C5000EBAD9 /* OnboardingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingVC.swift; sourceTree = "<group>"; };
 		235CD76C28B0FA14000EBAD9 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		23602E0728B5581800B9DC9E /* MapFilteVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapFilteVM.swift; sourceTree = "<group>"; };
@@ -324,7 +322,6 @@
 				230CB2E028AD474E00B11270 /* ChallengeBlockResponseModel.swift */,
 				23412FDB28AE375D00B73D62 /* ChallengeElementResponseModel.swift */,
 				23412FDF28AE648300B73D62 /* ProfileResponseModel.swift */,
-				235CD76628B0B39B000EBAD9 /* BlocksCntResponseModel.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -1109,7 +1106,6 @@
 				23B7205D28A0CBAC00D3A410 /* ChallengeListBottomSheet.swift in Sources */,
 				2348B4122892D901001095BC /* LoadingView.swift in Sources */,
 				3C08137E28A91C00009F854B /* ChallengeTitleTVHV.swift in Sources */,
-				235CD76728B0B39B000EBAD9 /* BlocksCntResponseModel.swift in Sources */,
 				3C08137E28A91C00009F854B /* ChallengeTitleTVHV.swift in Sources */,
 				2348B3DD2892CF92001095BC /* MapVC.swift in Sources */,
 				23412FD228AD494500B73D62 /* MainVM.swift in Sources */,
