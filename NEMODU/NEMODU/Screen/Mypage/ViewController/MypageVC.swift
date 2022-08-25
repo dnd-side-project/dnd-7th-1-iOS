@@ -156,14 +156,13 @@ extension MypageVC {
             $0.setTitleColor(.gray900, for: .normal)
             $0.contentHorizontalAlignment = .left
             
-            let arrowImage = UIImageView(image: UIImage(systemName: "chevron.right")?
+            let arrowImage = UIImageView(image: UIImage(named: "arrow_right")?
                 .withTintColor(.gray300, renderingMode: .alwaysOriginal))
             $0.addSubview(arrowImage)
             arrowImage.snp.makeConstraints {
                 $0.trailing.equalToSuperview().offset(-16)
                 $0.centerY.equalToSuperview()
-                $0.height.equalTo(14)
-                $0.width.equalTo(8)
+                $0.width.height.equalTo(24)
             }
             settingBtnStackView.addArrangedSubview($0)
         }
@@ -175,11 +174,11 @@ extension MypageVC {
 //        profileView.profileImage.image =
         profileView.nickname.text = userData.nickname
         profileView.profileMessage.text = userData.intro
-        blockCntView.configureBlockCnt(userData.allMatrixNumber)
-        recordView.firstView.recordValue.text = "\(userData.matrixNumber) 칸"
-        recordView.secondView.recordValue.text = "\(userData.stepCount)"
-        recordView.thirdView.recordValue.text = "\(userData.distance) m"
-        friendBtn.setTitle("친구 \(userData.friendNumber)명", for: .normal)
+        blockCntView.configureBlockCnt(userData.allMatrixNumber.insertComma)
+        recordView.firstView.recordValue.text = "\(userData.matrixNumber.insertComma) 칸"
+        recordView.secondView.recordValue.text = "\(userData.stepCount.insertComma)"
+        recordView.thirdView.recordValue.text = "\(userData.distance.toKilometer)"
+        friendBtn.setTitle("친구 \(userData.friendNumber.insertComma)명", for: .normal)
     }
 }
 

@@ -30,11 +30,37 @@ class CountdownVC: BaseViewController {
     
     private let message = UILabel()
         .then {
-            $0.text = "기록이 시작됩니다."
+            $0.text = "주변을 돌아다니며\n네모를 채워나가보세요!"
+            $0.setLineBreakMode()
             $0.font = .headline1
             $0.textAlignment = .center
             $0.textColor = .white
         }
+    
+    private let tipTitleLabel = UILabel()
+        .then {
+            $0.text = "TIP!"
+            $0.font = .body3
+            $0.textColor = .main
+            $0.textAlignment = .center
+        }
+    
+    private let tipMessageLabel = UILabel()
+        .then {
+            $0.setLineBreakMode()
+            $0.font = .body3
+            $0.textColor = .white
+            $0.textAlignment = .center
+        }
+    
+    private let tips = [
+        "나의 영역은 일주일 마다 리셋됩니다.",
+        "5칸 이상 부터 기록됩니다.",
+        "지도 필터에서 내 위치를 보이지않게 할 수 있습니다.",
+        "동시에 진행가능한 챌린지는 최대 3개입니다.",
+        "자전거나 자동차를 이용하면 기록이 중지됩니다.",
+        "지금까지 누적한 칸 수는\n마이페이지에서 확인할 수 있습니다."
+    ]
     
     private let bag = DisposeBag()
     
@@ -62,7 +88,11 @@ extension CountdownVC {
         
         view.addSubviews([animationView,
                           timerNumLabel,
-                          message])
+                          message,
+                          tipTitleLabel,
+                          tipMessageLabel])
+        
+        tipMessageLabel.text = tips.randomElement()
     }
     
     private func configureTimer() {
@@ -102,8 +132,19 @@ extension CountdownVC {
         }
         
         message.snp.makeConstraints {
-            $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-136)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-160)
             $0.centerX.equalToSuperview()
+        }
+
+        tipTitleLabel.snp.makeConstraints {
+            $0.bottom.equalTo(tipMessageLabel.snp.top)
+            $0.centerX.equalToSuperview()
+        }
+
+        tipMessageLabel.snp.makeConstraints {
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-60)
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview().offset(-16)
         }
     }
 }

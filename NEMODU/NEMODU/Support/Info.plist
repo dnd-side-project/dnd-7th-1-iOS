@@ -12,9 +12,9 @@
 		<string>Pretendard-SemiBold.otf</string>
 	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>NENODU가 활동 기록 및 위치 공유를 위해 위치 정보를 사용하도록 허용합니다.</string>
 	<key>NSMotionUsageDescription</key>
-	<string></string>
+	<string>걸음수를 카운트하시려면 NEMODU의 헬스 데이터 접근을 허용해 주십시오.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>

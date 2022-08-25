@@ -129,7 +129,7 @@ extension WalkingVC {
     
     private func configureWeekBlockCnt(_ cnt: Int) {
         weekBlockCnt = cnt
-        blocksNumView.recordSubtitle.text = "이번주 영역: \(cnt)칸"
+        blocksNumView.recordSubtitle.text = "이번주 영역: \(cnt.insertComma)칸"
     }
 }
 
@@ -239,7 +239,7 @@ extension WalkingVC {
             .asDriver()
             .drive(onNext: { [weak self] distance in
                 guard let self = self else { return }
-                self.distanceView.recordValue.text = "\(distance)m"
+                self.distanceView.recordValue.text = "\(distance.toKilometer)"
             })
             .disposed(by: bag)
         
@@ -261,7 +261,7 @@ extension WalkingVC {
             .asDriver()
             .drive(onNext: { [weak self] blocksCnt in
                 guard let self = self else { return }
-                self.blocksNumView.recordValue.text = "\(blocksCnt)"
+                self.blocksNumView.recordValue.text = "\(blocksCnt.insertComma)"
             })
             .disposed(by: bag)
     }

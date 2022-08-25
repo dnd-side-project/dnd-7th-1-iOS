@@ -45,8 +45,8 @@ extension BlockCntView {
         layer.cornerRadius = 8
     }
     
-    func configureBlockCnt(_ cnt: Int) {
-        blockCnt.text = "\(cnt)칸"
+    func configureBlockCnt(_ cnt: String) {
+        blockCnt.text = "\(cnt.insertComma)칸"
     }
 }
 

@@ -214,7 +214,7 @@ extension MyRecordDetailVC {
         blocksCntView.recordValue.text = "\(recordData.matrixNumber)"
         miniMap.blocks = miniMap.changeMatriesToBlocks(matrices: recordData.matrices)
         miniMap.drawMiniMap()
-        recordStackView.firstView.recordValue.text = "\(recordData.distance)m"
+        recordStackView.firstView.recordValue.text = "\(recordData.distance.toKilometer)"
         recordStackView.secondView.recordValue.text = recordData.exerciseTime
         recordStackView.thirdView.recordValue.text = "\(recordData.stepCount)".insertComma
         memoTextView.isHidden = recordData.message == ""
