@@ -87,7 +87,6 @@ extension WalkingVM {
         apiSession.getRequest(with: resource)
             .withUnretained(self)
             .subscribe(onNext: { owner, result in
-                dump(result)
                 switch result {
                 case .failure(let error):
                     owner.apiError.onNext(error)

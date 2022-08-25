@@ -14,6 +14,8 @@ struct RecordDataRequest {
     var blocks: [[Double]]
     var stepCount: Int
     var message: String?
+    let started: String
+    let ended: String
 }
 
 extension RecordDataRequest {
@@ -25,7 +27,9 @@ extension RecordDataRequest {
             "exerciseTime": exerciseTime,
             "matrices": blocks,
             "stepCount": stepCount,
-            "message": message ?? ""
+            "message": message ?? "",
+            "started": started,
+            "ended": ended
         ]
     }
 }

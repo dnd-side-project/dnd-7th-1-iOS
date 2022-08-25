@@ -64,7 +64,7 @@ extension RecordResultVM: Output {
 extension RecordResultVM {
     func postRecordData(with record: RecordDataRequest) {
         let path = "record/end"
-        let resource = urlResource<String>(path: path)
+        let resource = urlResource<Bool>(path: path)
         
         apiSession.postRequest(with: resource,
                                param: record.recordParam)
@@ -73,9 +73,8 @@ extension RecordResultVM {
             switch result {
             case .failure(let error):
                 owner.apiError.onNext(error)
-                owner.output.isValidPost.onNext(false)
-            case .success(_):
-                owner.output.isValidPost.onNext(true)
+            case .success(let data):
+                owner.output.isValidPost.onNext(data)
             }
         })
         .disposed(by: bag)

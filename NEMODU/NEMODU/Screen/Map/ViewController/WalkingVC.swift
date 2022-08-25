@@ -77,12 +77,14 @@ class WalkingVC: BaseViewController {
     
     private var weekBlockCnt = 0
     private var secondTimeValue: Int = 0
+    private var startTime: Date?
     private let viewModel = WalkingVM()
     private let bag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         mapVC.updateStep()
+        setStartTime()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -133,6 +135,10 @@ extension WalkingVC {
     private func configureWeekBlockCnt(_ cnt: Int) {
         weekBlockCnt = cnt
         blocksNumView.recordSubtitle.text = "이번주 영역: \(cnt.insertComma)칸"
+    }
+    
+    private func setStartTime() {
+        startTime = Date.now
     }
     
     private func drawBlockArea(blocks: [Matrix], owner: BlocksType, blockColor: UIColor) {
@@ -216,14 +222,17 @@ extension WalkingVC {
         stopBtn.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in
-                guard let self = self else { return }
+                guard let self = self,
+                      let startTime = self.startTime else { return }
                 let recordResultNC = RecordResultNC()
                 recordResultNC.modalPresentationStyle = .fullScreen
                 recordResultNC.recordResultVC.configureRecordValue(
                     recordData: RecordDataRequest(distance: self.mapVC.updateDistance.value,
                                                   exerciseTime: self.secondTimeValue,
                                                   blocks: self.mapVC.blocks,
-                                                  stepCount: self.mapVC.stepCnt),
+                                                  stepCount: self.mapVC.stepCnt,
+                                                  started: startTime.toString(),
+                                                  ended: Date.now.toString()),
                     weekBlockCnt: self.weekBlockCnt)
                 self.mapVC.stopUpdateStep()
                 self.present(recordResultNC, animated: true)
