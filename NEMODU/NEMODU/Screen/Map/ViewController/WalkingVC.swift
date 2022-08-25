@@ -314,7 +314,8 @@ extension WalkingVC {
                                                    profileImage: UIImage(named: "defaultThumbnail")!,
                                                    nickname: $0.nickname,
                                                    color: .main,
-                                                   challengeCnt: 0)
+                                                   challengeCnt: 0,
+                                                   isEnabled: false)
                     self.drawBlockArea(blocks: $0.matrices ?? [],
                                        owner: .friends,
                                        blockColor: .gray25)
@@ -333,7 +334,8 @@ extension WalkingVC {
                                                    profileImage: UIImage(named: "defaultThumbnail")!,
                                                    nickname: $0.nickname,
                                                    color: ChallengeColorType(rawValue: $0.challengeColor)?.primaryColor ?? .main,
-                                                   challengeCnt: $0.challengeNumber)
+                                                   challengeCnt: $0.challengeNumber,
+                                                   isEnabled: false)
                     self.drawBlockArea(blocks: $0.matrices,
                                        owner: .friends,
                                        blockColor: ChallengeColorType(rawValue: $0.challengeColor)?.blockColor ?? .gray25)
