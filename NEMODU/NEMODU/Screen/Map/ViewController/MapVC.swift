@@ -43,7 +43,6 @@ class MapVC: BaseViewController {
     
     let animationView = AnimationView(name: "concentricCircles")
         .then {
-            $0.play()
             $0.loopMode = .loop
             $0.contentMode = .scaleToFill
         }
@@ -146,6 +145,12 @@ extension MapVC {
         mapView.isScrollEnabled = isEnabled
         mapView.isRotateEnabled = isEnabled
         mapView.isUserInteractionEnabled = isEnabled
+    }
+    
+    func setUserLocationAnimation(visible: Bool) {
+        visible
+        ? animationView.play()
+        : animationView.removeFromSuperview()
     }
 }
 

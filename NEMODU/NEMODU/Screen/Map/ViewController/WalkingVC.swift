@@ -95,6 +95,7 @@ class WalkingVC: BaseViewController {
     override func configureView() {
         super.configureView()
         configureWalkingView()
+        mapVC.setUserLocationAnimation(visible: true)
     }
     
     override func layoutView() {

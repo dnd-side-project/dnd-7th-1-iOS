@@ -79,6 +79,7 @@ class MainVC: BaseViewController {
         super.configureView()
         configureMainView()
         configureNaviBar()
+        mapVC.setUserLocationAnimation(visible: false)
     }
     
     override func layoutView() {
