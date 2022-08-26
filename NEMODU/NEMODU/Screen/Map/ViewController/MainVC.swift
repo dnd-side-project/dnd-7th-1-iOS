@@ -42,6 +42,14 @@ class MainVC: BaseViewController {
             $0.clipsToBounds = true
         }
     
+    private var infoMessage = UILabel()
+        .then {
+            $0.text = "일주일마다 칸이 리셋됩니다."
+            $0.font = .headline2
+            $0.textColor = .gray800
+            $0.textAlignment = .center
+        }
+    
     private var startWalkBtn = UIButton()
         .then {
             $0.backgroundColor = .secondary
@@ -109,15 +117,13 @@ class MainVC: BaseViewController {
 extension MainVC {
     private func configureMainView() {
         addChild(mapVC)
-        view.addSubviews([mapVC.view, blocksCnt, filterBtn, challengeListBtn, startWalkBtn])
+        view.addSubviews([mapVC.view, blocksCnt, filterBtn, challengeListBtn, infoMessage, startWalkBtn])
         challengeListBtn.addSubview(challengeCnt)
     }
     
     private func configureNaviBar() {
         view.addSubview(naviBar)
-        let month = Calendar.current.component(.month, from: Date.now)
-        let week = Calendar.current.component(.weekOfMonth, from: Date.now)
-        naviBar.configureNaviBar(targetVC: self, title: "\(month)월 \(week)주차")
+        naviBar.configureNaviBar(targetVC: self, title: "이번 주 기록")
         naviBar.setTitleFont(font: .title2)
     }
     
@@ -180,6 +186,11 @@ extension MainVC {
             $0.top.equalToSuperview()
             $0.trailing.equalToSuperview().offset(6)
             $0.width.height.equalTo(20)
+        }
+        
+        infoMessage.snp.makeConstraints {
+            $0.bottom.equalTo(startWalkBtn.snp.top).offset(-16)
+            $0.centerX.equalToSuperview()
         }
         
         startWalkBtn.snp.makeConstraints {
