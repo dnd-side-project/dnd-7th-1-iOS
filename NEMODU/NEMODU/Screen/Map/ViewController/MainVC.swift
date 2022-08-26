@@ -69,6 +69,8 @@ class MainVC: BaseViewController {
             $0.textColor = .gray800
         }
     
+    private let refreshBtn = UIButton()
+    
     private let naviBar = NavigationBar()
     private let viewModel = MainVM()
     private let bag = DisposeBag()
@@ -117,7 +119,13 @@ class MainVC: BaseViewController {
 extension MainVC {
     private func configureMainView() {
         addChild(mapVC)
-        view.addSubviews([mapVC.view, blocksCnt, filterBtn, challengeListBtn, infoMessage, startWalkBtn])
+        view.addSubviews([mapVC.view,
+                          blocksCnt,
+                          filterBtn,
+                          challengeListBtn,
+                          infoMessage,
+                          startWalkBtn,
+                          refreshBtn])
         challengeListBtn.addSubview(challengeCnt)
     }
     
@@ -204,6 +212,13 @@ extension MainVC {
             $0.top.equalTo(naviBar.snp.bottom)
             $0.centerX.equalToSuperview()
         }
+        
+        // TODO: - 임시 디자인 적용
+        refreshBtn.snp.makeConstraints {
+            $0.width.height.equalTo(100)
+            $0.leading.equalToSuperview()
+            $0.top.equalTo(view.safeAreaLayoutGuide)
+        }
     }
 }
 
@@ -243,6 +258,17 @@ extension MainVC {
                 guard let self = self else { return }
                 let challengeBottomSheet = ChallengeListBottomSheet()
                 self.present(challengeBottomSheet, animated: true)
+            })
+            .disposed(by: bag)
+        
+        // 새로고침 버튼
+        refreshBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.mapVC.mapView.removeOverlays(self.mapVC.mapView.overlays)
+                self.mapVC.mapView.removeAnnotations(self.mapVC.mapView.annotations)
+                self.viewModel.getAllBlocks()
             })
             .disposed(by: bag)
     }
