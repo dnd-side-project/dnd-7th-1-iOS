@@ -36,16 +36,6 @@ class MyRecordDataVC: BaseViewController {
                 .withTintColor(.main, renderingMode: .alwaysOriginal), for: .normal)
         }
     
-    private let recordStackView = RecordStackView()
-        .then {
-            $0.firstView.recordValue.text = "-"
-            $0.secondView.recordValue.text = "-m"
-            $0.thirdView.recordValue.text = "-:--"
-            $0.firstView.recordTitle.text = "채운 칸의 수"
-            $0.secondView.recordTitle.text = "거리"
-            $0.thirdView.recordTitle.text = "시간"
-        }
-    
     private let calendar = FSCalendar()
         .then {
             $0.locale = Locale(identifier: "ko_KR")
@@ -68,6 +58,11 @@ class MyRecordDataVC: BaseViewController {
             $0.appearance.todayColor = .main
             
             $0.collectionView.isScrollEnabled = false
+        }
+    
+    private let calendarScopeBtn = UIButton()
+        .then {
+            $0.setImage(UIImage(named: "arrow_down"), for: .normal)
         }
     
     private let calendarSelectStackView = CalendarSelectStackView()
@@ -152,17 +147,12 @@ extension MyRecordDataVC {
         view.addSubviews([dateLabel,
                           nextWeekBtn,
                           prevWeekBtn,
-                          recordStackView,
                           calendar,
+                          calendarScopeBtn,
                           recordListView])
         recordListView.addSubviews([recordTitle,
                                     noneMessage,
                                     recordTableView])
-        [recordStackView.firstView,
-         recordStackView.secondView,
-         recordStackView.thirdView].forEach {
-            $0.recordValue.font = .title3SB
-        }
         
         calendar.delegate = self
         calendar.contentView.addSubview(calendarSelectStackView)
@@ -174,10 +164,8 @@ extension MyRecordDataVC {
     
     private func configureTitleDate(_ date: Date) {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy.MM"
-        
-        let week = Calendar.current.component(.weekOfMonth, from: date)
-        dateLabel.text = "\(dateFormatter.string(from: date)) \(week)주차"
+        dateFormatter.dateFormat = "yyyy년 MM월"
+        dateLabel.text = "\(dateFormatter.string(from: date))"
     }
     
     private func setNextWeekBtn(_ date: Date) {
@@ -192,28 +180,25 @@ extension MyRecordDataVC {
 extension MyRecordDataVC {
     private func configureLayout() {
         dateLabel.snp.makeConstraints {
-            $0.top.equalTo(naviBar.snp.bottom).offset(18)
-            $0.centerX.equalToSuperview()
+            $0.top.equalTo(naviBar.snp.bottom)
+            $0.leading.equalToSuperview().offset(24)
+            $0.height.equalTo(60)
         }
         
         nextWeekBtn.snp.makeConstraints {
+            $0.trailing.equalToSuperview().offset(-24)
             $0.centerY.equalTo(dateLabel.snp.centerY)
-            $0.leading.equalTo(dateLabel.snp.trailing).offset(24)
+            $0.width.height.equalTo(24)
         }
         
         prevWeekBtn.snp.makeConstraints {
-            $0.centerY.equalTo(dateLabel.snp.centerY)
-            $0.trailing.equalTo(dateLabel.snp.leading).offset(-24)
-        }
-        
-        recordStackView.snp.makeConstraints {
-            $0.top.equalTo(dateLabel.snp.bottom).offset(18)
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(80)
+            $0.centerY.equalTo(nextWeekBtn.snp.centerY)
+            $0.trailing.equalTo(nextWeekBtn.snp.leading).offset(-24)
+            $0.width.height.equalTo(24)
         }
         
         calendar.snp.makeConstraints {
-            $0.top.equalTo(recordStackView.snp.bottom).offset(16)
+            $0.top.equalTo(dateLabel.snp.bottom)
             $0.leading.equalToSuperview().offset(10)
             $0.trailing.equalToSuperview().offset(-10)
             $0.height.equalTo(400)
@@ -223,8 +208,14 @@ extension MyRecordDataVC {
             $0.edges.equalToSuperview()
         }
         
+        calendarScopeBtn.snp.makeConstraints {
+            $0.top.equalTo(calendar.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(32)
+        }
+        
         recordListView.snp.makeConstraints {
-            $0.top.equalTo(calendar.snp.bottom).offset(16)
+            $0.top.equalTo(calendarScopeBtn.snp.bottom)
             $0.leading.trailing.bottom.equalToSuperview()
         }
         
@@ -266,6 +257,14 @@ extension MyRecordDataVC {
                 self.calendar.select(self.viewModel.input.selectedDay.value, scrollToDate: true)
             })
             .disposed(by: bag)
+        
+        calendarScopeBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                // TODO: - Change calendar scope
+            })
+            .disposed(by: bag)
     }
     
     private func bindDaySelect() {
@@ -302,16 +301,6 @@ extension MyRecordDataVC {
     private func bindTableView() {
         viewModel.output.dataSource
             .bind(to: recordTableView.rx.items(dataSource: tableViewDataSource()))
-            .disposed(by: bag)
-        
-        viewModel.output.myRecordData
-            .subscribe(onNext: { [weak self] data in
-                guard let self = self else { return }
-                self.noneMessage.isHidden = data.activityRecords.count != 0
-                self.recordStackView.firstView.recordValue.text = "\(data.totalMatrixNumber)"
-                self.recordStackView.secondView.recordValue.text = "\(data.totalDistance.toKilometer)"
-                self.recordStackView.thirdView.recordValue.text = "\(data.totalExerciseTime)"
-            })
             .disposed(by: bag)
         
         recordTableView.rx.itemSelected
