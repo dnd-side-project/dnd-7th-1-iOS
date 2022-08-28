@@ -63,8 +63,7 @@ extension MypageVM: Output {
 
 extension MypageVM {
     func getMypageData() {
-        // TODO: - UserDefaults 수정
-        let nickname = "NickA"
+        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
         let path = "user/info?nickname=\(nickname)"
         let resource = urlResource<MypageUserDataResponseModel>(path: path)
         

@@ -20,9 +20,9 @@ struct RecordDataRequest {
 
 extension RecordDataRequest {
     var recordParam: Parameters {
-        // TODO: UserDefaults 수정
+        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
         return [
-            "nickname": "NickA",
+            "nickname": nickname,
             "distance": distance,
             "exerciseTime": exerciseTime,
             "matrices": blocks,

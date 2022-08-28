@@ -74,8 +74,7 @@ extension MainVM: Output {
 
 extension MainVM {
     func getAllBlocks() {
-        // TODO: - UserDefaults 수정
-        let nickname = "NickA"
+        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
         let path = "user/home?nickname=\(nickname)"
         let resource = urlResource<MainMapResponseModel>(path: path)
         

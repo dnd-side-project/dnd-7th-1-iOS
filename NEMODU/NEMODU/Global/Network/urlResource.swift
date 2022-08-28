@@ -13,7 +13,7 @@ struct urlResource<T: Decodable> {
     var resultURL: URL {
         return path.contains("http")
         ? URL(string: path)!
-        : baseURL.flatMap { URL(string: $0.absoluteString + path) }!
+        : baseURL.flatMap { URL(string: $0.absoluteString + path.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!) }!
     }
     
     func judgeError(statusCode: Int) -> Result<T, APIError> {

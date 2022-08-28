@@ -14,11 +14,11 @@ struct MyRecordListRequestModel {
 }
 
 extension MyRecordListRequestModel {
-    // TODO: - User Defaults 수정
     var recordParam: Parameters {
+        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
         return [
             "end": end,
-            "nickname": "NickA",
+            "nickname": nickname,
             "start": start
         ]
     }

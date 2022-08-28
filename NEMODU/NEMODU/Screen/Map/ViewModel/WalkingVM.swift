@@ -78,9 +78,8 @@ extension WalkingVM: Output {
 // MARK: - Networking
 
 extension WalkingVM {
-    // TODO: - UserDefaults 수정
     func getBlocksCnt() {
-        let nickname = "NickA"
+        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
         let path = "record/start?nickname=\(nickname)"
         let resource = urlResource<MainMapResponseModel>(path: path)
         

@@ -68,8 +68,7 @@ extension FriendProfileVM: Output {
 
 extension FriendProfileVM {
     func getFriendProfile(friendNickname: String) {
-        // TODO: - UserDefaults 수정
-        let nickname = "NickA"
+        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
         let path = "user/profile?friend=\(friendNickname)&user=\(nickname)"
         let resource = urlResource<ProfileResponseModel>(path: path)
         
