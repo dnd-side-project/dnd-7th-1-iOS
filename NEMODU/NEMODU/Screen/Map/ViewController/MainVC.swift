@@ -42,6 +42,14 @@ class MainVC: BaseViewController {
             $0.clipsToBounds = true
         }
     
+    private var infoMessage = UILabel()
+        .then {
+            $0.text = "일주일마다 칸이 리셋됩니다."
+            $0.font = .headline2
+            $0.textColor = .gray800
+            $0.textAlignment = .center
+        }
+    
     private var startWalkBtn = UIButton()
         .then {
             $0.backgroundColor = .secondary
@@ -61,6 +69,8 @@ class MainVC: BaseViewController {
             $0.textColor = .gray800
         }
     
+    private let refreshBtn = UIButton()
+    
     private let naviBar = NavigationBar()
     private let viewModel = MainVM()
     private let bag = DisposeBag()
@@ -79,6 +89,7 @@ class MainVC: BaseViewController {
         super.configureView()
         configureMainView()
         configureNaviBar()
+        mapVC.setUserLocationAnimation(visible: false)
     }
     
     override func layoutView() {
@@ -108,15 +119,19 @@ class MainVC: BaseViewController {
 extension MainVC {
     private func configureMainView() {
         addChild(mapVC)
-        view.addSubviews([mapVC.view, blocksCnt, filterBtn, challengeListBtn, startWalkBtn])
+        view.addSubviews([mapVC.view,
+                          blocksCnt,
+                          filterBtn,
+                          challengeListBtn,
+                          infoMessage,
+                          startWalkBtn,
+                          refreshBtn])
         challengeListBtn.addSubview(challengeCnt)
     }
     
     private func configureNaviBar() {
         view.addSubview(naviBar)
-        let month = Calendar.current.component(.month, from: Date.now)
-        let week = Calendar.current.component(.weekOfMonth, from: Date.now)
-        naviBar.configureNaviBar(targetVC: self, title: "\(month)월 \(week)주차")
+        naviBar.configureNaviBar(targetVC: self, title: "이번 주 기록")
         naviBar.setTitleFont(font: .title2)
     }
     
@@ -181,6 +196,11 @@ extension MainVC {
             $0.width.height.equalTo(20)
         }
         
+        infoMessage.snp.makeConstraints {
+            $0.bottom.equalTo(startWalkBtn.snp.top).offset(-16)
+            $0.centerX.equalToSuperview()
+        }
+        
         startWalkBtn.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(24)
             $0.trailing.equalToSuperview().offset(-24)
@@ -191,6 +211,13 @@ extension MainVC {
         blocksCnt.snp.makeConstraints {
             $0.top.equalTo(naviBar.snp.bottom)
             $0.centerX.equalToSuperview()
+        }
+        
+        // TODO: - 임시 디자인 적용
+        refreshBtn.snp.makeConstraints {
+            $0.width.height.equalTo(100)
+            $0.leading.equalToSuperview()
+            $0.top.equalTo(view.safeAreaLayoutGuide)
         }
     }
 }
@@ -231,6 +258,17 @@ extension MainVC {
                 guard let self = self else { return }
                 let challengeBottomSheet = ChallengeListBottomSheet()
                 self.present(challengeBottomSheet, animated: true)
+            })
+            .disposed(by: bag)
+        
+        // 새로고침 버튼
+        refreshBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.mapVC.mapView.removeOverlays(self.mapVC.mapView.overlays)
+                self.mapVC.mapView.removeAnnotations(self.mapVC.mapView.annotations)
+                self.viewModel.getAllBlocks()
             })
             .disposed(by: bag)
     }
@@ -291,7 +329,8 @@ extension MainVC {
                                                    profileImage: UIImage(named: "defaultThumbnail")!,
                                                    nickname: $0.nickname,
                                                    color: .main,
-                                                   challengeCnt: 0)
+                                                   challengeCnt: 0,
+                                                   isEnabled: true)
                     self.drawBlockArea(blocks: $0.matrices ?? [],
                                        owner: .friends,
                                        blockColor: .gray25)
@@ -311,7 +350,8 @@ extension MainVC {
                                                    profileImage: UIImage(named: "defaultThumbnail")!,
                                                    nickname: $0.nickname,
                                                    color: ChallengeColorType(rawValue: $0.challengeColor)?.primaryColor ?? .main,
-                                                   challengeCnt: $0.challengeNumber)
+                                                   challengeCnt: $0.challengeNumber,
+                                                   isEnabled: true)
                     self.drawBlockArea(blocks: $0.matrices,
                                        owner: .friends,
                                        blockColor: ChallengeColorType(rawValue: $0.challengeColor)?.blockColor ?? .gray25)

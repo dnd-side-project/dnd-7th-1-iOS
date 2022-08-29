@@ -43,7 +43,6 @@ class MapVC: BaseViewController {
     
     let animationView = AnimationView(name: "concentricCircles")
         .then {
-            $0.play()
             $0.loopMode = .loop
             $0.contentMode = .scaleToFill
         }
@@ -147,6 +146,12 @@ extension MapVC {
         mapView.isRotateEnabled = isEnabled
         mapView.isUserInteractionEnabled = isEnabled
     }
+    
+    func setUserLocationAnimation(visible: Bool) {
+        visible
+        ? animationView.play()
+        : animationView.removeFromSuperview()
+    }
 }
 
 // MARK: - Layout
@@ -211,8 +216,12 @@ extension MapVC {
                     print("걷는중!")
                 } else if deviceActivity.running {
                     print("뛰는중!")
-                } else if deviceActivity.automotive {
-                    print("자동차!")
+                } else if deviceActivity.cycling || deviceActivity.automotive {
+                    print("자전거 or 자동차!")
+                    self.popUpAlert(alertType: .speedWarning,
+                                    targetVC: self,
+                                    highlightBtnAction: #selector(self.dismissAlert),
+                                    normalBtnAction: nil)
                 }
             }
         )
@@ -339,13 +348,14 @@ extension MapVC: CLLocationManagerDelegate {
     }
     
     /// 친구 핀을 설치하는 함수
-    func addFriendAnnotation(coordinate: [Double], profileImage: UIImage, nickname: String, color: UIColor, challengeCnt: Int) {
+    func addFriendAnnotation(coordinate: [Double], profileImage: UIImage, nickname: String, color: UIColor, challengeCnt: Int, isEnabled: Bool) {
         let annotation = FriendAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate[0] + latitudeBlockSizePoint / 2,
                                                                              longitude: coordinate[1] - longitudeBlockSizePoint / 2))
         annotation.title = nickname
         annotation.profileImage = profileImage
         annotation.color = color
         annotation.challengeCnt = challengeCnt
+        annotation.isEnabled = isEnabled
         mapView.addAnnotation(annotation)
     }
     
@@ -384,7 +394,7 @@ extension MapVC: CLLocationManagerDelegate {
                 drawBlock(latitude: latitudePoint,
                           longitude: longitudePoint,
                           owner: .mine,
-                          color: .main40)
+                          color: .main80)
                 
                 blocksCnt.accept(blocks.count)
             }

@@ -26,8 +26,8 @@ class NemoduTextView: BaseView {
     
     private let memoCntLabel = UILabel()
         .then {
-            $0.font = .caption1
-            $0.textColor = .gray600
+            $0.font = .body3
+            $0.textColor = .gray500
             $0.textAlignment = .right
         }
     

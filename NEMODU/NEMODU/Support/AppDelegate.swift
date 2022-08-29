@@ -14,8 +14,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // SplashView 0.3초동안 보이게
-        // TODO: - 개발 시간 단축을 위해 일단 주석처리!
-//        Thread.sleep(forTimeInterval: 1)
+        Thread.sleep(forTimeInterval: 1)
+        
+        // TODO: - 로그인 구현 후 LoginVC로 이동
+        UserDefaults.standard.set("희재횽아짱", forKey: UserDefaults.Keys.nickname)
         
         // Override point for customization after application launch.
         window = UIWindow()

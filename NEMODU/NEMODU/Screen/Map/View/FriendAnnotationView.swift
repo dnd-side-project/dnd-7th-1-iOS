@@ -101,6 +101,7 @@ extension FriendAnnotationView {
         if let annotation = annotation as? FriendAnnotation {
             nickname.text = annotation.title
             color = annotation.color
+            isEnabled = annotation.isEnabled ?? false
             
             challengeCntImageView.image
             = annotation.challengeCnt == 0

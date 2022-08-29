@@ -67,8 +67,7 @@ extension MapFilterVM: Output {
 
 extension MapFilterVM {
     func postFriendVisibleToggle() {
-        // TODO: - UserDefaults 수정
-        let nickname = "NickA"
+        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
         let path = "user/filter/friend?nickname=\(nickname)"
         let resource = urlResource<Bool>(path: path)
         
@@ -86,8 +85,7 @@ extension MapFilterVM {
     }
     
     func postMyAreaVisibleToggle() {
-        // TODO: - UserDefaults 수정
-        let nickname = "NickA"
+        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
         let path = "user/filter/mine?nickname=\(nickname)"
         let resource = urlResource<Bool>(path: path)
         
@@ -105,8 +103,7 @@ extension MapFilterVM {
     }
     
     func postMyLocationVisibleToggle() {
-        // TODO: - UserDefaults 수정
-        let nickname = "NickA"
+        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
         let path = "user/filter/record?nickname=\(nickname)"
         let resource = urlResource<Bool>(path: path)
         

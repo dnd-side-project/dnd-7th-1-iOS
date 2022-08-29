@@ -11,7 +11,6 @@ import RxSwift
 
 protocol MypageRecordDataViewModelOutput: Lodable {
     var myRecordList: BehaviorRelay<[ActivityRecord]> { get }
-    var myRecordData: PublishRelay<MyRecordListResponseModel> { get }
     var dataSource: Observable<[MyRecordListDataSource]> { get }
 }
 
@@ -33,7 +32,6 @@ final class MyRecordDataVM: BaseViewModel {
     
     struct Output: MypageRecordDataViewModelOutput {
         var loading = BehaviorRelay<Bool>(value: false)
-        var myRecordData = PublishRelay<MyRecordListResponseModel>()
         var myRecordList = BehaviorRelay<[ActivityRecord]>(value: [])
         var dataSource: Observable<[MyRecordListDataSource]> {
             myRecordList
@@ -124,7 +122,6 @@ extension MyRecordDataVM {
                 case .failure(let error):
                     owner.apiError.onNext(error)
                 case .success(let data):
-                    owner.output.myRecordData.accept(data)
                     owner.output.myRecordList.accept(data.activityRecords)
                 }
             })

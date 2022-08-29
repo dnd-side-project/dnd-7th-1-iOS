@@ -74,8 +74,7 @@ extension MainVM: Output {
 
 extension MainVM {
     func getAllBlocks() {
-        // TODO: - UserDefaults 수정
-        let nickname = "NickA"
+        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
         let path = "user/home?nickname=\(nickname)"
         let resource = urlResource<MainMapResponseModel>(path: path)
         
@@ -89,7 +88,7 @@ extension MainVM {
                     owner.output.myBlocksVisible.accept(data.isShowMine)
                     owner.output.friendVisible.accept(data.isShowFriend)
                     owner.output.myLocationVisible.accept(data.isPublicRecord)
-                    owner.output.challengeCnt.accept(data.challengesNumber)
+                    owner.output.challengeCnt.accept(data.challengesNumber ?? 0)
                     if let userMatrices = data.userMatrices {
                         owner.output.myBlocks.accept(userMatrices)
                     }
