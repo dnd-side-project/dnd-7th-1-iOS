@@ -28,6 +28,7 @@ class LoginVC: BaseViewController {
             $0.setImage(UIImage(named: "kakaoBtn"), for: .normal)
         }
     
+    private let viewModel = LoginVM()
     private let bag = DisposeBag()
     
     override func viewDidLoad() {
@@ -46,10 +47,12 @@ class LoginVC: BaseViewController {
     
     override func bindInput() {
         super.bindInput()
+        bindLoginBtn()
     }
     
     override func bindOutput() {
         super.bindOutput()
+        presentNicknameVC()
     }
     
 }
@@ -87,8 +90,30 @@ extension LoginVC {
 
 // MARK: - Input
 
-extension LoginVC { }
+extension LoginVC {
+    private func bindLoginBtn() {
+        kakaoLoginBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.viewModel.kakaoLogin()
+            })
+            .disposed(by: bag)
+    }
+}
 
 // MARK: - Output
 
-extension LoginVC { }
+extension LoginVC {
+    private func presentNicknameVC() {
+        viewModel.output.isValidSignin
+            .filter { $0 }
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: { [weak self] isValid in
+                guard let self = self else { return }
+                // TODO: - 닉네임 설정 화면 연결
+                print("?????")
+            })
+            .disposed(by: bag)
+    }
+}

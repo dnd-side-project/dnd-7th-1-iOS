@@ -11,5 +11,8 @@ extension UserDefaults {
     enum Keys {
         static var nickname = "nickname"
         static var isFirstAccess = "isFirstAccess"
+        static var accessToken = "accessToken"
+        static var refreshToken = "refreshToken"
+        static var kakaoAccessToken = "kakaoAccessToken"    // 친구목록 조회용
     }
 }
