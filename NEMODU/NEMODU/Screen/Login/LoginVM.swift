@@ -26,7 +26,7 @@ final class LoginVM: BaseViewModel {
     // MARK: - Output
     
     struct Output {
-        var isValidSignin = PublishRelay<Bool>()
+        var isOriginUser = PublishRelay<Bool>()
     }
     
     // MARK: - Init
@@ -67,11 +67,30 @@ extension LoginVM {
                     print(error)
                 } else {
                     UserDefaults.standard.set(oauthToken?.accessToken, forKey: UserDefaults.Keys.kakaoAccessToken)
-                    self.output.isValidSignin.accept(true)
+                    self.checkOriginUser()
                 }
             }
         } else {
             // TODO: - 카카오톡이 깔려있지 않은 경우 Alert
         }
+    }
+    
+    func checkOriginUser() {
+        // TODO: - kakao accessToken으로 기존 유저인지 서버에 판단 요청
+//        let path = ""
+//        let resource = urlResource<Bool>(path: path)
+//
+//        apiSession.getRequest(with: resource)
+//            .withUnretained(self)
+//            .subscribe(onNext: { owner, result in
+//                switch result {
+//                case .failure(let error):
+//                    owner.apiError.onNext(error)
+//                case .success(let data):
+//                    owner.output.isOriginUser.accept(data)
+//                }
+//            })
+//            .disposed(by: bag)
+        self.output.isOriginUser.accept(false)
     }
 }

@@ -45,4 +45,9 @@ class BaseViewController: UIViewController {
     func bindInput() {}
     
     func bindOutput() {}
+    
+    func setTBCtoRootVC() {
+        guard let ad = UIApplication.shared.delegate as? AppDelegate else { return }
+        ad.window?.rootViewController = NEMODUTBC()
+    }
 }

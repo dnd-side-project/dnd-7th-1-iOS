@@ -31,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             window?.rootViewController = LoginVC()
         } else {
             // 로그인 이력이 있는(자체 토큰을 가지고 있는) 유저
-            window?.rootViewController = MainVC()
+            window?.rootViewController = NEMODUTBC()
         }
         window?.makeKeyAndVisible()
         

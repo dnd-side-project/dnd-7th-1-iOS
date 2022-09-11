@@ -52,7 +52,7 @@ class LoginVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
-        presentNicknameVC()
+        bindKakaoLoginResult()
     }
     
 }
@@ -88,6 +88,16 @@ extension LoginVC {
     }
 }
 
+// MARK: - Custom Methods
+
+extension LoginVC {
+    private func presentNicknameVC() {
+        let nicknameVC = NicknameVC()
+        nicknameVC.modalPresentationStyle = .fullScreen
+        self.present(nicknameVC, animated: true)
+    }
+}
+
 // MARK: - Input
 
 extension LoginVC {
@@ -105,14 +115,14 @@ extension LoginVC {
 // MARK: - Output
 
 extension LoginVC {
-    private func presentNicknameVC() {
-        viewModel.output.isValidSignin
-            .filter { $0 }
+    private func bindKakaoLoginResult() {
+        viewModel.output.isOriginUser
             .asDriver(onErrorJustReturn: false)
-            .drive(onNext: { [weak self] isValid in
+            .drive(onNext: { [weak self] isOriginUser in
                 guard let self = self else { return }
-                // TODO: - 닉네임 설정 화면 연결
-                print("?????")
+                isOriginUser
+                ? self.setTBCtoRootVC()
+                : self.presentNicknameVC()
             })
             .disposed(by: bag)
     }
