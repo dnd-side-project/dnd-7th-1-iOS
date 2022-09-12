@@ -27,6 +27,7 @@
 		23255A6C28CF1307005D6D5A /* AddFriendsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A6B28CF1307005D6D5A /* AddFriendsVC.swift */; };
 		23255A6E28CF3787005D6D5A /* NicknameType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A6D28CF3787005D6D5A /* NicknameType.swift */; };
 		23255A7228CF457E005D6D5A /* AddFriendTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A7128CF457E005D6D5A /* AddFriendTVC.swift */; };
+		23255A7428CF5325005D6D5A /* EnterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A7328CF5325005D6D5A /* EnterVC.swift */; };
 		232B89FF28C8BCAA00737F18 /* LoginVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232B89FE28C8BCAA00737F18 /* LoginVM.swift */; };
 		232F0B6328B6803C005C9A07 /* AlertVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232F0B6228B6803C005C9A07 /* AlertVC.swift */; };
 		232F0B6528B686C5005C9A07 /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232F0B6428B686C5005C9A07 /* AlertType.swift */; };
@@ -173,6 +174,7 @@
 		23255A6B28CF1307005D6D5A /* AddFriendsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendsVC.swift; sourceTree = "<group>"; };
 		23255A6D28CF3787005D6D5A /* NicknameType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameType.swift; sourceTree = "<group>"; };
 		23255A7128CF457E005D6D5A /* AddFriendTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendTVC.swift; sourceTree = "<group>"; };
+		23255A7328CF5325005D6D5A /* EnterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterVC.swift; sourceTree = "<group>"; };
 		232B89FE28C8BCAA00737F18 /* LoginVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVM.swift; sourceTree = "<group>"; };
 		232F0B6228B6803C005C9A07 /* AlertVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertVC.swift; sourceTree = "<group>"; };
 		232F0B6428B686C5005C9A07 /* AlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertType.swift; sourceTree = "<group>"; };
@@ -391,6 +393,7 @@
 				23F6959B28C9F6A7008D1378 /* UserInfoSettingVC.swift */,
 				23255A6928CF12DB005D6D5A /* NicknameVC.swift */,
 				23255A6B28CF1307005D6D5A /* AddFriendsVC.swift */,
+				23255A7328CF5325005D6D5A /* EnterVC.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -1256,6 +1259,7 @@
 				2348B3F22892D116001095BC /* urlResource.swift in Sources */,
 				3C48920C28B101D100B11207 /* ChallengeListTypeMenuBarCV.swift in Sources */,
 				3C9CD99D28AB7E9800A7550C /* ChallengeListTVC.swift in Sources */,
+				23255A7428CF5325005D6D5A /* EnterVC.swift in Sources */,
 				23B7206328A0DCAA00D3A410 /* ProceedingChallengeDataSource.swift in Sources */,
 				238C4DE528A4BFE2000BEE36 /* UIScrollView+.swift in Sources */,
 				2348B4052892D1FA001095BC /* UIButton+.swift in Sources */,

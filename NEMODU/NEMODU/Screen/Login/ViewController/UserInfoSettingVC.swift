@@ -142,7 +142,7 @@ extension UserInfoSettingVC {
                 self.page += 1
                 self.page != self.pageCnt + 1
                 ? self.setPage(self.page)
-                : self.setTBCtoRootVC()
+                : self.navigationController?.pushViewController(EnterVC(), animated: true)
             })
             .disposed(by: bag)
     }
