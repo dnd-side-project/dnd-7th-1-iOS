@@ -34,6 +34,9 @@ class UserInfoSettingVC: BaseViewController {
             $0.alignment = .fill
         }
     
+    private let nicknameVC = NicknameVC()
+    private let addfriendsVC = AddFriendsVC()
+    
     private var page: Float = 1
     private let pageCnt: Float = 2
     private let bag = DisposeBag()
@@ -83,7 +86,12 @@ extension UserInfoSettingVC {
     private func configureContentView() {
         view.addSubviews([progressView,
                           baseScrollView])
+        addChild(nicknameVC)
+        addChild(addfriendsVC)
         baseScrollView.addSubview(baseStackView)
+        [nicknameVC.view, addfriendsVC.view].forEach {
+            baseStackView.addArrangedSubview($0)
+        }
         
         progressView.progress = page / pageCnt
     }
@@ -106,7 +114,8 @@ extension UserInfoSettingVC {
         }
         
         baseStackView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.edges.centerY.equalToSuperview()
+            $0.width.equalTo(screenWidth * CGFloat(pageCnt))
         }
     }
 }
@@ -149,7 +158,7 @@ extension UserInfoSettingVC {
 
 extension UserInfoSettingVC {
     private func setPage(_ page: Float) {
-        baseScrollView.setContentOffset(CGPoint(x: screenWidth * CGFloat(page), y: 0), animated: true)
+        baseScrollView.setContentOffset(CGPoint(x: screenWidth * CGFloat(page - 1), y: 0), animated: true)
         progressView.progress = page / pageCnt
     }
 }

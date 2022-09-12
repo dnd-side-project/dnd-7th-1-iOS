@@ -23,6 +23,8 @@
 		231A2B9128B2787200FF884B /* MypageVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231A2B9028B2787200FF884B /* MypageVM.swift */; };
 		231A2B9328B2790300FF884B /* MypageUserDataResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231A2B9228B2790300FF884B /* MypageUserDataResponse.swift */; };
 		23255A6628CF117E005D6D5A /* LoginNC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A6528CF117E005D6D5A /* LoginNC.swift */; };
+		23255A6A28CF12DB005D6D5A /* NicknameVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A6928CF12DB005D6D5A /* NicknameVC.swift */; };
+		23255A6C28CF1307005D6D5A /* AddFriendsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A6B28CF1307005D6D5A /* AddFriendsVC.swift */; };
 		232B89FF28C8BCAA00737F18 /* LoginVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232B89FE28C8BCAA00737F18 /* LoginVM.swift */; };
 		232F0B6328B6803C005C9A07 /* AlertVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232F0B6228B6803C005C9A07 /* AlertVC.swift */; };
 		232F0B6528B686C5005C9A07 /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232F0B6428B686C5005C9A07 /* AlertType.swift */; };
@@ -165,6 +167,8 @@
 		231A2B9028B2787200FF884B /* MypageVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MypageVM.swift; sourceTree = "<group>"; };
 		231A2B9228B2790300FF884B /* MypageUserDataResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MypageUserDataResponse.swift; sourceTree = "<group>"; };
 		23255A6528CF117E005D6D5A /* LoginNC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginNC.swift; sourceTree = "<group>"; };
+		23255A6928CF12DB005D6D5A /* NicknameVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameVC.swift; sourceTree = "<group>"; };
+		23255A6B28CF1307005D6D5A /* AddFriendsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendsVC.swift; sourceTree = "<group>"; };
 		232B89FE28C8BCAA00737F18 /* LoginVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVM.swift; sourceTree = "<group>"; };
 		232F0B6228B6803C005C9A07 /* AlertVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertVC.swift; sourceTree = "<group>"; };
 		232F0B6428B686C5005C9A07 /* AlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertType.swift; sourceTree = "<group>"; };
@@ -381,6 +385,8 @@
 				23255A6528CF117E005D6D5A /* LoginNC.swift */,
 				2354239328BC8BCD00865E51 /* LoginVC.swift */,
 				23F6959B28C9F6A7008D1378 /* UserInfoSettingVC.swift */,
+				23255A6928CF12DB005D6D5A /* NicknameVC.swift */,
+				23255A6B28CF1307005D6D5A /* AddFriendsVC.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -1185,6 +1191,7 @@
 				23F5716F28A6AD01005F2E21 /* RecordStackView.swift in Sources */,
 				3C08138328A91C00009F854B /* ChallengeRankingVC.swift in Sources */,
 				2339D75028B284C20018013D /* MypageNC.swift in Sources */,
+				23255A6C28CF1307005D6D5A /* AddFriendsVC.swift in Sources */,
 				2348B3FB2892D15C001095BC /* Output.swift in Sources */,
 				2339D74E28B2849F0018013D /* MyRecordDataVC.swift in Sources */,
 				23D8B7E728B4E44700F48165 /* MyRecordDetailVC.swift in Sources */,
@@ -1224,6 +1231,7 @@
 				23B86D2128A26F0F00B1630E /* NavigationBar.swift in Sources */,
 				2348B3EC2892D0DF001095BC /* APIError.swift in Sources */,
 				23F5716D28A6A61E005F2E21 /* MiniMapVC.swift in Sources */,
+				23255A6A28CF12DB005D6D5A /* NicknameVC.swift in Sources */,
 				23F5717928A94AA5005F2E21 /* UIString+.swift in Sources */,
 				3CB9DB9C28A92528007BC1BE /* MenuBarCVC.swift in Sources */,
 				230CB2E128AD474E00B11270 /* ChallengeBlockResponseModel.swift in Sources */,
