@@ -42,7 +42,7 @@ class NicknameVC: BaseViewController {
                                                           attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray500])
         }
     
-    private let checkNicknameBtn = UIButton()
+    private let nicknameCheckBtn = UIButton()
         .then {
             $0.backgroundColor = .main
             $0.setTitle("중복체크", for: .normal)
@@ -76,6 +76,7 @@ class NicknameVC: BaseViewController {
     
     private let maxTextCnt = 6
     private let bag = DisposeBag()
+    var viewModel: UserInfoSettingVM?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -100,6 +101,7 @@ class NicknameVC: BaseViewController {
         super.bindOutput()
         bindNicknameTextField()
         bindTextFieldActivate()
+        bindValidationView()
     }
     
 }
@@ -111,7 +113,7 @@ extension NicknameVC {
         view.addSubviews([titleLabel,
                           messageLabel,
                           nicknameTextField,
-                          checkNicknameBtn,
+                          nicknameCheckBtn,
                           nicknameCntLabel,
                           validationStackView])
         [validationImageView, validationLabel].forEach {
@@ -152,7 +154,7 @@ extension NicknameVC {
             $0.height.equalTo(42)
         }
         
-        checkNicknameBtn.snp.makeConstraints {
+        nicknameCheckBtn.snp.makeConstraints {
             $0.centerY.equalTo(nicknameTextField.snp.centerY)
             $0.leading.equalTo(nicknameTextField.snp.trailing).offset(6)
             $0.trailing.equalToSuperview().offset(-16)
@@ -161,7 +163,7 @@ extension NicknameVC {
         }
         
         nicknameCntLabel.snp.makeConstraints {
-            $0.top.equalTo(checkNicknameBtn.snp.bottom).offset(8)
+            $0.top.equalTo(nicknameCheckBtn.snp.bottom).offset(8)
             $0.trailing.equalToSuperview().offset(-16)
         }
         
@@ -177,15 +179,16 @@ extension NicknameVC {
 
 extension NicknameVC {
     private func checkNicknameValidation() {
-        checkNicknameBtn.rx.tap
+        nicknameCheckBtn.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self,
-                      let nicknameCnt = self.nicknameTextField.text?.count
+                      let viewModel = self.viewModel,
+                      let nickname = self.nicknameTextField.text
                 else { return }
-                nicknameCnt < 2 || nicknameCnt > 6
+                nickname.count < 2 || nickname.count > 6
                 ? self.setValidationView(.countError)
-                : print()// TODO: - 서버에서 중복된 닉네임인지 확인
+                : viewModel.getNicknameValidation(nickname: nickname)
             })
             .disposed(by: bag)
     }
@@ -214,8 +217,22 @@ extension NicknameVC {
             .distinctUntilChanged()
             .asDriver(onErrorJustReturn: "")
             .drive(onNext: { [weak self] _ in
-                guard let self = self else { return }
+                guard let self = self,
+                      let viewModel = self.viewModel
+                else { return }
                 self.nicknameTextField.layer.borderColor = UIColor.secondary.cgColor
+                viewModel.output.isNextBtnActive.accept(false)
+            })
+            .disposed(by: bag)
+    }
+    
+    private func bindValidationView() {
+        guard let viewModel = viewModel else { return }
+        viewModel.output.isValidNickname
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: { [weak self] isValid in
+                guard let self = self else { return }
+                self.setValidationView(isValid ? .available : .notAvailable)
             })
             .disposed(by: bag)
     }

@@ -39,6 +39,8 @@ class UserInfoSettingVC: BaseViewController {
     
     private var page: Float = 1
     private let pageCnt: Float = 2
+    
+    private let viewModel = UserInfoSettingVM()
     private let bag = DisposeBag()
     
     override func viewDidLoad() {
@@ -63,6 +65,7 @@ class UserInfoSettingVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        bindNextBtnActive()
     }
     
 }
@@ -83,17 +86,25 @@ extension UserInfoSettingVC {
                                      for: .allEvents)
     }
     
+    private func setRightBarBtnActive(_ isActive: Bool) {
+        naviBar.rightBtn.isUserInteractionEnabled = isActive
+        naviBar.rightBtn.setTitleColor(isActive ? .main : .gray300, for: .normal)
+    }
+    
     private func configureContentView() {
         view.addSubviews([progressView,
                           baseScrollView])
         addChild(nicknameVC)
         addChild(addfriendsVC)
+        nicknameVC.viewModel = viewModel
         baseScrollView.addSubview(baseStackView)
         [nicknameVC.view, addfriendsVC.view].forEach {
             baseStackView.addArrangedSubview($0)
         }
         
         progressView.progress = page / pageCnt
+        
+        setRightBarBtnActive(viewModel.output.isNextBtnActive.value)
     }
 }
 
@@ -151,7 +162,15 @@ extension UserInfoSettingVC {
 // MARK: - Output
 
 extension UserInfoSettingVC {
-    
+    private func bindNextBtnActive() {
+        viewModel.output.isNextBtnActive
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: { [weak self] isValid in
+                guard let self = self else { return }
+                self.setRightBarBtnActive(isValid)
+            })
+            .disposed(by: bag)
+    }
 }
 
 // MARK: - Custom Methods
