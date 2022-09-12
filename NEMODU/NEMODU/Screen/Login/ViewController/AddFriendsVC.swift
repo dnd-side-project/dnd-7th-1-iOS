@@ -82,6 +82,9 @@ extension AddFriendsVC {
                           subTitleLabel,
                           friendsCntLabel,
                           friendsTV])
+        
+        friendsTV.register(AddFriendTVC.self, forCellReuseIdentifier: AddFriendTVC.className)
+        friendsTV.delegate = self
     }
 }
 
@@ -129,4 +132,12 @@ extension AddFriendsVC {
 
 extension AddFriendsVC {
     
+}
+
+// MARK: - UITableViewDelegate
+
+extension AddFriendsVC: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        64.0
+    }
 }
