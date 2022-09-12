@@ -13,12 +13,29 @@ import SnapKit
 import Then
 
 class UserInfoSettingVC: BaseViewController {
-    private let tmpBtn = UIButton()
+    private let naviBar = NavigationBar()
+    
+    private let progressView = UIProgressView()
         .then {
-            $0.setTitle("회원가입 완료", for: .normal)
-            $0.tintColor = .black
+            $0.progressTintColor = .main
+            $0.trackTintColor = .main40
         }
     
+    private let baseScrollView = UIScrollView()
+        .then {
+            $0.isUserInteractionEnabled = false
+            $0.showsHorizontalScrollIndicator = false
+        }
+    
+    private let baseStackView = UIStackView()
+        .then {
+            $0.axis = .horizontal
+            $0.distribution = .fillEqually
+            $0.alignment = .fill
+        }
+    
+    private var page: Float = 1
+    private let pageCnt: Float = 2
     private let bag = DisposeBag()
     
     override func viewDidLoad() {
@@ -27,6 +44,7 @@ class UserInfoSettingVC: BaseViewController {
     
     override func configureView() {
         super.configureView()
+        configureNaviBar()
         configureContentView()
     }
     
@@ -37,7 +55,7 @@ class UserInfoSettingVC: BaseViewController {
     
     override func bindInput() {
         super.bindInput()
-        bindBtn()
+        bindNaviBtn()
     }
     
     override func bindOutput() {
@@ -49,8 +67,22 @@ class UserInfoSettingVC: BaseViewController {
 // MARK: - Configure
 
 extension UserInfoSettingVC {
+    private func configureNaviBar() {
+        naviBar.naviType = .push
+        naviBar.configureNaviBar(targetVC: self,
+                                 title: nil)
+        naviBar.configureRightBarBtn(targetVC: self,
+                                     title: "다음",
+                                     titleColor: .gray300)
+        naviBar.configureBackBtn(targetVC: self)
+    }
+    
     private func configureContentView() {
-        view.addSubviews([tmpBtn])
+        view.addSubviews([progressView,
+                          baseScrollView])
+        baseScrollView.addSubview(baseStackView)
+        
+        progressView.progress = page / pageCnt
     }
 }
 
@@ -58,8 +90,20 @@ extension UserInfoSettingVC {
 
 extension UserInfoSettingVC {
     private func configureLayout() {
-        tmpBtn.snp.makeConstraints {
-            $0.center.equalToSuperview()
+        progressView.snp.makeConstraints {
+            $0.top.equalTo(naviBar.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(2)
+        }
+        
+        baseScrollView.snp.makeConstraints {
+            $0.top.equalTo(progressView.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(view.keyboardLayoutGuide.snp.top)
+        }
+        
+        baseStackView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
 }
@@ -67,15 +111,28 @@ extension UserInfoSettingVC {
 // MARK: - Input
 
 extension UserInfoSettingVC {
-    private func bindBtn() {
-        tmpBtn.rx.tap
+    private func bindNaviBtn() {
+        naviBar.backBtn.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                // TODO: - 서버 연결 후 결과값으로 수정
-                UserDefaults.standard.set("tempToken", forKey: UserDefaults.Keys.refreshToken)
-                UserDefaults.standard.set("희재횽아짱", forKey: UserDefaults.Keys.nickname)
-                self.setTBCtoRootVC()
+                self.page -= 1
+                self.page != 0
+                ? self.setPage(self.page)
+                : self.dismissVC()
+                print(self.page)
+            })
+            .disposed(by: bag)
+        
+        naviBar.rightBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.page += 1
+                self.page != self.pageCnt + 1
+                ? self.setPage(self.page)
+                : self.setTBCtoRootVC()
+                print(self.page)
             })
             .disposed(by: bag)
     }
@@ -85,4 +142,13 @@ extension UserInfoSettingVC {
 
 extension UserInfoSettingVC {
     
+}
+
+// MARK: - Custom Methods
+
+extension UserInfoSettingVC {
+    private func setPage(_ page: Float) {
+        baseScrollView.setContentOffset(CGPoint(x: screenWidth * CGFloat(page), y: 0), animated: true)
+        progressView.progress = page / pageCnt
+    }
 }
