@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             window?.rootViewController = OnboardingVC()
         } else if UserDefaults.standard.string(forKey: UserDefaults.Keys.refreshToken) == nil {
             // 신규 유저
-            window?.rootViewController = LoginVC()
+            window?.rootViewController = LoginNC()
         } else {
             // 로그인 이력이 있는(자체 토큰을 가지고 있는) 유저
             window?.rootViewController = NEMODUTBC()

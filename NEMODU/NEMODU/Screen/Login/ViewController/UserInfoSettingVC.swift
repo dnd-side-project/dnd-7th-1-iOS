@@ -75,6 +75,9 @@ extension UserInfoSettingVC {
                                      title: "다음",
                                      titleColor: .gray300)
         naviBar.configureBackBtn(targetVC: self)
+        naviBar.backBtn.removeTarget(nil,
+                                     action: nil,
+                                     for: .allEvents)
     }
     
     private func configureContentView() {
@@ -119,8 +122,7 @@ extension UserInfoSettingVC {
                 self.page -= 1
                 self.page != 0
                 ? self.setPage(self.page)
-                : self.dismissVC()
-                print(self.page)
+                : self.popVC()
             })
             .disposed(by: bag)
         
@@ -132,7 +134,6 @@ extension UserInfoSettingVC {
                 self.page != self.pageCnt + 1
                 ? self.setPage(self.page)
                 : self.setTBCtoRootVC()
-                print(self.page)
             })
             .disposed(by: bag)
     }

@@ -274,6 +274,6 @@ extension OnboardingVC {
         UserDefaults.standard.set("No", forKey: UserDefaults.Keys.isFirstAccess)
         
         guard let ad = UIApplication.shared.delegate as? AppDelegate else { return }
-        ad.window?.rootViewController = LoginVC()
+        ad.window?.rootViewController = LoginNC()
     }
 }

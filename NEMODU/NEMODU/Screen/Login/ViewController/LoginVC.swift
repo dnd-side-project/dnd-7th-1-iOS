@@ -88,16 +88,6 @@ extension LoginVC {
     }
 }
 
-// MARK: - Custom Methods
-
-extension LoginVC {
-    private func presentUserInfoSettingVC() {
-        let userInfoSettingVC = UserInfoSettingVC()
-        userInfoSettingVC.modalPresentationStyle = .fullScreen
-        self.present(userInfoSettingVC, animated: true)
-    }
-}
-
 // MARK: - Input
 
 extension LoginVC {
@@ -122,7 +112,7 @@ extension LoginVC {
                 guard let self = self else { return }
                 isOriginUser
                 ? self.setTBCtoRootVC()
-                : self.presentUserInfoSettingVC()
+                : self.navigationController?.pushViewController(UserInfoSettingVC(), animated: true)
             })
             .disposed(by: bag)
     }
