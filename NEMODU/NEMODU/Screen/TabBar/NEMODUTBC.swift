@@ -39,7 +39,7 @@ extension NEMODUTBC {
         // 탭 구성
         let challengeRankingTab = makeTabVC(vc: ChallengeRankingNC(), tabBarTitle: "챌린지/랭킹", tabBarImage: "TabBarIcon/challengeRanking" , tabBarSelectedImage: "TabBarIcon/challengeRanking_fill")
         let mapTab = makeTabVC(vc: MainVC(), tabBarTitle: "지도", tabBarImage: "TabBarIcon/map", tabBarSelectedImage: "TabBarIcon/map_fill")
-        let mypageTab = makeTabVC(vc: MypageVC(), tabBarTitle: "MY", tabBarImage: "TabBarIcon/mypage", tabBarSelectedImage: "TabBarIcon/mypage_fill")
+        let mypageTab = makeTabVC(vc: MypageNC(), tabBarTitle: "MY", tabBarImage: "TabBarIcon/mypage", tabBarSelectedImage: "TabBarIcon/mypage_fill")
         
         let tabs =  [challengeRankingTab, mapTab, mypageTab]
         

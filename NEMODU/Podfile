@@ -21,4 +21,5 @@ target 'NEMODU' do
   pod 'DynamicBottomSheet'
   pod 'UITextView+Placeholder'
   pod 'lottie-ios'
+  pod 'FSCalendar'
 end

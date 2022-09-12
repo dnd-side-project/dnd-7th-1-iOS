@@ -11,6 +11,11 @@ import RxSwift
 
 protocol WalkingViewModelOutput: Lodable {
     var blocksCnt: PublishRelay<Int> { get }
+    var myBlocksVisible: BehaviorRelay<Bool> { get }
+    var friendVisible: BehaviorRelay<Bool> { get }
+    var myBlocks: PublishRelay<UserBlockResponseModel> { get }
+    var friendBlocks: PublishRelay<[UserBlockResponseModel]> { get }
+    var challengeFriendBlocks: PublishRelay<[ChallengeBlockResponseModel]> { get }
 }
 
 final class WalkingVM: BaseViewModel {
@@ -34,8 +39,12 @@ final class WalkingVM: BaseViewModel {
             .map { _ in
                 return 1
             }
-        
+        var myBlocksVisible = BehaviorRelay<Bool>(value: false)
+        var friendVisible = BehaviorRelay<Bool>(value: false)
         var blocksCnt = PublishRelay<Int>()
+        var myBlocks = PublishRelay<UserBlockResponseModel>()
+        var friendBlocks = PublishRelay<[UserBlockResponseModel]>()
+        var challengeFriendBlocks = PublishRelay<[ChallengeBlockResponseModel]>()
     }
     
     // MARK: - Init
@@ -69,21 +78,29 @@ extension WalkingVM: Output {
 // MARK: - Networking
 
 extension WalkingVM {
-    // TODO: - UserDefaults 수정
     func getBlocksCnt() {
-        let nickname = "NickA"
+        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
         let path = "record/start?nickname=\(nickname)"
-        let resource = urlResource<BlocksCntResponseModel>(path: path)
+        let resource = urlResource<MainMapResponseModel>(path: path)
         
         apiSession.getRequest(with: resource)
             .withUnretained(self)
             .subscribe(onNext: { owner, result in
-                dump(result)
                 switch result {
                 case .failure(let error):
                     owner.apiError.onNext(error)
                 case .success(let data):
-                    owner.output.blocksCnt.accept(data.areaNumber)
+                    owner.output.myBlocksVisible.accept(data.isShowMine)
+                    owner.output.friendVisible.accept(data.isShowFriend)
+                    if let userMatrices = data.userMatrices {
+                        owner.output.myBlocks.accept(userMatrices)
+                    }
+                    if let friendMatrices = data.friendMatrices {
+                        owner.output.friendBlocks.accept(friendMatrices)
+                    }
+                    if let challengeMatrices = data.challengeMatrices {
+                        owner.output.challengeFriendBlocks.accept(challengeMatrices)
+                    }
                 }
             })
             .disposed(by: bag)

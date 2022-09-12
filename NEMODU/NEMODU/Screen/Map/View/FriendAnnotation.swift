@@ -20,6 +20,8 @@ class FriendAnnotation: NSObject, MKAnnotation {
     
     var challengeCnt: Int?
     
+    var isEnabled: Bool?
+    
     init(coordinate: CLLocationCoordinate2D) {
         self.coordinate = coordinate
         super.init()

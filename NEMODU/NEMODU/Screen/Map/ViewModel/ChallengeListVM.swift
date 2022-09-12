@@ -69,7 +69,7 @@ extension ChallengeListVM: Output {
 
 extension ChallengeListVM {
     func getProceedingChallengeList() {
-        let nickname = "NickA"
+        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
         let path = "challenge/progress?nickname=\(nickname)"
         let resource = urlResource<[ChallengeElementResponseModel]>(path: path)
         

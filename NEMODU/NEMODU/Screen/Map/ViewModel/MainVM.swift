@@ -9,6 +9,9 @@ import RxCocoa
 import RxSwift
 
 protocol MainViewModelOutput: Lodable {
+    var myBlocksVisible: BehaviorRelay<Bool> { get }
+    var friendVisible: BehaviorRelay<Bool> { get }
+    var myLocationVisible: BehaviorRelay<Bool> { get }
     var challengeCnt: PublishRelay<Int> { get }
     var myBlocks: PublishRelay<UserBlockResponseModel> { get }
     var friendBlocks: PublishRelay<[UserBlockResponseModel]> { get }
@@ -30,6 +33,9 @@ final class MainVM: BaseViewModel {
     
     struct Output: MainViewModelOutput {
         var loading = BehaviorRelay<Bool>(value: false)
+        var myBlocksVisible = BehaviorRelay<Bool>(value: false)
+        var friendVisible = BehaviorRelay<Bool>(value: false)
+        var myLocationVisible = BehaviorRelay<Bool>(value: false)
         var challengeCnt = PublishRelay<Int>()
         var myBlocks = PublishRelay<UserBlockResponseModel>()
         var friendBlocks = PublishRelay<[UserBlockResponseModel]>()
@@ -68,8 +74,7 @@ extension MainVM: Output {
 
 extension MainVM {
     func getAllBlocks() {
-        // TODO: - UserDefaults 수정
-        let nickname = "NickA"
+        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
         let path = "user/home?nickname=\(nickname)"
         let resource = urlResource<MainMapResponseModel>(path: path)
         
@@ -80,7 +85,10 @@ extension MainVM {
                 case .failure(let error):
                     owner.apiError.onNext(error)
                 case .success(let data):
-                    owner.output.challengeCnt.accept(data.challengesNumber)
+                    owner.output.myBlocksVisible.accept(data.isShowMine)
+                    owner.output.friendVisible.accept(data.isShowFriend)
+                    owner.output.myLocationVisible.accept(data.isPublicRecord)
+                    owner.output.challengeCnt.accept(data.challengesNumber ?? 0)
                     if let userMatrices = data.userMatrices {
                         owner.output.myBlocks.accept(userMatrices)
                     }

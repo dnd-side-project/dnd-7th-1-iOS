@@ -42,6 +42,14 @@ class MainVC: BaseViewController {
             $0.clipsToBounds = true
         }
     
+    private var infoMessage = UILabel()
+        .then {
+            $0.text = "일주일마다 칸이 리셋됩니다."
+            $0.font = .headline2
+            $0.textColor = .gray800
+            $0.textAlignment = .center
+        }
+    
     private var startWalkBtn = UIButton()
         .then {
             $0.backgroundColor = .secondary
@@ -49,7 +57,7 @@ class MainVC: BaseViewController {
             $0.tintColor = .main
             $0.setTitleColor(.main, for: .normal)
             $0.setTitle("기록 시작하기  ", for: .normal)
-            $0.setImage(UIImage(systemName: "chevron.right"), for: .normal)
+            $0.setImage(UIImage(named: "arrow_right")?.withRenderingMode(.alwaysTemplate), for: .normal)
             $0.layer.cornerRadius = 24
             $0.semanticContentAttribute = .forceRightToLeft
         }
@@ -61,6 +69,8 @@ class MainVC: BaseViewController {
             $0.textColor = .gray800
         }
     
+    private let refreshBtn = UIButton()
+    
     private let naviBar = NavigationBar()
     private let viewModel = MainVM()
     private let bag = DisposeBag()
@@ -70,10 +80,16 @@ class MainVC: BaseViewController {
         viewModel.getAllBlocks()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        deselectAnnotation()
+    }
+    
     override func configureView() {
         super.configureView()
         configureMainView()
         configureNaviBar()
+        mapVC.setUserLocationAnimation(visible: false)
     }
     
     override func layoutView() {
@@ -92,6 +108,8 @@ class MainVC: BaseViewController {
         bindMyBlocks()
         bindFriendBlocks()
         bindChallengeFriendBlocks()
+        bindVisible()
+        bindMapGesture()
     }
     
 }
@@ -101,20 +119,24 @@ class MainVC: BaseViewController {
 extension MainVC {
     private func configureMainView() {
         addChild(mapVC)
-        view.addSubviews([mapVC.view, blocksCnt, filterBtn, challengeListBtn, startWalkBtn])
+        view.addSubviews([mapVC.view,
+                          blocksCnt,
+                          filterBtn,
+                          challengeListBtn,
+                          infoMessage,
+                          startWalkBtn,
+                          refreshBtn])
         challengeListBtn.addSubview(challengeCnt)
     }
     
     private func configureNaviBar() {
         view.addSubview(naviBar)
-        let month = Calendar.current.component(.month, from: Date.now)
-        let week = Calendar.current.component(.weekOfMonth, from: Date.now)
-        naviBar.configureNaviBar(targetVC: self, title: "\(month)월 \(week)주차")
+        naviBar.configureNaviBar(targetVC: self, title: "이번 주 기록")
         naviBar.setTitleFont(font: .title2)
     }
     
     private func configureBlocksCnt(_ cnt: Int) {
-        blocksCnt.text = "현재 나의 영역: \(cnt)칸"
+        blocksCnt.text = "현재 나의 영역: \(cnt.insertComma)칸"
     }
     
     private func configureChallengeListBtn(cnt: Int) {
@@ -122,12 +144,23 @@ extension MainVC {
         challengeCnt.text = String(cnt)
     }
     
-    private func drawBlockArea(blocks: [Matrix], blockColor: UIColor) {
+    private func drawBlockArea(blocks: [Matrix], owner: BlocksType, blockColor: UIColor) {
         blocks.forEach {
             mapVC.drawBlock(latitude: $0.latitude,
                             longitude: $0.longitude,
+                            owner: owner,
                             color: blockColor)
         }
+    }
+    
+    private func setMyArea(visible: Bool) {
+        mapVC.setOverlayVisible(of: .mine, visible: visible)
+        mapVC.setMyAnnotation(visible: visible)
+    }
+    
+    private func setFriendsArea(visible: Bool) {
+        mapVC.setOverlayVisible(of: .friends, visible: visible)
+        mapVC.setFriendsAnnotation(visible: visible)
     }
 }
 
@@ -163,6 +196,11 @@ extension MainVC {
             $0.width.height.equalTo(20)
         }
         
+        infoMessage.snp.makeConstraints {
+            $0.bottom.equalTo(startWalkBtn.snp.top).offset(-16)
+            $0.centerX.equalToSuperview()
+        }
+        
         startWalkBtn.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(24)
             $0.trailing.equalToSuperview().offset(-24)
@@ -173,6 +211,13 @@ extension MainVC {
         blocksCnt.snp.makeConstraints {
             $0.top.equalTo(naviBar.snp.bottom)
             $0.centerX.equalToSuperview()
+        }
+        
+        // TODO: - 임시 디자인 적용
+        refreshBtn.snp.makeConstraints {
+            $0.width.height.equalTo(100)
+            $0.leading.equalToSuperview()
+            $0.top.equalTo(view.safeAreaLayoutGuide)
         }
     }
 }
@@ -187,6 +232,10 @@ extension MainVC {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 let filterBottomSheet = MapFilterBottomSheet()
+                filterBottomSheet.configureBtnStatus(mainVM: self.viewModel,
+                                                     myBlocks: self.viewModel.output.myBlocksVisible.value,
+                                                     friends: self.viewModel.output.friendVisible.value,
+                                                     myLocation: self.viewModel.output.myLocationVisible.value)
                 self.present(filterBottomSheet, animated: true)
             })
             .disposed(by: bag)
@@ -211,12 +260,35 @@ extension MainVC {
                 self.present(challengeBottomSheet, animated: true)
             })
             .disposed(by: bag)
+        
+        // 새로고침 버튼
+        refreshBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.mapVC.mapView.removeOverlays(self.mapVC.mapView.overlays)
+                self.mapVC.mapView.removeAnnotations(self.mapVC.mapView.annotations)
+                self.viewModel.getAllBlocks()
+            })
+            .disposed(by: bag)
     }
 }
 
 // MARK: - Output
 
 extension MainVC {
+    /// span 값에 따라 visible 상태가 적용 안되는 경우를 고려하여 scroll시마다 visible 상태 적용
+    private func bindMapGesture() {
+        mapVC.mapView.rx.anyGesture(.pan(), .pinch())
+            .when(.began)
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.setMyArea(visible: self.viewModel.output.myBlocksVisible.value)
+                self.setFriendsArea(visible: self.viewModel.output.friendVisible.value)
+            })
+            .disposed(by: bag)
+    }
+    
     private func bindChallengeCnt() {
         viewModel.output.challengeCnt
             .subscribe(onNext: { [weak self] cnt in
@@ -238,7 +310,10 @@ extension MainVC {
                 self.mapVC.addMyAnnotation(coordinate: [latitude, longitude],
                                            profileImage: UIImage(named: "defaultThumbnail")!)
                 self.drawBlockArea(blocks: user.matrices ?? [],
+                                   owner: .mine,
                                    blockColor: .main40)
+                
+                self.setMyArea(visible: self.viewModel.output.myBlocksVisible.value)
             })
             .disposed(by: bag)
     }
@@ -254,10 +329,14 @@ extension MainVC {
                                                    profileImage: UIImage(named: "defaultThumbnail")!,
                                                    nickname: $0.nickname,
                                                    color: .main,
-                                                   challengeCnt: 0)
+                                                   challengeCnt: 0,
+                                                   isEnabled: true)
                     self.drawBlockArea(blocks: $0.matrices ?? [],
+                                       owner: .friends,
                                        blockColor: .gray25)
                 }
+                
+                self.setFriendsArea(visible: self.viewModel.output.friendVisible.value)
             })
             .disposed(by: bag)
     }
@@ -271,11 +350,41 @@ extension MainVC {
                                                    profileImage: UIImage(named: "defaultThumbnail")!,
                                                    nickname: $0.nickname,
                                                    color: ChallengeColorType(rawValue: $0.challengeColor)?.primaryColor ?? .main,
-                                                   challengeCnt: $0.challengeNumber)
+                                                   challengeCnt: $0.challengeNumber,
+                                                   isEnabled: true)
                     self.drawBlockArea(blocks: $0.matrices,
+                                       owner: .friends,
                                        blockColor: ChallengeColorType(rawValue: $0.challengeColor)?.blockColor ?? .gray25)
                 }
+                
+                self.setFriendsArea(visible: self.viewModel.output.friendVisible.value)
             })
             .disposed(by: bag)
+    }
+    
+    private func bindVisible() {
+        viewModel.output.myBlocksVisible
+            .asDriver()
+            .drive(onNext: { [weak self] isVisible in
+                guard let self = self else { return }
+                self.setMyArea(visible: isVisible)
+            })
+            .disposed(by: bag)
+        
+        viewModel.output.friendVisible
+            .asDriver()
+            .drive(onNext: { [weak self] isVisible in
+                guard let self = self else { return }
+                self.setFriendsArea(visible: isVisible)
+            })
+            .disposed(by: bag)
+        
+        // TODO: - myLocationVisible MVP2 부터 개발!!
+    }
+    
+    private func deselectAnnotation() {
+        mapVC.mapView.selectedAnnotations.forEach {
+            mapVC.mapView.deselectAnnotation($0, animated: true)
+        }
     }
 }

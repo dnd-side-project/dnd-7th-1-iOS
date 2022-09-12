@@ -11,7 +11,7 @@ struct MainMapResponseModel: Codable {
     let userMatrices: UserBlockResponseModel?
     let friendMatrices: [UserBlockResponseModel]?
     let challengeMatrices: [ChallengeBlockResponseModel]?
-    let challengesNumber: Int
+    let challengesNumber: Int?
     let isShowMine: Bool
     let isShowFriend: Bool
     let isPublicRecord: Bool

@@ -26,8 +26,8 @@ class NemoduTextView: BaseView {
     
     private let memoCntLabel = UILabel()
         .then {
-            $0.font = .caption1
-            $0.textColor = .gray600
+            $0.font = .body3
+            $0.textColor = .gray500
             $0.textAlignment = .right
         }
     
@@ -55,6 +55,17 @@ extension NemoduTextView {
     private func configureContentView() {
         addSubviews([tv, memoCntLabel])
         memoCntLabel.text = "0 / \(maxTextCnt)"
+    }
+    
+    /// setTextViewToViewer - textView를 드래그 불가 뷰어용으로 설정 & cnt 라벨 hidden
+    func setTextViewToViewer() {
+        tv.setTextViewToViewer()
+        memoCntLabel.isHidden = true
+        
+        memoCntLabel.snp.removeConstraints()
+        tv.snp.makeConstraints {
+            $0.bottom.equalToSuperview()
+        }
     }
 }
 

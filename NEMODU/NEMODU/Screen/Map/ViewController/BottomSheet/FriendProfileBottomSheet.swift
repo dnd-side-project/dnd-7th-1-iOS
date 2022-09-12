@@ -123,7 +123,13 @@ class FriendProfileBottomSheet: DynamicBottomSheetViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        presentingViewController?.viewWillDisappear(true)
         getFriendProfile()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        presentingViewController?.viewWillAppear(true)
     }
     
     override func configureView() {
@@ -192,9 +198,9 @@ extension FriendProfileBottomSheet {
         lastAccessTime.text = "최근 활동 : \(profile.lasted.relativeDateTime())"
         profileMessage.text = profile.intro
         addFriendBtn.isSelected = profile.isFriend
-        recordStackView.setRecordData(value1: profile.areas,
-                                      value2: profile.allMatrixNumber,
-                                      value3: profile.rank)
+        recordStackView.setRecordData(value1: profile.areas.insertComma,
+                                      value2: profile.allMatrixNumber.insertComma,
+                                      value3: "\(profile.rank)")
         recordStackView.secondView.recordValue.insertComma()
     }
 }

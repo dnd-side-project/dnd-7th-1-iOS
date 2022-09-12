@@ -14,18 +14,22 @@ struct RecordDataRequest {
     var blocks: [[Double]]
     var stepCount: Int
     var message: String?
+    let started: String
+    let ended: String
 }
 
 extension RecordDataRequest {
     var recordParam: Parameters {
-        // TODO: UserDefaults 수정
+        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
         return [
-            "nickname": "NickA",
+            "nickname": nickname,
             "distance": distance,
             "exerciseTime": exerciseTime,
             "matrices": blocks,
             "stepCount": stepCount,
-            "message": message ?? ""
+            "message": message ?? "",
+            "started": started,
+            "ended": ended
         ]
     }
 }

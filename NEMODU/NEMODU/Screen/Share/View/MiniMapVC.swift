@@ -67,10 +67,10 @@ extension MiniMapVC {
         let sortedLatitude = blocks.sorted(by: { $0[0] < $1[0] })
         let sortedLongitude = blocks.sorted(by: { $0[1] < $1[1] })
         
-        let spanX = Int((sortedLatitude.last![0] - sortedLatitude.first![0]) / blockSizePoint)
-        let spanY = Int((sortedLongitude.last![1] - sortedLongitude.first![1]) / blockSizePoint)
+        let spanX = Int((sortedLatitude.last![0] - sortedLatitude.first![0]) / latitudeBlockSizePoint)
+        let spanY = Int((sortedLongitude.last![1] - sortedLongitude.first![1]) / longitudeBlockSizePoint)
         var span = Double(spanX > spanY ? spanX : spanY)
-        span = (span + 3) * blockSizePoint
+        span = (span + 3) * longitudeBlockSizePoint
         
         _ = goLocation(latitudeValue: sortedLatitude[blocks.count/2][0],
                        longitudeValue: sortedLongitude[blocks.count/2][1],
@@ -79,6 +79,7 @@ extension MiniMapVC {
         blocks.forEach {
             drawBlock(latitude: $0[0],
                       longitude: $0[1],
+                      owner: .mine,
                       color: .main40)
         }
     }
