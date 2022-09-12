@@ -91,10 +91,10 @@ extension LoginVC {
 // MARK: - Custom Methods
 
 extension LoginVC {
-    private func presentNicknameVC() {
-        let nicknameVC = NicknameVC()
-        nicknameVC.modalPresentationStyle = .fullScreen
-        self.present(nicknameVC, animated: true)
+    private func presentUserInfoSettingVC() {
+        let userInfoSettingVC = UserInfoSettingVC()
+        userInfoSettingVC.modalPresentationStyle = .fullScreen
+        self.present(userInfoSettingVC, animated: true)
     }
 }
 
@@ -122,7 +122,7 @@ extension LoginVC {
                 guard let self = self else { return }
                 isOriginUser
                 ? self.setTBCtoRootVC()
-                : self.presentNicknameVC()
+                : self.presentUserInfoSettingVC()
             })
             .disposed(by: bag)
     }

@@ -1,5 +1,5 @@
 //
-//  NicknameVC.swift
+//  UserInfoSettingVC.swift
 //  NEMODU
 //
 //  Created by 황윤경 on 2022/09/08.
@@ -12,7 +12,7 @@ import RxSwift
 import SnapKit
 import Then
 
-class NicknameVC: BaseViewController {
+class UserInfoSettingVC: BaseViewController {
     private let tmpBtn = UIButton()
         .then {
             $0.setTitle("회원가입 완료", for: .normal)
@@ -48,7 +48,7 @@ class NicknameVC: BaseViewController {
 
 // MARK: - Configure
 
-extension NicknameVC {
+extension UserInfoSettingVC {
     private func configureContentView() {
         view.addSubviews([tmpBtn])
     }
@@ -56,7 +56,7 @@ extension NicknameVC {
 
 // MARK: - Layout
 
-extension NicknameVC {
+extension UserInfoSettingVC {
     private func configureLayout() {
         tmpBtn.snp.makeConstraints {
             $0.center.equalToSuperview()
@@ -66,7 +66,7 @@ extension NicknameVC {
 
 // MARK: - Input
 
-extension NicknameVC {
+extension UserInfoSettingVC {
     private func bindBtn() {
         tmpBtn.rx.tap
             .asDriver()
@@ -83,6 +83,6 @@ extension NicknameVC {
 
 // MARK: - Output
 
-extension NicknameVC {
+extension UserInfoSettingVC {
     
 }
