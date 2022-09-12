@@ -32,9 +32,12 @@ class NicknameVC: BaseViewController {
         .then {
             $0.addLeftPadding()
             $0.layer.cornerRadius = 8
+            $0.layer.borderWidth = 1
+            $0.layer.borderColor = UIColor.clear.cgColor
             $0.backgroundColor = .gray50
             $0.font = .body3
             $0.textColor = .gray900
+            $0.returnKeyType = .done
             $0.attributedPlaceholder = NSAttributedString(string: "공백없이 2~6 글자를 입력해주세요",
                                                           attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray500])
         }
@@ -56,6 +59,24 @@ class NicknameVC: BaseViewController {
             $0.textAlignment = .right
         }
     
+    private let validationStackView = UIStackView()
+        .then {
+            $0.axis = .horizontal
+            $0.alignment = .center
+            $0.spacing = 4
+        }
+    
+    private let validationLabel = UILabel()
+        .then {
+            $0.font = .caption1
+        }
+    
+    private let validationImageView = UIImageView(frame: CGRect(origin: .zero,
+                                                                size: CGSize(width: 12, height: 12)))
+    
+    private let maxTextCnt = 6
+    private let bag = DisposeBag()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -72,10 +93,13 @@ class NicknameVC: BaseViewController {
     
     override func bindInput() {
         super.bindInput()
+        checkNicknameValidation()
     }
     
     override func bindOutput() {
         super.bindOutput()
+        bindNicknameTextField()
+        bindTextFieldActivate()
     }
     
 }
@@ -88,7 +112,21 @@ extension NicknameVC {
                           messageLabel,
                           nicknameTextField,
                           checkNicknameBtn,
-                          nicknameCntLabel])
+                          nicknameCntLabel,
+                          validationStackView])
+        [validationImageView, validationLabel].forEach {
+            validationStackView.addArrangedSubview($0)
+        }
+        
+        nicknameTextField.delegate = self
+    }
+    
+    private func setValidationView(_ nicknameType: NicknameType) {
+        self.validationStackView.isHidden = false
+        validationLabel.text = nicknameType.message
+        validationLabel.textColor = nicknameType.tintColor
+        validationImageView.image = nicknameType.image
+        nicknameTextField.layer.borderColor = nicknameType.tintColor.cgColor
     }
 }
 
@@ -126,17 +164,85 @@ extension NicknameVC {
             $0.top.equalTo(checkNicknameBtn.snp.bottom).offset(8)
             $0.trailing.equalToSuperview().offset(-16)
         }
+        
+        validationStackView.snp.makeConstraints {
+            $0.centerY.equalTo(nicknameCntLabel.snp.centerY)
+            $0.leading.equalToSuperview().offset(16)
+            $0.height.equalTo(14)
+        }
     }
 }
 
 // MARK: - Input
 
 extension NicknameVC {
-    
+    private func checkNicknameValidation() {
+        checkNicknameBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self,
+                      let nicknameCnt = self.nicknameTextField.text?.count
+                else { return }
+                nicknameCnt < 2 || nicknameCnt > 6
+                ? self.setValidationView(.countError)
+                : print()// TODO: - 서버에서 중복된 닉네임인지 확인
+            })
+            .disposed(by: bag)
+    }
 }
 
 // MARK: - Output
 
 extension NicknameVC {
+    private func bindNicknameTextField() {
+        nicknameTextField.rx.text
+            .asDriver(onErrorJustReturn: "")
+            .drive(onNext: { [weak self] text in
+                guard let self = self, let text = text else { return }
+                self.validationStackView.isHidden = true
+                if text.count > self.maxTextCnt {
+                    self.nicknameTextField.text?.removeLast()
+                    self.setValidationView(.countError)
+                } else {
+                    self.nicknameCntLabel.text = "\(text.count) / \(self.maxTextCnt)"
+                }
+            })
+            .disposed(by: bag)
+        
+        nicknameTextField.rx.text
+            .changed
+            .distinctUntilChanged()
+            .asDriver(onErrorJustReturn: "")
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.nicknameTextField.layer.borderColor = UIColor.secondary.cgColor
+            })
+            .disposed(by: bag)
+    }
     
+    private func bindTextFieldActivate() {
+        keyboardWillShow
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.nicknameTextField.layer.borderColor = UIColor.secondary.cgColor
+            })
+            .disposed(by: bag)
+        
+        keyboardWillHide
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.nicknameTextField.layer.borderColor = UIColor.clear.cgColor
+            })
+            .disposed(by: bag)
+    
+    }
+}
+
+// MARK: - UITextFieldDelegate
+
+extension NicknameVC: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
 }

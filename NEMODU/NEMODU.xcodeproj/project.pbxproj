@@ -25,6 +25,7 @@
 		23255A6628CF117E005D6D5A /* LoginNC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A6528CF117E005D6D5A /* LoginNC.swift */; };
 		23255A6A28CF12DB005D6D5A /* NicknameVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A6928CF12DB005D6D5A /* NicknameVC.swift */; };
 		23255A6C28CF1307005D6D5A /* AddFriendsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A6B28CF1307005D6D5A /* AddFriendsVC.swift */; };
+		23255A6E28CF3787005D6D5A /* NicknameType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A6D28CF3787005D6D5A /* NicknameType.swift */; };
 		232B89FF28C8BCAA00737F18 /* LoginVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232B89FE28C8BCAA00737F18 /* LoginVM.swift */; };
 		232F0B6328B6803C005C9A07 /* AlertVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232F0B6228B6803C005C9A07 /* AlertVC.swift */; };
 		232F0B6528B686C5005C9A07 /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232F0B6428B686C5005C9A07 /* AlertType.swift */; };
@@ -169,6 +170,7 @@
 		23255A6528CF117E005D6D5A /* LoginNC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginNC.swift; sourceTree = "<group>"; };
 		23255A6928CF12DB005D6D5A /* NicknameVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameVC.swift; sourceTree = "<group>"; };
 		23255A6B28CF1307005D6D5A /* AddFriendsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendsVC.swift; sourceTree = "<group>"; };
+		23255A6D28CF3787005D6D5A /* NicknameType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameType.swift; sourceTree = "<group>"; };
 		232B89FE28C8BCAA00737F18 /* LoginVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVM.swift; sourceTree = "<group>"; };
 		232F0B6228B6803C005C9A07 /* AlertVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertVC.swift; sourceTree = "<group>"; };
 		232F0B6428B686C5005C9A07 /* AlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertType.swift; sourceTree = "<group>"; };
@@ -733,6 +735,7 @@
 				23AB8F3228B5E5FA007E3A2F /* BlocksType.swift */,
 				232F0B6428B686C5005C9A07 /* AlertType.swift */,
 				2312519328B6943B00DF1C69 /* ToastType.swift */,
+				23255A6D28CF3787005D6D5A /* NicknameType.swift */,
 			);
 			path = Enum;
 			sourceTree = "<group>";
@@ -1166,6 +1169,7 @@
 				2348B4092892D2E5001095BC /* UIViewController+.swift in Sources */,
 				2312519428B6943B00DF1C69 /* ToastType.swift in Sources */,
 				3C992F1528AE61FC00D96E21 /* ListTypeMenuBarCV.swift in Sources */,
+				23255A6E28CF3787005D6D5A /* NicknameType.swift in Sources */,
 				23F5718828AA6DEE005F2E21 /* MyAnnotationView.swift in Sources */,
 				232F0B6328B6803C005C9A07 /* AlertVC.swift in Sources */,
 				23F5717728A92E38005F2E21 /* ProfileRecordView.swift in Sources */,
