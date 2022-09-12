@@ -23,7 +23,7 @@ class UserInfoSettingVC: BaseViewController {
     
     private let baseScrollView = UIScrollView()
         .then {
-            $0.isUserInteractionEnabled = false
+            $0.isScrollEnabled = false
             $0.showsHorizontalScrollIndicator = false
         }
     
