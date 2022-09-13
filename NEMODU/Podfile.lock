@@ -7,7 +7,6 @@ PODS:
     - RxSwift (~> 6.0)
     - SnapKit (~> 5.0)
     - Then (~> 2.0)
-  - FSCalendar (2.8.4)
   - lottie-ios (3.3.0)
   - RxCocoa (6.1.0):
     - RxRelay (= 6.1.0)
@@ -29,7 +28,6 @@ PODS:
 DEPENDENCIES:
   - Alamofire
   - DynamicBottomSheet
-  - FSCalendar
   - lottie-ios
   - RxCocoa (< 6.2.0)
   - RxDataSources (< 5.1.0)
@@ -44,7 +42,6 @@ SPEC REPOS:
     - Alamofire
     - Differentiator
     - DynamicBottomSheet
-    - FSCalendar
     - lottie-ios
     - RxCocoa
     - RxDataSources
@@ -59,7 +56,6 @@ SPEC CHECKSUMS:
   Alamofire: 87bd8c952f9a4454320fce00d9cc3de57bcadaf5
   Differentiator: e8497ceab83c1b10ca233716d547b9af21b9344d
   DynamicBottomSheet: b11ead81bf8ee494b26cbd16ff2312313e90d9e3
-  FSCalendar: 2d1d0d9398f12d439f55c1fe0f01525b151b8260
   lottie-ios: 6ac74dcc09904798f59b18cb3075c089d76be9ae
   RxCocoa: 5c51f02d562cbd94629f6c26cf0c80fe4ab8d343
   RxDataSources: aa47cc1ed6c500fa0dfecac5c979b723542d79cf
@@ -70,6 +66,6 @@ SPEC CHECKSUMS:
   Then: acfe0be7e98221c6204e12f8161459606d5d822d
   "UITextView+Placeholder": d7b0c400921f66523f3a85d74f774512e14f6502
 
-PODFILE CHECKSUM: fc1fdf6fd3c36b7c42c3e424d903f277e8927f99
+PODFILE CHECKSUM: 1b55da93b8f97dbf9708094a74de42f678a16f4d
 
 COCOAPODS: 1.11.3

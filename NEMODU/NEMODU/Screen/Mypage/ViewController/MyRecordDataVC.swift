@@ -12,7 +12,6 @@ import RxSwift
 import RxDataSources
 import SnapKit
 import Then
-import FSCalendar
 
 class MyRecordDataVC: BaseViewController {
     private let dateLabel = UILabel()
@@ -36,28 +35,16 @@ class MyRecordDataVC: BaseViewController {
                 .withTintColor(.main, renderingMode: .alwaysOriginal), for: .normal)
         }
     
-    private let calendar = FSCalendar()
+    private let calendarCV = UICollectionView(frame: .zero,
+                                              collectionViewLayout: UICollectionViewLayout())
         .then {
-            $0.locale = Locale(identifier: "ko_KR")
-            $0.headerHeight = 0
-            $0.weekdayHeight = 32
-            $0.firstWeekday = 2
-            $0.scope = .week
+            let layout = UICollectionViewFlowLayout()
+            layout.minimumLineSpacing = 12
+            layout.minimumInteritemSpacing = 8
+            layout.scrollDirection = .horizontal
             
-            $0.appearance.weekdayFont = .body3
-            $0.appearance.weekdayTextColor = .gray500
-            
-            $0.appearance.titleFont = .body1
-            $0.appearance.titleDefaultColor = .gray400
-            
-            $0.appearance.selectionColor = .clear
-            $0.appearance.titleSelectionColor = .black
-            
-            $0.appearance.titleTodayColor = .white
-            $0.appearance.todaySelectionColor = .main
-            $0.appearance.todayColor = .main
-            
-            $0.collectionView.isScrollEnabled = false
+            $0.collectionViewLayout = layout
+            $0.showsHorizontalScrollIndicator = false
         }
     
     private let calendarScopeBtn = UIButton()
@@ -103,9 +90,10 @@ class MyRecordDataVC: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.getMyRecordDataList(
-            with: MyRecordListRequestModel(start: viewModel.startDateFormatter(calendar.selectedDate ?? Date.now),
-                                           end: viewModel.endDateFormatter(calendar.selectedDate ?? Date.now)))
+        // TODO: - 화면이 나타날 때 선택된 날짜값으로 운동 데이터 목록 가져오기
+//        viewModel.getMyRecordDataList(
+//            with: MyRecordListRequestModel(start: viewModel.startDateFormatter(calendarCV.selectedDate ?? Date.now),
+//                                           end: viewModel.endDateFormatter(calendarCV.selectedDate ?? Date.now)))
     }
     
     override func configureView() {
@@ -147,16 +135,17 @@ extension MyRecordDataVC {
         view.addSubviews([dateLabel,
                           nextWeekBtn,
                           prevWeekBtn,
-                          calendar,
+                          calendarCV,
                           calendarScopeBtn,
                           recordListView])
         recordListView.addSubviews([recordTitle,
                                     noneMessage,
                                     recordTableView])
         
-        calendar.delegate = self
-        calendar.contentView.addSubview(calendarSelectStackView)
-        calendar.contentView.sendSubviewToBack(calendarSelectStackView)
+        // TODO: - calendarCV delegate 연결 & 주간 캘린더 선택 StackView 추가
+        calendarCV.delegate = self
+//        calendarCV.contentView.addSubview(calendarSelectStackView)
+//        calendarCV.contentView.sendSubviewToBack(calendarSelectStackView)
         
         recordTableView.register(MyRecordListTVC.self, forCellReuseIdentifier: MyRecordListTVC.className)
         recordTableView.delegate = self
@@ -197,19 +186,18 @@ extension MyRecordDataVC {
             $0.width.height.equalTo(24)
         }
         
-        calendar.snp.makeConstraints {
+        calendarCV.snp.makeConstraints {
             $0.top.equalTo(dateLabel.snp.bottom)
             $0.leading.equalToSuperview().offset(10)
             $0.trailing.equalToSuperview().offset(-10)
-            $0.height.equalTo(400)
         }
         
-        calendarSelectStackView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
+//        calendarSelectStackView.snp.makeConstraints {
+//            $0.edges.equalToSuperview()
+//        }
         
         calendarScopeBtn.snp.makeConstraints {
-            $0.top.equalTo(calendar.snp.bottom)
+            $0.top.equalTo(calendarCV.snp.bottom)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(32)
         }
@@ -245,7 +233,8 @@ extension MyRecordDataVC {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.viewModel.input.moveWeek.accept(1)
-                self.calendar.select(self.viewModel.input.selectedDay.value, scrollToDate: true)
+                // TODO: - 다음 달 선택
+//                self.calendarCV.select(self.viewModel.input.selectedDay.value, scrollToDate: true)
             })
             .disposed(by: bag)
         
@@ -254,7 +243,8 @@ extension MyRecordDataVC {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.viewModel.input.moveWeek.accept(-1)
-                self.calendar.select(self.viewModel.input.selectedDay.value, scrollToDate: true)
+                // TODO: - 이전 달 선택
+//                self.calendarCV.select(self.viewModel.input.selectedDay.value, scrollToDate: true)
             })
             .disposed(by: bag)
         
@@ -280,10 +270,10 @@ extension MyRecordDataVC {
                 // 선택 일자 배경 지정
                 self.calendarSelectStackView.setSelectDay(dayIndex: self.viewModel.setSelected(date: day))
                 
-                // 선택 일자 색 구별
-                self.calendar.appearance.titleSelectionColor
-                = self.viewModel.isToday(day)
-                ? .white : .black
+                // TODO: - 선택 일자 색 구별
+//                self.calendarCV.appearance.titleSelectionColor
+//                = self.viewModel.isToday(day)
+//                ? .white : .black
                 
                 // 일자별 tableView 연결
                 self.viewModel.getMyRecordDataList(
@@ -347,32 +337,44 @@ extension MyRecordDataVC: UITableViewDelegate {
     }
 }
 
-// MARK: - FSCalendarDelegate
+//// MARK: - FSCalendarDelegate
+//
+//extension MyRecordDataVC: FSCalendarDelegate {
+//    func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
+//        calendar.snp.updateConstraints {
+//            $0.height.equalTo(90)
+//        }
+//        self.view.layoutIfNeeded()
+//    }
+//    
+//    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+//        // 날짜 선택
+//        viewModel.input.selectedDay.accept(date)
+//    }
+//    
+//    // 미래 선택 불가능
+//    func calendar(_ calendar: FSCalendar, shouldSelect date: Date, at monthPosition: FSCalendarMonthPosition) -> Bool {
+//        !(date > .now)
+//    }
+//}
+//
+//// MARK: - FSCalendarDelegateAppearance
+//
+//extension MyRecordDataVC: FSCalendarDelegateAppearance {
+//    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
+//        if viewModel.isToday(date) { return .white }
+//        else { return date > .now ? .gray300 : .gray400}
+//    }
+//}
 
-extension MyRecordDataVC: FSCalendarDelegate {
-    func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
-        calendar.snp.updateConstraints {
-            $0.height.equalTo(90)
-        }
-        self.view.layoutIfNeeded()
-    }
-    
-    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        // 날짜 선택
-        viewModel.input.selectedDay.accept(date)
-    }
-    
-    // 미래 선택 불가능
-    func calendar(_ calendar: FSCalendar, shouldSelect date: Date, at monthPosition: FSCalendarMonthPosition) -> Bool {
-        !(date > .now)
-    }
-}
+// MARK: - UICollectionViewDelegate
 
-// MARK: - FSCalendarDelegateAppearance
-
-extension MyRecordDataVC: FSCalendarDelegateAppearance {
-    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
-        if viewModel.isToday(date) { return .white }
-        else { return date > .now ? .gray300 : .gray400}
+extension MyRecordDataVC: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = (screenWidth - 32) / 7 - 8
+        
+        return indexPath.section == 0
+        ? CGSize(width: width, height: 18)
+        : CGSize(width: width, height: width)
     }
 }
