@@ -109,8 +109,9 @@ class ChallengeContainerCVC : BaseCollectionViewCell {
         // TODO: 서버연결 - 임시 주석코드 지정
 //        let selectChallengeCreateVC = CreateWeekChallengeVC()
         
+        selectChallengeCreateVC.hidesBottomBarWhenPushed = true
+        
         let rootViewController = self.findViewController()
-        rootViewController?.hidesBottomBarWhenPushed = true
         rootViewController?.navigationController?.pushViewController(selectChallengeCreateVC, animated: true)
     }
     
