@@ -39,12 +39,13 @@ class MyRecordDataVC: BaseViewController {
                                               collectionViewLayout: UICollectionViewLayout())
         .then {
             let layout = UICollectionViewFlowLayout()
+            layout.sectionInset = UIEdgeInsets(top: 10, left: 4, bottom: 2, right: 4)
             layout.minimumLineSpacing = 12
             layout.minimumInteritemSpacing = 8
-            layout.scrollDirection = .horizontal
             
             $0.collectionViewLayout = layout
             $0.showsHorizontalScrollIndicator = false
+            $0.isPagingEnabled = true
         }
     
     private let calendarScopeBtn = UIButton()
@@ -96,6 +97,17 @@ class MyRecordDataVC: BaseViewController {
 //                                           end: viewModel.endDateFormatter(calendarCV.selectedDate ?? Date.now)))
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        let height = calendarCV.collectionViewLayout.collectionViewContentSize.height
+        
+        calendarCV.snp.makeConstraints {
+            $0.height.equalTo(height)
+        }
+        
+        self.view.layoutIfNeeded()
+    }
+    
     override func configureView() {
         super.configureView()
         configureNaviBar()
@@ -144,6 +156,9 @@ extension MyRecordDataVC {
         
         // TODO: - calendarCV delegate 연결 & 주간 캘린더 선택 StackView 추가
         calendarCV.delegate = self
+        calendarCV.dataSource = self
+        calendarCV.register(WeekCVC.self, forCellWithReuseIdentifier: WeekCVC.className)
+        calendarCV.register(DayCVC.self, forCellWithReuseIdentifier: DayCVC.className)
 //        calendarCV.contentView.addSubview(calendarSelectStackView)
 //        calendarCV.contentView.sendSubviewToBack(calendarSelectStackView)
         
@@ -188,8 +203,8 @@ extension MyRecordDataVC {
         
         calendarCV.snp.makeConstraints {
             $0.top.equalTo(dateLabel.snp.bottom)
-            $0.leading.equalToSuperview().offset(10)
-            $0.trailing.equalToSuperview().offset(-10)
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview().offset(-16)
         }
         
 //        calendarSelectStackView.snp.makeConstraints {
@@ -373,8 +388,43 @@ extension MyRecordDataVC: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = (screenWidth - 32) / 7 - 8
         
-        return indexPath.section == 0
-        ? CGSize(width: width, height: 18)
-        : CGSize(width: width, height: width)
+        switch indexPath.section {
+        case 0:
+            return CGSize(width: width, height: 18)
+        default:
+            return CGSize(width: width, height: width)
+        }
+    }
+}
+
+// MARK: - UICollectionViewDataSource
+
+extension MyRecordDataVC: UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        2
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        switch section {
+        case 0:
+            return 7
+        default:
+            return 42
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let weekCell = collectionView.dequeueReusableCell(withReuseIdentifier: WeekCVC.className, for: indexPath) as? WeekCVC,
+              let dayCell = collectionView.dequeueReusableCell(withReuseIdentifier: DayCVC.className, for: indexPath) as? DayCVC
+        else { fatalError() }
+        
+        switch indexPath.section {
+        case 0:
+            weekCell.configureCell(viewModel.weekTitle[indexPath.row])
+            return weekCell
+        default:
+            dayCell.configureCell(viewModel.days[indexPath.row])
+            return dayCell
+        }
     }
 }
