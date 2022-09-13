@@ -80,7 +80,7 @@ extension EnterVC {
                           logoImageView,
                           enterMessgae,
                           enterBtn])
-        enterMessgae.text = "반가워요 \(String(describing: UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname)))님,\n네모두에 오신 것을\n환영합니다!\n\n함께 움직이며 나의 활동반경을\n네모들로 채워나가 보아요!"
+        enterMessgae.text = "반가워요 \(String(describing: UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) ?? ""))님,\n네모두에 오신 것을\n환영합니다!\n\n함께 움직이며 나의 활동반경을\n네모들로 채워나가 보아요!"
     }
 }
 
