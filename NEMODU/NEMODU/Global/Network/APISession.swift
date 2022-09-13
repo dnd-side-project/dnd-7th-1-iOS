@@ -85,10 +85,10 @@ struct APISession: APIService {
         Observable<Result<T, APIError>>.create { observer in
             guard let accessToken = UserDefaults.standard.string(forKey: UserDefaults.Keys.accessToken) else { fatalError() }
             
-            let headers: HTTPHeaders = [
-                "Content-Type": "application/json",
-                "Authorization": accessToken
+            var headers: HTTPHeaders = [
+                "Content-Type": "application/json"
             ]
+            headers.add(.authorization(accessToken))
             
             let task = AF.request(urlResource.resultURL,
                                   encoding: URLEncoding.default,
@@ -115,10 +115,10 @@ struct APISession: APIService {
         Observable<Result<T, APIError>>.create { observer in
             guard let accessToken = UserDefaults.standard.string(forKey: UserDefaults.Keys.accessToken) else { fatalError() }
             
-            let headers: HTTPHeaders = [
-                "Content-Type": "application/json",
-                "Authorization": accessToken
+            var headers: HTTPHeaders = [
+                "Content-Type": "application/json"
             ]
+            headers.add(.authorization(accessToken))
             
             let task = AF.request(urlResource.resultURL,
                                   method: .post,
@@ -146,10 +146,10 @@ struct APISession: APIService {
         Observable<Result<T, APIError>>.create { observer in
             guard let accessToken = UserDefaults.standard.string(forKey: UserDefaults.Keys.accessToken) else { fatalError() }
             
-            let headers: HTTPHeaders = [
-                "Content-Type": "application/json",
-                "Authorization": accessToken
+            var headers: HTTPHeaders = [
+                "Content-Type": "application/json"
             ]
+            headers.add(.authorization(accessToken))
             
             let task = AF.upload(multipartFormData: { (multipart) in
                 for (key, value) in param {
