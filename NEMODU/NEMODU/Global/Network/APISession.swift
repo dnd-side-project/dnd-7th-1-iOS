@@ -53,8 +53,11 @@ struct APISession: APIService {
     func getRequest<T>(with urlResource: urlResource<T>) -> Observable<Result<T, APIError>> where T : Decodable {
         
         Observable<Result<T, APIError>>.create { observer in
+            guard let accessToken = UserDefaults.standard.string(forKey: UserDefaults.Keys.accessToken) else { fatalError() }
+            
             let headers: HTTPHeaders = [
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": accessToken
             ]
             
             let task = AF.request(urlResource.resultURL,
@@ -80,8 +83,11 @@ struct APISession: APIService {
     func postRequest<T: Decodable>(with urlResource: urlResource<T>, param: Parameters?) -> Observable<Result<T, APIError>> {
         
         Observable<Result<T, APIError>>.create { observer in
+            guard let accessToken = UserDefaults.standard.string(forKey: UserDefaults.Keys.accessToken) else { fatalError() }
+            
             let headers: HTTPHeaders = [
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": accessToken
             ]
             
             let task = AF.request(urlResource.resultURL,
@@ -108,8 +114,11 @@ struct APISession: APIService {
     
     func postRequestWithImage<T: Decodable>(with urlResource: urlResource<T>, param: Parameters, image: UIImage, method: HTTPMethod) -> Observable<Result<T, APIError>> {
         Observable<Result<T, APIError>>.create { observer in
+            guard let accessToken = UserDefaults.standard.string(forKey: UserDefaults.Keys.accessToken) else { fatalError() }
+            
             let headers: HTTPHeaders = [
-                "Content-Type": "multipart/form-data"
+                "Content-Type": "application/json",
+                "Authorization": accessToken
             ]
             
             let task = AF.upload(multipartFormData: { (multipart) in
