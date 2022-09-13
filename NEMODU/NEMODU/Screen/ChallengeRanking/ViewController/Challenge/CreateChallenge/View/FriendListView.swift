@@ -37,8 +37,6 @@ class FriendListView: BaseView {
     
     // MARK: - Variables and Properties
     
-    var selectedIndexPath: IndexPath?// = IndexPath(row: 0, section: 0)
-    
     // MARK: - Life Cycle
     
     override init(frame: CGRect) {

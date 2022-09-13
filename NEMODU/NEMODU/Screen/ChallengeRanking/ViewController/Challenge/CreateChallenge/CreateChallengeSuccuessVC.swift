@@ -20,7 +20,6 @@ class CreateChallengeSuccuessVC: CreateChallengeVC {
             $0.text = "주간 챌린지가 \n만들어졌습니다!"
             $0.numberOfLines = 2
             $0.textAlignment = .center
-//            $0.edgeInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
             
             $0.font = .title2
             $0.textColor = .gray900
@@ -43,9 +42,6 @@ class CreateChallengeSuccuessVC: CreateChallengeVC {
     let challengeTitleLabel = PaddingLabel()
         .then {
             $0.text = "가즈아!"
-//            $0.textAlignment = .center
-//            $0.edgeInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-            
             $0.font = .body1
             $0.textColor = .gray900
             
@@ -53,10 +49,7 @@ class CreateChallengeSuccuessVC: CreateChallengeVC {
         }
     let challengeDateLabel = PaddingLabel()
         .then {
-            $0.text = "8월 22일 - 8월 29일"
-//            $0.textAlignment = .center
-//            $0.edgeInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-            
+            $0.text = "8월 22일 - 8월 29일" // TODO: - 추후 기본 표시값 수정
             $0.font = .body4
             $0.textColor = .gray600
             
@@ -164,11 +157,9 @@ class CreateChallengeSuccuessVC: CreateChallengeVC {
         
         informationContainerView.snp.makeConstraints {
             $0.width.equalTo(343)
-//            $0.height.equalTo(275)
             
             $0.centerX.equalTo(successIconImageView)
             $0.top.equalTo(successIconImageView.snp.bottom).offset(36)
-//            $0.bottom.equalTo(confirmButton.snp.top).offset(57)
         }
         challengeTitleLabel.snp.makeConstraints {
             $0.centerX.equalTo(informationContainerView)
@@ -179,11 +170,8 @@ class CreateChallengeSuccuessVC: CreateChallengeVC {
             $0.top.equalTo(challengeTitleLabel.snp.bottom).offset(8)
         }
         userProfileStackView.snp.makeConstraints {
-//            $0.height.equalTo(75)
-            
             $0.centerX.equalTo(challengeDateLabel)
             $0.top.equalTo(challengeDateLabel.snp.bottom).offset(16)
-//            $0.horizontalEdges.equalTo(informationContainerView).inset(55.5)
         }
         separateView.snp.makeConstraints {
             $0.height.equalTo(1)

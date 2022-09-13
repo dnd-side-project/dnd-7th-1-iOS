@@ -46,14 +46,6 @@ class CreateChallengeListButtonView: BaseView {
     
     // MARK: - Life Cycle
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     // MARK: - Functions
     
     override func configureView() {
@@ -65,8 +57,8 @@ class CreateChallengeListButtonView: BaseView {
     override func layoutView() {
         super.layoutView()
         
-        addSubviews([titleLabel, dateLabel, statusImageView])
-        addSubview(actionButton)
+        addSubviews([titleLabel, dateLabel, statusImageView,
+                     actionButton])
         
         
         titleLabel.snp.makeConstraints {

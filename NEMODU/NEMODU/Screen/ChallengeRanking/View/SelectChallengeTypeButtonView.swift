@@ -63,9 +63,9 @@ class SelectChallengeTypeButtonView: BaseView {
     override func layoutView() {
         super.layoutView()
         
-        addSubview(challengeTypeView)
-        addSubviews([iconImageView, titleLabel, explainTextView])
-        addSubview(button)
+        addSubviews([challengeTypeView,
+                     iconImageView, titleLabel, explainTextView,
+                     button])
         
         
         challengeTypeView.snp.makeConstraints {

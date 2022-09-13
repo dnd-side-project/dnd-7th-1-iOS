@@ -399,24 +399,22 @@ extension CreateWeekChallengeVC {
     }
     
     private func bindInsertChallengeMessageTextView() {
-        
         insertChallengeMessageTextView.tv.rx.didBeginEditing
             .subscribe(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 
                 self.view.setNeedsLayout()
                 UIView.animate(withDuration: 0.2, delay: 0, animations: {
-                    
                     self.baseScrollView.snp.updateConstraints {
                         $0.bottom.equalTo(self.view.keyboardLayoutGuide.snp.top).inset(-self.confirmButtonTop)
                     }
                     
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.0) {
-                        self.baseScrollView.scrollToBottom(animated: true)
-                    }
-                    
                     self.view.layoutIfNeeded()
                 })
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                    self.baseScrollView.scrollToBottom(animated: true)
+                }
                 
             })
             .disposed(by: bag)
@@ -426,8 +424,7 @@ extension CreateWeekChallengeVC {
                 guard let self = self else { return }
 
                 self.view.setNeedsLayout()
-                UIView.animate(withDuration: 0.0, delay: 0, animations: {
-                    
+                UIView.animate(withDuration: 0.2, delay: 0, animations: {
                     self.baseScrollView.snp.updateConstraints {
                         $0.bottom.equalTo(self.view.keyboardLayoutGuide.snp.top).inset(-(self.confirmButtonTop+self.confirmButtonHight+self.confirmButtonBottom))
                     }
@@ -435,7 +432,7 @@ extension CreateWeekChallengeVC {
                     self.view.layoutIfNeeded()
                 })
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.0) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                     self.baseScrollView.scrollToBottom(animated: true)
                 }
 

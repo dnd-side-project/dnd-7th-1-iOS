@@ -40,15 +40,6 @@ class SelectFriendsTVC : BaseTableViewCell {
     
     // MARK: - Life Cycle
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     // MARK: - Function
     
     override func configureView() {
@@ -82,17 +73,9 @@ class SelectFriendsTVC : BaseTableViewCell {
     }
     
     func didTapCheck() {
-        isSelectCheck = !isSelectCheck
-        
-        switch isSelectCheck {
-            case true:
-            checkImageView.image = UIImage(named: "checkCircle")?.withRenderingMode(.alwaysTemplate)
-            checkImageView.tintColor = .secondary
-            
-            case false:
-            checkImageView.image = UIImage(named: "uncheck")?.withRenderingMode(.alwaysTemplate)
-            checkImageView.tintColor = .gray300
-        }
+        isSelectCheck.toggle()
+        checkImageView.image = UIImage(named: isSelectCheck ? "checkCircle" : "uncheck")?.withRenderingMode(.alwaysTemplate)
+        checkImageView.tintColor = isSelectCheck ? .secondary : .gray300
     }
     
 }

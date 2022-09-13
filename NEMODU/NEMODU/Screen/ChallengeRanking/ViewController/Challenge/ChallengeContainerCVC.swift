@@ -110,6 +110,7 @@ class ChallengeContainerCVC : BaseCollectionViewCell {
 //        let selectChallengeCreateVC = CreateWeekChallengeVC()
         
         let rootViewController = self.findViewController()
+        rootViewController?.hidesBottomBarWhenPushed = true
         rootViewController?.navigationController?.pushViewController(selectChallengeCreateVC, animated: true)
     }
     
