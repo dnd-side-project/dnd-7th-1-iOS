@@ -231,8 +231,11 @@ extension NicknameVC {
         viewModel.output.isValidNickname
             .asDriver(onErrorJustReturn: false)
             .drive(onNext: { [weak self] isValid in
-                guard let self = self else { return }
+                guard let self = self,
+                      let nickname = self.nicknameTextField.text
+                else { return }
                 self.setValidationView(isValid ? .available : .notAvailable)
+                UserDefaults.standard.set(nickname, forKey: UserDefaults.Keys.nickname)
             })
             .disposed(by: bag)
     }

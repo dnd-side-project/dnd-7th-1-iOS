@@ -59,7 +59,7 @@ extension UserInfoSettingVM: Output {
 
 extension UserInfoSettingVM {
     func getNicknameValidation(nickname: String) {
-        let path = "check/nickname?nickname=\(nickname)"
+        let path = "auth/check/nickname?nickname=\(nickname)"
         let resource = urlResource<Bool>(path: path)
         
         apiSession.getRequest(with: resource)
