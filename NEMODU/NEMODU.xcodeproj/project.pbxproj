@@ -770,13 +770,10 @@
 				3C72D7C328B51BB6006E2229 /* SelectChallengeCreateVC.swift */,
 				3C9FD39628B63845006FA812 /* SelectWeekChallengeCreateVC.swift */,
 				3C9FD39828B640D7006FA812 /* CreateWeekChallengeVC.swift */,
-				3C9FD39A28B64363006FA812 /* CreateChallengeListButtonView.swift */,
 				3C9FD39C28B68D19006FA812 /* ChallengePeriodVC.swift */,
-				3C05FFEC28B7324D0017F4E1 /* ChallengeTermButtonView.swift */,
 				3C05FFEE28B74E2B0017F4E1 /* CreateChallengeVC.swift */,
 				3C05FFF028B794390017F4E1 /* CreateChallengeSuccuessVC.swift */,
 				3C05FFF228B7C79A0017F4E1 /* SelectFriendsVC.swift */,
-				3C05FFF428B7E0900017F4E1 /* SelectFriendsTVC.swift */,
 			);
 			path = CreateChallenge;
 			sourceTree = "<group>";
@@ -947,6 +944,9 @@
 		3CACEBD228C9E9E6001F5109 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				3C9FD39A28B64363006FA812 /* CreateChallengeListButtonView.swift */,
+				3C05FFEC28B7324D0017F4E1 /* ChallengeTermButtonView.swift */,
+				3C05FFF428B7E0900017F4E1 /* SelectFriendsTVC.swift */,
 				3CACEBD328C9EAA0001F5109 /* FriendListView.swift */,
 			);
 			path = View;
