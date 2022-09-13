@@ -68,8 +68,7 @@ class SelectChallengeCreateVC: SelectChallengeTypeVC {
             navigationController?.pushViewController(selectWeekChallengeCreateVC, animated: true)
             
         case button2.button.isSelected: // TODO: - MVP2 실시간 챌린지
-            // TODO: - AlertSheet custom 지정
-            
+            popUpAlert(alertType: .realTimeChallenge, targetVC: self, highlightBtnAction: #selector(dismissAlert), normalBtnAction: nil)
             break
         default:
             break
