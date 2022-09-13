@@ -22,6 +22,21 @@ class ChallengeContainerCVC : BaseCollectionViewCell {
             $0.showsVerticalScrollIndicator = false
         }
     
+    lazy var createChallengeButton = UIButton().then {
+        $0.setImage(UIImage(named: "add")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        $0.contentVerticalAlignment = .fill
+        $0.contentHorizontalAlignment = .fill
+        $0.imageEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+        
+        $0.tintColor = .main
+        $0.backgroundColor = .secondary
+        
+        $0.layer.cornerRadius = 30
+        $0.layer.masksToBounds = true
+        
+        $0.addTarget(self, action: #selector(didTapCreateChallengeButton), for: .touchUpInside)
+    }
+    
     // MARK: - Variables and Properties
     
     var reloadCellIndex = 0
@@ -75,10 +90,28 @@ class ChallengeContainerCVC : BaseCollectionViewCell {
     override func layoutView() {
         super.layoutView()
         
-        contentView.addSubview(challengeTableView)
+        contentView.addSubviews([challengeTableView, createChallengeButton])
+        
+        
         challengeTableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+        createChallengeButton.snp.makeConstraints {
+            $0.width.height.equalTo(createChallengeButton.layer.cornerRadius * 2)
+            
+            $0.right.bottom.equalTo(contentView).inset(16)
+        }
+    }
+    
+    @objc
+    func didTapCreateChallengeButton() {
+        let selectChallengeCreateVC = SelectChallengeCreateVC()
+        // TODO: 서버연결 - 임시 주석코드 지정
+//        let selectChallengeCreateVC = CreateWeekChallengeVC()
+        
+        let rootViewController = self.findViewController()
+        rootViewController?.hidesBottomBarWhenPushed = true
+        rootViewController?.navigationController?.pushViewController(selectChallengeCreateVC, animated: true)
     }
     
 }

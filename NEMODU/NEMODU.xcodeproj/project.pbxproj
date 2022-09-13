@@ -111,6 +111,12 @@
 		23F5718628AA6DAD005F2E21 /* MyAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5718528AA6DAD005F2E21 /* MyAnnotation.swift */; };
 		23F5718828AA6DEE005F2E21 /* MyAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5718728AA6DEE005F2E21 /* MyAnnotationView.swift */; };
 		37783E39C7DFB38581CA78A2 /* Pods_NEMODU.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7400965811C32403A72B2B0 /* Pods_NEMODU.framework */; };
+		3C05FFEB28B71F4F0017F4E1 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C05FFEA28B71F4F0017F4E1 /* PaddingLabel.swift */; };
+		3C05FFED28B7324D0017F4E1 /* ChallengeTermButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C05FFEC28B7324D0017F4E1 /* ChallengeTermButtonView.swift */; };
+		3C05FFEF28B74E2B0017F4E1 /* CreateChallengeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C05FFEE28B74E2B0017F4E1 /* CreateChallengeVC.swift */; };
+		3C05FFF128B794390017F4E1 /* CreateChallengeSuccuessVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C05FFF028B794390017F4E1 /* CreateChallengeSuccuessVC.swift */; };
+		3C05FFF328B7C79A0017F4E1 /* SelectFriendsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C05FFF228B7C79A0017F4E1 /* SelectFriendsVC.swift */; };
+		3C05FFF528B7E0900017F4E1 /* SelectFriendsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C05FFF428B7E0900017F4E1 /* SelectFriendsTVC.swift */; };
 		3C08137B28A91C00009F854B /* ChallengeRankingMenuBarCV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C08136A28A91C00009F854B /* ChallengeRankingMenuBarCV.swift */; };
 		3C08137D28A91C00009F854B /* NoListStatusTVFV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C08136F28A91C00009F854B /* NoListStatusTVFV.swift */; };
 		3C08137E28A91C00009F854B /* ChallengeTitleTVHV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C08137028A91C00009F854B /* ChallengeTitleTVHV.swift */; };
@@ -132,13 +138,25 @@
 		3C4FB96328AA92C800A429B8 /* InvitedChallengeTVHV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4FB96228AA92C800A429B8 /* InvitedChallengeTVHV.swift */; };
 		3C4FB96528AA937100A429B8 /* ChallengeListTVHV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4FB96428AA937100A429B8 /* ChallengeListTVHV.swift */; };
 		3C5C2D4428B12AD700EB2799 /* RankingUserTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C5C2D4328B12AD700EB2799 /* RankingUserTVC.swift */; };
+		3C72D7BE28B508B2006E2229 /* SelectChallengeTypeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C72D7BD28B508B2006E2229 /* SelectChallengeTypeVC.swift */; };
+		3C72D7C028B50993006E2229 /* ChallengeRankingNC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C72D7BF28B50993006E2229 /* ChallengeRankingNC.swift */; };
+		3C72D7C228B50EAA006E2229 /* SelectChallengeTypeButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C72D7C128B50EAA006E2229 /* SelectChallengeTypeButtonView.swift */; };
+		3C72D7C428B51BB6006E2229 /* SelectChallengeCreateVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C72D7C328B51BB6006E2229 /* SelectChallengeCreateVC.swift */; };
+		3C80DDAC28B8FD0A00A6EDE4 /* CreateChallengeRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C80DDAB28B8FD0A00A6EDE4 /* CreateChallengeRequestModel.swift */; };
 		3C992F1528AE61FC00D96E21 /* ListTypeMenuBarCV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C992F1428AE61FC00D96E21 /* ListTypeMenuBarCV.swift */; };
 		3C992F1728AE623B00D96E21 /* ListTypeMenuBarCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C992F1628AE623B00D96E21 /* ListTypeMenuBarCVC.swift */; };
 		3C9CD99D28AB7E9800A7550C /* ChallengeListTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C9CD99C28AB7E9800A7550C /* ChallengeListTVC.swift */; };
+		3C9FD39728B63845006FA812 /* SelectWeekChallengeCreateVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C9FD39628B63845006FA812 /* SelectWeekChallengeCreateVC.swift */; };
+		3C9FD39928B640D7006FA812 /* CreateWeekChallengeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C9FD39828B640D7006FA812 /* CreateWeekChallengeVC.swift */; };
+		3C9FD39B28B64363006FA812 /* CreateChallengeListButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C9FD39A28B64363006FA812 /* CreateChallengeListButtonView.swift */; };
+		3C9FD39D28B68D19006FA812 /* ChallengePeriodVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C9FD39C28B68D19006FA812 /* ChallengePeriodVC.swift */; };
+		3CACEBD428C9EAA0001F5109 /* FriendListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CACEBD328C9EAA0001F5109 /* FriendListView.swift */; };
 		3CB9DB9C28A92528007BC1BE /* MenuBarCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB9DB9A28A92527007BC1BE /* MenuBarCVC.swift */; };
 		3CB9DB9D28A92528007BC1BE /* MenuBarCV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB9DB9B28A92527007BC1BE /* MenuBarCV.swift */; };
 		3CB9DB9F28A93F19007BC1BE /* ChallengeRankingMenuBarCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB9DB9E28A93F19007BC1BE /* ChallengeRankingMenuBarCVC.swift */; };
 		3CB9DBA628A954EE007BC1BE /* RankingContainerCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB9DBA528A954EE007BC1BE /* RankingContainerCVC.swift */; };
+		3CC1EC7328D06811007C87F6 /* CreateWidenChallengeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CC1EC7228D06811007C87F6 /* CreateWidenChallengeVC.swift */; };
+		3CC1EC7528D06917007C87F6 /* CreateAccumulateChallengeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CC1EC7428D06917007C87F6 /* CreateAccumulateChallengeVC.swift */; };
 		3CDEBB4328B4C86900C91A7F /* AccumulateRankingListResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDEBB4228B4C86900C91A7F /* AccumulateRankingListResponseModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -251,6 +269,12 @@
 		23F5718128AA6038005F2E21 /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		23F5718528AA6DAD005F2E21 /* MyAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAnnotation.swift; sourceTree = "<group>"; };
 		23F5718728AA6DEE005F2E21 /* MyAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAnnotationView.swift; sourceTree = "<group>"; };
+		3C05FFEA28B71F4F0017F4E1 /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
+		3C05FFEC28B7324D0017F4E1 /* ChallengeTermButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeTermButtonView.swift; sourceTree = "<group>"; };
+		3C05FFEE28B74E2B0017F4E1 /* CreateChallengeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateChallengeVC.swift; sourceTree = "<group>"; };
+		3C05FFF028B794390017F4E1 /* CreateChallengeSuccuessVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateChallengeSuccuessVC.swift; sourceTree = "<group>"; };
+		3C05FFF228B7C79A0017F4E1 /* SelectFriendsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectFriendsVC.swift; sourceTree = "<group>"; };
+		3C05FFF428B7E0900017F4E1 /* SelectFriendsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectFriendsTVC.swift; sourceTree = "<group>"; };
 		3C08136A28A91C00009F854B /* ChallengeRankingMenuBarCV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChallengeRankingMenuBarCV.swift; sourceTree = "<group>"; };
 		3C08136F28A91C00009F854B /* NoListStatusTVFV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoListStatusTVFV.swift; sourceTree = "<group>"; };
 		3C08137028A91C00009F854B /* ChallengeTitleTVHV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChallengeTitleTVHV.swift; sourceTree = "<group>"; };
@@ -275,16 +299,28 @@
 		3C4FB96228AA92C800A429B8 /* InvitedChallengeTVHV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitedChallengeTVHV.swift; sourceTree = "<group>"; };
 		3C4FB96428AA937100A429B8 /* ChallengeListTVHV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeListTVHV.swift; sourceTree = "<group>"; };
 		3C5C2D4328B12AD700EB2799 /* RankingUserTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankingUserTVC.swift; sourceTree = "<group>"; };
+		3C72D7BD28B508B2006E2229 /* SelectChallengeTypeVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectChallengeTypeVC.swift; sourceTree = "<group>"; };
+		3C72D7BF28B50993006E2229 /* ChallengeRankingNC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChallengeRankingNC.swift; sourceTree = "<group>"; };
+		3C72D7C128B50EAA006E2229 /* SelectChallengeTypeButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectChallengeTypeButtonView.swift; sourceTree = "<group>"; };
+		3C72D7C328B51BB6006E2229 /* SelectChallengeCreateVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectChallengeCreateVC.swift; sourceTree = "<group>"; };
 		3C7FC21C289B9FE00071A752 /* ChallengeRankingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeRankingVC.swift; sourceTree = "<group>"; };
 		3C7FC22728A0F8F30071A752 /* Identify+Enum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Identify+Enum.swift"; sourceTree = "<group>"; };
 		3C7FC22B28A102CE0071A752 /* ChallengeRankingMenuBarCV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeRankingMenuBarCV.swift; sourceTree = "<group>"; };
+		3C80DDAB28B8FD0A00A6EDE4 /* CreateChallengeRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateChallengeRequestModel.swift; sourceTree = "<group>"; };
 		3C992F1428AE61FC00D96E21 /* ListTypeMenuBarCV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTypeMenuBarCV.swift; sourceTree = "<group>"; };
 		3C992F1628AE623B00D96E21 /* ListTypeMenuBarCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTypeMenuBarCVC.swift; sourceTree = "<group>"; };
 		3C9CD99C28AB7E9800A7550C /* ChallengeListTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeListTVC.swift; sourceTree = "<group>"; };
+		3C9FD39628B63845006FA812 /* SelectWeekChallengeCreateVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectWeekChallengeCreateVC.swift; sourceTree = "<group>"; };
+		3C9FD39828B640D7006FA812 /* CreateWeekChallengeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWeekChallengeVC.swift; sourceTree = "<group>"; };
+		3C9FD39A28B64363006FA812 /* CreateChallengeListButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateChallengeListButtonView.swift; sourceTree = "<group>"; };
+		3C9FD39C28B68D19006FA812 /* ChallengePeriodVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengePeriodVC.swift; sourceTree = "<group>"; };
+		3CACEBD328C9EAA0001F5109 /* FriendListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendListView.swift; sourceTree = "<group>"; };
 		3CB9DB9A28A92527007BC1BE /* MenuBarCVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuBarCVC.swift; sourceTree = "<group>"; };
 		3CB9DB9B28A92527007BC1BE /* MenuBarCV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuBarCV.swift; sourceTree = "<group>"; };
 		3CB9DB9E28A93F19007BC1BE /* ChallengeRankingMenuBarCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeRankingMenuBarCVC.swift; sourceTree = "<group>"; };
 		3CB9DBA528A954EE007BC1BE /* RankingContainerCVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RankingContainerCVC.swift; sourceTree = "<group>"; };
+		3CC1EC7228D06811007C87F6 /* CreateWidenChallengeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWidenChallengeVC.swift; sourceTree = "<group>"; };
+		3CC1EC7428D06917007C87F6 /* CreateAccumulateChallengeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccumulateChallengeVC.swift; sourceTree = "<group>"; };
 		3CDEBB4228B4C86900C91A7F /* AccumulateRankingListResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccumulateRankingListResponseModel.swift; sourceTree = "<group>"; };
 		E7400965811C32403A72B2B0 /* Pods_NEMODU.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NEMODU.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -730,6 +766,20 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		3C02802D28B507D5002BF37C /* CreateChallenge */ = {
+			isa = PBXGroup;
+			children = (
+				3CACEBD228C9E9E6001F5109 /* View */,
+				3CC1EC7128D0678C007C87F6 /* CreateWeekChallenge */,
+				3CC1EC7028D0675D007C87F6 /* SelectChallengeType */,
+				3C05FFEE28B74E2B0017F4E1 /* CreateChallengeVC.swift */,
+				3C9FD39C28B68D19006FA812 /* ChallengePeriodVC.swift */,
+				3C05FFF228B7C79A0017F4E1 /* SelectFriendsVC.swift */,
+				3C05FFF028B794390017F4E1 /* CreateChallengeSuccuessVC.swift */,
+			);
+			path = CreateChallenge;
+			sourceTree = "<group>";
+		};
 		3C08136728A91C00009F854B /* ChallengeRanking */ = {
 			isa = PBXGroup;
 			children = (
@@ -832,6 +882,7 @@
 			children = (
 				3CB9DBA028A94648007BC1BE /* ChallengeRankingMenuBar */,
 				3C2FB44D28B0B0A7006A6819 /* ListTypeMenuBar */,
+				3C72D7C128B50EAA006E2229 /* SelectChallengeTypeButtonView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -839,6 +890,7 @@
 		3C3BD77628B3850C00AD55B6 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				3C72D7BF28B50993006E2229 /* ChallengeRankingNC.swift */,
 				3C08137728A91C00009F854B /* ChallengeRankingVC.swift */,
 				3C3BD77728B396B100AD55B6 /* Challenge */,
 				3C3BD77828B396B900AD55B6 /* Ranking */,
@@ -849,6 +901,7 @@
 		3C3BD77728B396B100AD55B6 /* Challenge */ = {
 			isa = PBXGroup;
 			children = (
+				3C02802D28B507D5002BF37C /* CreateChallenge */,
 				3C08137828A91C00009F854B /* ChallengeContainerCVC.swift */,
 				3C48920B28B101D100B11207 /* ChallengeListTypeMenuBarCV.swift */,
 				3C08136E28A91C00009F854B /* ChallengeTV */,
@@ -869,6 +922,7 @@
 		3C3BD77928B3A52900AD55B6 /* Request */ = {
 			isa = PBXGroup;
 			children = (
+				3C80DDAB28B8FD0A00A6EDE4 /* CreateChallengeRequestModel.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -889,11 +943,23 @@
 			path = RankingTV;
 			sourceTree = "<group>";
 		};
+		3CACEBD228C9E9E6001F5109 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				3C9FD39A28B64363006FA812 /* CreateChallengeListButtonView.swift */,
+				3C05FFEC28B7324D0017F4E1 /* ChallengeTermButtonView.swift */,
+				3C05FFF428B7E0900017F4E1 /* SelectFriendsTVC.swift */,
+				3CACEBD328C9EAA0001F5109 /* FriendListView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		3CB9DB9828A92527007BC1BE /* Utils */ = {
 			isa = PBXGroup;
 			children = (
 				230CB2CC28ABCDE100B11270 /* Lottie */,
 				3CB9DB9928A92527007BC1BE /* MenuBar */,
+				3C05FFEA28B71F4F0017F4E1 /* PaddingLabel.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -925,6 +991,26 @@
 			name = Ranking;
 			path = NEMODU/Screen/ChallengeRanking/Model/Ranking;
 			sourceTree = SOURCE_ROOT;
+		};
+		3CC1EC7028D0675D007C87F6 /* SelectChallengeType */ = {
+			isa = PBXGroup;
+			children = (
+				3C72D7BD28B508B2006E2229 /* SelectChallengeTypeVC.swift */,
+				3C72D7C328B51BB6006E2229 /* SelectChallengeCreateVC.swift */,
+				3C9FD39628B63845006FA812 /* SelectWeekChallengeCreateVC.swift */,
+			);
+			path = SelectChallengeType;
+			sourceTree = "<group>";
+		};
+		3CC1EC7128D0678C007C87F6 /* CreateWeekChallenge */ = {
+			isa = PBXGroup;
+			children = (
+				3C9FD39828B640D7006FA812 /* CreateWeekChallengeVC.swift */,
+				3CC1EC7228D06811007C87F6 /* CreateWidenChallengeVC.swift */,
+				3CC1EC7428D06917007C87F6 /* CreateAccumulateChallengeVC.swift */,
+			);
+			path = CreateWeekChallenge;
+			sourceTree = "<group>";
 		};
 		3CCBE27A28A916260000AC3D /* Recovered References */ = {
 			isa = PBXGroup;
@@ -1088,6 +1174,8 @@
 				3C992F1728AE623B00D96E21 /* ListTypeMenuBarCVC.swift in Sources */,
 				23C4CD0728B7A87D00D2F469 /* Int+.swift in Sources */,
 				3C09AE3728AF6071005DD125 /* ChallengeWaitingTVC.swift in Sources */,
+				3C05FFF328B7C79A0017F4E1 /* SelectFriendsVC.swift in Sources */,
+				3C9FD39928B640D7006FA812 /* CreateWeekChallengeVC.swift in Sources */,
 				3CB9DBA628A954EE007BC1BE /* RankingContainerCVC.swift in Sources */,
 				3C4FB96528AA937100A429B8 /* ChallengeListTVHV.swift in Sources */,
 				2348B3E92892D0BF001095BC /* BaseNavigationController.swift in Sources */,
@@ -1100,6 +1188,7 @@
 				23D8B7E528B4D5AA00F48165 /* CalendarSelectStackView.swift in Sources */,
 				23AB8F3328B5E5FA007E3A2F /* BlocksType.swift in Sources */,
 				2348B3E32892D064001095BC /* BaseCollectionViewCell.swift in Sources */,
+				3C72D7C228B50EAA006E2229 /* SelectChallengeTypeButtonView.swift in Sources */,
 				3C5C2D4428B12AD700EB2799 /* RankingUserTVC.swift in Sources */,
 				23D8B7D728B394FC00F48165 /* MyRecordListDataSource.swift in Sources */,
 				23D8B7DB28B396A100F48165 /* MyRecordDataVM.swift in Sources */,
@@ -1107,13 +1196,16 @@
 				23B7206128A0D53200D3A410 /* ProceedingChallengeTVC.swift in Sources */,
 				230CB2CB28ABB7B400B11270 /* CountdownVC.swift in Sources */,
 				23412FE028AE648300B73D62 /* ProfileResponseModel.swift in Sources */,
+				3C05FFF128B794390017F4E1 /* CreateChallengeSuccuessVC.swift in Sources */,
 				3CB9DB9D28A92528007BC1BE /* MenuBarCV.swift in Sources */,
 				2348B3BF2892C675001095BC /* AppDelegate.swift in Sources */,
+				3C72D7C428B51BB6006E2229 /* SelectChallengeCreateVC.swift in Sources */,
 				23B7205D28A0CBAC00D3A410 /* ChallengeListBottomSheet.swift in Sources */,
 				2348B4122892D901001095BC /* LoadingView.swift in Sources */,
 				3C08137E28A91C00009F854B /* ChallengeTitleTVHV.swift in Sources */,
 				3C08137E28A91C00009F854B /* ChallengeTitleTVHV.swift in Sources */,
 				2348B3DD2892CF92001095BC /* MapVC.swift in Sources */,
+				3C05FFEF28B74E2B0017F4E1 /* CreateChallengeVC.swift in Sources */,
 				23412FD228AD494500B73D62 /* MainVM.swift in Sources */,
 				232F0B6528B686C5005C9A07 /* AlertType.swift in Sources */,
 				3CDEBB4328B4C86900C91A7F /* AccumulateRankingListResponseModel.swift in Sources */,
@@ -1134,6 +1226,7 @@
 				2348B4072892D286001095BC /* UIView+.swift in Sources */,
 				231A2B8F28B20B5600FF884B /* BlockCntView.swift in Sources */,
 				2348B3EE2892D0ED001095BC /* APIService.swift in Sources */,
+				3CC1EC7528D06917007C87F6 /* CreateAccumulateChallengeVC.swift in Sources */,
 				23412FDC28AE375D00B73D62 /* ChallengeElementResponseModel.swift in Sources */,
 				23412FF028AFB74800B73D62 /* RecordResultNC.swift in Sources */,
 				2312519628B6944B00DF1C69 /* ToastView.swift in Sources */,
@@ -1142,10 +1235,12 @@
 				2354239128BBA54000865E51 /* UserDefaults+.swift in Sources */,
 				23F5717E28AA1A11005F2E21 /* FriendAnnotationView.swift in Sources */,
 				230CB2DF28AD473100B11270 /* UserBlockResponseModel.swift in Sources */,
+				3C9FD39728B63845006FA812 /* SelectWeekChallengeCreateVC.swift in Sources */,
 				23B7208628A23A2100D3A410 /* UIFont+.swift in Sources */,
 				23F5717C28AA19E2005F2E21 /* FriendAnnotation.swift in Sources */,
 				2348B3E12892D046001095BC /* BaseView.swift in Sources */,
 				23F5716F28A6AD01005F2E21 /* RecordStackView.swift in Sources */,
+				3C80DDAC28B8FD0A00A6EDE4 /* CreateChallengeRequestModel.swift in Sources */,
 				3C08138328A91C00009F854B /* ChallengeRankingVC.swift in Sources */,
 				2339D75028B284C20018013D /* MypageNC.swift in Sources */,
 				2348B3FB2892D15C001095BC /* Output.swift in Sources */,
@@ -1163,6 +1258,7 @@
 				2348B3E52892D075001095BC /* BaseViewController.swift in Sources */,
 				3C08138428A91C00009F854B /* ChallengeContainerCVC.swift in Sources */,
 				23412FEE28AFB5BB00B73D62 /* DetailMapVC.swift in Sources */,
+				3CACEBD428C9EAA0001F5109 /* FriendListView.swift in Sources */,
 				23B7207428A2227000D3A410 /* WalkingVM.swift in Sources */,
 				3C09AE3928AF6345005DD125 /* ChallengeDoingTVC.swift in Sources */,
 				2348B40D2892D360001095BC /* UIColor+.swift in Sources */,
@@ -1178,6 +1274,7 @@
 				2315258D28B4F07D00B80E03 /* DetailRecordDataResponseModel.swift in Sources */,
 				230CB2D828AD042300B11270 /* MainMapResponseModel.swift in Sources */,
 				23412FEC28AF81F700B73D62 /* RecordResultVM.swift in Sources */,
+				3C9FD39D28B68D19006FA812 /* ChallengePeriodVC.swift in Sources */,
 				2348B3FD2892D16C001095BC /* Loadable.swift in Sources */,
 				2348B4012892D1A6001095BC /* UITextField+.swift in Sources */,
 				23F5717528A92D4A005F2E21 /* ProfileRecordStackView.swift in Sources */,
@@ -1185,17 +1282,24 @@
 				23B86D2128A26F0F00B1630E /* NavigationBar.swift in Sources */,
 				2348B3EC2892D0DF001095BC /* APIError.swift in Sources */,
 				23F5716D28A6A61E005F2E21 /* MiniMapVC.swift in Sources */,
+				3C72D7C028B50993006E2229 /* ChallengeRankingNC.swift in Sources */,
 				23F5717928A94AA5005F2E21 /* UIString+.swift in Sources */,
 				3CB9DB9C28A92528007BC1BE /* MenuBarCVC.swift in Sources */,
 				230CB2E128AD474E00B11270 /* ChallengeBlockResponseModel.swift in Sources */,
+				3C9FD39B28B64363006FA812 /* CreateChallengeListButtonView.swift in Sources */,
 				3C4FB96328AA92C800A429B8 /* InvitedChallengeTVHV.swift in Sources */,
 				2348B3F22892D116001095BC /* urlResource.swift in Sources */,
+				3C05FFED28B7324D0017F4E1 /* ChallengeTermButtonView.swift in Sources */,
 				3C48920C28B101D100B11207 /* ChallengeListTypeMenuBarCV.swift in Sources */,
+				3C05FFF528B7E0900017F4E1 /* SelectFriendsTVC.swift in Sources */,
 				3C9CD99D28AB7E9800A7550C /* ChallengeListTVC.swift in Sources */,
 				23B7206328A0DCAA00D3A410 /* ProceedingChallengeDataSource.swift in Sources */,
 				238C4DE528A4BFE2000BEE36 /* UIScrollView+.swift in Sources */,
 				2348B4052892D1FA001095BC /* UIButton+.swift in Sources */,
 				238C4DDF28A3AC18000BEE36 /* RecordResultVC.swift in Sources */,
+				3C05FFEB28B71F4F0017F4E1 /* PaddingLabel.swift in Sources */,
+				3C72D7BE28B508B2006E2229 /* SelectChallengeTypeVC.swift in Sources */,
+				3CC1EC7328D06811007C87F6 /* CreateWidenChallengeVC.swift in Sources */,
 				235CD76D28B0FA14000EBAD9 /* OnboardingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1336,10 +1440,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = U2Z5Z44P4R;
+				DEVELOPMENT_TEAM = 7BRQNART99;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NEMODU/Support/Info.plist;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "";
+				INFOPLIST_KEY_NSMotionUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -1349,7 +1455,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.DduBuck.NEMODU;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.DduBuck.NEMODU-HJ";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1365,10 +1471,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = U2Z5Z44P4R;
+				DEVELOPMENT_TEAM = 7BRQNART99;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NEMODU/Support/Info.plist;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "";
+				INFOPLIST_KEY_NSMotionUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -1378,7 +1486,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.DduBuck.NEMODU;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.DduBuck.NEMODU-HJ";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
