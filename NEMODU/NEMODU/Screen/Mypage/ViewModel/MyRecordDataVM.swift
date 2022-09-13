@@ -24,6 +24,7 @@ final class MyRecordDataVM: BaseViewModel {
     // Calendar
     let weekTitle = ["월", "화", "수", "목", "금", "토", "일"]
     var days = [String](repeating: "-", count: 42)
+    var weekDays = [String](repeating: "-", count: 7)
     
     // MARK: - Input
     

@@ -51,6 +51,7 @@ class MyRecordDataVC: BaseViewController {
     private let calendarScopeBtn = UIButton()
         .then {
             $0.setImage(UIImage(named: "arrow_down"), for: .normal)
+            $0.setImage(UIImage(named: "arrow_up"), for: .selected)
         }
     
     private let calendarSelectStackView = CalendarSelectStackView()
@@ -81,9 +82,10 @@ class MyRecordDataVC: BaseViewController {
         }
     
     private let naviBar = NavigationBar()
-    
     private let viewModel = MyRecordDataVM()
     private let bag = DisposeBag()
+    
+    private var isWeeklyScope = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -99,13 +101,7 @@ class MyRecordDataVC: BaseViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        let height = calendarCV.collectionViewLayout.collectionViewContentSize.height
-        
-        calendarCV.snp.makeConstraints {
-            $0.height.equalTo(height)
-        }
-        
-        self.view.layoutIfNeeded()
+        setCalendarHeight()
     }
     
     override func configureView() {
@@ -177,6 +173,16 @@ extension MyRecordDataVC {
         nextWeekBtn.isUserInteractionEnabled = active
         nextWeekBtn.tintColor = active ? .main : .gray300
     }
+    
+    private func setCalendarHeight() {
+        let height = calendarCV.collectionViewLayout.collectionViewContentSize.height
+        
+        calendarCV.snp.updateConstraints {
+            $0.height.equalTo(height)
+        }
+        
+        self.view.layoutIfNeeded()
+    }
 }
 
 // MARK: - Layout
@@ -205,6 +211,7 @@ extension MyRecordDataVC {
             $0.top.equalTo(dateLabel.snp.bottom)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
+            $0.height.equalTo(0)
         }
         
 //        calendarSelectStackView.snp.makeConstraints {
@@ -267,7 +274,10 @@ extension MyRecordDataVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                // TODO: - Change calendar scope
+                self.calendarScopeBtn.isSelected = self.isWeeklyScope
+                self.isWeeklyScope.toggle()
+                self.calendarCV.reloadData()
+                self.setCalendarHeight()
             })
             .disposed(by: bag)
     }
@@ -409,7 +419,7 @@ extension MyRecordDataVC: UICollectionViewDataSource {
         case 0:
             return 7
         default:
-            return 42
+            return isWeeklyScope ? viewModel.weekDays.count : viewModel.days.count
         }
     }
     
@@ -423,7 +433,8 @@ extension MyRecordDataVC: UICollectionViewDataSource {
             weekCell.configureCell(viewModel.weekTitle[indexPath.row])
             return weekCell
         default:
-            dayCell.configureCell(viewModel.days[indexPath.row])
+            let day = isWeeklyScope ? viewModel.weekDays[indexPath.row] : viewModel.days[indexPath.row]
+            dayCell.configureCell(day)
             return dayCell
         }
     }
