@@ -32,7 +32,7 @@ class CreateWeekChallengeVC: CreateChallengeVC {
     
     lazy var challengeTypeTitleButtonView = CreateChallengeListButtonView()
         .then {
-            $0.titleLabel.text = "영역 넓히기 챌린지"
+            $0.titleLabel.text = "주간 챌린지"
             $0.statusImageView.image = UIImage(named: "check")
         }
     

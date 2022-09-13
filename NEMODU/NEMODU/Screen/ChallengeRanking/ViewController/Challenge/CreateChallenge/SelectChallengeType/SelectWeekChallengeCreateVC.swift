@@ -69,11 +69,12 @@ class SelectWeekChallengeCreateVC: SelectChallengeTypeVC {
         
         switch true {
         case button1.button.isSelected:
-            let createWeekChallengeVC = CreateWeekChallengeVC()
-            navigationController?.pushViewController(createWeekChallengeVC, animated: true)
+            let createWidenChallengeVC = CreateWidenChallengeVC()
+            navigationController?.pushViewController(createWidenChallengeVC, animated: true)
             
         case button2.button.isSelected:
-            print("button2")
+            let createAccumulateChallengeVC = CreateAccumulateChallengeVC()
+            navigationController?.pushViewController(createAccumulateChallengeVC, animated: true)
             
         default:
             break
