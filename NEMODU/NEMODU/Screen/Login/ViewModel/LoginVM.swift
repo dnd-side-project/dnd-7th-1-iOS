@@ -67,6 +67,7 @@ extension LoginVM {
                     print(error)
                 } else {
                     UserDefaults.standard.set(oauthToken?.accessToken, forKey: UserDefaults.Keys.kakaoAccessToken)
+                    UserDefaults.standard.set(oauthToken?.refreshToken, forKey: UserDefaults.Keys.kakaoRefreshToken)
                     self.checkOriginUser()
                 }
             }

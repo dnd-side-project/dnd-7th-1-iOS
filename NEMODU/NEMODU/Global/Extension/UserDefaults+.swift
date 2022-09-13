@@ -13,6 +13,7 @@ extension UserDefaults {
         static var isFirstAccess = "isFirstAccess"
         static var accessToken = "accessToken"
         static var refreshToken = "refreshToken"
-        static var kakaoAccessToken = "kakaoAccessToken"    // 친구목록 조회용
+        static var kakaoAccessToken = "kakaoAccessToken"
+        static var kakaoRefreshToken = "kakaoRefreshToken"
     }
 }

@@ -29,6 +29,9 @@
 		23255A7228CF457E005D6D5A /* AddFriendTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A7128CF457E005D6D5A /* AddFriendTVC.swift */; };
 		23255A7428CF5325005D6D5A /* EnterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A7328CF5325005D6D5A /* EnterVC.swift */; };
 		23255A7628CF5C1F005D6D5A /* UserInfoSettingVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A7528CF5C1F005D6D5A /* UserInfoSettingVM.swift */; };
+		23255A7D28D0DB18005D6D5A /* EnterVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A7C28D0DB18005D6D5A /* EnterVM.swift */; };
+		23255A7F28D0DC30005D6D5A /* NicknameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A7E28D0DC30005D6D5A /* NicknameModel.swift */; };
+		23255A8228D0DCE9005D6D5A /* UserDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A8128D0DCE9005D6D5A /* UserDataModel.swift */; };
 		232B89FF28C8BCAA00737F18 /* LoginVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232B89FE28C8BCAA00737F18 /* LoginVM.swift */; };
 		232F0B6328B6803C005C9A07 /* AlertVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232F0B6228B6803C005C9A07 /* AlertVC.swift */; };
 		232F0B6528B686C5005C9A07 /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232F0B6428B686C5005C9A07 /* AlertType.swift */; };
@@ -177,6 +180,9 @@
 		23255A7128CF457E005D6D5A /* AddFriendTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendTVC.swift; sourceTree = "<group>"; };
 		23255A7328CF5325005D6D5A /* EnterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterVC.swift; sourceTree = "<group>"; };
 		23255A7528CF5C1F005D6D5A /* UserInfoSettingVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoSettingVM.swift; sourceTree = "<group>"; };
+		23255A7C28D0DB18005D6D5A /* EnterVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterVM.swift; sourceTree = "<group>"; };
+		23255A7E28D0DC30005D6D5A /* NicknameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameModel.swift; sourceTree = "<group>"; };
+		23255A8128D0DCE9005D6D5A /* UserDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataModel.swift; sourceTree = "<group>"; };
 		232B89FE28C8BCAA00737F18 /* LoginVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVM.swift; sourceTree = "<group>"; };
 		232F0B6228B6803C005C9A07 /* AlertVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertVC.swift; sourceTree = "<group>"; };
 		232F0B6428B686C5005C9A07 /* AlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertType.swift; sourceTree = "<group>"; };
@@ -405,6 +411,7 @@
 			children = (
 				232B89FE28C8BCAA00737F18 /* LoginVM.swift */,
 				23255A7528CF5C1F005D6D5A /* UserInfoSettingVM.swift */,
+				23255A7C28D0DB18005D6D5A /* EnterVM.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -415,6 +422,14 @@
 				23255A7128CF457E005D6D5A /* AddFriendTVC.swift */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		23255A8028D0DCA5005D6D5A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				23255A8128D0DCE9005D6D5A /* UserDataModel.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		23412FD928AE2A9200B73D62 /* View */ = {
@@ -438,6 +453,7 @@
 			isa = PBXGroup;
 			children = (
 				230CB2E328AD478000B11270 /* Matrix.swift */,
+				23255A7E28D0DC30005D6D5A /* NicknameModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -678,8 +694,9 @@
 		2354239228BC8BBE00865E51 /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				23255A6728CF1271005D6D5A /* ViewController */,
 				23255A6828CF1282005D6D5A /* ViewModel */,
+				23255A6728CF1271005D6D5A /* ViewController */,
+				23255A8028D0DCA5005D6D5A /* Model */,
 				23255A7028CF455D005D6D5A /* Cell */,
 			);
 			path = Login;
@@ -1196,6 +1213,7 @@
 				2348B4032892D1D9001095BC /* UITextView+.swift in Sources */,
 				23062A9828B7F6B00064C978 /* Date+.swift in Sources */,
 				3C48921128B1090000B11207 /* RankingWeeksNavigationTVHV.swift in Sources */,
+				23255A7D28D0DB18005D6D5A /* EnterVM.swift in Sources */,
 				231A2B9328B2790300FF884B /* MypageUserDataResponse.swift in Sources */,
 				2348B4072892D286001095BC /* UIView+.swift in Sources */,
 				231A2B8F28B20B5600FF884B /* BlockCntView.swift in Sources */,
@@ -1207,6 +1225,7 @@
 				238C4DE328A3F0D6000BEE36 /* NemoduTextView.swift in Sources */,
 				2354239128BBA54000865E51 /* UserDefaults+.swift in Sources */,
 				23F5717E28AA1A11005F2E21 /* FriendAnnotationView.swift in Sources */,
+				23255A7F28D0DC30005D6D5A /* NicknameModel.swift in Sources */,
 				230CB2DF28AD473100B11270 /* UserBlockResponseModel.swift in Sources */,
 				23B7208628A23A2100D3A410 /* UIFont+.swift in Sources */,
 				23F5717C28AA19E2005F2E21 /* FriendAnnotation.swift in Sources */,
@@ -1255,6 +1274,7 @@
 				2348B3EC2892D0DF001095BC /* APIError.swift in Sources */,
 				23F5716D28A6A61E005F2E21 /* MiniMapVC.swift in Sources */,
 				23255A6A28CF12DB005D6D5A /* NicknameVC.swift in Sources */,
+				23255A8228D0DCE9005D6D5A /* UserDataModel.swift in Sources */,
 				23F5717928A94AA5005F2E21 /* UIString+.swift in Sources */,
 				3CB9DB9C28A92528007BC1BE /* MenuBarCVC.swift in Sources */,
 				230CB2E128AD474E00B11270 /* ChallengeBlockResponseModel.swift in Sources */,

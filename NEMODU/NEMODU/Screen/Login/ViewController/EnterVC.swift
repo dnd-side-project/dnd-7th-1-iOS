@@ -43,6 +43,7 @@ class EnterVC: BaseViewController {
             $0.semanticContentAttribute = .forceRightToLeft
         }
     
+    private let viewModel = EnterVM()
     private let bag = DisposeBag()
     
     override func viewDidLoad() {
@@ -66,6 +67,7 @@ class EnterVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        changeRootVC()
     }
     
 }
@@ -78,7 +80,7 @@ extension EnterVC {
                           logoImageView,
                           enterMessgae,
                           enterBtn])
-        enterMessgae.text = "반가워요 \(UserDefaults.Keys.nickname)님,\n네모두에 오신 것을\n환영합니다!\n\n함께 움직이며 나의 활동반경을\n네모들로 채워나가 보아요!"
+        enterMessgae.text = "반가워요 \(String(describing: UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname)))님,\n네모두에 오신 것을\n환영합니다!\n\n함께 움직이며 나의 활동반경을\n네모들로 채워나가 보아요!"
     }
 }
 
@@ -117,6 +119,21 @@ extension EnterVC {
     private func bindBtn() {
         enterBtn.rx.tap
             .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                // TODO: - 친구 목록 수정
+                self.viewModel.requestSignup(UserDataModel(friends: []))
+            })
+            .disposed(by: bag)
+    }
+}
+
+// MARK: - Output
+
+extension EnterVC {
+    private func changeRootVC() {
+        viewModel.output.isLoginSuccess
+            .asDriver(onErrorJustReturn: false)
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.setTBCtoRootVC()
