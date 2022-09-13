@@ -50,6 +50,36 @@ struct APISession: APIService {
         }
     }
     
+    func checkOriginUser<T>(with urlResource: urlResource<T>) -> Observable<Result<T, APIError>> where T : Decodable {
+        
+        Observable<Result<T, APIError>>.create { observer in
+            guard let kakaoAccessToken = UserDefaults.standard.string(forKey: UserDefaults.Keys.kakaoAccessToken) else { fatalError() }
+            
+            let headers: HTTPHeaders = [
+                "Content-Type": "application/json",
+                "Access-Token": kakaoAccessToken
+            ]
+            
+            let task = AF.request(urlResource.resultURL,
+                                  encoding: URLEncoding.default,
+                                  headers: headers)
+                .validate(statusCode: 200...399)
+                .responseDecodable(of: T.self) { response in
+                    switch response.result {
+                    case .failure:
+                        observer.onNext(urlResource.judgeError(statusCode: response.response?.statusCode ?? -1))
+                        
+                    case .success(let data):
+                        observer.onNext(.success(data))
+                    }
+                }
+            
+            return Disposables.create {
+                task.cancel()
+            }
+        }
+    }
+    
     func getRequest<T>(with urlResource: urlResource<T>) -> Observable<Result<T, APIError>> where T : Decodable {
         
         Observable<Result<T, APIError>>.create { observer in
