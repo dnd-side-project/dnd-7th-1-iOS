@@ -8,17 +8,17 @@ PODS:
     - SnapKit (~> 5.0)
     - Then (~> 2.0)
   - FSCalendar (2.8.4)
-  - KakaoSDKAuth (2.10.0):
-    - KakaoSDKCommon (= 2.10.0)
-  - KakaoSDKCommon (2.10.0):
-    - KakaoSDKCommon/Common (= 2.10.0)
-    - KakaoSDKCommon/Network (= 2.10.0)
-  - KakaoSDKCommon/Common (2.10.0)
-  - KakaoSDKCommon/Network (2.10.0):
+  - KakaoSDKAuth (2.11.1):
+    - KakaoSDKCommon (= 2.11.1)
+  - KakaoSDKCommon (2.11.1):
+    - KakaoSDKCommon/Common (= 2.11.1)
+    - KakaoSDKCommon/Network (= 2.11.1)
+  - KakaoSDKCommon/Common (2.11.1)
+  - KakaoSDKCommon/Network (2.11.1):
     - Alamofire (~> 5.1)
-    - KakaoSDKCommon/Common (= 2.10.0)
-  - KakaoSDKUser (2.10.0):
-    - KakaoSDKAuth (= 2.10.0)
+    - KakaoSDKCommon/Common (= 2.11.1)
+  - KakaoSDKUser (2.11.1):
+    - KakaoSDKAuth (= 2.11.1)
   - lottie-ios (3.3.0)
   - RxCocoa (6.1.0):
     - RxRelay (= 6.1.0)
@@ -41,8 +41,8 @@ DEPENDENCIES:
   - Alamofire
   - DynamicBottomSheet
   - FSCalendar
-  - KakaoSDKAuth
-  - KakaoSDKUser
+  - KakaoSDKAuth (= 2.11.1)
+  - KakaoSDKUser (= 2.11.1)
   - lottie-ios
   - RxCocoa (< 6.2.0)
   - RxDataSources (< 5.1.0)
@@ -76,9 +76,9 @@ SPEC CHECKSUMS:
   Differentiator: e8497ceab83c1b10ca233716d547b9af21b9344d
   DynamicBottomSheet: b11ead81bf8ee494b26cbd16ff2312313e90d9e3
   FSCalendar: 2d1d0d9398f12d439f55c1fe0f01525b151b8260
-  KakaoSDKAuth: 94cdbd864a6e1b5691c11aba09d769ea91be107a
-  KakaoSDKCommon: 9edbf77ef59c8594412908e023e64ef07f75db08
-  KakaoSDKUser: 7969a38f9ccfd788140fa799b6bbaa223f62683e
+  KakaoSDKAuth: bb2dfa7be30daa8403c9cfc8001aa6fde7a5b779
+  KakaoSDKCommon: 555e1bb46595b842ded01cf7888cc17bbae4e113
+  KakaoSDKUser: 08c0a4f40bebdebdf948a9e3d0e44ed5c2754f99
   lottie-ios: 6ac74dcc09904798f59b18cb3075c089d76be9ae
   RxCocoa: 5c51f02d562cbd94629f6c26cf0c80fe4ab8d343
   RxDataSources: aa47cc1ed6c500fa0dfecac5c979b723542d79cf
@@ -89,6 +89,6 @@ SPEC CHECKSUMS:
   Then: acfe0be7e98221c6204e12f8161459606d5d822d
   "UITextView+Placeholder": d7b0c400921f66523f3a85d74f774512e14f6502
 
-PODFILE CHECKSUM: 1b4e4bb644888dff88188d86863d8c75ad2f886d
+PODFILE CHECKSUM: d8619bd4e00328fcd3b15c0e17e825881484fd13
 
 COCOAPODS: 1.11.3
