@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import KakaoSDKCommon
+import KakaoSDKAuth
+import KakaoSDKUser
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -13,23 +16,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // SplashView 0.3초동안 보이게
+        // SplashView 1초동안 보이게
         Thread.sleep(forTimeInterval: 1)
         
-        // TODO: - 로그인 구현 후 LoginVC로 이동
-        UserDefaults.standard.set("희재횽아짱", forKey: UserDefaults.Keys.nickname)
+        KakaoSDK.initSDK(appKey: "acc678f133b404c0837559c915615ae8")
         
-        // Override point for customization after application launch.
+        // set rootViewController
         window = UIWindow()
         
-        let rootViewcontroller = NEMODUTBC()
-        
-        window?.rootViewController = rootViewcontroller
+        if UserDefaults.standard.string(forKey: UserDefaults.Keys.isFirstAccess) == nil {
+            window?.rootViewController = OnboardingVC()
+        } else if UserDefaults.standard.string(forKey: UserDefaults.Keys.refreshToken) == nil {
+            // 신규 유저
+            window?.rootViewController = LoginNC()
+        } else {
+            // 로그인 이력이 있는(자체 토큰을 가지고 있는) 유저
+            window?.rootViewController = NEMODUTBC()
+        }
         window?.makeKeyAndVisible()
         
         return true
     }
-
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        if (AuthApi.isKakaoTalkLoginUrl(url)) {
+            return AuthController.handleOpenUrl(url: url)
+        }
+        
+        return false
+    }
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.

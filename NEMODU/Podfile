@@ -13,6 +13,10 @@ target 'NEMODU' do
   pod 'RxCocoa', '< 6.2.0'
   pod 'RxGesture', '< 4.1.0'
   pod 'RxDataSources', '<5.1.0'
+
+  # Kakaotalk
+  pod 'KakaoSDKUser'
+  pod 'KakaoSDKAuth'
   
   # Others
   pod 'Alamofire'
