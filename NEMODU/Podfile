@@ -15,8 +15,8 @@ target 'NEMODU' do
   pod 'RxDataSources', '<5.1.0'
 
   # Kakaotalk
-  pod 'KakaoSDKUser'
-  pod 'KakaoSDKAuth'
+  pod ‘KakaoSDKUser’, ‘2.11.1’
+  pod ‘KakaoSDKAuth’, ‘2.11.1’
   
   # Others
   pod 'Alamofire'
