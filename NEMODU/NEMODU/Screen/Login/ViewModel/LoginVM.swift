@@ -73,7 +73,16 @@ extension LoginVM {
                 }
             }
         } else {
-            // TODO: - 카카오톡이 깔려있지 않은 경우 Alert
+            UserApi.shared.loginWithKakaoAccount { oauthToken, error in
+                if let error = error {
+                    print(error)
+                } else {
+                    dump(oauthToken)
+                    UserDefaults.standard.set(oauthToken?.accessToken, forKey: UserDefaults.Keys.kakaoAccessToken)
+                    UserDefaults.standard.set(oauthToken?.refreshToken, forKey: UserDefaults.Keys.kakaoRefreshToken)
+                    self.checkOriginUser()
+                }
+            }
         }
     }
     
