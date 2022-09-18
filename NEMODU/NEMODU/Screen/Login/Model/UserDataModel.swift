@@ -15,7 +15,9 @@ struct UserDataModel {
 extension UserDataModel {
     var userDataParam: Parameters {
         return [
-            "nickname": UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) ?? fatalError(),
+            // TODO: - 재로그인 API 추가 후 수정
+//            "nickname": UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) ?? fatalError()
+            "nickname": UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) ?? "아아",
             "kakaoRefreshToken": UserDefaults.standard.string(forKey: UserDefaults.Keys.kakaoRefreshToken) ?? fatalError(),
             "friends": friends
         ]
