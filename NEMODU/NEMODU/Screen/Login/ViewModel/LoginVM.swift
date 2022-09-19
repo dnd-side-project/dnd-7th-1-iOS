@@ -73,6 +73,7 @@ extension LoginVM {
                 }
             }
         } else {
+            // TODO: - 시뮬레이터용 Account 로그인(임시)
             UserApi.shared.loginWithKakaoAccount { oauthToken, error in
                 if let error = error {
                     print(error)
@@ -90,7 +91,7 @@ extension LoginVM {
         let path = "auth/check/origin"
         let resource = urlResource<Bool>(path: path)
 
-        apiSession.checkOriginUser(with: resource)
+        AuthAPI.shared.checkOriginUser(with: resource)
             .withUnretained(self)
             .subscribe(onNext: { owner, result in
                 switch result {
@@ -98,7 +99,7 @@ extension LoginVM {
                     owner.apiError.onNext(error)
                 case .success(let isOriginUser):
                     isOriginUser
-                    ? owner.getRenewalTokens(UserDataModel(friends: []))
+                    ? owner.nemoduLogin(UserDataModel(friends: []))
                     : owner.output.isOriginUser.accept(isOriginUser)
                 }
             })
@@ -106,11 +107,11 @@ extension LoginVM {
     }
     
     /// 토큰 만료 후 재로그인 시 토큰을 발급받는 메서드
-    func getRenewalTokens(_ userData: UserDataModel) {
+    func nemoduLogin(_ userData: UserDataModel) {
         let path = "auth/signup"
         let resource = urlResource<NicknameModel>(path: path)
         
-        apiSession.kakaoLoginRequest(with: resource, param: userData.userDataParam)
+        AuthAPI.shared.kakaoLoginRequest(with: resource, param: userData.userDataParam)
             .withUnretained(self)
             .subscribe(onNext: { owner, result in
                 switch result {

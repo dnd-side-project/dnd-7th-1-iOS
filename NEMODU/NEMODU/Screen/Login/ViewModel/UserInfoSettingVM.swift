@@ -62,7 +62,7 @@ extension UserInfoSettingVM {
         let path = "auth/check/nickname?nickname=\(nickname)"
         let resource = urlResource<Bool>(path: path)
         
-        apiSession.getRequest(with: resource)
+        AuthAPI.shared.checkNickname(with: resource)
             .withUnretained(self)
             .subscribe(onNext: { owner, result in
                 switch result {

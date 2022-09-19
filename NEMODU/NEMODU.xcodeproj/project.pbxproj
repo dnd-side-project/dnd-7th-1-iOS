@@ -111,6 +111,7 @@
 		23D8B7E128B3AC9C00F48165 /* MyRecordListTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7E028B3AC9C00F48165 /* MyRecordListTVC.swift */; };
 		23D8B7E528B4D5AA00F48165 /* CalendarSelectStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7E428B4D5AA00F48165 /* CalendarSelectStackView.swift */; };
 		23D8B7E728B4E44700F48165 /* MyRecordDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7E628B4E44700F48165 /* MyRecordDetailVC.swift */; };
+		23ECC09F28D859E000F65692 /* AuthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23ECC09E28D859E000F65692 /* AuthAPI.swift */; };
 		23F5716928A6802C005F2E21 /* UIStackView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5716828A6802C005F2E21 /* UIStackView+.swift */; };
 		23F5716D28A6A61E005F2E21 /* MiniMapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5716C28A6A61D005F2E21 /* MiniMapVC.swift */; };
 		23F5716F28A6AD01005F2E21 /* RecordStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5716E28A6AD01005F2E21 /* RecordStackView.swift */; };
@@ -284,6 +285,7 @@
 		23D8B7E028B3AC9C00F48165 /* MyRecordListTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordListTVC.swift; sourceTree = "<group>"; };
 		23D8B7E428B4D5AA00F48165 /* CalendarSelectStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSelectStackView.swift; sourceTree = "<group>"; };
 		23D8B7E628B4E44700F48165 /* MyRecordDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordDetailVC.swift; sourceTree = "<group>"; };
+		23ECC09E28D859E000F65692 /* AuthAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthAPI.swift; sourceTree = "<group>"; };
 		23F5716828A6802C005F2E21 /* UIStackView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+.swift"; sourceTree = "<group>"; };
 		23F5716C28A6A61D005F2E21 /* MiniMapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniMapVC.swift; sourceTree = "<group>"; };
 		23F5716E28A6AD01005F2E21 /* RecordStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordStackView.swift; sourceTree = "<group>"; };
@@ -638,6 +640,7 @@
 				2348B3EF2892D0FE001095BC /* APISession.swift */,
 				2348B3F12892D116001095BC /* urlResource.swift */,
 				233258A028D60C370073B09E /* AuthInterceptor.swift */,
+				23ECC09E28D859E000F65692 /* AuthAPI.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -1285,6 +1288,7 @@
 				3CB9DB9D28A92528007BC1BE /* MenuBarCV.swift in Sources */,
 				2348B3BF2892C675001095BC /* AppDelegate.swift in Sources */,
 				3C72D7C428B51BB6006E2229 /* SelectChallengeCreateVC.swift in Sources */,
+				23ECC09F28D859E000F65692 /* AuthAPI.swift in Sources */,
 				23B7205D28A0CBAC00D3A410 /* ChallengeListBottomSheet.swift in Sources */,
 				2348B4122892D901001095BC /* LoadingView.swift in Sources */,
 				3C08137E28A91C00009F854B /* ChallengeTitleTVHV.swift in Sources */,
