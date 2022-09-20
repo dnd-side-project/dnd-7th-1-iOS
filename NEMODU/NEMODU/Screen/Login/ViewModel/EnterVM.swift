@@ -57,7 +57,7 @@ extension EnterVM {
         let path = "auth/signup"
         let resource = urlResource<NicknameModel>(path: path)
         
-        apiSession.kakaoLoginRequest(with: resource, param: userData.userDataParam)
+        AuthAPI.shared.kakaoLoginRequest(with: resource, param: userData.userDataParam)
             .withUnretained(self)
             .subscribe(onNext: { owner, result in
                 switch result {
