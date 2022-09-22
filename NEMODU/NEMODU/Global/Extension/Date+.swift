@@ -20,6 +20,13 @@ extension Date {
         return calendar.component(component, from: self)
     }
     
+    /// Convert UTC (or GMT) to local time
+    func toLocalTime() -> Date {
+        let timezone = TimeZone.current
+        let seconds = TimeInterval(timezone.secondsFromGMT(for: self))
+        return Date(timeInterval: seconds, since: self)
+    }
+    
     /// 월요일부터 시작하는 NEMODU weekDay
     func getWeekDay() -> Int {
         let weekDay = self.get(.weekday)

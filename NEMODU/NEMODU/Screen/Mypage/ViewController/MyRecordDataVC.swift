@@ -166,6 +166,8 @@ extension MyRecordDataVC {
         calendarCV.register(DayCVC.self, forCellWithReuseIdentifier: DayCVC.className)
 
         viewModel.getWeeklyDays()
+        viewModel.getMonthlyDays()
+        selectCV(date: .now)
     }
     
     private func configureTitleDate(_ date: Date) {
@@ -261,7 +263,10 @@ extension MyRecordDataVC {
                                   animated: true,
                                   scrollPosition: .left)
         } else {
-            // Monthly
+            let row = date.get(.day) + viewModel.firstDayOfMonth()!.getWeekDay() - 1
+            calendarCV.selectItem(at: [1, row],
+                                  animated: true,
+                                  scrollPosition: .left)
         }
     }
 }
@@ -274,7 +279,9 @@ extension MyRecordDataVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                self.viewModel.input.moveWeek.accept(1)
+                self.isWeeklyScope
+                ? self.viewModel.input.moveWeek.accept(1)
+                : self.viewModel.input.moveMonth.accept(1)
                 self.calendarCV.reloadData()
                 self.selectCV(date: self.viewModel.input.selectedDay.value)
             })
@@ -284,7 +291,9 @@ extension MyRecordDataVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                self.viewModel.input.moveWeek.accept(-1)
+                self.isWeeklyScope
+                ? self.viewModel.input.moveWeek.accept(-1)
+                : self.viewModel.input.moveMonth.accept(-1)
                 self.calendarCV.reloadData()
                 self.selectCV(date: self.viewModel.input.selectedDay.value)
             })
@@ -294,10 +303,12 @@ extension MyRecordDataVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
+                if !self.isWeeklyScope { self.viewModel.getWeeklyDays() }
                 self.calendarScopeBtn.isSelected = self.isWeeklyScope
                 self.isWeeklyScope.toggle()
                 self.calendarCV.reloadData()
                 self.setCalendarHeight()
+                self.selectCV(date: self.viewModel.input.selectedDay.value)
             })
             .disposed(by: bag)
     }
@@ -330,7 +341,19 @@ extension MyRecordDataVC {
                       let dayCell = self.calendarCV.cellForItem(at: idx) as? DayCVC,
                       let selectedDate = dayCell.date
                 else { return }
-                self.viewModel.input.selectedDay.accept(selectedDate)
+                // 다른 달을 눌렀을 때, 이번 달을 눌렀을 때 선택 상태 및 캘린더 상태 구분
+                if self.viewModel.input.selectedDay.value.get(.month) == selectedDate.get(.month) {
+                    self.viewModel.input.selectedDay.accept(selectedDate)
+                    self.calendarCV.reloadData()
+                    self.calendarCV.selectItem(at: idx,
+                                               animated: true,
+                                               scrollPosition: .left)
+                } else {
+                    self.viewModel.input.selectedDay.accept(selectedDate)
+                    self.viewModel.getMonthlyDays()
+                    self.calendarCV.reloadData()
+                    self.selectCV(date: selectedDate)
+                }
             })
             .disposed(by: bag)
     }
@@ -386,37 +409,14 @@ extension MyRecordDataVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        // 미래 선택 불가능
+        guard let cell = collectionView.cellForItem(at: indexPath) as? DayCVC,
+              let selectedDate = cell.date else { return false }
+        return selectedDate <= .now
+    }
 }
-
-//// MARK: - FSCalendarDelegate
-//
-//extension MyRecordDataVC: FSCalendarDelegate {
-//    func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
-//        calendar.snp.updateConstraints {
-//            $0.height.equalTo(90)
-//        }
-//        self.view.layoutIfNeeded()
-//    }
-//    
-//    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-//        // 날짜 선택
-//        viewModel.input.selectedDay.accept(date)
-//    }
-//    
-//    // 미래 선택 불가능
-//    func calendar(_ calendar: FSCalendar, shouldSelect date: Date, at monthPosition: FSCalendarMonthPosition) -> Bool {
-//        !(date > .now)
-//    }
-//}
-//
-//// MARK: - FSCalendarDelegateAppearance
-//
-//extension MyRecordDataVC: FSCalendarDelegateAppearance {
-//    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
-//        if viewModel.isToday(date) { return .white }
-//        else { return date > .now ? .gray300 : .gray400}
-//    }
-//}
 
 // MARK: - UICollectionViewDelegate
 
@@ -461,6 +461,12 @@ extension MyRecordDataVC: UICollectionViewDataSource {
         default:
             let day = isWeeklyScope ? viewModel.weekDays[indexPath.row] : viewModel.days[indexPath.row]
             dayCell.configureCell(day)
+            
+            // 이전달, 다음달 일자 색상 변경
+            if day.get(.month) != viewModel.input.selectedDay.value.get(.month) {
+                dayCell.setOtherMonthDate()
+            }
+            
             return dayCell
         }
     }

@@ -33,6 +33,7 @@ final class MyRecordDataVM: BaseViewModel {
     struct Input {
         var selectedDay = BehaviorRelay<Date>(value: Date.now)
         var moveWeek = PublishRelay<Int>()
+        var moveMonth = PublishRelay<Int>()
     }
     
     // MARK: - Output
@@ -82,6 +83,22 @@ extension MyRecordDataVM {
         }
     }
     
+    func getMonthlyDays() {
+        guard let firstDayOfMonth = firstDayOfMonth() else { return }
+        
+        days.removeAll()
+        for i in 0..<42 {
+            days.append(cal.date(byAdding: .day,
+                                 value: i - firstDayOfMonth.getWeekDay(),
+                                 to: firstDayOfMonth)!)
+        }
+    }
+    
+    func firstDayOfMonth() -> Date? {
+        guard let interval = cal.dateInterval(of: .month, for: input.selectedDay.value) else { return nil }
+        return interval.start
+    }
+    
     func startDateFormatter(_ today: Date) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'00:00:00"
@@ -112,6 +129,20 @@ extension MyRecordDataVM: Input {
                 else { return }
                 self.input.selectedDay.accept(selectedDate > .now ? .now : selectedDate)
                 self.getWeeklyDays()
+                self.getMonthlyDays()
+            })
+            .disposed(by: bag)
+        
+        input.moveMonth
+            .subscribe(onNext: { [weak self] value in
+                guard let self = self,
+                      let selectedDate = self.cal.date(byAdding: .month,
+                                                       value: value,
+                                                       to: self.input.selectedDay.value)
+                else { return }
+                self.input.selectedDay.accept(selectedDate > .now ? .now : selectedDate)
+                self.getWeeklyDays()
+                self.getMonthlyDays()
             })
             .disposed(by: bag)
     }

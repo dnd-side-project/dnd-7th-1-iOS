@@ -71,6 +71,11 @@ extension DayCVC {
         dayLabel.text = "\(date.get(.day))"
         eventDot.isHidden = false
     }
+    
+    func setOtherMonthDate() {
+        dayLabel.textColor = .gray300
+        eventDot.isHidden = true
+    }
 }
 
 // MARK: - Layout
