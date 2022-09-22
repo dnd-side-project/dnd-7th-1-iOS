@@ -22,9 +22,11 @@ final class MyRecordDataVM: BaseViewModel {
     var output = Output()
     
     // Calendar
+    private let cal = Calendar.current
+    private var components = DateComponents()
     let weekTitle = ["월", "화", "수", "목", "금", "토", "일"]
-    var days = [String](repeating: "-", count: 42)
-    var weekDays = [String](repeating: "-", count: 7)
+    var days = [Date]()
+    var weekDays = [Date]()
     
     // MARK: - Input
     
@@ -49,6 +51,7 @@ final class MyRecordDataVM: BaseViewModel {
     // MARK: - Init
     
     init() {
+        configureDateComponents()
         bindInput()
         bindOutput()
     }
@@ -61,6 +64,24 @@ final class MyRecordDataVM: BaseViewModel {
 // MARK: - Custom Methods
 
 extension MyRecordDataVM {
+    
+    private func configureDateComponents() {
+        components.year = cal.component(.year, from: .now)
+        components.month = cal.component(.month, from: .now)
+        components.day = 1
+    }
+    
+    func getWeeklyDays() {
+        let weekDay = input.selectedDay.value.getWeekDay()
+        
+        weekDays.removeAll()
+        for i in 0..<7 {
+            weekDays.append(cal.date(byAdding: .day,
+                                     value: i - weekDay,
+                                     to: input.selectedDay.value)!)
+        }
+    }
+    
     func startDateFormatter(_ today: Date) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'00:00:00"
@@ -76,18 +97,6 @@ extension MyRecordDataVM {
         let date = dateFormatter.string(from: today)
         return date
     }
-    
-    func setSelected(date: Date) -> Int {
-        var dayIndex = Calendar.current.component(.weekday, from: date) - 2
-        dayIndex = dayIndex < 0 ? 6 : dayIndex
-        return dayIndex
-    }
-    
-    func isToday(_ date: Date) -> Bool {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        return dateFormatter.string(from: date) == dateFormatter.string(from: Date.now)
-    }
 }
 
 // MARK: - Input
@@ -97,11 +106,12 @@ extension MyRecordDataVM: Input {
         input.moveWeek
             .subscribe(onNext: { [weak self] value in
                 guard let self = self,
-                      let selectedDate = Calendar.current.date(byAdding: .weekOfMonth,
-                                                               value: value,
-                                                               to: self.input.selectedDay.value)
+                      let selectedDate = self.cal.date(byAdding: .weekOfMonth,
+                                                       value: value,
+                                                       to: self.input.selectedDay.value)
                 else { return }
                 self.input.selectedDay.accept(selectedDate > .now ? .now : selectedDate)
+                self.getWeeklyDays()
             })
             .disposed(by: bag)
     }

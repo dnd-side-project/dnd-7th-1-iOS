@@ -22,6 +22,8 @@ class DayCVC: BaseCollectionViewCell {
             $0.layer.cornerRadius = 3
         }
     
+    var date: Date?
+    
     override func configureView() {
         super.configureView()
         configureContentView()
@@ -64,8 +66,9 @@ extension DayCVC {
         contentView.layer.cornerRadius = frame.width / 2
     }
     
-    func configureCell(_ date: String) {
-        dayLabel.text = date
+    func configureCell(_ date: Date) {
+        self.date = date
+        dayLabel.text = "\(date.get(.day))"
         eventDot.isHidden = false
     }
 }

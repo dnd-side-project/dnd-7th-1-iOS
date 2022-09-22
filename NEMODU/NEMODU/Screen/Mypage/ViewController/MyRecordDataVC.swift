@@ -108,6 +108,7 @@ class MyRecordDataVC: BaseViewController {
         super.configureView()
         configureNaviBar()
         configureContentView()
+        configureCalendarCV()
         configureTitleDate(.now)
     }
     
@@ -151,15 +152,20 @@ extension MyRecordDataVC {
                                     recordTableView])
         
         // TODO: - calendarCV delegate 연결 & 주간 캘린더 선택 StackView 추가
-        calendarCV.delegate = self
-        calendarCV.dataSource = self
-        calendarCV.register(WeekCVC.self, forCellWithReuseIdentifier: WeekCVC.className)
-        calendarCV.register(DayCVC.self, forCellWithReuseIdentifier: DayCVC.className)
 //        calendarCV.contentView.addSubview(calendarSelectStackView)
 //        calendarCV.contentView.sendSubviewToBack(calendarSelectStackView)
         
         recordTableView.register(MyRecordListTVC.self, forCellReuseIdentifier: MyRecordListTVC.className)
         recordTableView.delegate = self
+    }
+    
+    private func configureCalendarCV() {
+        calendarCV.delegate = self
+        calendarCV.dataSource = self
+        calendarCV.register(WeekCVC.self, forCellWithReuseIdentifier: WeekCVC.className)
+        calendarCV.register(DayCVC.self, forCellWithReuseIdentifier: DayCVC.className)
+
+        viewModel.getWeeklyDays()
     }
     
     private func configureTitleDate(_ date: Date) {
@@ -246,6 +252,20 @@ extension MyRecordDataVC {
     }
 }
 
+// MARK: - Custom Methods
+
+extension MyRecordDataVC {
+    private func selectCV(date: Date) {
+        if isWeeklyScope {
+            calendarCV.selectItem(at: [1, date.getWeekDay()],
+                                  animated: true,
+                                  scrollPosition: .left)
+        } else {
+            // Monthly
+        }
+    }
+}
+
 // MARK: - Input
 
 extension MyRecordDataVC {
@@ -255,8 +275,8 @@ extension MyRecordDataVC {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.viewModel.input.moveWeek.accept(1)
-                // TODO: - 다음 달 선택
-//                self.calendarCV.select(self.viewModel.input.selectedDay.value, scrollToDate: true)
+                self.calendarCV.reloadData()
+                self.selectCV(date: self.viewModel.input.selectedDay.value)
             })
             .disposed(by: bag)
         
@@ -265,8 +285,8 @@ extension MyRecordDataVC {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.viewModel.input.moveWeek.accept(-1)
-                // TODO: - 이전 달 선택
-//                self.calendarCV.select(self.viewModel.input.selectedDay.value, scrollToDate: true)
+                self.calendarCV.reloadData()
+                self.selectCV(date: self.viewModel.input.selectedDay.value)
             })
             .disposed(by: bag)
         
@@ -293,18 +313,24 @@ extension MyRecordDataVC {
                 self.setNextWeekBtn(day)
                 
                 // 선택 일자 배경 지정
-                self.calendarSelectStackView.setSelectDay(dayIndex: self.viewModel.setSelected(date: day))
-                
-                // TODO: - 선택 일자 색 구별
-//                self.calendarCV.appearance.titleSelectionColor
-//                = self.viewModel.isToday(day)
-//                ? .white : .black
+                self.calendarSelectStackView.setSelectDay(dayIndex: day.getWeekDay())
                 
                 // 일자별 tableView 연결
                 self.viewModel.getMyRecordDataList(
                     with: MyRecordListRequestModel(start: self.viewModel.startDateFormatter(day),
                                                    end: self.viewModel.endDateFormatter(day)))
                 self.recordTableView.reloadData()
+            })
+            .disposed(by: bag)
+        
+        calendarCV.rx.itemSelected
+            .asDriver()
+            .drive(onNext: { [weak self] idx in
+                guard let self = self,
+                      let dayCell = self.calendarCV.cellForItem(at: idx) as? DayCVC,
+                      let selectedDate = dayCell.date
+                else { return }
+                self.viewModel.input.selectedDay.accept(selectedDate)
             })
             .disposed(by: bag)
     }
