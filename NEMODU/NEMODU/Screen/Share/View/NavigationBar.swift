@@ -15,7 +15,7 @@ class NavigationBar: BaseView {
             $0.font = .title3M
         }
        
-    private var backBtn = UIButton()
+    var backBtn = UIButton()
         .then {
             $0.tintColor = .label
         }

@@ -71,7 +71,6 @@ extension ChallengeRankingVM {
         apiSession.postRequest(with: resource, param: param.areaParam)
             .withUnretained(self)
             .subscribe(onNext: { owner, result in
-                dump(result)
                 switch result {
                 case .failure(let error):
                     owner.apiError.onError(error)
@@ -89,7 +88,6 @@ extension ChallengeRankingVM {
         apiSession.postRequest(with: resource, param: param.areaParam)
             .withUnretained(self)
             .subscribe(onNext: { owner, result in
-                dump(result)
                 switch result {
                 case .failure(let error):
                     owner.apiError.onError(error)
@@ -107,7 +105,6 @@ extension ChallengeRankingVM {
         apiSession.getRequest(with: resource)
             .withUnretained(self)
             .subscribe(onNext: { owner, result in
-                dump(result)
                 switch result {
                 case .failure(let error):
                     owner.apiError.onError(error)

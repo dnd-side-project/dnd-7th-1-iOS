@@ -7,8 +7,11 @@
 
 import Alamofire
 import RxSwift
+import Foundation
 
 struct APISession: APIService {
+    
+    /// [GET]
     func getRequest<T>(with urlResource: urlResource<T>) -> Observable<Result<T, APIError>> where T : Decodable {
         
         Observable<Result<T, APIError>>.create { observer in
@@ -18,7 +21,8 @@ struct APISession: APIService {
             
             let task = AF.request(urlResource.resultURL,
                                   encoding: URLEncoding.default,
-                                  headers: headers)
+                                  headers: headers,
+                                  interceptor: AuthInterceptor())
                 .validate(statusCode: 200...399)
                 .responseDecodable(of: T.self) { response in
                     switch response.result {
@@ -36,6 +40,7 @@ struct APISession: APIService {
         }
     }
     
+    /// [POST]
     func postRequest<T: Decodable>(with urlResource: urlResource<T>, param: Parameters?) -> Observable<Result<T, APIError>> {
         
         Observable<Result<T, APIError>>.create { observer in
@@ -47,7 +52,8 @@ struct APISession: APIService {
                                   method: .post,
                                   parameters: param,
                                   encoding: JSONEncoding.default,
-                                  headers: headers)
+                                  headers: headers,
+                                  interceptor: AuthInterceptor())
                 .validate(statusCode: 200...399)
                 .responseDecodable(of: T.self) { response in
                     switch response.result {
@@ -65,10 +71,11 @@ struct APISession: APIService {
         }
     }
     
+    /// [POST] - multipartForm
     func postRequestWithImage<T: Decodable>(with urlResource: urlResource<T>, param: Parameters, image: UIImage, method: HTTPMethod) -> Observable<Result<T, APIError>> {
         Observable<Result<T, APIError>>.create { observer in
             let headers: HTTPHeaders = [
-                "Content-Type": "multipart/form-data"
+                "Content-Type": "application/json"
             ]
             
             let task = AF.upload(multipartFormData: { (multipart) in

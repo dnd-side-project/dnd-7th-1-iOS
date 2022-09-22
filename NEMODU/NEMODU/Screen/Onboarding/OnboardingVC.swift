@@ -253,7 +253,7 @@ extension OnboardingVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                // 화면 전환
+                self.presentLoginVC()
             })
             .disposed(by: bag)
         
@@ -261,8 +261,19 @@ extension OnboardingVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                // 화면 전환
+                self.presentLoginVC()
             })
             .disposed(by: bag)
+    }
+}
+
+// MARK: - Custom Methods
+
+extension OnboardingVC {
+    private func presentLoginVC() {
+        UserDefaults.standard.set("No", forKey: UserDefaults.Keys.isFirstAccess)
+        
+        guard let ad = UIApplication.shared.delegate as? AppDelegate else { return }
+        ad.window?.rootViewController = LoginNC()
     }
 }
