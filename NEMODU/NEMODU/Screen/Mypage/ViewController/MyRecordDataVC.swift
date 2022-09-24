@@ -35,6 +35,8 @@ class MyRecordDataVC: BaseViewController {
                 .withTintColor(.main, renderingMode: .alwaysOriginal), for: .normal)
         }
     
+    private let calendarBaseView = UIView()
+    
     private let calendarCV = UICollectionView(frame: .zero,
                                               collectionViewLayout: UICollectionViewLayout())
         .then {
@@ -46,6 +48,7 @@ class MyRecordDataVC: BaseViewController {
             $0.collectionViewLayout = layout
             $0.showsHorizontalScrollIndicator = false
             $0.isPagingEnabled = true
+            $0.backgroundColor = .clear
         }
     
     private let calendarScopeBtn = UIButton()
@@ -93,10 +96,10 @@ class MyRecordDataVC: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // TODO: - 화면이 나타날 때 선택된 날짜값으로 운동 데이터 목록 가져오기
-//        viewModel.getMyRecordDataList(
-//            with: MyRecordListRequestModel(start: viewModel.startDateFormatter(calendarCV.selectedDate ?? Date.now),
-//                                           end: viewModel.endDateFormatter(calendarCV.selectedDate ?? Date.now)))
+        viewModel.getMyRecordDataList(
+            with: MyRecordListRequestModel(
+                start: viewModel.startDateFormatter(viewModel.input.selectedDay.value),
+                end: viewModel.endDateFormatter(viewModel.input.selectedDay.value)))
     }
     
     override func viewDidLayoutSubviews() {
@@ -144,27 +147,25 @@ extension MyRecordDataVC {
         view.addSubviews([dateLabel,
                           nextWeekBtn,
                           prevWeekBtn,
-                          calendarCV,
+                          calendarBaseView,
                           calendarScopeBtn,
                           recordListView])
+        calendarBaseView.addSubviews([calendarSelectStackView,
+                                      calendarCV])
         recordListView.addSubviews([recordTitle,
                                     noneMessage,
                                     recordTableView])
         
-        // TODO: - calendarCV delegate 연결 & 주간 캘린더 선택 StackView 추가
-//        calendarCV.contentView.addSubview(calendarSelectStackView)
-//        calendarCV.contentView.sendSubviewToBack(calendarSelectStackView)
+        calendarCV.delegate = self
+        calendarCV.dataSource = self
+        calendarCV.register(WeekCVC.self, forCellWithReuseIdentifier: WeekCVC.className)
+        calendarCV.register(DayCVC.self, forCellWithReuseIdentifier: DayCVC.className)
         
         recordTableView.register(MyRecordListTVC.self, forCellReuseIdentifier: MyRecordListTVC.className)
         recordTableView.delegate = self
     }
     
     private func configureCalendarCV() {
-        calendarCV.delegate = self
-        calendarCV.dataSource = self
-        calendarCV.register(WeekCVC.self, forCellWithReuseIdentifier: WeekCVC.className)
-        calendarCV.register(DayCVC.self, forCellWithReuseIdentifier: DayCVC.className)
-
         viewModel.getWeeklyDays()
         viewModel.getMonthlyDays()
         selectCV(date: .now)
@@ -215,16 +216,20 @@ extension MyRecordDataVC {
             $0.width.height.equalTo(24)
         }
         
-        calendarCV.snp.makeConstraints {
+        calendarBaseView.snp.makeConstraints {
             $0.top.equalTo(dateLabel.snp.bottom)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
+        }
+        
+        calendarCV.snp.makeConstraints {
+            $0.edges.equalToSuperview()
             $0.height.equalTo(0)
         }
         
-//        calendarSelectStackView.snp.makeConstraints {
-//            $0.edges.equalToSuperview()
-//        }
+        calendarSelectStackView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
         
         calendarScopeBtn.snp.makeConstraints {
             $0.top.equalTo(calendarCV.snp.bottom)
@@ -304,6 +309,7 @@ extension MyRecordDataVC {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 if !self.isWeeklyScope { self.viewModel.getWeeklyDays() }
+                self.calendarSelectStackView.isHidden = self.isWeeklyScope
                 self.calendarScopeBtn.isSelected = self.isWeeklyScope
                 self.isWeeklyScope.toggle()
                 self.calendarCV.reloadData()

@@ -44,7 +44,7 @@ extension CalendarSelectStackView {
         for i in 0...6 {
             stackView.arrangedSubviews[i].backgroundColor
             = i == dayIndex
-            ? .gray100 : .clear
+            ? .main : .clear
             
             stackView.arrangedSubviews[i].layer.cornerRadius = (myRecordDataVC.screenWidth - 20) / 14
         }
