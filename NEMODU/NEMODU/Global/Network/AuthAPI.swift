@@ -24,8 +24,8 @@ extension AuthAPI {
         UserDefaults.standard.set(refreshToken, forKey: UserDefaults.Keys.refreshToken)
     }
     
-    /// [POST] 헤더에 kakaoAccessToken을 붙여 로그인을 요청하는 메서드
-    func kakaoLoginRequest<T: Decodable>(with urlResource: urlResource<T>, param: Parameters) -> Observable<Result<T, APIError>> {
+    /// [POST] 헤더에 kakaoAccessToken을 붙여 회원가입을 요청하는 메서드
+    func signupRequest<T: Decodable>(with urlResource: urlResource<T>, param: Parameters) -> Observable<Result<T, APIError>> {
         Observable<Result<T, APIError>>.create { observer in
             guard let kakaoAccessToken = UserDefaults.standard.string(forKey: UserDefaults.Keys.kakaoAccessToken) else { fatalError() }
             
@@ -37,6 +37,38 @@ extension AuthAPI {
             let task = AF.request(urlResource.resultURL,
                                   method: .post,
                                   parameters: param,
+                                  encoding: JSONEncoding.default,
+                                  headers: headers)
+                .validate(statusCode: 200...399)
+                .responseDecodable(of: T.self) { response in
+                    switch response.result {
+                    case .failure:
+                        observer.onNext(urlResource.judgeError(statusCode: response.response?.statusCode ?? -1))
+                        
+                    case .success(let data):
+                        observer.onNext(.success(data))
+                        setUserDefaultsToken(headers: response.response?.headers)
+                    }
+                }
+            
+            return Disposables.create {
+                task.cancel()
+            }
+        }
+    }
+    
+    /// [GET] 헤더에 kakaoAccessToken을 붙여 로그인을 요청하는 메서드
+    func loginRequest<T: Decodable>(with urlResource: urlResource<T>) -> Observable<Result<T, APIError>> {
+        Observable<Result<T, APIError>>.create { observer in
+            guard let kakaoAccessToken = UserDefaults.standard.string(forKey: UserDefaults.Keys.kakaoAccessToken) else { fatalError() }
+            
+            let headers: HTTPHeaders = [
+                "Content-Type": "application/json",
+                "Kakao-Access-Token": kakaoAccessToken
+            ]
+            
+            let task = AF.request(urlResource.resultURL,
+                                  method: .post,
                                   encoding: JSONEncoding.default,
                                   headers: headers)
                 .validate(statusCode: 200...399)
