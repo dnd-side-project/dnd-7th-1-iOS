@@ -97,7 +97,7 @@ extension AuthAPI {
             
             let headers: HTTPHeaders = [
                 "Content-Type": "application/json",
-                "Access-Token": kakaoAccessToken
+                "Kakao-Access-Token": kakaoAccessToken
             ]
             
             let task = AF.request(urlResource.resultURL,
