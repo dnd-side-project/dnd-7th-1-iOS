@@ -99,19 +99,18 @@ extension LoginVM {
                     owner.apiError.onNext(error)
                 case .success(let isOriginUser):
                     isOriginUser
-                    ? owner.nemoduLogin(UserDataModel(friends: []))
-                    : owner.output.isOriginUser.accept(isOriginUser)
+                    ? owner.nemoduLogin()
+                    : owner.output.isOriginUser.accept(false)
                 }
             })
             .disposed(by: bag)
     }
     
-    /// 토큰 만료 후 재로그인 시 토큰을 발급받는 메서드
-    func nemoduLogin(_ userData: UserDataModel) {
-        let path = "auth/signup"
+    /// 토큰 만료 후 로그인 시 토큰을 발급받는 메서드
+    func nemoduLogin() {
+        let path = "login"
         let resource = urlResource<NicknameModel>(path: path)
-        
-        AuthAPI.shared.kakaoLoginRequest(with: resource, param: userData.userDataParam)
+        AuthAPI.shared.loginRequest(with: resource)
             .withUnretained(self)
             .subscribe(onNext: { owner, result in
                 switch result {
