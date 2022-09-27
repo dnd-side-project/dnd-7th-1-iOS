@@ -35,8 +35,6 @@ class MyRecordDataVC: BaseViewController {
                 .withTintColor(.main, renderingMode: .alwaysOriginal), for: .normal)
         }
     
-    private let calendarBaseView = UIView()
-    
     private let calendarCV = UICollectionView(frame: .zero,
                                               collectionViewLayout: UICollectionViewLayout())
         .then {
@@ -147,11 +145,10 @@ extension MyRecordDataVC {
         view.addSubviews([dateLabel,
                           nextWeekBtn,
                           prevWeekBtn,
-                          calendarBaseView,
+                          calendarSelectStackView,
+                          calendarCV,
                           calendarScopeBtn,
                           recordListView])
-        calendarBaseView.addSubviews([calendarSelectStackView,
-                                      calendarCV])
         recordListView.addSubviews([recordTitle,
                                     noneMessage,
                                     recordTableView])
@@ -190,7 +187,11 @@ extension MyRecordDataVC {
             $0.height.equalTo(height)
         }
         
-        self.view.layoutIfNeeded()
+        calendarSelectStackView.snp.updateConstraints {
+            $0.height.equalTo(height)
+        }
+        
+        view.layoutIfNeeded()
     }
 }
 
@@ -216,19 +217,18 @@ extension MyRecordDataVC {
             $0.width.height.equalTo(24)
         }
         
-        calendarBaseView.snp.makeConstraints {
+        calendarCV.snp.makeConstraints {
             $0.top.equalTo(dateLabel.snp.bottom)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
-        }
-        
-        calendarCV.snp.makeConstraints {
-            $0.edges.equalToSuperview()
             $0.height.equalTo(0)
         }
         
         calendarSelectStackView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.top.equalTo(dateLabel.snp.bottom)
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview().offset(-16)
+            $0.height.equalTo(0)
         }
         
         calendarScopeBtn.snp.makeConstraints {

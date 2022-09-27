@@ -36,6 +36,7 @@ extension WeekCVC {
     
     func configureCell(_ day: String) {
         weekLabel.text = day
+        weekLabel.textColor = .gray500
     }
 }
 
@@ -46,5 +47,9 @@ extension WeekCVC {
         weekLabel.snp.makeConstraints {
             $0.center.equalToSuperview()
         }
+    }
+    
+    func selectCell() {
+        weekLabel.textColor = .white
     }
 }
