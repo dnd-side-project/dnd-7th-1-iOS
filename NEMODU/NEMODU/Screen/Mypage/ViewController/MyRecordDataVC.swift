@@ -463,6 +463,9 @@ extension MyRecordDataVC: UICollectionViewDataSource {
         switch indexPath.section {
         case 0:
             weekCell.configureCell(viewModel.weekTitle[indexPath.row])
+            if isWeeklyScope && indexPath.row == viewModel.input.selectedDay.value.getWeekDay() {
+                weekCell.selectCell()
+            }
             return weekCell
         default:
             let day = isWeeklyScope ? viewModel.weekDays[indexPath.row] : viewModel.days[indexPath.row]
