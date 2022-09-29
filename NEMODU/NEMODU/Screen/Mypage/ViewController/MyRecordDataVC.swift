@@ -12,7 +12,6 @@ import RxSwift
 import RxDataSources
 import SnapKit
 import Then
-import FSCalendar
 
 class MyRecordDataVC: BaseViewController {
     private let dateLabel = UILabel()
@@ -36,33 +35,24 @@ class MyRecordDataVC: BaseViewController {
                 .withTintColor(.main, renderingMode: .alwaysOriginal), for: .normal)
         }
     
-    private let calendar = FSCalendar()
+    private let calendarCV = UICollectionView(frame: .zero,
+                                              collectionViewLayout: UICollectionViewLayout())
         .then {
-            $0.locale = Locale(identifier: "ko_KR")
-            $0.headerHeight = 0
-            $0.weekdayHeight = 32
-            $0.firstWeekday = 2
-            $0.scope = .week
+            let layout = UICollectionViewFlowLayout()
+            layout.sectionInset = UIEdgeInsets(top: 10, left: 4, bottom: 2, right: 4)
+            layout.minimumLineSpacing = 12
+            layout.minimumInteritemSpacing = 8
             
-            $0.appearance.weekdayFont = .body3
-            $0.appearance.weekdayTextColor = .gray500
-            
-            $0.appearance.titleFont = .body1
-            $0.appearance.titleDefaultColor = .gray400
-            
-            $0.appearance.selectionColor = .clear
-            $0.appearance.titleSelectionColor = .black
-            
-            $0.appearance.titleTodayColor = .white
-            $0.appearance.todaySelectionColor = .main
-            $0.appearance.todayColor = .main
-            
-            $0.collectionView.isScrollEnabled = false
+            $0.collectionViewLayout = layout
+            $0.showsHorizontalScrollIndicator = false
+            $0.isPagingEnabled = true
+            $0.backgroundColor = .clear
         }
     
     private let calendarScopeBtn = UIButton()
         .then {
             $0.setImage(UIImage(named: "arrow_down"), for: .normal)
+            $0.setImage(UIImage(named: "arrow_up"), for: .selected)
         }
     
     private let calendarSelectStackView = CalendarSelectStackView()
@@ -93,9 +83,10 @@ class MyRecordDataVC: BaseViewController {
         }
     
     private let naviBar = NavigationBar()
-    
     private let viewModel = MyRecordDataVM()
     private let bag = DisposeBag()
+    
+    private var isWeeklyScope = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -104,14 +95,21 @@ class MyRecordDataVC: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.getMyRecordDataList(
-            with: MyRecordListRequestModel(start: viewModel.startDateFormatter(calendar.selectedDate ?? Date.now),
-                                           end: viewModel.endDateFormatter(calendar.selectedDate ?? Date.now)))
+            with: MyRecordListRequestModel(
+                start: viewModel.startDateFormatter(viewModel.input.selectedDay.value),
+                end: viewModel.endDateFormatter(viewModel.input.selectedDay.value)))
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        setCalendarHeight()
     }
     
     override func configureView() {
         super.configureView()
         configureNaviBar()
         configureContentView()
+        configureCalendarCV()
         configureTitleDate(.now)
     }
     
@@ -147,19 +145,27 @@ extension MyRecordDataVC {
         view.addSubviews([dateLabel,
                           nextWeekBtn,
                           prevWeekBtn,
-                          calendar,
+                          calendarSelectStackView,
+                          calendarCV,
                           calendarScopeBtn,
                           recordListView])
         recordListView.addSubviews([recordTitle,
                                     noneMessage,
                                     recordTableView])
         
-        calendar.delegate = self
-        calendar.contentView.addSubview(calendarSelectStackView)
-        calendar.contentView.sendSubviewToBack(calendarSelectStackView)
+        calendarCV.delegate = self
+        calendarCV.dataSource = self
+        calendarCV.register(WeekCVC.self, forCellWithReuseIdentifier: WeekCVC.className)
+        calendarCV.register(DayCVC.self, forCellWithReuseIdentifier: DayCVC.className)
         
         recordTableView.register(MyRecordListTVC.self, forCellReuseIdentifier: MyRecordListTVC.className)
         recordTableView.delegate = self
+    }
+    
+    private func configureCalendarCV() {
+        viewModel.getWeeklyDays()
+        viewModel.getMonthlyDays()
+        selectCV(date: .now)
     }
     
     private func configureTitleDate(_ date: Date) {
@@ -172,6 +178,20 @@ extension MyRecordDataVC {
         let active = Calendar.current.compare(date, to: .now, toGranularity: .weekOfYear) == .orderedSame ? false : true
         nextWeekBtn.isUserInteractionEnabled = active
         nextWeekBtn.tintColor = active ? .main : .gray300
+    }
+    
+    private func setCalendarHeight() {
+        let height = calendarCV.collectionViewLayout.collectionViewContentSize.height
+        
+        calendarCV.snp.updateConstraints {
+            $0.height.equalTo(height)
+        }
+        
+        calendarSelectStackView.snp.updateConstraints {
+            $0.height.equalTo(height)
+        }
+        
+        view.layoutIfNeeded()
     }
 }
 
@@ -197,19 +217,22 @@ extension MyRecordDataVC {
             $0.width.height.equalTo(24)
         }
         
-        calendar.snp.makeConstraints {
+        calendarCV.snp.makeConstraints {
             $0.top.equalTo(dateLabel.snp.bottom)
-            $0.leading.equalToSuperview().offset(10)
-            $0.trailing.equalToSuperview().offset(-10)
-            $0.height.equalTo(400)
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview().offset(-16)
+            $0.height.equalTo(0)
         }
         
         calendarSelectStackView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.top.equalTo(dateLabel.snp.bottom)
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview().offset(-16)
+            $0.height.equalTo(0)
         }
         
         calendarScopeBtn.snp.makeConstraints {
-            $0.top.equalTo(calendar.snp.bottom)
+            $0.top.equalTo(calendarCV.snp.bottom)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(32)
         }
@@ -236,6 +259,23 @@ extension MyRecordDataVC {
     }
 }
 
+// MARK: - Custom Methods
+
+extension MyRecordDataVC {
+    private func selectCV(date: Date) {
+        if isWeeklyScope {
+            calendarCV.selectItem(at: [1, date.getWeekDay()],
+                                  animated: true,
+                                  scrollPosition: .left)
+        } else {
+            let row = date.get(.day) + viewModel.firstDayOfMonth()!.getWeekDay() - 1
+            calendarCV.selectItem(at: [1, row],
+                                  animated: true,
+                                  scrollPosition: .left)
+        }
+    }
+}
+
 // MARK: - Input
 
 extension MyRecordDataVC {
@@ -244,8 +284,11 @@ extension MyRecordDataVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                self.viewModel.input.moveWeek.accept(1)
-                self.calendar.select(self.viewModel.input.selectedDay.value, scrollToDate: true)
+                self.isWeeklyScope
+                ? self.viewModel.input.moveWeek.accept(1)
+                : self.viewModel.input.moveMonth.accept(1)
+                self.calendarCV.reloadData()
+                self.selectCV(date: self.viewModel.input.selectedDay.value)
             })
             .disposed(by: bag)
         
@@ -253,8 +296,11 @@ extension MyRecordDataVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                self.viewModel.input.moveWeek.accept(-1)
-                self.calendar.select(self.viewModel.input.selectedDay.value, scrollToDate: true)
+                self.isWeeklyScope
+                ? self.viewModel.input.moveWeek.accept(-1)
+                : self.viewModel.input.moveMonth.accept(-1)
+                self.calendarCV.reloadData()
+                self.selectCV(date: self.viewModel.input.selectedDay.value)
             })
             .disposed(by: bag)
         
@@ -262,7 +308,13 @@ extension MyRecordDataVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                // TODO: - Change calendar scope
+                if !self.isWeeklyScope { self.viewModel.getWeeklyDays() }
+                self.calendarSelectStackView.isHidden = self.isWeeklyScope
+                self.calendarScopeBtn.isSelected = self.isWeeklyScope
+                self.isWeeklyScope.toggle()
+                self.calendarCV.reloadData()
+                self.setCalendarHeight()
+                self.selectCV(date: self.viewModel.input.selectedDay.value)
             })
             .disposed(by: bag)
     }
@@ -278,18 +330,36 @@ extension MyRecordDataVC {
                 self.setNextWeekBtn(day)
                 
                 // 선택 일자 배경 지정
-                self.calendarSelectStackView.setSelectDay(dayIndex: self.viewModel.setSelected(date: day))
-                
-                // 선택 일자 색 구별
-                self.calendar.appearance.titleSelectionColor
-                = self.viewModel.isToday(day)
-                ? .white : .black
+                self.calendarSelectStackView.setSelectDay(dayIndex: day.getWeekDay())
                 
                 // 일자별 tableView 연결
                 self.viewModel.getMyRecordDataList(
                     with: MyRecordListRequestModel(start: self.viewModel.startDateFormatter(day),
                                                    end: self.viewModel.endDateFormatter(day)))
                 self.recordTableView.reloadData()
+            })
+            .disposed(by: bag)
+        
+        calendarCV.rx.itemSelected
+            .asDriver()
+            .drive(onNext: { [weak self] idx in
+                guard let self = self,
+                      let dayCell = self.calendarCV.cellForItem(at: idx) as? DayCVC,
+                      let selectedDate = dayCell.date
+                else { return }
+                // 다른 달을 눌렀을 때, 이번 달을 눌렀을 때 선택 상태 및 캘린더 상태 구분
+                if self.viewModel.input.selectedDay.value.get(.month) == selectedDate.get(.month) {
+                    self.viewModel.input.selectedDay.accept(selectedDate)
+                    self.calendarCV.reloadData()
+                    self.calendarCV.selectItem(at: idx,
+                                               animated: true,
+                                               scrollPosition: .left)
+                } else {
+                    self.viewModel.input.selectedDay.accept(selectedDate)
+                    self.viewModel.getMonthlyDays()
+                    self.calendarCV.reloadData()
+                    self.selectCV(date: selectedDate)
+                }
             })
             .disposed(by: bag)
     }
@@ -345,34 +415,68 @@ extension MyRecordDataVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        // 미래 선택 불가능
+        guard let cell = collectionView.cellForItem(at: indexPath) as? DayCVC,
+              let selectedDate = cell.date else { return false }
+        return selectedDate <= .now
+    }
 }
 
-// MARK: - FSCalendarDelegate
+// MARK: - UICollectionViewDelegate
 
-extension MyRecordDataVC: FSCalendarDelegate {
-    func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
-        calendar.snp.updateConstraints {
-            $0.height.equalTo(90)
+extension MyRecordDataVC: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = (screenWidth - 32) / 7 - 8
+        
+        switch indexPath.section {
+        case 0:
+            return CGSize(width: width, height: 18)
+        default:
+            return CGSize(width: width, height: width)
         }
-        self.view.layoutIfNeeded()
-    }
-    
-    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        // 날짜 선택
-        viewModel.input.selectedDay.accept(date)
-    }
-    
-    // 미래 선택 불가능
-    func calendar(_ calendar: FSCalendar, shouldSelect date: Date, at monthPosition: FSCalendarMonthPosition) -> Bool {
-        !(date > .now)
     }
 }
 
-// MARK: - FSCalendarDelegateAppearance
+// MARK: - UICollectionViewDataSource
 
-extension MyRecordDataVC: FSCalendarDelegateAppearance {
-    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
-        if viewModel.isToday(date) { return .white }
-        else { return date > .now ? .gray300 : .gray400}
+extension MyRecordDataVC: UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        2
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        switch section {
+        case 0:
+            return 7
+        default:
+            return isWeeklyScope ? viewModel.weekDays.count : viewModel.days.count
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let weekCell = collectionView.dequeueReusableCell(withReuseIdentifier: WeekCVC.className, for: indexPath) as? WeekCVC,
+              let dayCell = collectionView.dequeueReusableCell(withReuseIdentifier: DayCVC.className, for: indexPath) as? DayCVC
+        else { fatalError() }
+        
+        switch indexPath.section {
+        case 0:
+            weekCell.configureCell(viewModel.weekTitle[indexPath.row])
+            if isWeeklyScope && indexPath.row == viewModel.input.selectedDay.value.getWeekDay() {
+                weekCell.selectCell()
+            }
+            return weekCell
+        default:
+            let day = isWeeklyScope ? viewModel.weekDays[indexPath.row] : viewModel.days[indexPath.row]
+            dayCell.configureCell(day)
+            
+            // 이전달, 다음달 일자 색상 변경
+            if day.get(.month) != viewModel.input.selectedDay.value.get(.month) {
+                dayCell.setOtherMonthDate()
+            }
+            
+            return dayCell
+        }
     }
 }
