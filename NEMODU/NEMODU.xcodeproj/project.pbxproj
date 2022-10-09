@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2304FB9C28F2C27A00DD3A50 /* AppleSDGothicNeoB.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2304FB9B28F2C27A00DD3A50 /* AppleSDGothicNeoB.ttf */; };
+		2304FB9F28F2DC3300DD3A50 /* LoginBtn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2304FB9E28F2DC3300DD3A50 /* LoginBtn.swift */; };
 		23062A9828B7F6B00064C978 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23062A9728B7F6B00064C978 /* Date+.swift */; };
 		230CB2CB28ABB7B400B11270 /* CountdownVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230CB2CA28ABB7B400B11270 /* CountdownVC.swift */; };
 		230CB2D428ABEC4D00B11270 /* countdown.json in Resources */ = {isa = PBXBuildFile; fileRef = 230CB2D328ABEC4D00B11270 /* countdown.json */; };
@@ -22,8 +24,6 @@
 		231A2B8F28B20B5600FF884B /* BlockCntView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231A2B8E28B20B5600FF884B /* BlockCntView.swift */; };
 		231A2B9128B2787200FF884B /* MypageVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231A2B9028B2787200FF884B /* MypageVM.swift */; };
 		231A2B9328B2790300FF884B /* MypageUserDataResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231A2B9228B2790300FF884B /* MypageUserDataResponse.swift */; };
-		23255A7928D05912005D6D5A /* DayCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A7828D05912005D6D5A /* DayCVC.swift */; };
-		23255A7B28D09F10005D6D5A /* WeekCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A7A28D09F10005D6D5A /* WeekCVC.swift */; };
 		23255A6628CF117E005D6D5A /* LoginNC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A6528CF117E005D6D5A /* LoginNC.swift */; };
 		23255A6A28CF12DB005D6D5A /* NicknameVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A6928CF12DB005D6D5A /* NicknameVC.swift */; };
 		23255A6C28CF1307005D6D5A /* AddFriendsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A6B28CF1307005D6D5A /* AddFriendsVC.swift */; };
@@ -31,6 +31,8 @@
 		23255A7228CF457E005D6D5A /* AddFriendTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A7128CF457E005D6D5A /* AddFriendTVC.swift */; };
 		23255A7428CF5325005D6D5A /* EnterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A7328CF5325005D6D5A /* EnterVC.swift */; };
 		23255A7628CF5C1F005D6D5A /* UserInfoSettingVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A7528CF5C1F005D6D5A /* UserInfoSettingVM.swift */; };
+		23255A7928D05912005D6D5A /* DayCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A7828D05912005D6D5A /* DayCVC.swift */; };
+		23255A7B28D09F10005D6D5A /* WeekCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A7A28D09F10005D6D5A /* WeekCVC.swift */; };
 		23255A7D28D0DB18005D6D5A /* EnterVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A7C28D0DB18005D6D5A /* EnterVM.swift */; };
 		23255A7F28D0DC30005D6D5A /* NicknameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A7E28D0DC30005D6D5A /* NicknameModel.swift */; };
 		23255A8228D0DCE9005D6D5A /* UserDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A8128D0DCE9005D6D5A /* UserDataModel.swift */; };
@@ -180,6 +182,8 @@
 /* Begin PBXFileReference section */
 		084396F5A23B94FBA7C80652 /* Pods-NEMODU.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEMODU.debug.xcconfig"; path = "Target Support Files/Pods-NEMODU/Pods-NEMODU.debug.xcconfig"; sourceTree = "<group>"; };
 		1EBADEEBC1D77F44700E20E8 /* Pods-NEMODU.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEMODU.release.xcconfig"; path = "Target Support Files/Pods-NEMODU/Pods-NEMODU.release.xcconfig"; sourceTree = "<group>"; };
+		2304FB9B28F2C27A00DD3A50 /* AppleSDGothicNeoB.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AppleSDGothicNeoB.ttf; sourceTree = "<group>"; };
+		2304FB9E28F2DC3300DD3A50 /* LoginBtn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginBtn.swift; sourceTree = "<group>"; };
 		23062A9728B7F6B00064C978 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
 		230CB2CA28ABB7B400B11270 /* CountdownVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownVC.swift; sourceTree = "<group>"; };
 		230CB2D328ABEC4D00B11270 /* countdown.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = countdown.json; sourceTree = "<group>"; };
@@ -195,8 +199,6 @@
 		231A2B8E28B20B5600FF884B /* BlockCntView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockCntView.swift; sourceTree = "<group>"; };
 		231A2B9028B2787200FF884B /* MypageVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MypageVM.swift; sourceTree = "<group>"; };
 		231A2B9228B2790300FF884B /* MypageUserDataResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MypageUserDataResponse.swift; sourceTree = "<group>"; };
-		23255A7828D05912005D6D5A /* DayCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayCVC.swift; sourceTree = "<group>"; };
-		23255A7A28D09F10005D6D5A /* WeekCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekCVC.swift; sourceTree = "<group>"; };
 		23255A6528CF117E005D6D5A /* LoginNC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginNC.swift; sourceTree = "<group>"; };
 		23255A6928CF12DB005D6D5A /* NicknameVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameVC.swift; sourceTree = "<group>"; };
 		23255A6B28CF1307005D6D5A /* AddFriendsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendsVC.swift; sourceTree = "<group>"; };
@@ -204,6 +206,8 @@
 		23255A7128CF457E005D6D5A /* AddFriendTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendTVC.swift; sourceTree = "<group>"; };
 		23255A7328CF5325005D6D5A /* EnterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterVC.swift; sourceTree = "<group>"; };
 		23255A7528CF5C1F005D6D5A /* UserInfoSettingVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoSettingVM.swift; sourceTree = "<group>"; };
+		23255A7828D05912005D6D5A /* DayCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayCVC.swift; sourceTree = "<group>"; };
+		23255A7A28D09F10005D6D5A /* WeekCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekCVC.swift; sourceTree = "<group>"; };
 		23255A7C28D0DB18005D6D5A /* EnterVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterVM.swift; sourceTree = "<group>"; };
 		23255A7E28D0DC30005D6D5A /* NicknameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameModel.swift; sourceTree = "<group>"; };
 		23255A8128D0DCE9005D6D5A /* UserDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataModel.swift; sourceTree = "<group>"; };
@@ -379,6 +383,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		2304FB9D28F2DC2600DD3A50 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				2304FB9E28F2DC3300DD3A50 /* LoginBtn.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		230CB2CC28ABCDE100B11270 /* Lottie */ = {
 			isa = PBXGroup;
 			children = (
@@ -437,15 +449,6 @@
 			path = Response;
 			sourceTree = "<group>";
 		};
-		23255A7728D058C1005D6D5A /* Calendar */ = {
-			isa = PBXGroup;
-			children = (
-				23255A7A28D09F10005D6D5A /* WeekCVC.swift */,
-				23255A7828D05912005D6D5A /* DayCVC.swift */,
-			);
-			path = Calendar;
-			sourceTree = "<group>";
-		};
 		23255A6728CF1271005D6D5A /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -475,6 +478,15 @@
 				23255A7128CF457E005D6D5A /* AddFriendTVC.swift */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		23255A7728D058C1005D6D5A /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				23255A7A28D09F10005D6D5A /* WeekCVC.swift */,
+				23255A7828D05912005D6D5A /* DayCVC.swift */,
+			);
+			path = Calendar;
 			sourceTree = "<group>";
 		};
 		23255A8028D0DCA5005D6D5A /* Model */ = {
@@ -749,6 +761,7 @@
 		2354239228BC8BBE00865E51 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				2304FB9D28F2DC2600DD3A50 /* View */,
 				23255A6828CF1282005D6D5A /* ViewModel */,
 				23255A6728CF1271005D6D5A /* ViewController */,
 				23255A8028D0DCA5005D6D5A /* Model */,
@@ -811,6 +824,7 @@
 				23B7207A28A2394200D3A410 /* Pretendard-Medium.otf */,
 				23B7207C28A2394200D3A410 /* Pretendard-Regular.otf */,
 				23B7207D28A2394200D3A410 /* Pretendard-SemiBold.otf */,
+				2304FB9B28F2C27A00DD3A50 /* AppleSDGothicNeoB.ttf */,
 			);
 			path = Font;
 			sourceTree = "<group>";
@@ -1204,6 +1218,7 @@
 				23B7207F28A2394200D3A410 /* Pretendard-ExtraBold.otf in Resources */,
 				23B7208028A2394200D3A410 /* Pretendard-Medium.otf in Resources */,
 				23B7208128A2394200D3A410 /* Pretendard-Black.otf in Resources */,
+				2304FB9C28F2C27A00DD3A50 /* AppleSDGothicNeoB.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1316,6 +1331,7 @@
 				2348B3FF2892D184001095BC /* UILabel+.swift in Sources */,
 				23B86D1F28A26EEF00B1630E /* NaviType.swift in Sources */,
 				2348B3E72892D08D001095BC /* BaseViewModel.swift in Sources */,
+				2304FB9F28F2DC3300DD3A50 /* LoginBtn.swift in Sources */,
 				2348B4092892D2E5001095BC /* UIViewController+.swift in Sources */,
 				23255A7228CF457E005D6D5A /* AddFriendTVC.swift in Sources */,
 				2312519428B6943B00DF1C69 /* ToastType.swift in Sources */,

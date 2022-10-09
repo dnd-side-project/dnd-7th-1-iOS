@@ -23,10 +23,22 @@ class LoginVC: BaseViewController {
             $0.image = UIImage(named: "logo_black")
         }
     
-    private let kakaoLoginBtn = UIButton()
-        .then {
-            $0.setImage(UIImage(named: "kakaoBtn"), for: .normal)
-        }
+    private let kakaoLoginBtn = LoginBtn(image: UIImage(named: "kakaoIcon"),
+                                         title: "카카오로 시작하기",
+                                         backgroundColor: UIColor(red: 254.0/255.0,
+                                                                  green: 229.0/255.0,
+                                                                  blue: 0.0/255.0,
+                                                                  alpha: 1.0),
+                                         textColor: UIColor(red: 25.0/255.0,
+                                                            green: 25.0/255.0,
+                                                            blue: 25.0/255.0,
+                                                            alpha: 1.0))
+    
+    
+    private let appleLoginBtn = LoginBtn(image: UIImage(named: "appleIcon"),
+                                         title: "Apple로 계속하기",
+                                         backgroundColor: .black,
+                                         textColor: .white)
     
     private let viewModel = LoginVM()
     private let bag = DisposeBag()
@@ -61,7 +73,10 @@ class LoginVC: BaseViewController {
 
 extension LoginVC {
     private func configureContentView() {
-        view.addSubviews([sloganImageView, logoImageView, kakaoLoginBtn])
+        view.addSubviews([sloganImageView,
+                          logoImageView,
+                          appleLoginBtn,
+                          kakaoLoginBtn])
     }
 }
 
@@ -80,10 +95,18 @@ extension LoginVC {
             $0.height.equalTo(66)
         }
         
-        kakaoLoginBtn.snp.makeConstraints {
-            $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-41)
+        appleLoginBtn.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(24)
             $0.trailing.equalToSuperview().offset(-24)
+            $0.bottom.equalTo(kakaoLoginBtn.snp.top).offset(-14)
+            $0.height.equalTo(45)
+        }
+        
+        kakaoLoginBtn.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(24)
+            $0.trailing.equalToSuperview().offset(-24)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-40)
+            $0.height.equalTo(45)
         }
     }
 }
@@ -92,6 +115,14 @@ extension LoginVC {
 
 extension LoginVC {
     private func bindLoginBtn() {
+        appleLoginBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                // TODO: - apple 로그인 연결
+            })
+            .disposed(by: bag)
+        
         kakaoLoginBtn.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in
