@@ -27,6 +27,7 @@ final class MyRecordDataVM: BaseViewModel {
     let weekTitle = ["월", "화", "수", "목", "금", "토", "일"]
     var days = [Date]()
     var weekDays = [Date]()
+    var eventDays = [String]()
     
     // MARK: - Input
     
@@ -47,6 +48,7 @@ final class MyRecordDataVM: BaseViewModel {
                     [MyRecordListDataSource(section: .zero, items: $0)]
                 }
         }
+        var calendarReload = PublishSubject<Bool>()
     }
     
     // MARK: - Init
@@ -94,6 +96,10 @@ extension MyRecordDataVM {
         }
     }
     
+    func getEventDays(_ yearMonth: Date) {
+        getEventList(with: EventListRequestModel(yearMonth: yearMonth.toString(separator: .hyphen)))
+    }
+    
     func firstDayOfMonth() -> Date? {
         guard let interval = cal.dateInterval(of: .month, for: input.selectedDay.value) else { return nil }
         return interval.start
@@ -127,6 +133,9 @@ extension MyRecordDataVM: Input {
                                                        value: value,
                                                        to: self.input.selectedDay.value)
                 else { return }
+                if self.input.selectedDay.value.get(.month) != selectedDate.get(.month) {
+                    self.getEventDays(selectedDate)
+                }
                 self.input.selectedDay.accept(selectedDate > .now ? .now : selectedDate)
                 self.getWeeklyDays()
                 self.getMonthlyDays()
@@ -141,6 +150,7 @@ extension MyRecordDataVM: Input {
                                                        to: self.input.selectedDay.value)
                 else { return }
                 self.input.selectedDay.accept(selectedDate > .now ? .now : selectedDate)
+                self.getEventDays(self.input.selectedDay.value)
                 self.getWeeklyDays()
                 self.getMonthlyDays()
             })
@@ -157,6 +167,25 @@ extension MyRecordDataVM: Output {
 // MARK: - Networking
 
 extension MyRecordDataVM {
+    func getEventList(with param: EventListRequestModel) {
+        let path = "user/eventList"
+        let resource = urlResource<EventListResponseModel>(path: path)
+        
+        apiSession.postRequest(with: resource, param: param.eventParam)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, result in
+                switch result {
+                case .failure(let error):
+                    owner.apiError.onNext(error)
+                case .success(let data):
+                    owner.eventDays.removeAll()
+                    owner.eventDays = data.eventList
+                    owner.output.calendarReload.onNext(true)
+                }
+            })
+            .disposed(by: bag)
+    }
+    
     func getMyRecordDataList(with param: MyRecordListRequestModel) {
         let path = "user/info/activity"
         let resource = urlResource<MyRecordListResponseModel>(path: path)
