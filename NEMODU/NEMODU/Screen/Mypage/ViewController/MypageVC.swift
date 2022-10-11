@@ -99,6 +99,7 @@ class MypageVC: BaseViewController {
     override func bindInput() {
         super.bindInput()
         bindBtn()
+        bindProfileTap()
     }
     
     override func bindOutput() {
@@ -243,6 +244,18 @@ extension MypageVC {
                 let myRecordDataView = MyRecordDataVC()
                 myRecordDataView.hidesBottomBarWhenPushed = true
                 self.navigationController?.pushViewController(myRecordDataView, animated: true)
+            })
+            .disposed(by: bag)
+    }
+    
+    private func bindProfileTap() {
+        profileView.rx.tapGesture()
+            .when(.ended)
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                let myProfileVC = MyProfileVC()
+                myProfileVC.hidesBottomBarWhenPushed = true
+                self.navigationController?.pushViewController(myProfileVC, animated: true)
             })
             .disposed(by: bag)
     }
