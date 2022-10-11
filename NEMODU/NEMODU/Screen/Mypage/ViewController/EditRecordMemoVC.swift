@@ -1,5 +1,5 @@
 //
-//  EditRecordMomoVC.swift
+//  EditRecordMemoVC.swift
 //  NEMODU
 //
 //  Created by 황윤경 on 2022/10/11.
@@ -12,7 +12,7 @@ import RxSwift
 import SnapKit
 import Then
 
-class EditRecordMomoVC: BaseViewController {
+class EditRecordMemoVC: BaseViewController {
     private let naviBar = NavigationBar()
     
     private let memoTextView = NemoduTextView()
@@ -21,7 +21,11 @@ class EditRecordMomoVC: BaseViewController {
             $0.maxTextCnt = 100
         }
     
-    var memo = ""
+    private let viewModel = EditRecordMemoVM()
+    private let bag = DisposeBag()
+    
+    private var memo = ""
+    private var recordId = -1
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,17 +44,19 @@ class EditRecordMomoVC: BaseViewController {
     
     override func bindInput() {
         super.bindInput()
+        bindSaveBtn()
     }
     
     override func bindOutput() {
         super.bindOutput()
+        bindDismiss()
     }
     
 }
 
 // MARK: - Configure
 
-extension EditRecordMomoVC {
+extension EditRecordMemoVC {
     private func configureNaviBar() {
         naviBar.naviType = .push
         naviBar.configureNaviBar(targetVC: self,
@@ -65,11 +71,16 @@ extension EditRecordMomoVC {
         view.addSubview(memoTextView)
         memoTextView.tv.text = memo
     }
+    
+    func getRecordData(recordId: Int, memo: String) {
+        self.recordId = recordId
+        self.memo = memo
+    }
 }
 
 // MARK: - Layout
 
-extension EditRecordMomoVC {
+extension EditRecordMemoVC {
     private func configureLayout() {
         memoTextView.snp.makeConstraints {
             $0.top.equalTo(naviBar.snp.bottom).offset(16)
@@ -81,12 +92,34 @@ extension EditRecordMomoVC {
 
 // MARK: - Input
 
-extension EditRecordMomoVC {
-    
+extension EditRecordMemoVC {
+    private func bindSaveBtn() {
+        naviBar.rightBtn.rx.tap
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                if self.memoTextView.tv.text == self.memo {
+                    self.popVC()
+                } else {
+                    self.viewModel.postEditedData(with: EditMemoRequestModel(message: self.memoTextView.tv.text,
+                                                                             recordId: self.recordId))
+                }
+            })
+            .disposed(by: bag)
+    }
 }
 
 // MARK: - Output
 
-extension EditRecordMomoVC {
-    
+extension EditRecordMemoVC {
+    private func bindDismiss() {
+        viewModel.output.isValidEdit
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: { [weak self] validation in
+                guard let self = self else { return }
+                if validation {
+                    self.popVC()                    
+                }
+            })
+            .disposed(by: bag)
+    }
 }
