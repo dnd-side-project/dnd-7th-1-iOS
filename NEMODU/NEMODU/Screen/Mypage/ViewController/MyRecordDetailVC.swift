@@ -161,6 +161,7 @@ class MyRecordDetailVC: BaseViewController {
     
     override func bindInput() {
         super.bindInput()
+        bindBtn()
     }
     
     override func bindOutput() {
@@ -341,7 +342,16 @@ extension MyRecordDetailVC {
 // MARK: - Input
 
 extension MyRecordDetailVC {
-    
+    private func bindBtn() {
+        memoEditBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                let editRecordMomoVC = EditRecordMomoVC()
+                self.navigationController?.pushViewController(editRecordMomoVC, animated: true)
+            })
+            .disposed(by: bag)
+    }
 }
 
 // MARK: - Output
