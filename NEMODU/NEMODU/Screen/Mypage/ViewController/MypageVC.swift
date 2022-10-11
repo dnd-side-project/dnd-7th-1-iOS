@@ -220,8 +220,7 @@ extension MypageVC {
         
         settingBtnStackView.snp.makeConstraints {
             $0.top.equalTo(friendBtn.snp.bottom).offset(16)
-            $0.leading.equalToSuperview().offset(16)
-            $0.trailing.equalToSuperview().offset(-16)
+            $0.leading.trailing.equalToSuperview()
             $0.bottom.equalToSuperview().offset(-68)
         }
         
