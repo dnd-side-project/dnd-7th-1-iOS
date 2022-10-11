@@ -53,6 +53,8 @@ class MyProfileVC: BaseViewController {
     
     private let signOutBtn = ArrowBtn(title: "회원 탈퇴")
     
+    private let bag = DisposeBag()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -70,6 +72,7 @@ class MyProfileVC: BaseViewController {
     
     override func bindInput() {
         super.bindInput()
+        bindBtn()
     }
     
     override func bindOutput() {
@@ -138,7 +141,16 @@ extension MyProfileVC {
 // MARK: - Input
 
 extension MyProfileVC {
-    
+    private func bindBtn() {
+        accountInfoBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                let myAccountVC = MyAccountVC()
+                self.navigationController?.pushViewController(myAccountVC, animated: true)
+            })
+            .disposed(by: bag)
+    }
 }
 
 // MARK: - Output
