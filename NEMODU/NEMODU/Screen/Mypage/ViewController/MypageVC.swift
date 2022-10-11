@@ -58,30 +58,18 @@ class MypageVC: BaseViewController {
     
     private let settingBtnStackView = UIStackView()
         .then {
-            $0.axis = .vertical
             $0.spacing = 0
+            $0.axis = .vertical
             $0.distribution = .equalCentering
         }
     
-    private let setLocationBtn = UIButton()
-        .then {
-            $0.setTitle("위치 정보 동의 설정", for: .normal)
-        }
+    private let setLocationBtn = ArrowBtn(title: "위치 정보 동의 설정")
     
-    private let setAlarmBtn = UIButton()
-        .then {
-            $0.setTitle("알림 설정", for: .normal)
-        }
+    private let setAlarmBtn = ArrowBtn(title: "알림 설정")
     
-    private let termsBtn = UIButton()
-        .then {
-            $0.setTitle("이용 약관", for: .normal)
-        }
+    private let termsBtn = ArrowBtn(title: "이용 약관")
     
-    private let inquiryBtn = UIButton()
-        .then {
-            $0.setTitle("문의하기", for: .normal)
-        }
+    private let inquiryBtn = ArrowBtn(title: "문의하기")
     
     private let naviBar = NavigationBar()
     
@@ -152,18 +140,6 @@ extension MypageVC {
         }
         
         [setLocationBtn, setAlarmBtn, termsBtn, inquiryBtn].forEach {
-            $0.titleLabel?.font = .body1
-            $0.setTitleColor(.gray900, for: .normal)
-            $0.contentHorizontalAlignment = .left
-            
-            let arrowImage = UIImageView(image: UIImage(named: "arrow_right")?
-                .withTintColor(.gray300, renderingMode: .alwaysOriginal))
-            $0.addSubview(arrowImage)
-            arrowImage.snp.makeConstraints {
-                $0.trailing.equalToSuperview().offset(-16)
-                $0.centerY.equalToSuperview()
-                $0.width.height.equalTo(24)
-            }
             settingBtnStackView.addArrangedSubview($0)
         }
         settingBtnStackView.addHorizontalSeparators(color: .gray50, height: 1)
@@ -246,6 +222,12 @@ extension MypageVC {
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
             $0.bottom.equalToSuperview().offset(-68)
+        }
+        
+        [setLocationBtn, setAlarmBtn, termsBtn, inquiryBtn].forEach {
+            $0.snp.makeConstraints {
+                $0.height.equalTo(56)
+            }
         }
     }
 }
