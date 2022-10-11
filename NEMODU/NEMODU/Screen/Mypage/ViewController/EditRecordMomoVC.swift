@@ -18,9 +18,10 @@ class EditRecordMomoVC: BaseViewController {
     private let memoTextView = NemoduTextView()
         .then {
             $0.tv.placeholder = "상세 기록 남기기"
-            $0.tv.text = "UserDefaults.Keys.profileMessage"
             $0.maxTextCnt = 100
         }
+    
+    var memo = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,6 +63,7 @@ extension EditRecordMomoVC {
     
     private func configureContentView() {
         view.addSubview(memoTextView)
+        memoTextView.tv.text = memo
     }
 }
 

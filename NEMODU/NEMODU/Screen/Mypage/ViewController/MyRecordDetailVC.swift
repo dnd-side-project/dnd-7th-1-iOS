@@ -348,6 +348,7 @@ extension MyRecordDetailVC {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 let editRecordMomoVC = EditRecordMomoVC()
+                editRecordMomoVC.memo = self.memoTextView.tv.text
                 self.navigationController?.pushViewController(editRecordMomoVC, animated: true)
             })
             .disposed(by: bag)
