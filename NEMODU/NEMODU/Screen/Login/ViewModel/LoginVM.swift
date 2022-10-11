@@ -74,13 +74,31 @@ extension LoginVM {
             }
         } else {
             // TODO: - 시뮬레이터용 Account 로그인(임시)
-            UserApi.shared.loginWithKakaoAccount { oauthToken, error in
+            UserApi.shared.me { user, error in
                 if let error = error {
                     print(error)
                 } else {
-                    UserDefaults.standard.set(oauthToken?.accessToken, forKey: UserDefaults.Keys.kakaoAccessToken)
-                    UserDefaults.standard.set(oauthToken?.refreshToken, forKey: UserDefaults.Keys.kakaoRefreshToken)
-                    self.checkOriginUser()
+                    var scopes = [String]()
+                    scopes.append("friends")
+                    scopes.append("account_email")
+                    
+                    UserApi.shared.loginWithKakaoAccount(scopes: scopes) { (oauthToken, error) in
+                        if let error = error {
+                            print(error)
+                        }
+                        else {
+                            UserApi.shared.me() { (user, error) in
+                                if let error = error {
+                                    print(error)
+                                }
+                                else {
+                                    UserDefaults.standard.set(oauthToken?.accessToken, forKey: UserDefaults.Keys.kakaoAccessToken)
+                                    UserDefaults.standard.set(oauthToken?.refreshToken, forKey: UserDefaults.Keys.kakaoRefreshToken)
+                                    self.checkOriginUser()
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -90,7 +108,7 @@ extension LoginVM {
     func checkOriginUser() {
         let path = "auth/check/origin"
         let resource = urlResource<Bool>(path: path)
-
+        
         AuthAPI.shared.checkOriginUser(with: resource)
             .withUnretained(self)
             .subscribe(onNext: { owner, result in
