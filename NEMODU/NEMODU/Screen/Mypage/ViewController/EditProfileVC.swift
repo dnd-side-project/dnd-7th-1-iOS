@@ -31,7 +31,20 @@ class EditProfileVC: BaseViewController {
             $0.backgroundColor = .systemBackground
         }
     
+    private let nicknameTitleLabel = UILabel()
+        .then {
+            $0.text = "닉네임 변경"
+            $0.font = .body1
+            $0.textColor = .gray900
+        }
+    
+    private let nicknameCheckView = NicknameCheckView()
+        .then {
+            $0.nicknameTextField.text = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname)
+        }
+    
     private var imagePicker = UIImagePickerController()
+    private let viewModel = UserInfoSettingVM()
     private let bag = DisposeBag()
     
     override func viewDidLoad() {
@@ -51,11 +64,13 @@ class EditProfileVC: BaseViewController {
     
     override func bindInput() {
         super.bindInput()
-        bindBtn()
+        bindProfileImageBtn()
+        checkNicknameValidation()
     }
     
     override func bindOutput() {
         super.bindOutput()
+        bindValidationView()
     }
     
 }
@@ -68,10 +83,15 @@ extension EditProfileVC {
         naviBar.configureNaviBar(targetVC: self,
                                  title: "프로필 수정")
         naviBar.configureBackBtn(targetVC: self)
+        naviBar.configureRightBarBtn(targetVC: self,
+                                     title: "저장",
+                                     titleColor: .main)
     }
     
     private func configureContentView() {
-        view.addSubviews([profileImageBtn])
+        view.addSubviews([profileImageBtn,
+                          nicknameTitleLabel,
+                          nicknameCheckView])
         profileImageBtn.addSubview(cameraIconImageView)
         
         imagePicker.delegate = self
@@ -91,6 +111,20 @@ extension EditProfileVC {
         cameraIconImageView.snp.makeConstraints {
             $0.trailing.bottom.equalToSuperview()
             $0.width.height.equalTo(28)
+        }
+        
+        nicknameTitleLabel.snp.makeConstraints {
+            $0.top.equalTo(profileImageBtn.snp.bottom).offset(40)
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview().offset(-16)
+            $0.height.equalTo(56)
+        }
+        
+        nicknameCheckView.snp.makeConstraints {
+            $0.top.equalTo(nicknameTitleLabel.snp.bottom)
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview().offset(-16)
+            $0.height.equalTo(64)
         }
     }
 }
@@ -140,7 +174,7 @@ extension EditProfileVC {
 // MARK: - Input
 
 extension EditProfileVC {
-    private func bindBtn() {
+    private func bindProfileImageBtn() {
         profileImageBtn.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in
@@ -168,15 +202,39 @@ extension EditProfileVC {
             })
             .disposed(by: bag)
     }
+    
+    /// 닉네임 유효성 검사를 요청하는 메서드
+    private func checkNicknameValidation() {
+        nicknameCheckView.nicknameCheckBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self,
+                      let nickname = self.nicknameCheckView.nicknameTextField.text
+                else { return }
+                nickname.count < 2 || nickname.count > 6
+                ? self.nicknameCheckView.setValidationView(.countError)
+                : self.viewModel.getNicknameValidation(nickname: nickname)
+            })
+            .disposed(by: bag)
+    }
 }
 
 // MARK: - Output
 
 extension EditProfileVC {
-    
+    /// 사용 가능한 닉네임인지 판단 후 상태에 따라 view를 구성하는 메서드
+    private func bindValidationView() {
+        viewModel.output.isValidNickname
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: { [weak self] isValid in
+                guard let self = self else { return }
+                self.nicknameCheckView.setValidationView(isValid ? .available : .notAvailable)
+            })
+            .disposed(by: bag)
+    }
 }
 
-// MARK: -
+// MARK: - UIImagePickerControllerDelegate, UINavigationControllerDelegate
 
 extension EditProfileVC : UIImagePickerControllerDelegate,
 UINavigationControllerDelegate{
