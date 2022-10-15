@@ -32,8 +32,6 @@ class NemoduTextView: BaseView {
         }
     
     var maxTextCnt = 100
-    private let keyboardWillShow = NotificationCenter.default.rx.notification(UIResponder.keyboardWillShowNotification)
-    private let keyboardWillHide = NotificationCenter.default.rx.notification(UIResponder.keyboardWillHideNotification)
     private let bag = DisposeBag()
     
     override func configureView() {
@@ -109,17 +107,23 @@ extension NemoduTextView {
 
 extension NemoduTextView {
     private func bindTextViewActivate() {
-        keyboardWillShow
-            .subscribe(onNext: { [weak self] _ in
+        tv.rx.didBeginEditing
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                self.tv.layer.borderColor = UIColor.secondary.cgColor
+                UIView.animate(withDuration: self.textBorderTime) {
+                    self.tv.layer.borderColor = UIColor.secondary.cgColor
+                }
             })
             .disposed(by: bag)
-        
-        keyboardWillHide
-            .subscribe(onNext: { [weak self] _ in
+
+        tv.rx.didEndEditing
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                self.tv.layer.borderColor = UIColor.clear.cgColor
+                UIView.animate(withDuration: self.textBorderTime) {
+                    self.tv.layer.borderColor = UIColor.clear.cgColor
+                }
             })
             .disposed(by: bag)
     }

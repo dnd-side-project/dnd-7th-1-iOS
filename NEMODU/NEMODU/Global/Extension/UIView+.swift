@@ -48,6 +48,9 @@ extension UIView {
         NSStringFromClass(self.classForCoder).components(separatedBy: ".").last!
     }
     
+    /// 네모두만의 textField, textView에서 테두리 색상이 바뀌는 시간
+    var textBorderTime: Double { 0.2 }
+    
     /// 기기 스크린 hight에 맞춰 비율을 계산해 height를 리턴하는 함수
     func calculateHeightbyScreenHeight(originalHeight: CGFloat) -> CGFloat {
         let screenHeight = UIScreen.main.bounds.height

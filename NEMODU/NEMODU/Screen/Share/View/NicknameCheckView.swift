@@ -51,8 +51,6 @@ class NicknameCheckView: BaseView {
                                                                 size: CGSize(width: 12, height: 12)))
     
     private let maxTextCnt = 6
-    private let keyboardWillShow = NotificationCenter.default.rx.notification(UIResponder.keyboardWillShowNotification)
-    private let keyboardWillHide = NotificationCenter.default.rx.notification(UIResponder.keyboardWillHideNotification)
     private let bag = DisposeBag()
     
     override func configureView() {
@@ -161,18 +159,22 @@ extension NicknameCheckView {
 // MARK: - Output
 
 extension NicknameCheckView  {
-    private func bindTextViewActivate() {
-        keyboardWillShow
+    private func bindTextViewActivate() {       
+        nicknameTextField.rx.controlEvent([.editingDidBegin])
             .subscribe(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                self.nicknameTextField.layer.borderColor = UIColor.secondary.cgColor
+                UIView.animate(withDuration: self.textBorderTime) {
+                    self.nicknameTextField.layer.borderColor = UIColor.secondary.cgColor
+                }
             })
             .disposed(by: bag)
 
-        keyboardWillHide
+        nicknameTextField.rx.controlEvent([.editingDidEnd])
             .subscribe(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                self.nicknameTextField.layer.borderColor = UIColor.clear.cgColor
+                UIView.animate(withDuration: self.textBorderTime) {
+                    self.nicknameTextField.layer.borderColor = UIColor.clear.cgColor
+                }
             })
             .disposed(by: bag)
     }
