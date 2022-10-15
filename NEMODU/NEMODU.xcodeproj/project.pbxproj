@@ -88,6 +88,7 @@
 		23602E0828B5581800B9DC9E /* MapFilteVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23602E0728B5581800B9DC9E /* MapFilteVM.swift */; };
 		237573D728F57824006026ED /* ArrowBtn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573D628F57824006026ED /* ArrowBtn.swift */; };
 		237573D928F57E50006026ED /* MyProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573D828F57E50006026ED /* MyProfileVC.swift */; };
+		237573EB28FA5A00006026ED /* ProfileImageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573EA28FA5A00006026ED /* ProfileImageVC.swift */; };
 		238C4DDF28A3AC18000BEE36 /* RecordResultVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DDE28A3AC18000BEE36 /* RecordResultVC.swift */; };
 		238C4DE328A3F0D6000BEE36 /* NemoduTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */; };
 		238C4DE528A4BFE2000BEE36 /* UIScrollView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DE428A4BFE2000BEE36 /* UIScrollView+.swift */; };
@@ -269,6 +270,7 @@
 		23602E0728B5581800B9DC9E /* MapFilteVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapFilteVM.swift; sourceTree = "<group>"; };
 		237573D628F57824006026ED /* ArrowBtn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrowBtn.swift; sourceTree = "<group>"; };
 		237573D828F57E50006026ED /* MyProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileVC.swift; sourceTree = "<group>"; };
+		237573EA28FA5A00006026ED /* ProfileImageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageVC.swift; sourceTree = "<group>"; };
 		238C4DDE28A3AC18000BEE36 /* RecordResultVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordResultVC.swift; sourceTree = "<group>"; };
 		238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NemoduTextView.swift; sourceTree = "<group>"; };
 		238C4DE428A4BFE2000BEE36 /* UIScrollView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+.swift"; sourceTree = "<group>"; };
@@ -510,6 +512,7 @@
 				23F5717628A92E38005F2E21 /* ProfileRecordView.swift */,
 				232F0B6228B6803C005C9A07 /* AlertVC.swift */,
 				2312519528B6944B00DF1C69 /* ToastView.swift */,
+				237573EA28FA5A00006026ED /* ProfileImageVC.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1327,6 +1330,7 @@
 				2348B3DD2892CF92001095BC /* MapVC.swift in Sources */,
 				3C05FFEF28B74E2B0017F4E1 /* CreateChallengeVC.swift in Sources */,
 				23412FD228AD494500B73D62 /* MainVM.swift in Sources */,
+				237573EB28FA5A00006026ED /* ProfileImageVC.swift in Sources */,
 				232F0B6528B686C5005C9A07 /* AlertType.swift in Sources */,
 				3CDEBB4328B4C86900C91A7F /* AccumulateRankingListResponseModel.swift in Sources */,
 				2348B3FF2892D184001095BC /* UILabel+.swift in Sources */,
