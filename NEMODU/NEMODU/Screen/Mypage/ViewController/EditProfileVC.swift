@@ -16,6 +16,13 @@ import Photos
 class EditProfileVC: BaseViewController {
     private let naviBar = NavigationBar()
     
+    private let baseScrollView = UIScrollView()
+        .then {
+            $0.showsVerticalScrollIndicator = false
+        }
+    
+    private let contentView = UIView()
+    
     private let profileImageBtn = UIButton()
         .then {
             $0.setImage(UIImage(named: "defaultThumbnail"), for: .normal)
@@ -89,9 +96,11 @@ extension EditProfileVC {
     }
     
     private func configureContentView() {
-        view.addSubviews([profileImageBtn,
-                          nicknameTitleLabel,
-                          nicknameCheckView])
+        view.addSubview(baseScrollView)
+        baseScrollView.addSubview(contentView)
+        contentView.addSubviews([profileImageBtn,
+                                 nicknameTitleLabel,
+                                 nicknameCheckView])
         profileImageBtn.addSubview(cameraIconImageView)
         
         imagePicker.delegate = self
@@ -102,8 +111,19 @@ extension EditProfileVC {
 
 extension EditProfileVC {
     private func configureLayout() {
+        baseScrollView.snp.makeConstraints {
+            $0.top.equalTo(naviBar.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(view.keyboardLayoutGuide)
+        }
+        
+        contentView.snp.makeConstraints {
+            $0.edges.width.equalToSuperview()
+            $0.height.equalToSuperview().priority(.low)
+        }
+        
         profileImageBtn.snp.makeConstraints {
-            $0.top.equalTo(naviBar.snp.bottom).offset(40)
+            $0.top.equalToSuperview().offset(40)
             $0.width.height.equalTo(96)
             $0.centerX.equalToSuperview()
         }
