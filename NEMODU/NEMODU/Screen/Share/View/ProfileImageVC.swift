@@ -19,7 +19,6 @@ class ProfileImageVC: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNaviBar()
-        configureContentView()
         configureLayout()
         setDismissGesture()
     }
@@ -33,11 +32,6 @@ extension ProfileImageVC {
         naviBar.configureNaviBar(targetVC: self,
                                  title: "")
         naviBar.configureBackBtn(targetVC: self)
-    }
-    
-    private func configureContentView() {
-//        view.backgroundColor = .black
-        view.backgroundColor = .systemBackground
     }
     
     private func configureLayout() {

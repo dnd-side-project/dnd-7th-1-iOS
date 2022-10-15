@@ -174,6 +174,14 @@ extension MyProfileVC {
 
 extension MyProfileVC {
     private func bindBtn() {
+        profileImageBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.showProfileImage(with: self.profileImageBtn.currentImage!)
+            })
+            .disposed(by: bag)
+        
         editProfileBtn.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in
