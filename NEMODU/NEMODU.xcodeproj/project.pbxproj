@@ -86,6 +86,11 @@
 		235CD76B28B0F8C5000EBAD9 /* OnboardingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235CD76A28B0F8C5000EBAD9 /* OnboardingVC.swift */; };
 		235CD76D28B0FA14000EBAD9 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235CD76C28B0FA14000EBAD9 /* OnboardingView.swift */; };
 		23602E0828B5581800B9DC9E /* MapFilteVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23602E0728B5581800B9DC9E /* MapFilteVM.swift */; };
+		237573CF28F55F84006026ED /* EditRecordMemoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573CE28F55F84006026ED /* EditRecordMemoVC.swift */; };
+		237573D128F5660A006026ED /* EditRecordMemoVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573D028F5660A006026ED /* EditRecordMemoVM.swift */; };
+		237573D328F56A7B006026ED /* EditMemoRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573D228F56A7B006026ED /* EditMemoRequestModel.swift */; };
+		237573E728F9210B006026ED /* NemoduTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573E628F9210B006026ED /* NemoduTextField.swift */; };
+		237573E928F92A1B006026ED /* NicknameCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573E828F92A1B006026ED /* NicknameCheckView.swift */; };
 		237573D728F57824006026ED /* ArrowBtn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573D628F57824006026ED /* ArrowBtn.swift */; };
 		237573D928F57E50006026ED /* MyProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573D828F57E50006026ED /* MyProfileVC.swift */; };
 		237573EB28FA5A00006026ED /* ProfileImageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573EA28FA5A00006026ED /* ProfileImageVC.swift */; };
@@ -269,6 +274,11 @@
 		235CD76A28B0F8C5000EBAD9 /* OnboardingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingVC.swift; sourceTree = "<group>"; };
 		235CD76C28B0FA14000EBAD9 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		23602E0728B5581800B9DC9E /* MapFilteVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapFilteVM.swift; sourceTree = "<group>"; };
+		237573CE28F55F84006026ED /* EditRecordMemoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditRecordMemoVC.swift; sourceTree = "<group>"; };
+		237573D028F5660A006026ED /* EditRecordMemoVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditRecordMemoVM.swift; sourceTree = "<group>"; };
+		237573D228F56A7B006026ED /* EditMemoRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMemoRequestModel.swift; sourceTree = "<group>"; };
+		237573E628F9210B006026ED /* NemoduTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NemoduTextField.swift; sourceTree = "<group>"; };
+		237573E828F92A1B006026ED /* NicknameCheckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameCheckView.swift; sourceTree = "<group>"; };
 		237573D628F57824006026ED /* ArrowBtn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrowBtn.swift; sourceTree = "<group>"; };
 		237573D828F57E50006026ED /* MyProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileVC.swift; sourceTree = "<group>"; };
 		237573EA28FA5A00006026ED /* ProfileImageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageVC.swift; sourceTree = "<group>"; };
@@ -507,6 +517,8 @@
 				2348B4112892D901001095BC /* LoadingView.swift */,
 				23B86D2028A26F0F00B1630E /* NavigationBar.swift */,
 				238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */,
+				237573E628F9210B006026ED /* NemoduTextField.swift */,
+				237573E828F92A1B006026ED /* NicknameCheckView.swift */,
 				23F5716C28A6A61D005F2E21 /* MiniMapVC.swift */,
 				23F5716E28A6AD01005F2E21 /* RecordStackView.swift */,
 				23B7206F28A12DBB00D3A410 /* RecordView.swift */,
@@ -741,6 +753,7 @@
 				2348B41D2892DF0D001095BC /* MypageVC.swift */,
 				2339D74D28B2849F0018013D /* MyRecordDataVC.swift */,
 				23D8B7E628B4E44700F48165 /* MyRecordDetailVC.swift */,
+				237573CE28F55F84006026ED /* EditRecordMemoVC.swift */,
 				237573D828F57E50006026ED /* MyProfileVC.swift */,
 				237573EE28FA773F006026ED /* EditProfileVC.swift */,
 			);
@@ -753,6 +766,7 @@
 				231A2B9028B2787200FF884B /* MypageVM.swift */,
 				23D8B7DA28B396A100F48165 /* MyRecordDataVM.swift */,
 				2315258E28B4F2A000B80E03 /* MyRecordDetailVM.swift */,
+				237573D028F5660A006026ED /* EditRecordMemoVM.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -862,6 +876,7 @@
 			children = (
 				23D8B7DD28B397DF00F48165 /* MyRecordListRequestModel.swift */,
 				2304FB9928F27EC200DD3A50 /* EventListRequestModel.swift */,
+				237573D228F56A7B006026ED /* EditMemoRequestModel.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -1282,11 +1297,13 @@
 				3C08137B28A91C00009F854B /* ChallengeRankingMenuBarCV.swift in Sources */,
 				23412FDE28AE396D00B73D62 /* ChallengeListVM.swift in Sources */,
 				232B89FF28C8BCAA00737F18 /* LoginVM.swift in Sources */,
+				237573E928F92A1B006026ED /* NicknameCheckView.swift in Sources */,
 				3C48920E28B1049100B11207 /* RankingListTypeMenuBarCV.swift in Sources */,
 				3C3BD77428B3754A00AD55B6 /* AreaRankingListRequestModel.swift in Sources */,
 				23B7207028A12DBB00D3A410 /* RecordView.swift in Sources */,
 				231A2B8D28B20B3E00FF884B /* ProfileView.swift in Sources */,
 				23F5718228AA6038005F2E21 /* UIImage+.swift in Sources */,
+				237573D328F56A7B006026ED /* EditMemoRequestModel.swift in Sources */,
 				23B7207028A12DBB00D3A410 /* RecordView.swift in Sources */,
 				3C09AE3B28AF6450005DD125 /* ChallengeFinishTVC.swift in Sources */,
 				2348B4252892E007001095BC /* NEMODUTBC.swift in Sources */,
@@ -1321,6 +1338,7 @@
 				23B7206128A0D53200D3A410 /* ProceedingChallengeTVC.swift in Sources */,
 				230CB2CB28ABB7B400B11270 /* CountdownVC.swift in Sources */,
 				23412FE028AE648300B73D62 /* ProfileResponseModel.swift in Sources */,
+				237573D128F5660A006026ED /* EditRecordMemoVM.swift in Sources */,
 				3C05FFF128B794390017F4E1 /* CreateChallengeSuccuessVC.swift in Sources */,
 				3CB9DB9D28A92528007BC1BE /* MenuBarCV.swift in Sources */,
 				237573EF28FA773F006026ED /* EditProfileVC.swift in Sources */,
@@ -1388,6 +1406,7 @@
 				235CD76B28B0F8C5000EBAD9 /* OnboardingVC.swift in Sources */,
 				3C08137D28A91C00009F854B /* NoListStatusTVFV.swift in Sources */,
 				3C08137D28A91C00009F854B /* NoListStatusTVFV.swift in Sources */,
+				237573CF28F55F84006026ED /* EditRecordMemoVC.swift in Sources */,
 				23F5717128A7CFD5005F2E21 /* FriendProfileBottomSheet.swift in Sources */,
 				3C3BD77128B36FBE00AD55B6 /* ChallengeRankingVM.swift in Sources */,
 				2348B3F02892D0FE001095BC /* APISession.swift in Sources */,
@@ -1395,6 +1414,7 @@
 				2304FB9828F27DFE00DD3A50 /* EventListResponseModel.swift in Sources */,
 				3C08138428A91C00009F854B /* ChallengeContainerCVC.swift in Sources */,
 				23412FEE28AFB5BB00B73D62 /* DetailMapVC.swift in Sources */,
+				237573E728F9210B006026ED /* NemoduTextField.swift in Sources */,
 				3CACEBD428C9EAA0001F5109 /* FriendListView.swift in Sources */,
 				23B7207428A2227000D3A410 /* WalkingVM.swift in Sources */,
 				3C09AE3928AF6345005DD125 /* ChallengeDoingTVC.swift in Sources */,
