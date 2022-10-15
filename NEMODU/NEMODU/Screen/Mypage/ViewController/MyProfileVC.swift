@@ -47,7 +47,26 @@ class MyProfileVC: BaseViewController {
     
     private let editProfileBtn = ArrowBtn(title: "프로필 수정")
     
-    private let accountInfoBtn = ArrowBtn(title: "계정 정보")
+    private let accountInfoView = UIView()
+        .then {
+            $0.backgroundColor = .systemBackground
+        }
+    
+    private let accountInfoTitleLabel = UILabel()
+        .then {
+            $0.text = "계정 정보"
+            $0.font = .body1
+            $0.textColor = .gray900
+            $0.textAlignment = .left
+        }
+    
+    private let accountLabel = UILabel()
+        .then {
+            $0.text = "-"
+            $0.font = .body3
+            $0.textColor = .gray600
+            $0.textAlignment = .right
+        }
     
     private let logoutBtn = ArrowBtn(title: "로그아웃")
     
@@ -97,7 +116,10 @@ extension MyProfileVC {
                           profileMessageLabel,
                           settingBtnStackView])
         
-        [editProfileBtn, accountInfoBtn, logoutBtn, signOutBtn].forEach {
+        accountInfoView.addSubviews([accountInfoTitleLabel,
+                                     accountLabel])
+        
+        [editProfileBtn, accountInfoView, logoutBtn, signOutBtn].forEach {
             settingBtnStackView.addArrangedSubview($0)
         }
         settingBtnStackView.addHorizontalSeparators(color: .gray50, height: 1)
@@ -130,10 +152,20 @@ extension MyProfileVC {
             $0.height.equalTo(227)
         }
         
-        [editProfileBtn, accountInfoBtn, logoutBtn, signOutBtn].forEach {
+        [editProfileBtn, accountInfoView, logoutBtn, signOutBtn].forEach {
             $0.snp.makeConstraints {
                 $0.height.equalTo(56)
             }
+        }
+        
+        accountInfoTitleLabel.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.equalToSuperview().offset(16)
+        }
+        
+        accountLabel.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview().offset(-16)
         }
     }
 }
