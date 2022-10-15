@@ -142,12 +142,11 @@ extension MyProfileVC {
 
 extension MyProfileVC {
     private func bindBtn() {
-        accountInfoBtn.rx.tap
+        editProfileBtn.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                let myAccountVC = MyAccountVC()
-                self.navigationController?.pushViewController(myAccountVC, animated: true)
+                // TODO: 프로필 수정 화면 연결
             })
             .disposed(by: bag)
     }
