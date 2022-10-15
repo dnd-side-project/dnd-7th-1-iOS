@@ -186,7 +186,8 @@ extension MyProfileVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                // TODO: 프로필 수정 화면 연결
+                let editProfileVC = EditProfileVC()
+                self.navigationController?.pushViewController(editProfileVC, animated: true)
             })
             .disposed(by: bag)
     }

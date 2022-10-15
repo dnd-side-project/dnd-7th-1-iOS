@@ -89,6 +89,7 @@
 		237573D728F57824006026ED /* ArrowBtn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573D628F57824006026ED /* ArrowBtn.swift */; };
 		237573D928F57E50006026ED /* MyProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573D828F57E50006026ED /* MyProfileVC.swift */; };
 		237573EB28FA5A00006026ED /* ProfileImageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573EA28FA5A00006026ED /* ProfileImageVC.swift */; };
+		237573EF28FA773F006026ED /* EditProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573EE28FA773F006026ED /* EditProfileVC.swift */; };
 		238C4DDF28A3AC18000BEE36 /* RecordResultVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DDE28A3AC18000BEE36 /* RecordResultVC.swift */; };
 		238C4DE328A3F0D6000BEE36 /* NemoduTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */; };
 		238C4DE528A4BFE2000BEE36 /* UIScrollView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DE428A4BFE2000BEE36 /* UIScrollView+.swift */; };
@@ -271,6 +272,7 @@
 		237573D628F57824006026ED /* ArrowBtn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrowBtn.swift; sourceTree = "<group>"; };
 		237573D828F57E50006026ED /* MyProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileVC.swift; sourceTree = "<group>"; };
 		237573EA28FA5A00006026ED /* ProfileImageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageVC.swift; sourceTree = "<group>"; };
+		237573EE28FA773F006026ED /* EditProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileVC.swift; sourceTree = "<group>"; };
 		238C4DDE28A3AC18000BEE36 /* RecordResultVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordResultVC.swift; sourceTree = "<group>"; };
 		238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NemoduTextView.swift; sourceTree = "<group>"; };
 		238C4DE428A4BFE2000BEE36 /* UIScrollView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+.swift"; sourceTree = "<group>"; };
@@ -740,6 +742,7 @@
 				2339D74D28B2849F0018013D /* MyRecordDataVC.swift */,
 				23D8B7E628B4E44700F48165 /* MyRecordDetailVC.swift */,
 				237573D828F57E50006026ED /* MyProfileVC.swift */,
+				237573EE28FA773F006026ED /* EditProfileVC.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -1320,6 +1323,7 @@
 				23412FE028AE648300B73D62 /* ProfileResponseModel.swift in Sources */,
 				3C05FFF128B794390017F4E1 /* CreateChallengeSuccuessVC.swift in Sources */,
 				3CB9DB9D28A92528007BC1BE /* MenuBarCV.swift in Sources */,
+				237573EF28FA773F006026ED /* EditProfileVC.swift in Sources */,
 				2348B3BF2892C675001095BC /* AppDelegate.swift in Sources */,
 				3C72D7C428B51BB6006E2229 /* SelectChallengeCreateVC.swift in Sources */,
 				23ECC09F28D859E000F65692 /* AuthAPI.swift in Sources */,
