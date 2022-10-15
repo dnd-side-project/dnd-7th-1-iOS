@@ -50,6 +50,18 @@ class EditProfileVC: BaseViewController {
             $0.nicknameTextField.text = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname)
         }
     
+    private let profileMessageTitleLabel = UILabel()
+        .then {
+            $0.text = "나의 소개글"
+            $0.font = .body1
+            $0.textColor = .gray900
+        }
+    
+    private let profileMessageTextView = NemoduTextView()
+        .then {
+            $0.tv.placeholder = "나의 소개글을 작성해주세요"
+        }
+    
     private var imagePicker = UIImagePickerController()
     private let viewModel = UserInfoSettingVM()
     private let bag = DisposeBag()
@@ -78,6 +90,7 @@ class EditProfileVC: BaseViewController {
     override func bindOutput() {
         super.bindOutput()
         bindValidationView()
+        bindBaseScrollView()
     }
     
 }
@@ -100,7 +113,9 @@ extension EditProfileVC {
         baseScrollView.addSubview(contentView)
         contentView.addSubviews([profileImageBtn,
                                  nicknameTitleLabel,
-                                 nicknameCheckView])
+                                 nicknameCheckView,
+                                 profileMessageTitleLabel,
+                                 profileMessageTextView])
         profileImageBtn.addSubview(cameraIconImageView)
         
         imagePicker.delegate = self
@@ -114,7 +129,7 @@ extension EditProfileVC {
         baseScrollView.snp.makeConstraints {
             $0.top.equalTo(naviBar.snp.bottom)
             $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(view.keyboardLayoutGuide)
+            $0.bottom.equalTo(view.keyboardLayoutGuide.snp.top)
         }
         
         contentView.snp.makeConstraints {
@@ -145,6 +160,21 @@ extension EditProfileVC {
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
             $0.height.equalTo(64)
+        }
+        
+        profileMessageTitleLabel.snp.makeConstraints {
+            $0.top.equalTo(nicknameCheckView.snp.bottom).offset(8)
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview().offset(-16)
+            $0.height.equalTo(56)
+        }
+        
+        profileMessageTextView.snp.makeConstraints {
+            $0.top.equalTo(profileMessageTitleLabel.snp.bottom)
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview().offset(-16)
+            $0.bottom.equalToSuperview().offset(-20)
+            $0.height.equalTo(121)
         }
     }
 }
@@ -252,13 +282,21 @@ extension EditProfileVC {
             })
             .disposed(by: bag)
     }
+    
+    private func bindBaseScrollView() {
+        profileMessageTextView.tv.rx.didBeginEditing
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.baseScrollView.scrollToBottom(animated: true)
+            })
+            .disposed(by: bag)
+    }
 }
 
 // MARK: - UIImagePickerControllerDelegate, UINavigationControllerDelegate
 
-extension EditProfileVC : UIImagePickerControllerDelegate,
-UINavigationControllerDelegate{
-    
+extension EditProfileVC : UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[.editedImage] as? UIImage {
             profileImageBtn.setImage(image, for: .normal)
