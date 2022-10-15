@@ -15,8 +15,8 @@ import UITextView_Placeholder
 class NemoduTextView: BaseView {
     let tv = UITextView()
         .then {
-            $0.placeholderColor = .gray600
-            $0.font = .caption1
+            $0.placeholderColor = .gray500
+            $0.font = .body3
             $0.backgroundColor = .gray50
             $0.layer.cornerRadius = 10
             $0.layer.borderWidth = 1
@@ -26,7 +26,7 @@ class NemoduTextView: BaseView {
     
     private let memoCntLabel = UILabel()
         .then {
-            $0.font = .body3
+            $0.font = .caption1
             $0.textColor = .gray500
             $0.textAlignment = .right
         }
