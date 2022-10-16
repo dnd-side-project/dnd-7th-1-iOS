@@ -120,6 +120,10 @@ extension FriendListVC {
                                     separatorView,
                                     searchBar,
                                     friendListTV])
+        
+        requestTV.register(FriendRequestTVC.self, forCellReuseIdentifier: FriendRequestTVC.className)
+        requestTV.dataSource = self
+        requestTV.delegate = self
     }
 }
 
@@ -204,4 +208,26 @@ extension FriendListVC {
 
 extension FriendListVC {
     
+}
+
+// MARK: - UITableViewDataSource
+
+extension FriendListVC: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        2
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = requestTV.dequeueReusableCell(withIdentifier: FriendRequestTVC.className, for: indexPath) as? FriendRequestTVC else { return UITableViewCell() }
+        cell.configureCell()
+        return cell
+    }
+}
+
+// MARK: - UITableViewDelegate
+
+extension FriendListVC: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        64
+    }
 }
