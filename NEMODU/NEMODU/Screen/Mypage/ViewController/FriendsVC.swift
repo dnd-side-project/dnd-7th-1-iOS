@@ -36,7 +36,7 @@ class FriendsVC: BaseViewController {
     
     private let friendListVC = FriendListVC()
     
-    private let recommendListVC = FriendListVC()
+    private let recommendListVC = RecommendListVC()
     
     private let bag = DisposeBag()
     
