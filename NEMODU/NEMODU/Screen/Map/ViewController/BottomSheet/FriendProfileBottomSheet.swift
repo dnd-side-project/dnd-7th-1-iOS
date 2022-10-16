@@ -31,7 +31,7 @@ class FriendProfileBottomSheet: DynamicBottomSheetViewController {
             $0.backgroundColor = UIColor.systemBackground
         }
     
-    private let profileImgBtn = UIButton()
+    private let profileImageBtn = UIButton()
         .then {
             $0.setImage(UIImage(named: "defaultThumbnail"), for: .normal)
             $0.layer.cornerRadius = 48
@@ -160,7 +160,7 @@ extension FriendProfileBottomSheet {
         baseView.addSubviews([profileView,
                               challengeListView])
         profileView.addSubviews([nicknameLabel,
-                                 profileImgBtn,
+                                 profileImageBtn,
                                  lastAccessTime,
                                  profileMessage,
                                  addFriendBtn,
@@ -218,14 +218,14 @@ extension FriendProfileBottomSheet {
             $0.top.leading.trailing.equalToSuperview()
         }
         
-        profileImgBtn.snp.makeConstraints {
+        profileImageBtn.snp.makeConstraints {
             $0.top.equalTo(profileView.snp.top).offset(-48)
             $0.centerX.equalToSuperview()
             $0.height.width.equalTo(96)
         }
         
         nicknameLabel.snp.makeConstraints {
-            $0.top.equalTo(profileImgBtn.snp.bottom).offset(12)
+            $0.top.equalTo(profileImageBtn.snp.bottom).offset(12)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(24)
         }
@@ -273,6 +273,14 @@ extension FriendProfileBottomSheet {
 
 extension FriendProfileBottomSheet {
     private func bindBtn() {
+        profileImageBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.showProfileImage(with: self.profileImageBtn.currentImage!)
+            })
+            .disposed(by: bag)
+        
         addFriendBtn.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in

@@ -103,4 +103,12 @@ extension UIViewController {
         alertVC.modalPresentationStyle = .overFullScreen
         targetVC.present(alertVC, animated: false, completion: nil)
     }
+    
+    /// 프로필 사진 상세보기 뷰를 띄워주는 함수
+    func showProfileImage(with image: UIImage) {
+        let profileImageVC = ProfileImageVC()
+        profileImageVC.profileImage.image = image
+        profileImageVC.modalPresentationStyle = .overFullScreen
+        present(profileImageVC, animated: true)
+    }
 }
