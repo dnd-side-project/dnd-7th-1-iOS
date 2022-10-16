@@ -79,6 +79,8 @@ class FriendListVC: BaseViewController {
             $0.separatorStyle = .none
         }
     
+    private var isFriendListEditing = false
+    
     private let bag = DisposeBag()
     
     override func viewDidLoad() {
@@ -124,6 +126,10 @@ extension FriendListVC {
         requestTV.register(FriendRequestTVC.self, forCellReuseIdentifier: FriendRequestTVC.className)
         requestTV.dataSource = self
         requestTV.delegate = self
+        
+        friendListTV.register(FriendListTVC.self, forCellReuseIdentifier: FriendListTVC.className)
+        friendListTV.dataSource = self
+        friendListTV.delegate = self
     }
 }
 
@@ -199,6 +205,8 @@ extension FriendListVC {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.editFriendListBtn.isSelected.toggle()
+                self.isFriendListEditing = self.editFriendListBtn.isSelected
+                self.friendListTV.reloadData()
             })
             .disposed(by: bag)
     }
@@ -214,13 +222,25 @@ extension FriendListVC {
 
 extension FriendListVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        2
+        if tableView == requestTV {
+            return 2
+        } else {
+            return 10
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = requestTV.dequeueReusableCell(withIdentifier: FriendRequestTVC.className, for: indexPath) as? FriendRequestTVC else { return UITableViewCell() }
-        cell.configureCell()
-        return cell
+        guard let requestCell = requestTV.dequeueReusableCell(withIdentifier: FriendRequestTVC.className) as? FriendRequestTVC,
+              let friendListCell = friendListTV.dequeueReusableCell(withIdentifier: FriendListTVC.className) as? FriendListTVC
+        else { return UITableViewCell() }
+        
+        if tableView == requestTV {
+            requestCell.configureCell()
+            return requestCell
+        } else {
+            friendListCell.configureCell(isEdit: isFriendListEditing)
+            return friendListCell
+        }
     }
 }
 
