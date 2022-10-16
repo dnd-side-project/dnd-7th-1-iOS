@@ -95,6 +95,7 @@
 		237573E928F92A1B006026ED /* NicknameCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573E828F92A1B006026ED /* NicknameCheckView.swift */; };
 		237573EB28FA5A00006026ED /* ProfileImageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573EA28FA5A00006026ED /* ProfileImageVC.swift */; };
 		237573EF28FA773F006026ED /* EditProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573EE28FA773F006026ED /* EditProfileVC.swift */; };
+		237573F328FAF2A1006026ED /* EditProfileRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573F228FAF2A1006026ED /* EditProfileRequestModel.swift */; };
 		238C4DDF28A3AC18000BEE36 /* RecordResultVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DDE28A3AC18000BEE36 /* RecordResultVC.swift */; };
 		238C4DE328A3F0D6000BEE36 /* NemoduTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */; };
 		238C4DE528A4BFE2000BEE36 /* UIScrollView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DE428A4BFE2000BEE36 /* UIScrollView+.swift */; };
@@ -283,6 +284,7 @@
 		237573E828F92A1B006026ED /* NicknameCheckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameCheckView.swift; sourceTree = "<group>"; };
 		237573EA28FA5A00006026ED /* ProfileImageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageVC.swift; sourceTree = "<group>"; };
 		237573EE28FA773F006026ED /* EditProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileVC.swift; sourceTree = "<group>"; };
+		237573F228FAF2A1006026ED /* EditProfileRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileRequestModel.swift; sourceTree = "<group>"; };
 		238C4DDE28A3AC18000BEE36 /* RecordResultVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordResultVC.swift; sourceTree = "<group>"; };
 		238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NemoduTextView.swift; sourceTree = "<group>"; };
 		238C4DE428A4BFE2000BEE36 /* UIScrollView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+.swift"; sourceTree = "<group>"; };
@@ -877,6 +879,7 @@
 				23D8B7DD28B397DF00F48165 /* MyRecordListRequestModel.swift */,
 				2304FB9928F27EC200DD3A50 /* EventListRequestModel.swift */,
 				237573D228F56A7B006026ED /* EditMemoRequestModel.swift */,
+				237573F228FAF2A1006026ED /* EditProfileRequestModel.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -1381,6 +1384,7 @@
 				2312519628B6944B00DF1C69 /* ToastView.swift in Sources */,
 				23412FD828AE245D00B73D62 /* Block.swift in Sources */,
 				237573D728F57824006026ED /* ArrowBtn.swift in Sources */,
+				237573F328FAF2A1006026ED /* EditProfileRequestModel.swift in Sources */,
 				2304FB9A28F27EC200DD3A50 /* EventListRequestModel.swift in Sources */,
 				238C4DE328A3F0D6000BEE36 /* NemoduTextView.swift in Sources */,
 				2354239128BBA54000865E51 /* UserDefaults+.swift in Sources */,

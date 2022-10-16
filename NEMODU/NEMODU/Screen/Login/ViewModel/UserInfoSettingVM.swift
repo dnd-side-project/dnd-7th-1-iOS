@@ -75,4 +75,23 @@ extension UserInfoSettingVM {
             })
             .disposed(by: bag)
     }
+    
+    func postEditProfile(profile: EditProfileRequestModel) {
+        let path = "user/info/profile/edit"
+        let resource = urlResource<NicknameModel>(path: path)
+
+        apiSession.postRequestWithImage(with: resource,
+                                        param: profile.profileParam,
+                                        image: profile.profileImage)
+        .withUnretained(self)
+        .subscribe(onNext: { owner, result in
+            switch result {
+            case .failure(let error):
+                owner.apiError.onNext(error)
+            case .success(let data):
+                UserDefaults.standard.set(data.nickname, forKey: UserDefaults.Keys.nickname)
+            }
+        })
+        .disposed(by: bag)
+    }
 }

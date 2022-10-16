@@ -27,6 +27,7 @@ class EditProfileVC: BaseViewController {
         .then {
             $0.setImage(UIImage(named: "defaultThumbnail"), for: .normal)
             $0.imageView?.layer.cornerRadius = 48
+            $0.imageView?.contentMode = .scaleAspectFill
         }
     
     private let cameraIconImageView = UIImageView()
@@ -85,6 +86,7 @@ class EditProfileVC: BaseViewController {
         super.bindInput()
         bindProfileImageBtn()
         checkNicknameValidation()
+        bindSaveBtn()
     }
     
     override func bindOutput() {
@@ -264,6 +266,22 @@ extension EditProfileVC {
                 nickname.count < 2 || nickname.count > 6
                 ? self.nicknameCheckView.setValidationView(.countError)
                 : self.viewModel.getNicknameValidation(nickname: nickname)
+            })
+            .disposed(by: bag)
+    }
+    
+    /// 변경된 프로필을 서버에 전송하는 메서드
+    private func bindSaveBtn() {
+        naviBar.rightBtn.rx.tap
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self,
+                let newNickname = self.nicknameCheckView.nicknameTextField.text,
+                let profileImage = self.profileImageBtn.currentImage
+                else { return }
+                let model = EditProfileRequestModel(profileImage: profileImage,
+                                                    editNick: newNickname,
+                                                    intro: self.profileMessageTextView.tv.text)
+                self.viewModel.postEditProfile(profile: model)
             })
             .disposed(by: bag)
     }
