@@ -23,6 +23,7 @@ final class UserInfoSettingVM: BaseViewModel {
     // MARK: - Output
     
     struct Output {
+        var myProfile = PublishRelay<MyProfileResponseModel>()
         var isNextBtnActive = BehaviorRelay<Bool>(value: false)
         var isValidNickname = PublishRelay<Bool>()
     }
@@ -58,6 +59,24 @@ extension UserInfoSettingVM: Output {
 // MARK: - Networking
 
 extension UserInfoSettingVM {
+    func getMyProfile() {
+        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { return }
+        let path = "user/info/profile?nickname=\(nickname)"
+        let resource = urlResource<MyProfileResponseModel>(path: path)
+        
+        apiSession.getRequest(with: resource)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, result in
+                switch result {
+                case .failure(let error):
+                    owner.apiError.onNext(error)
+                case .success(let data):
+                    owner.output.myProfile.accept(data)
+                }
+            })
+            .disposed(by: bag)
+    }
+    
     func getNicknameValidation(nickname: String) {
         let path = "auth/check/nickname?nickname=\(nickname)"
         let resource = urlResource<Bool>(path: path)
