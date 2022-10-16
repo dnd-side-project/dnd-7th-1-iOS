@@ -11,6 +11,7 @@ import RxGesture
 import RxSwift
 import SnapKit
 import Then
+import Kingfisher
 
 class MyProfileVC: BaseViewController {
     
@@ -133,7 +134,8 @@ extension MyProfileVC {
     }
     
     private func configureProfileData(_ data: MyProfileResponseModel) {
-        // TODO: - 프로필 사진 연결
+        profileImageBtn.kf.setImage(with: URL(string: data.picturePath),
+                                    for: .normal)
         nicknameLabel.text = data.nickname
         profileMessageLabel.text = data.intro
         accountLabel.text = data.mail
