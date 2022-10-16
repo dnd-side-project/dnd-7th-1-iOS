@@ -36,6 +36,7 @@ extension NicknameSearchBar{
     private func configureLayout() {
         searchTextField.snp.updateConstraints {
             $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(42)
         }
     }
 }
