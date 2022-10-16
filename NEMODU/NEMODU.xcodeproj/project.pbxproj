@@ -91,6 +91,9 @@
 		237573D328F56A7B006026ED /* EditMemoRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573D228F56A7B006026ED /* EditMemoRequestModel.swift */; };
 		237573E728F9210B006026ED /* NemoduTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573E628F9210B006026ED /* NemoduTextField.swift */; };
 		237573E928F92A1B006026ED /* NicknameCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573E828F92A1B006026ED /* NicknameCheckView.swift */; };
+		237573F728FBF88E006026ED /* FriendsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573F628FBF88E006026ED /* FriendsVC.swift */; };
+		237573F928FC0113006026ED /* TabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573F828FC0113006026ED /* TabView.swift */; };
+		237573FB28FC053D006026ED /* TabCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573FA28FC053D006026ED /* TabCVC.swift */; };
 		238C4DDF28A3AC18000BEE36 /* RecordResultVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DDE28A3AC18000BEE36 /* RecordResultVC.swift */; };
 		238C4DE328A3F0D6000BEE36 /* NemoduTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */; };
 		238C4DE528A4BFE2000BEE36 /* UIScrollView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DE428A4BFE2000BEE36 /* UIScrollView+.swift */; };
@@ -275,6 +278,9 @@
 		237573D228F56A7B006026ED /* EditMemoRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMemoRequestModel.swift; sourceTree = "<group>"; };
 		237573E628F9210B006026ED /* NemoduTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NemoduTextField.swift; sourceTree = "<group>"; };
 		237573E828F92A1B006026ED /* NicknameCheckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameCheckView.swift; sourceTree = "<group>"; };
+		237573F628FBF88E006026ED /* FriendsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsVC.swift; sourceTree = "<group>"; };
+		237573F828FC0113006026ED /* TabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabView.swift; sourceTree = "<group>"; };
+		237573FA28FC053D006026ED /* TabCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabCVC.swift; sourceTree = "<group>"; };
 		238C4DDE28A3AC18000BEE36 /* RecordResultVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordResultVC.swift; sourceTree = "<group>"; };
 		238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NemoduTextView.swift; sourceTree = "<group>"; };
 		238C4DE428A4BFE2000BEE36 /* UIScrollView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+.swift"; sourceTree = "<group>"; };
@@ -744,6 +750,7 @@
 				2339D74D28B2849F0018013D /* MyRecordDataVC.swift */,
 				23D8B7E628B4E44700F48165 /* MyRecordDetailVC.swift */,
 				237573CE28F55F84006026ED /* EditRecordMemoVC.swift */,
+				237573F628FBF88E006026ED /* FriendsVC.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -1092,6 +1099,8 @@
 			children = (
 				3CB9DB9B28A92527007BC1BE /* MenuBarCV.swift */,
 				3CB9DB9A28A92527007BC1BE /* MenuBarCVC.swift */,
+				237573F828FC0113006026ED /* TabView.swift */,
+				237573FA28FC053D006026ED /* TabCVC.swift */,
 			);
 			path = MenuBar;
 			sourceTree = "<group>";
@@ -1402,6 +1411,7 @@
 				3CACEBD428C9EAA0001F5109 /* FriendListView.swift in Sources */,
 				23B7207428A2227000D3A410 /* WalkingVM.swift in Sources */,
 				3C09AE3928AF6345005DD125 /* ChallengeDoingTVC.swift in Sources */,
+				237573FB28FC053D006026ED /* TabCVC.swift in Sources */,
 				2348B40D2892D360001095BC /* UIColor+.swift in Sources */,
 				3C3BD76E28B36E1400AD55B6 /* AreaRankingListResponseModel.swift in Sources */,
 				23F5718628AA6DAD005F2E21 /* MyAnnotation.swift in Sources */,
@@ -1431,6 +1441,7 @@
 				23F5717928A94AA5005F2E21 /* UIString+.swift in Sources */,
 				3CB9DB9C28A92528007BC1BE /* MenuBarCVC.swift in Sources */,
 				230CB2E128AD474E00B11270 /* ChallengeBlockResponseModel.swift in Sources */,
+				237573F928FC0113006026ED /* TabView.swift in Sources */,
 				2354239428BC8BCD00865E51 /* LoginVC.swift in Sources */,
 				3C9FD39B28B64363006FA812 /* CreateChallengeListButtonView.swift in Sources */,
 				3C4FB96328AA92C800A429B8 /* InvitedChallengeTVHV.swift in Sources */,
@@ -1444,6 +1455,7 @@
 				238C4DE528A4BFE2000BEE36 /* UIScrollView+.swift in Sources */,
 				2348B4052892D1FA001095BC /* UIButton+.swift in Sources */,
 				238C4DDF28A3AC18000BEE36 /* RecordResultVC.swift in Sources */,
+				237573F728FBF88E006026ED /* FriendsVC.swift in Sources */,
 				2359B08C28EC724000930EF0 /* DateType.swift in Sources */,
 				3C05FFEB28B71F4F0017F4E1 /* PaddingLabel.swift in Sources */,
 				3C72D7BE28B508B2006E2229 /* SelectChallengeTypeVC.swift in Sources */,
