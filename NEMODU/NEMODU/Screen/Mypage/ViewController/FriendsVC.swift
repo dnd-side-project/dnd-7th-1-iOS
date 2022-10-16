@@ -34,15 +34,9 @@ class FriendsVC: BaseViewController {
             $0.alignment = .fill
         }
     
-    private let friendListVC = UIViewController()
-        .then {
-            $0.view.backgroundColor = .red
-        }
+    private let friendListVC = FriendListVC()
     
-    private let recommendListVC = UIViewController()
-        .then {
-            $0.view.backgroundColor = .blue
-        }
+    private let recommendListVC = FriendListVC()
     
     private let bag = DisposeBag()
     
@@ -90,7 +84,7 @@ extension FriendsVC {
             addChild($0)
         }
         [friendListVC.view, recommendListVC.view].forEach {
-            baseStackView.addArrangedSubview($0!)
+            baseStackView.addArrangedSubview($0)
         }
     }
 }
