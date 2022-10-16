@@ -72,10 +72,16 @@ class MyProfileVC: BaseViewController {
     
     private let signOutBtn = ArrowBtn(title: "회원 탈퇴")
     
+    private let viewModel = UserInfoSettingVM()
     private let bag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.getMyProfile()
     }
     
     override func configureView() {
@@ -96,6 +102,7 @@ class MyProfileVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        bindProfileData()
     }
     
 }
@@ -123,6 +130,13 @@ extension MyProfileVC {
             settingBtnStackView.addArrangedSubview($0)
         }
         settingBtnStackView.addHorizontalSeparators(color: .gray50, height: 1)
+    }
+    
+    private func configureProfileData(_ data: MyProfileResponseModel) {
+        // TODO: - 프로필 사진 연결
+        nicknameLabel.text = data.nickname
+        profileMessageLabel.text = data.intro
+        accountLabel.text = data.mail
     }
 }
 
@@ -195,5 +209,12 @@ extension MyProfileVC {
 // MARK: - Output
 
 extension MyProfileVC {
-    
+    private func bindProfileData() {
+        viewModel.output.myProfile
+            .subscribe(onNext: { [weak self] data in
+                guard let self = self else { return }
+                self.configureProfileData(data)
+            })
+            .disposed(by: bag)
+    }
 }
