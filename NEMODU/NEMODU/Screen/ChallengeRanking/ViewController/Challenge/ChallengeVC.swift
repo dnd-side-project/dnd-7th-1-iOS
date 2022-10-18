@@ -1,8 +1,8 @@
 //
-//  ChallengeContainerCVCell.swift
+//  ChallengeVC.swift
 //  NEMODU
 //
-//  Created by Kim HeeJae on 2022/08/02.
+//  Created by Kim HeeJae on 2022/10/18.
 //
 
 import UIKit
@@ -11,7 +11,7 @@ import RxSwift
 import Then
 import SnapKit
 
-class ChallengeContainerCVC : BaseCollectionViewCell {
+class ChallengeVC : BaseViewController {
     
     // MARK: - UI components
     
@@ -41,21 +41,66 @@ class ChallengeContainerCVC : BaseCollectionViewCell {
     
     var reloadCellIndex = 0
     
+    private let bag = DisposeBag()
+    
     // MARK: - Life Cycle
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override func viewDidLoad() {
+        super.viewDidLoad()
     }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK: - Function
     
     override func configureView() {
         super.configureView()
         
+    }
+    
+    override func layoutView() {
+        super.layoutView()
+        
+        configureLayout()
+        configureTableView()
+    }
+    
+    override func bindInput() {
+        super.bindInput()
+        
+        bindMenuBar()
+    }
+
+    // MARK: - Functions
+    
+    @objc
+    func didTapCreateChallengeButton() {
+        let selectChallengeCreateVC = SelectChallengeCreateVC()
+        // TODO: 서버연결 - 임시 주석코드 지정
+//        let selectChallengeCreateVC = CreateWeekChallengeVC()
+        
+        selectChallengeCreateVC.hidesBottomBarWhenPushed = true
+        
+        let rootViewController = view.superview?.findViewController()
+        rootViewController?.navigationController?.pushViewController(selectChallengeCreateVC, animated: true)
+    }
+    
+}
+
+// MARK: - Layout
+
+extension ChallengeVC {
+    
+    private func configureLayout() {
+        view.addSubviews([challengeTableView, createChallengeButton])
+        
+        challengeTableView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        createChallengeButton.snp.makeConstraints {
+            $0.width.height.equalTo(createChallengeButton.layer.cornerRadius * 2)
+
+            $0.right.bottom.equalTo(view).inset(16)
+        }
+    }
+    
+    private func configureTableView() {
         _ = challengeTableView
             .then {
                 $0.delegate = self
@@ -87,43 +132,34 @@ class ChallengeContainerCVC : BaseCollectionViewCell {
             }
     }
     
-    override func layoutView() {
-        super.layoutView()
-        
-        contentView.addSubviews([challengeTableView, createChallengeButton])
-        
-        
-        challengeTableView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-        createChallengeButton.snp.makeConstraints {
-            $0.width.height.equalTo(createChallengeButton.layer.cornerRadius * 2)
-            
-            $0.right.bottom.equalTo(contentView).inset(16)
-        }
-    }
+}
+
+
+// MARK: - bind
+
+extension ChallengeVC {
     
-    @objc
-    func didTapCreateChallengeButton() {
-        let selectChallengeCreateVC = SelectChallengeCreateVC()
-        // TODO: 서버연결 - 임시 주석코드 지정
-//        let selectChallengeCreateVC = CreateWeekChallengeVC()
+}
+
+// MARK: - Input
+
+extension ChallengeVC {
+    
+    private func bindMenuBar() {
         
-        selectChallengeCreateVC.hidesBottomBarWhenPushed = true
-        
-        let rootViewController = self.findViewController()
-        rootViewController?.navigationController?.pushViewController(selectChallengeCreateVC, animated: true)
     }
     
 }
 
-// MARK: - ChallengeTableView Delegate
+// MARK: - TableView Delegate
 
-extension ChallengeContainerCVC : UITableViewDelegate { }
+extension ChallengeVC : UITableViewDelegate {
+    
+}
 
-// MARK: - ChallengeTableView DataSource
+// MARK: - TableView DataSource
 
-extension ChallengeContainerCVC : UITableViewDataSource {
+extension ChallengeVC : UITableViewDataSource {
 
     // HeaderView
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -140,7 +176,7 @@ extension ChallengeContainerCVC : UITableViewDataSource {
             headerId = ChallengeListTVHV.className
             let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerId) as? ChallengeListTVHV
             
-            headerView?.challengeListTypeMenuBar.challengeContainerCVC = self
+//            headerView?.challengeListTypeMenuBar.challengeContainerCVC = self
             
             return headerView
         case 2:
