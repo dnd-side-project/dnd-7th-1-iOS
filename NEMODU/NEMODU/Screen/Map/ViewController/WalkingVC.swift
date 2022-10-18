@@ -238,8 +238,8 @@ extension WalkingVC {
                                                       exerciseTime: self.secondTimeValue,
                                                       blocks: self.mapVC.blocks,
                                                       stepCount: self.mapVC.stepCnt,
-                                                      started: startTime.toString(),
-                                                      ended: Date.now.toString()),
+                                                      started: startTime.toString(separator: .withTime),
+                                                      ended: Date.now.toString(separator: .withTime)),
                         weekBlockCnt: self.weekBlockCnt)
                     self.mapVC.stopUpdateStep()
                     self.present(recordResultNC, animated: true)

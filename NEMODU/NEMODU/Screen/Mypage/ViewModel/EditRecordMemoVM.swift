@@ -1,15 +1,15 @@
 //
-//  EnterVM.swift
+//  EditRecordMemoVM.swift
 //  NEMODU
 //
-//  Created by 황윤경 on 2022/09/14.
+//  Created by 황윤경 on 2022/10/11.
 //
 
 import Foundation
 import RxCocoa
 import RxSwift
 
-final class EnterVM: BaseViewModel {
+final class EditRecordMemoVM: BaseViewModel {
     var apiSession: APIService = APISession()
     let apiError = PublishSubject<APIError>()
     var bag = DisposeBag()
@@ -23,7 +23,7 @@ final class EnterVM: BaseViewModel {
     // MARK: - Output
     
     struct Output {
-        var isLoginSuccess = PublishRelay<Bool>()
+        var isValidEdit = PublishRelay<Bool>()
     }
     
     // MARK: - Init
@@ -40,32 +40,31 @@ final class EnterVM: BaseViewModel {
 
 // MARK: - Input
 
-extension EnterVM: Input {
+extension EditRecordMemoVM: Input {
     func bindInput() {}
 }
 
 // MARK: - Output
 
-extension EnterVM: Output {
+extension EditRecordMemoVM: Output {
     func bindOutput() {}
 }
 
 // MARK: - Networking
 
-extension EnterVM {
-    func requestSignup(_ userData: UserDataModel) {
-        let path = "auth/signup"
-        let resource = urlResource<NicknameModel>(path: path)
+extension EditRecordMemoVM {
+    func postEditedData(with memo: EditMemoRequestModel) {
+        let path = "user/info/activity/record/edit"
+        let resource = urlResource<Bool>(path: path)
         
-        AuthAPI.shared.signupRequest(with: resource, param: userData.userDataParam)
+        apiSession.postRequest(with: resource, param: memo.memoParam)
             .withUnretained(self)
             .subscribe(onNext: { owner, result in
                 switch result {
                 case .failure(let error):
                     owner.apiError.onNext(error)
                 case .success(let data):
-                    UserDefaults.standard.set(data.nickname, forKey: UserDefaults.Keys.nickname)
-                    owner.output.isLoginSuccess.accept(true)
+                    owner.output.isValidEdit.accept(data)
                 }
             })
             .disposed(by: bag)

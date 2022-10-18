@@ -25,5 +25,5 @@ target 'NEMODU' do
   pod 'DynamicBottomSheet'
   pod 'UITextView+Placeholder'
   pod 'lottie-ios'
-  pod 'FSCalendar'
+  pod 'Kingfisher', '~> 7.0'
 end
