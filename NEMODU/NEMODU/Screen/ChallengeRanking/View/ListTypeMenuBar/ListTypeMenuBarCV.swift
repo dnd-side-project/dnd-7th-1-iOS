@@ -17,10 +17,10 @@ class ListTypeMenuBarCV : MenuBarCV {
     
     // MARK: - Life Cycle
     
-    // MARK: - Function
+    // MARK: - Functions
     
-    override func configureView() {
-        // resetting layout collectionView
+    override func configureCollectionView() {
+        // resetting collectionView layout
         _ = menuBarCollectionView
             .then {
                 let layout = UICollectionViewFlowLayout()
@@ -39,10 +39,34 @@ class ListTypeMenuBarCV : MenuBarCV {
         menuBarCollectionView.delegate = self
         menuBarCollectionView.dataSource = self
     }
+}
+
+// MARK: - CollectionView DataSource
+
+extension ListTypeMenuBarCV {
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = menuBarCollectionView.dequeueReusableCell(withReuseIdentifier: ListTypeMenuBarCVC.className, for: indexPath) as? ListTypeMenuBarCVC
+        else { return UICollectionViewCell() }
+        
+        cell.menuTitle.text = menuList[indexPath.item]
+        
+        return cell
+    }
     
 }
 
-// MARK: - ListType MenuBar CollectionView FlowLayout
+// MARK: - CollectionView Delegate
+
+extension ListTypeMenuBarCV {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        // override to custom item selected action
+    }
+    
+}
+
+// MARK: - CollectionView FlowLayout
 
 extension ListTypeMenuBarCV {
     
@@ -51,26 +75,6 @@ extension ListTypeMenuBarCV {
         
         return CGSize(width: menuTitleSize.width + itemSpacing,
                       height: menuTitleSize.height + itemSpacing)
-    }
-    
-}
-
-// MARK: - ListType MenuBar CollectionView DataSource
-
-extension ListTypeMenuBarCV {
-    
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = menuBarCollectionView.dequeueReusableCell(withReuseIdentifier: ListTypeMenuBarCVC.className, for: indexPath) as? ListTypeMenuBarCVC else {
-            return UICollectionViewCell()
-        }
-        
-        cell.menuTitle.text = menuList[indexPath.item]
-        
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // override to custom item selected action
     }
     
 }
