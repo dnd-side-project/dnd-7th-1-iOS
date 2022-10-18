@@ -95,6 +95,16 @@
 		237573D928F57E50006026ED /* MyProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573D828F57E50006026ED /* MyProfileVC.swift */; };
 		237573EB28FA5A00006026ED /* ProfileImageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573EA28FA5A00006026ED /* ProfileImageVC.swift */; };
 		237573F528FBE6BE006026ED /* MyProfileResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573F428FBE6BE006026ED /* MyProfileResponseModel.swift */; };
+		237573F728FBF88E006026ED /* FriendsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573F628FBF88E006026ED /* FriendsVC.swift */; };
+		237573F928FC0113006026ED /* TabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573F828FC0113006026ED /* TabView.swift */; };
+		237573FB28FC053D006026ED /* TabCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573FA28FC053D006026ED /* TabCVC.swift */; };
+		237573FF28FC26DF006026ED /* FriendListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573FE28FC26DF006026ED /* FriendListVC.swift */; };
+		2375740128FC3824006026ED /* NicknameSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2375740028FC3824006026ED /* NicknameSearchBar.swift */; };
+		2375740328FC43C0006026ED /* FriendRequestTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2375740228FC43C0006026ED /* FriendRequestTVC.swift */; };
+		2375740528FC4856006026ED /* FriendListTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2375740428FC4856006026ED /* FriendListTVC.swift */; };
+		2375740728FC4DF4006026ED /* RecommendListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2375740628FC4DF4006026ED /* RecommendListVC.swift */; };
+		2375740928FC50AE006026ED /* RecommendFriendTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2375740828FC50AE006026ED /* RecommendFriendTVC.swift */; };
+		2375740B28FC5808006026ED /* ViewMoreTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2375740A28FC5808006026ED /* ViewMoreTVC.swift */; };
 		238C4DDF28A3AC18000BEE36 /* RecordResultVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DDE28A3AC18000BEE36 /* RecordResultVC.swift */; };
 		238C4DE328A3F0D6000BEE36 /* NemoduTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */; };
 		238C4DE528A4BFE2000BEE36 /* UIScrollView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DE428A4BFE2000BEE36 /* UIScrollView+.swift */; };
@@ -283,6 +293,16 @@
 		237573D828F57E50006026ED /* MyProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileVC.swift; sourceTree = "<group>"; };
 		237573EA28FA5A00006026ED /* ProfileImageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageVC.swift; sourceTree = "<group>"; };
 		237573F428FBE6BE006026ED /* MyProfileResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileResponseModel.swift; sourceTree = "<group>"; };
+		237573F628FBF88E006026ED /* FriendsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsVC.swift; sourceTree = "<group>"; };
+		237573F828FC0113006026ED /* TabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabView.swift; sourceTree = "<group>"; };
+		237573FA28FC053D006026ED /* TabCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabCVC.swift; sourceTree = "<group>"; };
+		237573FE28FC26DF006026ED /* FriendListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendListVC.swift; sourceTree = "<group>"; };
+		2375740028FC3824006026ED /* NicknameSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameSearchBar.swift; sourceTree = "<group>"; };
+		2375740228FC43C0006026ED /* FriendRequestTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestTVC.swift; sourceTree = "<group>"; };
+		2375740428FC4856006026ED /* FriendListTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendListTVC.swift; sourceTree = "<group>"; };
+		2375740628FC4DF4006026ED /* RecommendListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendListVC.swift; sourceTree = "<group>"; };
+		2375740828FC50AE006026ED /* RecommendFriendTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendFriendTVC.swift; sourceTree = "<group>"; };
+		2375740A28FC5808006026ED /* ViewMoreTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreTVC.swift; sourceTree = "<group>"; };
 		238C4DDE28A3AC18000BEE36 /* RecordResultVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordResultVC.swift; sourceTree = "<group>"; };
 		238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NemoduTextView.swift; sourceTree = "<group>"; };
 		238C4DE428A4BFE2000BEE36 /* UIScrollView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+.swift"; sourceTree = "<group>"; };
@@ -448,6 +468,7 @@
 				231A2B8E28B20B5600FF884B /* BlockCntView.swift */,
 				23D8B7E428B4D5AA00F48165 /* CalendarSelectStackView.swift */,
 				237573D628F57824006026ED /* ArrowBtn.swift */,
+				2375740028FC3824006026ED /* NicknameSearchBar.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -756,6 +777,9 @@
 				23D8B7E628B4E44700F48165 /* MyRecordDetailVC.swift */,
 				237573CE28F55F84006026ED /* EditRecordMemoVC.swift */,
 				237573D828F57E50006026ED /* MyProfileVC.swift */,
+				237573F628FBF88E006026ED /* FriendsVC.swift */,
+				237573FE28FC26DF006026ED /* FriendListVC.swift */,
+				2375740628FC4DF4006026ED /* RecommendListVC.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -886,6 +910,10 @@
 			children = (
 				23255A7728D058C1005D6D5A /* Calendar */,
 				23D8B7E028B3AC9C00F48165 /* MyRecordListTVC.swift */,
+				2375740228FC43C0006026ED /* FriendRequestTVC.swift */,
+				2375740428FC4856006026ED /* FriendListTVC.swift */,
+				2375740828FC50AE006026ED /* RecommendFriendTVC.swift */,
+				2375740A28FC5808006026ED /* ViewMoreTVC.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -1104,6 +1132,8 @@
 			children = (
 				3CB9DB9B28A92527007BC1BE /* MenuBarCV.swift */,
 				3CB9DB9A28A92527007BC1BE /* MenuBarCVC.swift */,
+				237573F828FC0113006026ED /* TabView.swift */,
+				237573FA28FC053D006026ED /* TabCVC.swift */,
 			);
 			path = MenuBar;
 			sourceTree = "<group>";
@@ -1300,6 +1330,7 @@
 				237573E928F92A1B006026ED /* NicknameCheckView.swift in Sources */,
 				3C48920E28B1049100B11207 /* RankingListTypeMenuBarCV.swift in Sources */,
 				3C3BD77428B3754A00AD55B6 /* AreaRankingListRequestModel.swift in Sources */,
+				2375740328FC43C0006026ED /* FriendRequestTVC.swift in Sources */,
 				23B7207028A12DBB00D3A410 /* RecordView.swift in Sources */,
 				231A2B8D28B20B3E00FF884B /* ProfileView.swift in Sources */,
 				23F5718228AA6038005F2E21 /* UIImage+.swift in Sources */,
@@ -1365,6 +1396,7 @@
 				23255A6E28CF3787005D6D5A /* NicknameType.swift in Sources */,
 				23F5718828AA6DEE005F2E21 /* MyAnnotationView.swift in Sources */,
 				232F0B6328B6803C005C9A07 /* AlertVC.swift in Sources */,
+				2375740B28FC5808006026ED /* ViewMoreTVC.swift in Sources */,
 				23F5717728A92E38005F2E21 /* ProfileRecordView.swift in Sources */,
 				23412FD628AE080000B73D62 /* ChallengeColorType.swift in Sources */,
 				2348B4032892D1D9001095BC /* UITextView+.swift in Sources */,
@@ -1378,6 +1410,7 @@
 				3CC1EC7528D06917007C87F6 /* CreateAccumulateChallengeVC.swift in Sources */,
 				23412FDC28AE375D00B73D62 /* ChallengeElementResponseModel.swift in Sources */,
 				23412FF028AFB74800B73D62 /* RecordResultNC.swift in Sources */,
+				2375740128FC3824006026ED /* NicknameSearchBar.swift in Sources */,
 				2312519628B6944B00DF1C69 /* ToastView.swift in Sources */,
 				23412FD828AE245D00B73D62 /* Block.swift in Sources */,
 				237573D728F57824006026ED /* ArrowBtn.swift in Sources */,
@@ -1398,6 +1431,7 @@
 				23255A6C28CF1307005D6D5A /* AddFriendsVC.swift in Sources */,
 				2348B3FB2892D15C001095BC /* Output.swift in Sources */,
 				2339D74E28B2849F0018013D /* MyRecordDataVC.swift in Sources */,
+				2375740928FC50AE006026ED /* RecommendFriendTVC.swift in Sources */,
 				23255A7B28D09F10005D6D5A /* WeekCVC.swift in Sources */,
 				23D8B7E728B4E44700F48165 /* MyRecordDetailVC.swift in Sources */,
 				2315258F28B4F2A000B80E03 /* MyRecordDetailVM.swift in Sources */,
@@ -1418,11 +1452,13 @@
 				3CACEBD428C9EAA0001F5109 /* FriendListView.swift in Sources */,
 				23B7207428A2227000D3A410 /* WalkingVM.swift in Sources */,
 				3C09AE3928AF6345005DD125 /* ChallengeDoingTVC.swift in Sources */,
+				237573FB28FC053D006026ED /* TabCVC.swift in Sources */,
 				2348B40D2892D360001095BC /* UIColor+.swift in Sources */,
 				3C3BD76E28B36E1400AD55B6 /* AreaRankingListResponseModel.swift in Sources */,
 				23F5718628AA6DAD005F2E21 /* MyAnnotation.swift in Sources */,
 				23255A6628CF117E005D6D5A /* LoginNC.swift in Sources */,
 				23F6959C28C9F6A7008D1378 /* UserInfoSettingVC.swift in Sources */,
+				2375740728FC4DF4006026ED /* RecommendListVC.swift in Sources */,
 				3C393FFD28A684DD0012B2B8 /* BaseTableViewCell.swift in Sources */,
 				23412FE228AE64D100B73D62 /* FriendProfileVM.swift in Sources */,
 				23B72058289808EB00D3A410 /* MapFilterBottomSheet.swift in Sources */,
@@ -1430,11 +1466,13 @@
 				230CB2E428AD478000B11270 /* Matrix.swift in Sources */,
 				3CB9DB9F28A93F19007BC1BE /* ChallengeRankingMenuBarCVC.swift in Sources */,
 				23D8B7E128B3AC9C00F48165 /* MyRecordListTVC.swift in Sources */,
+				237573FF28FC26DF006026ED /* FriendListVC.swift in Sources */,
 				2315258D28B4F07D00B80E03 /* DetailRecordDataResponseModel.swift in Sources */,
 				230CB2D828AD042300B11270 /* MainMapResponseModel.swift in Sources */,
 				23412FEC28AF81F700B73D62 /* RecordResultVM.swift in Sources */,
 				3C9FD39D28B68D19006FA812 /* ChallengePeriodVC.swift in Sources */,
 				2348B3FD2892D16C001095BC /* Loadable.swift in Sources */,
+				2375740528FC4856006026ED /* FriendListTVC.swift in Sources */,
 				2348B4012892D1A6001095BC /* UITextField+.swift in Sources */,
 				23F5717528A92D4A005F2E21 /* ProfileRecordStackView.swift in Sources */,
 				23412FEA28AF795600B73D62 /* RecordDataRequest.swift in Sources */,
@@ -1447,6 +1485,7 @@
 				23F5717928A94AA5005F2E21 /* UIString+.swift in Sources */,
 				3CB9DB9C28A92528007BC1BE /* MenuBarCVC.swift in Sources */,
 				230CB2E128AD474E00B11270 /* ChallengeBlockResponseModel.swift in Sources */,
+				237573F928FC0113006026ED /* TabView.swift in Sources */,
 				2354239428BC8BCD00865E51 /* LoginVC.swift in Sources */,
 				3C9FD39B28B64363006FA812 /* CreateChallengeListButtonView.swift in Sources */,
 				3C4FB96328AA92C800A429B8 /* InvitedChallengeTVHV.swift in Sources */,
@@ -1460,6 +1499,7 @@
 				238C4DE528A4BFE2000BEE36 /* UIScrollView+.swift in Sources */,
 				2348B4052892D1FA001095BC /* UIButton+.swift in Sources */,
 				238C4DDF28A3AC18000BEE36 /* RecordResultVC.swift in Sources */,
+				237573F728FBF88E006026ED /* FriendsVC.swift in Sources */,
 				2359B08C28EC724000930EF0 /* DateType.swift in Sources */,
 				3C05FFEB28B71F4F0017F4E1 /* PaddingLabel.swift in Sources */,
 				3C72D7BE28B508B2006E2229 /* SelectChallengeTypeVC.swift in Sources */,
