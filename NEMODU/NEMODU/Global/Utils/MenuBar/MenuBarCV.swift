@@ -84,6 +84,14 @@ class MenuBarCV: BaseView {
         menuBarCollectionView.dataSource = self
     }
     
+    func configreLayout() {
+        addSubview(menuBarCollectionView)
+        
+        menuBarCollectionView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+    }
+    
 }
 
 // MARK: - Configure
@@ -95,14 +103,6 @@ extension MenuBarCV {
 // MARK: - Layout
 
 extension MenuBarCV {
-    
-    private func configreLayout() {
-        addSubview(menuBarCollectionView)
-        
-        menuBarCollectionView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-    }
     
 }
 

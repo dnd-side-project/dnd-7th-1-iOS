@@ -13,16 +13,15 @@ class ChallengeListTypeMenuBarCV : ListTypeMenuBarCV {
     
     // MARK: - Variables and Properties
     
-    var challengeContainerCVC: ChallengeContainerCVC?
-    
     // MARK: - Life Cycle
     
     override func layoutSubviews() {
-        _ = menuBarCollectionView.then {
+        // TODO: - 리팩토링
+//        _ = menuBarCollectionView.then {
             // 선택되어 있는 위치 지정
-            let indexPath = IndexPath(item: challengeContainerCVC?.reloadCellIndex ?? 0, section: 0)
-            $0.selectItem(at: indexPath, animated: false, scrollPosition: .left)
-        }
+//            let indexPath = IndexPath(item: challengeContainerCVC?.reloadCellIndex ?? 0, section: 0)
+//            $0.selectItem(at: indexPath, animated: false, scrollPosition: .left)
+//        }
     }
     
     // MARK: - Function
@@ -35,13 +34,14 @@ extension ChallengeListTypeMenuBarCV {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("ChallengeType selected : ", indexPath.item)
         
+        // TODO: - 리팩토링
         let targetItemIndex = indexPath.item
-        let currentItemIndex = challengeContainerCVC?.reloadCellIndex ?? 0
+//        let currentItemIndex = challengeContainerCVC?.reloadCellIndex ?? 0
         
-        challengeContainerCVC?.reloadCellIndex = targetItemIndex
-        if targetItemIndex != currentItemIndex {
-            challengeContainerCVC?.challengeTableView.reloadSections(IndexSet(2...2), with: targetItemIndex > currentItemIndex ? .left : .right)
-        }
+//        challengeContainerCVC?.reloadCellIndex = targetItemIndex
+//        if targetItemIndex != currentItemIndex {
+//            challengeContainerCVC?.challengeTableView.reloadSections(IndexSet(2...2), with: targetItemIndex > currentItemIndex ? .left : .right)
+//        }
     }
     
 }

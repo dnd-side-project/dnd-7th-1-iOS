@@ -52,12 +52,15 @@ class RankingListVC : BaseViewController {
         
     // MARK: - Variables and Properties
     
+    // TODO: - 서버 재연결
 //    var reloadRankingTypeIndex = 0
     
     private var selectedDate: Date = .now
     
-//    let viewModel = ChallengeRankingVM()
     private let bag = DisposeBag()
+    
+    // TODO: - 서버 재연결
+//    let viewModel = ChallengeRankingVM()
     
 //    var areaRankings: AreaRankingListResponseModel?
 //    var stepRankings: StepRankingListResponseModel?
