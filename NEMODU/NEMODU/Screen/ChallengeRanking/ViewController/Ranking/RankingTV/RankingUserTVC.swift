@@ -17,7 +17,7 @@ class RankingUserTVC : BaseTableViewCell {
     
     private let contentsView = UIView()
         .then {
-            $0.backgroundColor = .gray50
+            $0.backgroundColor = .clear
             $0.layer.cornerRadius = 8
             $0.layer.masksToBounds = true
             
@@ -68,7 +68,7 @@ class RankingUserTVC : BaseTableViewCell {
             $0.font = .title2
             $0.textColor = .gray900
         }
-    private let blockLabel = UILabel()
+    let blockLabel = UILabel()
         .then {
             $0.text = "칸"
             $0.font = .body1
@@ -83,7 +83,6 @@ class RankingUserTVC : BaseTableViewCell {
         super.configureView()
         
         configureContentView()
-//        configureCell()
     }
     
     override func layoutView() {
@@ -203,10 +202,6 @@ extension RankingUserTVC {
         contentView.addSubview(contentsView)
         contentsView.addSubviews([rankNumberLabel, userProfileImageView, showMeLabel, userNicknameLabel, blocksNumberLabel, blockLabel])
         
-//        contentView.snp.makeConstraints {
-//            $0.height.equalTo(84)
-//            $0.horizontalEdges.equalToSuperview()
-//        }
         contentsView.snp.makeConstraints {
             let paddingTB = 12
             
