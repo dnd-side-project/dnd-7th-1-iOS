@@ -40,43 +40,37 @@ class RankingListVC : BaseViewController {
             $0.backgroundColor = .gray100
         }
     
-    private let rankingTableView = UITableView(frame: .zero, style: .grouped)
+    let rankingTableView = UITableView(frame: .zero, style: .grouped)
         .then {
             $0.separatorStyle = .none
             $0.backgroundColor = .white
             $0.showsVerticalScrollIndicator = false
             
-            // footerView 하단 여백이 생기는 것을 방지(tableView 내의 scrollView의 inset 값 때문인 것으로 추정)
             $0.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: -20, right: 0)
         }
         
     // MARK: - Variables and Properties
     
-    // TODO: - 서버 재연결
-//    var reloadRankingTypeIndex = 0
+    var selectedDate: Date = .now
+
+    let myUserNickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) ?? ""
     
-    private var selectedDate: Date = .now
-    
-    private let bag = DisposeBag()
-    
-    // TODO: - 서버 재연결
-//    let viewModel = ChallengeRankingVM()
-    
-//    var areaRankings: AreaRankingListResponseModel?
-//    var stepRankings: StepRankingListResponseModel?
-//    var accumulateRankings: AccumulateRankingListResponseModel?
-    
+    let bag = DisposeBag()
+
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        configureWeeksNavigation(targetDate: 0)
+    }
     override func configureView() {
         super.configureView()
         
-        configureWeeksNavigation(targetDate: 0)
-        configureRankingUserTVC()
         configureTableView()
     }
     
@@ -94,20 +88,9 @@ class RankingListVC : BaseViewController {
     
     // MARK: - Functions
     
-    func configureRankingUserTVC() {
-        myRankingTVC.markMyRankingTVC(rankNumber: 5, blocksNumber: 1)
-    }
-    
-}
-
-// MARK: - Configure
-
-extension RankingListVC {
-    
-    private func configureWeeksNavigation(targetDate: Int) {
+    func configureWeeksNavigation(targetDate: Int) {
         var calendar = Calendar(identifier: .gregorian)
-        // 일...토까지 1...7로 번호 구성
-        calendar.firstWeekday = 2 // 주의 시작요일을 월요일로 지정
+        calendar.firstWeekday = 2
         
         let week = DateComponents(day: targetDate)
         selectedDate = calendar.date(byAdding: week, to: selectedDate)!
@@ -122,16 +105,7 @@ extension RankingListVC {
         nextWeekButton.tintColor = active ? .gray900 : .gray300
     }
     
-    private func configureTableView() {
-        _ = rankingTableView
-            .then {
-                $0.delegate = self
-                $0.dataSource = self
-                
-                $0.register(RankingUserTVC.self, forCellReuseIdentifier: RankingUserTVC.className)
-//                $0.register(NoListStatusTVFV.self, forHeaderFooterViewReuseIdentifier: NoListStatusTVFV.className)
-            }
-    }
+    func configureTableView() { }
     
 }
 
@@ -192,83 +166,6 @@ extension RankingListVC {
     
 }
 
-// MARK: - TableView DataSource
-
-extension RankingListVC : UITableViewDataSource {
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: RankingUserTVC.className, for: indexPath) as? RankingUserTVC
-        else { return UITableViewCell() }
-        
-        let ranking = indexPath.row + 1
-        
-        cell.configureCell(ranking: ranking)
-        
-        switch ranking {
-        case 1,2,3:
-            cell.markTop123(isOn: true)
-        case 5:
-            cell.markMyRanking(isOn: true)
-        default:
-            break
-        }
-        
-        return cell
-    }
-
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let footerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: NoListStatusTVFV.className) as? NoListStatusTVFV
-        footerView?.statusLabel.text = "랭킹 목록이 없습니다."
-
-        return footerView
-    }
-
-}
-
-// MARK: - TableView Delegate
-
-extension RankingListVC : UITableViewDelegate {
-    
-    // HeaderView
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-            let fakeView = UIView()
-            fakeView.backgroundColor = .white
-
-            return fakeView
-    }
-
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 24
-    }
-
-    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        return 24
-    }
-    
-    // Cell
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 9
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 84
-    }
-
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 84
-    }
-
-    // FooterView
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return .leastNormalMagnitude
-    }
-
-    func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
-        .leastNormalMagnitude
-    }
-    
-}
-
 // MARK: - Input
 
 extension RankingListVC {
@@ -292,12 +189,5 @@ extension RankingListVC {
             })
             .disposed(by: bag)
     }
-    
-}
-
-
-// MARK: - Output
-
-extension RankingListVC {
     
 }

@@ -27,6 +27,7 @@ class RankingUserTVC : BaseTableViewCell {
     
     private let rankNumberLabel = UILabel()
         .then {
+            $0.text = "-"
             $0.font = .headline1
             $0.textColor = .gray700
             $0.backgroundColor = .clear
@@ -138,10 +139,12 @@ class RankingUserTVC : BaseTableViewCell {
         }
     }
     
-    func markMyRankingTVC(rankNumber: Int, blocksNumber: Int) {
+    func markMyRankingTVC(rankNumber: Int, myNickname: String, blocksNumber: Int) {
         rankNumberLabel.text = String(rankNumber)
         
         showMeLabel.isHidden = false
+        
+        userNicknameLabel.text = myNickname
         
         contentsView.layer.borderColor = UIColor.main.cgColor
         contentsView.layer.backgroundColor = UIColor.main.withAlphaComponent(0.1).cgColor
@@ -159,37 +162,60 @@ extension RankingUserTVC {
         selectionStyle = .none
     }
     
-    func configureCell(ranking: Int) {
-        // TODO: - 서버 연결
-        userNicknameLabel.text = "Hi there"
-        rankNumberLabel.text = String(ranking)
-    }
-    
     // MARK: - configure TVC acording to Ranking Type
-    // TODO: - 서버 재연결
     
-    private func configureAreaRankingCell(with data: AreaRanking) {
-        // TODO: - 서버 연결 후 프로필 이미지 추가
-//        userProfileImageView.image =
+    func configureAreaRankingCell(with data: AreaRanking) {
+        rankNumberLabel.text = "\(data.rank)"
+//        userProfileImageView.image = // TODO: - 프로필 이미지 추가
         userNicknameLabel.text = data.nickname
         blocksNumberLabel.text = "\(data.score)"
-        rankNumberLabel.text = "\(data.rank)"
+        
+        switch data.rank {
+        case 1,2,3:
+            markTop123(isOn: true)
+        default:
+            break
+        }
+        
+        if(data.nickname == UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname)) {
+            markMyRanking(isOn: true)
+        }
     }
     
-    private func configureStepRankingCell(with data: StepRanking) {
-        // TODO: - 서버 연결 후 프로필 이미지 추가
-//        userProfileImageView.image =
+    func configureStepRankingCell(with data: StepRanking) {
+        rankNumberLabel.text = "\(data.rank)"
+//        userProfileImageView.image = // TODO: - 프로필 이미지 추가
         userNicknameLabel.text = data.nickname
         blocksNumberLabel.text = "\(data.score)"
-        rankNumberLabel.text = "\(data.rank)"
+        
+        switch data.rank {
+        case 1,2,3:
+            markTop123(isOn: true)
+        default:
+            break
+        }
+        
+        if(data.nickname == UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname)) {
+            markMyRanking(isOn: true)
+        }
     }
     
-    private func configureAccumulateRankingCell(with data: MatrixRanking) {
-        // TODO: - 서버 연결 후 프로필 이미지 추가
-//        userProfileImageView.image =
+    func configureAccumulateRankingCell(with data: MatrixRanking) {
+        rankNumberLabel.text = "\(data.rank)"
+//        userProfileImageView.image = // TODO: - 프로필 이미지 추가
         userNicknameLabel.text = data.nickname
         blocksNumberLabel.text = "\(data.score)"
-        rankNumberLabel.text = "\(data.rank)"
+        
+        switch data.rank {
+        case 1,2,3:
+            markTop123(isOn: true)
+        default:
+            break
+        }
+        
+        if(data.nickname == UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname)) {
+            markMyRanking(isOn: true)
+        }
     }
     
 }
