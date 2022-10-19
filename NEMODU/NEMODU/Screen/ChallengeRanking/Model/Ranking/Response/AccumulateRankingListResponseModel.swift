@@ -13,8 +13,10 @@ struct AccumulateRankingListResponseModel: Codable {
 }
 
 // MARK: - MatrixRanking
+
 struct MatrixRanking: Codable {
     let rank: Int
     let nickname: String
     let score: Int
+    let picturePath: String
 }
