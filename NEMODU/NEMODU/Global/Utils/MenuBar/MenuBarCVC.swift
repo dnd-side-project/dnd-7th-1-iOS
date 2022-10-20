@@ -9,7 +9,7 @@ import UIKit
 import Then
 import SnapKit
 
-class MenuBarCVC: UICollectionViewCell {
+class MenuBarCVC: BaseCollectionViewCell {
     
     // MARK: - UI components
     
@@ -17,29 +17,35 @@ class MenuBarCVC: UICollectionViewCell {
     
     // MARK: - Life Cycle
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override func configureView() {
+        super.configureView()
         
-        configureCell()
-        layoutView()
+        setSameFont()
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    override func layoutView() {
+        super.layoutView()
+        
+        configureLayout()
     }
     
     // MARK: - Functions
     
-    func configureCell() {
-        // 최초 실행시 기본설정 폰트가 안 맞는 문제를 방지하기 위해 최초 셀의 폰트와 색깔을 override한 isHighlighted, isSelect와의 통일 
+    // 최초 실행시 기본설정 폰트가 안 맞는 문제를 방지하기 위해 최초 셀의 폰트와 색깔을 override한 isHighlighted, isSelect와의 통일
+    func setSameFont() {
         _ = menuTitle
             .then {
                 $0.font = .systemFont(ofSize: 17)
                 $0.textColor = .gray
             }
     }
+}
+
+// MARK: - Layout
+
+extension MenuBarCVC {
     
-    func layoutView() {
+    private func configureLayout() {
         contentView.addSubview(menuTitle)
         
         menuTitle.snp.makeConstraints {
@@ -47,7 +53,11 @@ class MenuBarCVC: UICollectionViewCell {
         }
     }
     
-    // MARK: - Override Function
+}
+
+// MARK: - Override Function
+
+extension MenuBarCVC {
     
     /// Set button highlighted status
     

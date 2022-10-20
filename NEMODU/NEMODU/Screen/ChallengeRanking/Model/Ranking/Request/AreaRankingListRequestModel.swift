@@ -19,7 +19,7 @@ extension RankingListRequestModel {
     var areaParam: Parameters {
         return [
             "end": end,
-            "nickname": "NickA",
+            "nickname": nickname,
             "start": start
         ]
     }
