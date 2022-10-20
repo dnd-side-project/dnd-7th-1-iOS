@@ -77,6 +77,7 @@ class MenuBarCV: BaseView {
         }
     }
     
+    /// resetting collectionView layout when class inheritance
     func configureCollectionView() {
         menuBarCollectionView.register(MenuBarCVC.self, forCellWithReuseIdentifier: MenuBarCVC.className)
         
@@ -91,18 +92,6 @@ class MenuBarCV: BaseView {
             $0.edges.equalToSuperview()
         }
     }
-    
-}
-
-// MARK: - Configure
-
-extension MenuBarCV {
-    
-}
-
-// MARK: - Layout
-
-extension MenuBarCV {
     
 }
 
@@ -124,10 +113,6 @@ extension MenuBarCV : UICollectionViewDataSource {
     }
     
 }
-
-// MARK: - CollectionView Delegate
-
-extension MenuBarCV : UICollectionViewDelegate { }
 
 // MARK: - CollectionView DelegateFlowLayout
 

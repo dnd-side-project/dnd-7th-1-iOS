@@ -20,7 +20,6 @@ class ListTypeMenuBarCV : MenuBarCV {
     // MARK: - Functions
     
     override func configureCollectionView() {
-        // resetting collectionView layout
         _ = menuBarCollectionView
             .then {
                 let layout = UICollectionViewFlowLayout()
@@ -39,6 +38,7 @@ class ListTypeMenuBarCV : MenuBarCV {
         menuBarCollectionView.delegate = self
         menuBarCollectionView.dataSource = self
     }
+    
 }
 
 // MARK: - CollectionView DataSource
