@@ -33,7 +33,6 @@ class ChallengeRankingMenuBarCV : MenuBarCV {
     // MARK: - Functions
     
     override func configureCollectionView() {
-        // register ChallengeRankingMenuBarCVC
         menuBarCollectionView.register(ChallengeRankingMenuBarCVC.self, forCellWithReuseIdentifier: ChallengeRankingMenuBarCVC.className)
         
         menuBarCollectionView.delegate = self
@@ -51,18 +50,6 @@ class ChallengeRankingMenuBarCV : MenuBarCV {
             $0.bottom.equalToSuperview()
         }
     }
-    
-}
-
-// MARK: - Configure
-
-extension ChallengeRankingMenuBarCV {
-    
-}
-
-// MARK: - Layout
-
-extension ChallengeRankingMenuBarCV {
     
 }
 

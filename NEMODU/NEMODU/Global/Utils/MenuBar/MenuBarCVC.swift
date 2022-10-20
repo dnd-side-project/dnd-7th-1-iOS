@@ -41,12 +41,6 @@ class MenuBarCVC: BaseCollectionViewCell {
     }
 }
 
-// MARK: - Configure
-
-extension MenuBarCVC {
-    
-}
-
 // MARK: - Layout
 
 extension MenuBarCVC {
