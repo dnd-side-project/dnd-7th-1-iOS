@@ -11,13 +11,9 @@ import SnapKit
 
 class ListTypeMenuBarCVC: MenuBarCVC {
     
-    // MARK: - UI components
-    
-    // MARK: - Life Cycle
-    
     // MARK: - Functions
     
-    override func configureCell() {
+    override func setSameFont() {
         _ = menuTitle
             .then {
                 $0.font = .title3SB
@@ -25,7 +21,11 @@ class ListTypeMenuBarCVC: MenuBarCVC {
             }
     }
     
-    // MARK: - Override Function
+}
+
+// MARK: - Override Function
+
+extension ListTypeMenuBarCVC {
     
     /// Set button highlighted status
     

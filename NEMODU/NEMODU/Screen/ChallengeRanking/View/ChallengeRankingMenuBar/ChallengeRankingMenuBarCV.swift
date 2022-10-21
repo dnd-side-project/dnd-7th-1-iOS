@@ -18,8 +18,6 @@ class ChallengeRankingMenuBarCV : MenuBarCV {
     
     // MARK: - Variables and Properties
     
-    var challengeRankingVC: ChallengeRankingVC?
-    
     let positionBarHeight: CGFloat = 1.0
     
     // MARK: - Life Cycle
@@ -32,18 +30,17 @@ class ChallengeRankingMenuBarCV : MenuBarCV {
         }
     }
     
-    // MARK: - Function
+    // MARK: - Functions
     
-    override func configureView() {
-        // register ChallengeRankingMenuBarCVC
+    override func configureCollectionView() {
         menuBarCollectionView.register(ChallengeRankingMenuBarCVC.self, forCellWithReuseIdentifier: ChallengeRankingMenuBarCVC.className)
         
         menuBarCollectionView.delegate = self
         menuBarCollectionView.dataSource = self
     }
     
-    override func layoutView() {
-        super.layoutView()
+    override func configreLayout() {
+        super.configreLayout()
         
         addSubview(borderLine)
         borderLine.snp.makeConstraints {
@@ -56,7 +53,7 @@ class ChallengeRankingMenuBarCV : MenuBarCV {
     
 }
 
-// MARK: - ChallengeRanking MenuBar CollectionView
+// MARK: - CollectionView Delegate
 
 extension ChallengeRankingMenuBarCV {
     
@@ -65,10 +62,6 @@ extension ChallengeRankingMenuBarCV {
         cell.menuTitle.text = menuList[indexPath.item]
 
         return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        challengeRankingVC?.challengeRankingContainerCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
     }
     
 }
