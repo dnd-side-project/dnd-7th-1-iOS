@@ -36,9 +36,10 @@ class UserInfoSettingVC: BaseViewController {
     
     private let nicknameVC = NicknameVC()
     private let addfriendsVC = AddFriendsVC()
+    private let locationSettingVC = LocationSettingVC()
     
     private var page: Float = 1
-    private let pageCnt: Float = 2
+    private let pageCnt: Float = 3
     
     private let viewModel = UserInfoSettingVM()
     private let bag = DisposeBag()
@@ -96,9 +97,10 @@ extension UserInfoSettingVC {
                           baseScrollView])
         addChild(nicknameVC)
         addChild(addfriendsVC)
+        addChild(locationSettingVC)
         nicknameVC.viewModel = viewModel
         baseScrollView.addSubview(baseStackView)
-        [nicknameVC.view, addfriendsVC.view].forEach {
+        [nicknameVC.view, addfriendsVC.view, locationSettingVC.view].forEach {
             baseStackView.addArrangedSubview($0)
         }
         
