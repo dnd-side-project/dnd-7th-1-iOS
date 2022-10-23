@@ -88,7 +88,7 @@ extension UserInfoSettingVC {
     }
     
     private func setRightBarBtnActive(_ isActive: Bool) {
-        naviBar.rightBtn.isUserInteractionEnabled = isActive
+//        naviBar.rightBtn.isUserInteractionEnabled = isActive
         naviBar.rightBtn.setTitleColor(isActive ? .main : .gray300, for: .normal)
     }
     
@@ -140,7 +140,8 @@ extension UserInfoSettingVC {
         naviBar.backBtn.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in
-                guard let self = self else { return }
+                guard let self = self,
+                      self.page > 1 else { return }
                 self.page -= 1
                 self.page != 0
                 ? self.setPage(self.page)
@@ -151,11 +152,21 @@ extension UserInfoSettingVC {
         naviBar.rightBtn.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in
-                guard let self = self else { return }
+                guard let self = self,
+                      self.page < 3 else { return }
                 self.page += 1
                 self.page != self.pageCnt + 1
                 ? self.setPage(self.page)
                 : self.navigationController?.pushViewController(EnterVC(), animated: true)
+            })
+            .disposed(by: bag)
+        
+        baseScrollView.rx.didScroll
+            .asDriver()
+            .drive(onNext: {[weak self] offset in
+                guard let self = self else { return }
+                let progress = (self.baseScrollView.contentOffset.x + self.screenWidth) / self.screenWidth
+                self.progressView.progress = Float(progress) / self.pageCnt
             })
             .disposed(by: bag)
     }
@@ -180,6 +191,5 @@ extension UserInfoSettingVC {
 extension UserInfoSettingVC {
     private func setPage(_ page: Float) {
         baseScrollView.scrollToHorizontalOffset(offset: screenWidth * CGFloat(page - 1))
-        progressView.progress = page / pageCnt
     }
 }
