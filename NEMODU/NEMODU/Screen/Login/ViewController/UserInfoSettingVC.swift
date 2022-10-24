@@ -88,7 +88,7 @@ extension UserInfoSettingVC {
     }
     
     private func setRightBarBtnActive(_ isActive: Bool) {
-//        naviBar.rightBtn.isUserInteractionEnabled = isActive
+        naviBar.rightBtn.isUserInteractionEnabled = isActive
         naviBar.rightBtn.setTitleColor(isActive ? .main : .gray300, for: .normal)
     }
     
@@ -122,8 +122,7 @@ extension UserInfoSettingVC {
         
         baseScrollView.snp.makeConstraints {
             $0.top.equalTo(progressView.snp.bottom)
-            $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(view.keyboardLayoutGuide.snp.top)
+            $0.leading.trailing.bottom.equalToSuperview()
         }
         
         baseStackView.snp.makeConstraints {
@@ -142,6 +141,7 @@ extension UserInfoSettingVC {
             .drive(onNext: { [weak self] _ in
                 guard let self = self,
                       self.page > 1 else { return }
+                if self.page == 3 { self.naviBar.rightBtn.setTitle("다음", for: .normal) }
                 self.page -= 1
                 self.page != 0
                 ? self.setPage(self.page)
@@ -158,6 +158,7 @@ extension UserInfoSettingVC {
                 self.page != self.pageCnt + 1
                 ? self.setPage(self.page)
                 : self.navigationController?.pushViewController(EnterVC(), animated: true)
+                if self.page == 3 { self.naviBar.rightBtn.setTitle("완료", for: .normal) }
             })
             .disposed(by: bag)
         
