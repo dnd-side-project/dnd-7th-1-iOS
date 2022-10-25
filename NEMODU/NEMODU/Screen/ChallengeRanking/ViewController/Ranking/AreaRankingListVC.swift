@@ -39,7 +39,7 @@ class AreaRankingListVC : RankingListVC {
         guard let areaRankingList = areaRankingListResponseModel else { return }
         for areaRanking in areaRankingList.areaRankings {
             if areaRanking.nickname == myUserNickname {
-                myRankingTVC.markMyRankingTVC(rankNumber: areaRanking.rank, myNickname: areaRanking.nickname, blocksNumber: areaRanking.score)
+                myRankingTVC.markMyRankingTVC(rankNumber: areaRanking.rank, profileImageURL: areaRanking.picturePath, myNickname: areaRanking.nickname, blocksNumber: areaRanking.score)
             }
         }
     }
@@ -79,7 +79,8 @@ extension AreaRankingListVC : UITableViewDataSource {
         else { return UITableViewCell() }
         
         guard let areaRankingList = areaRankingListResponseModel else { return cell }
-        cell.configureAreaRankingCell(with: areaRankingList.areaRankings[indexPath.row])
+        let userAreaRanking = areaRankingList.areaRankings[indexPath.row]
+        cell.configureRankingCell(rankNumber: userAreaRanking.rank, profileImageURL: userAreaRanking.picturePath, nickname: userAreaRanking.nickname, blocksNumber: userAreaRanking.score)
         
         return cell
     }

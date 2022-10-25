@@ -38,7 +38,7 @@ class StepRankingListVC : RankingListVC {
         guard let stepRankingList = stepRankingListResponseModel else { return }
         for stepRanking in stepRankingList.stepRankings {
             if stepRanking.nickname == myUserNickname {
-                myRankingTVC.markMyRankingTVC(rankNumber: stepRanking.rank, myNickname: stepRanking.nickname, blocksNumber: stepRanking.score)
+                myRankingTVC.markMyRankingTVC(rankNumber: stepRanking.rank, profileImageURL: stepRanking.picturePath, myNickname: stepRanking.nickname, blocksNumber: stepRanking.score)
             }
         }
     }
@@ -78,7 +78,8 @@ extension StepRankingListVC : UITableViewDataSource {
         else { return UITableViewCell() }
         
         guard let stepRankingList = stepRankingListResponseModel else { return cell }
-        cell.configureStepRankingCell(with: stepRankingList.stepRankings[indexPath.row])
+        let userStepRanking = stepRankingList.stepRankings[indexPath.row]
+        cell.configureRankingCell(rankNumber: userStepRanking.rank, profileImageURL: userStepRanking.picturePath, nickname: userStepRanking.nickname, blocksNumber: userStepRanking.score)
         
         return cell
     }
