@@ -61,21 +61,9 @@ class StepRankingListVC : RankingListVC {
     }
     
     func getStepRankingList() {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'"
-        
-        let calendar = Calendar(identifier: .gregorian)
-        let currentDayNum = calendar.component(.weekday, from: selectedDate)
-        
-        let mondayNum = 2 - currentDayNum
-        guard let mondayDate = calendar.date(byAdding: .day, value: mondayNum, to: selectedDate) else { return }
-        var startDate = dateFormatter.string(from: mondayDate)
-        startDate.append("00:00:00")
-        
-        let sundayNum = 8 - currentDayNum
-        guard let sundayDate = calendar.date(byAdding: .day, value: sundayNum, to: selectedDate) else { return }
-        var endDate = dateFormatter.string(from: sundayDate)
-        endDate.append("23:59:59")
+        let dateList = makeDateByFormat()
+        let startDate = dateList[0]
+        let endDate = dateList[1]
         
         viewModel.getStepRankingList(with: RankingListRequestModel(end: endDate, nickname: myUserNickname, start: startDate))
     }

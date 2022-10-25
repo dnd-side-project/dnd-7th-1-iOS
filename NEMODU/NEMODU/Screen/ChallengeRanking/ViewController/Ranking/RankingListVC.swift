@@ -107,6 +107,27 @@ class RankingListVC : BaseViewController {
     
     func configureTableView() { }
     
+    func makeDateByFormat() -> [String] {
+        let calendar = Calendar(identifier: .gregorian)
+        let currentDayNum = calendar.component(.weekday, from: selectedDate)
+
+        let mondayNum = 2 - currentDayNum
+        guard let mondayDate = calendar.date(byAdding: .day, value: mondayNum, to: selectedDate) else { return [] }
+        var startDate = mondayDate.toString(separator: .withT)
+        startDate.append("00:00:00")
+
+        let sundayNum = 8 - currentDayNum
+        guard let sundayDate = calendar.date(byAdding: .day, value: sundayNum, to: selectedDate) else { return [] }
+        var endDate = sundayDate.toString(separator: .withT)
+        endDate.append("23:59:59")
+        
+        var result: [String] = []
+        result.append(startDate)
+        result.append(endDate)
+        
+        return result
+    }
+    
 }
 
 // MARK: - Layout
