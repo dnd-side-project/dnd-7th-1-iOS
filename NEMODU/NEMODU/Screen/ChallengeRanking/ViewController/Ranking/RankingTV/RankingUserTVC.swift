@@ -27,6 +27,7 @@ class RankingUserTVC : BaseTableViewCell {
     
     private let rankNumberLabel = UILabel()
         .then {
+            $0.text = "-"
             $0.font = .headline1
             $0.textColor = .gray700
             $0.backgroundColor = .clear
@@ -68,7 +69,7 @@ class RankingUserTVC : BaseTableViewCell {
             $0.font = .title2
             $0.textColor = .gray900
         }
-    let blockLabel = UILabel()
+    private let blockLabel = UILabel()
         .then {
             $0.text = "칸"
             $0.font = .body1
@@ -105,7 +106,7 @@ class RankingUserTVC : BaseTableViewCell {
     
     // MARK: - Functions
     
-    func markTop123(isOn: Bool) {
+    private func markTop123(isOn: Bool) {
         switch isOn {
         case true:
             rankNumberLabel.textColor = .main
@@ -118,7 +119,7 @@ class RankingUserTVC : BaseTableViewCell {
         }
     }
     
-    func markMyRanking(isOn: Bool) {
+    private func markMyRanking(isOn: Bool) {
         switch isOn {
         case true:
             rankNumberLabel.textColor = .main
@@ -138,10 +139,13 @@ class RankingUserTVC : BaseTableViewCell {
         }
     }
     
-    func markMyRankingTVC(rankNumber: Int, blocksNumber: Int) {
+    func markMyRankingTVC(rankNumber: Int, profileImageURL: String, myNickname: String, blocksNumber: Int) {
         rankNumberLabel.text = String(rankNumber)
         
+        userProfileImageView.kf.setImage(with: URL(string: profileImageURL))
         showMeLabel.isHidden = false
+        
+        userNicknameLabel.text = myNickname
         
         contentsView.layer.borderColor = UIColor.main.cgColor
         contentsView.layer.backgroundColor = UIColor.main.withAlphaComponent(0.1).cgColor
@@ -159,37 +163,23 @@ extension RankingUserTVC {
         selectionStyle = .none
     }
     
-    func configureCell(ranking: Int) {
-        // TODO: - 서버 연결
-        userNicknameLabel.text = "Hi there"
-        rankNumberLabel.text = String(ranking)
-    }
-    
-    // MARK: - configure TVC acording to Ranking Type
-    // TODO: - 서버 재연결
-    
-    private func configureAreaRankingCell(with data: AreaRanking) {
-        // TODO: - 서버 연결 후 프로필 이미지 추가
-//        userProfileImageView.image =
-        userNicknameLabel.text = data.nickname
-        blocksNumberLabel.text = "\(data.score)"
-        rankNumberLabel.text = "\(data.rank)"
-    }
-    
-    private func configureStepRankingCell(with data: StepRanking) {
-        // TODO: - 서버 연결 후 프로필 이미지 추가
-//        userProfileImageView.image =
-        userNicknameLabel.text = data.nickname
-        blocksNumberLabel.text = "\(data.score)"
-        rankNumberLabel.text = "\(data.rank)"
-    }
-    
-    private func configureAccumulateRankingCell(with data: MatrixRanking) {
-        // TODO: - 서버 연결 후 프로필 이미지 추가
-//        userProfileImageView.image =
-        userNicknameLabel.text = data.nickname
-        blocksNumberLabel.text = "\(data.score)"
-        rankNumberLabel.text = "\(data.rank)"
+    /// configure TVC acording to Ranking Type
+    func configureRankingCell(rankNumber: Int, profileImageURL: String, nickname: String, blocksNumber: Int) {
+        rankNumberLabel.text = "\(rankNumber)"
+        userProfileImageView.kf.setImage(with: URL(string: profileImageURL))
+        userNicknameLabel.text = nickname
+        blocksNumberLabel.text = "\(blocksNumber)"
+        
+        switch rankNumber {
+        case 1,2,3:
+            markTop123(isOn: true)
+        default:
+            break
+        }
+        
+        if(nickname == UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname)) {
+            markMyRanking(isOn: true)
+        }
     }
     
 }

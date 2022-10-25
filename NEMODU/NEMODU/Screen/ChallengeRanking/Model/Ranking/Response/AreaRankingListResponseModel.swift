@@ -15,6 +15,6 @@ struct AreaRankingListResponseModel: Codable {
 // MARK: - AreaRanking
 
 struct AreaRanking: Codable {
-    let nickname: String
+    let nickname, picturePath: String
     let rank, score: Int
 }

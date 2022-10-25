@@ -15,8 +15,7 @@ struct RankingListRequestModel {
 }
 
 extension RankingListRequestModel {
-    // TODO: UserDefaults 수정
-    var areaParam: Parameters {
+    var rankingParam: Parameters {
         return [
             "end": end,
             "nickname": nickname,

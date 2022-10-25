@@ -80,6 +80,9 @@ extension ChallengeRankingVC {
         [challengeVC.view, rankingVC.view].forEach {
             baseStackView.addArrangedSubview($0)
         }
+        [challengeVC, rankingVC].forEach {
+            addChild($0)
+        }
         
         challengeRankingMenuBar.snp.makeConstraints {
             $0.height.equalTo(59)
