@@ -130,8 +130,7 @@ extension FriendsVC {
             .drive(onNext: { [weak self] indexPath in
                 guard let self = self else { return }
                 let offset = CGFloat(indexPath.row) * self.screenWidth
-                self.baseScrollView.setContentOffset(CGPoint(x: offset, y: 0),
-                                                     animated: true)
+                self.baseScrollView.scrollToHorizontalOffset(offset: offset)
             })
             .disposed(by: bag)
         

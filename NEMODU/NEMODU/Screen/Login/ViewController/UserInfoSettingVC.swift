@@ -177,7 +177,7 @@ extension UserInfoSettingVC {
 
 extension UserInfoSettingVC {
     private func setPage(_ page: Float) {
-        baseScrollView.setContentOffset(CGPoint(x: screenWidth * CGFloat(page - 1), y: 0), animated: true)
+        baseScrollView.scrollToHorizontalOffset(offset: screenWidth * CGFloat(page - 1))
         progressView.progress = page / pageCnt
     }
 }

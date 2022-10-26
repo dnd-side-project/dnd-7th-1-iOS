@@ -25,9 +25,15 @@ extension UIScrollView {
         self.setContentOffset(bottomOffset, animated: animated)
     }
     
-    /// scrollView를 지정 offset으로 스크롤하는 함수
-    func scrollToOffset(offset: Double, animated: Bool) {
+    /// scrollView를 지정 offset으로 스크롤하는 함수 - offset y
+    func scrollToVerticalOffset(offset: Double, animated: Bool = true) {
         let bottomOffset = CGPoint(x: 0, y: offset)
+        self.setContentOffset(bottomOffset, animated: animated)
+    }
+    
+    /// scrollView를 지정 offset으로 스크롤하는 함수 - offset x
+    func scrollToHorizontalOffset(offset: Double, animated: Bool = true) {
+        let bottomOffset = CGPoint(x: offset, y: 0)
         self.setContentOffset(bottomOffset, animated: animated)
     }
 }
