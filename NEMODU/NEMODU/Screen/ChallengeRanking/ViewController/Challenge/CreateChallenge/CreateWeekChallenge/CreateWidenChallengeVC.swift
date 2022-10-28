@@ -22,7 +22,7 @@ class CreateWidenChallengeVC: CreateWeekChallengeVC {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-    
+     
     // MARK: - Functions
     
     override func configureView() {
@@ -33,4 +33,9 @@ class CreateWidenChallengeVC: CreateWeekChallengeVC {
                 $0.titleLabel.text = "영역 넓히기 챌린지"
             }
     }
+    
+    override func didTapConfirmButton() {
+        requestCreateWeekChallenge(type: "Widen")
+    }
+    
 }
