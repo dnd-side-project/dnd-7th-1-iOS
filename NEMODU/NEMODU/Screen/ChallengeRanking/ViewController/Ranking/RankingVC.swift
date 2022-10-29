@@ -1,8 +1,8 @@
 //
-//  ChallengeRankingVC.swift
+//  RankingVC.swift
 //  NEMODU
 //
-//  Created by Kim HeeJae on 2022/08/02.
+//  Created by Kim HeeJae on 2022/08/05.
 //
 
 import UIKit
@@ -11,13 +11,13 @@ import RxSwift
 import Then
 import SnapKit
 
-class ChallengeRankingVC: BaseViewController {
+class RankingVC : BaseViewController {
     
     // MARK: - UI components
     
-    private let challengeRankingMenuBar = ChallengeRankingMenuBarCV()
+    private let rankingListTypeMenuBar = ListTypeMenuBarCV()
         .then {
-            $0.menuList = ["챌린지", "랭킹"]
+            $0.menuList = ["영역 랭킹", "걸음수 랭킹", "역대 누적 랭킹"]
         }
     
     private let baseScrollView = UIScrollView()
@@ -35,8 +35,9 @@ class ChallengeRankingVC: BaseViewController {
             $0.alignment = .fill
         }
     
-    private let challengeVC = ChallengeVC()
-    private let rankingVC = RankingVC()
+    private let areaRankingListVC = AreaRankingListVC()
+    private let stepRankingListVC = StepRankingListVC()
+    private let accumulateRankingListVC = AccumulateRankingListVC()
     
     // MARK: - Variables and Properties
     
@@ -48,15 +49,10 @@ class ChallengeRankingVC: BaseViewController {
         super.viewDidLoad()
     }
     
-    override func configureView() {
-        super.configureView()
-        
-    }
-    
     override func layoutView() {
         super.layoutView()
         
-        configreLayout()
+        configureLayout()
     }
     
     override func bindInput() {
@@ -71,38 +67,38 @@ class ChallengeRankingVC: BaseViewController {
 
 // MARK: - Layout
 
-extension ChallengeRankingVC {
+extension RankingVC {
     
-    private func configreLayout() {
-        view.addSubviews([challengeRankingMenuBar,
-                          baseScrollView])
+    private func configureLayout() {
+        view.addSubviews([rankingListTypeMenuBar,
+                                 baseScrollView])
         baseScrollView.addSubview(baseStackView)
-        [challengeVC.view, rankingVC.view].forEach {
+        [areaRankingListVC.view, stepRankingListVC.view, accumulateRankingListVC.view].forEach {
             baseStackView.addArrangedSubview($0)
         }
-        [challengeVC, rankingVC].forEach {
+        [areaRankingListVC, stepRankingListVC, accumulateRankingListVC].forEach {
             addChild($0)
         }
         
-        challengeRankingMenuBar.snp.makeConstraints {
-            $0.height.equalTo(59)
+        
+        rankingListTypeMenuBar.snp.makeConstraints {
+            $0.height.equalTo(64)
             
-            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            $0.horizontalEdges.equalTo(view)
+            $0.top.horizontalEdges.equalTo(view)
         }
-
+        
         baseScrollView.snp.makeConstraints {
-            $0.top.equalTo(challengeRankingMenuBar.snp.bottom)
+            $0.top.equalTo(rankingListTypeMenuBar.snp.bottom)
             $0.horizontalEdges.bottom.equalTo(view)
         }
         baseStackView.snp.makeConstraints {
-            $0.width.equalTo(view.frame.width * CGFloat(challengeRankingMenuBar.menuList.count))
+            $0.width.equalTo(view.frame.width * CGFloat(rankingListTypeMenuBar.menuList.count))
             $0.height.equalTo(baseScrollView)
             
             $0.edges.equalTo(baseScrollView)
         }
         
-        [challengeVC.view, rankingVC.view].forEach {
+        [areaRankingListVC.view, stepRankingListVC.view, accumulateRankingListVC.view].forEach {
             $0.snp.makeConstraints {
                 $0.width.equalTo(view.frame.width)
                 $0.height.equalTo(baseStackView)
@@ -114,25 +110,16 @@ extension ChallengeRankingVC {
 
 // MARK: - Input
 
-extension ChallengeRankingVC {
+extension RankingVC {
 
     private func bindMenuBar() {
-        challengeRankingMenuBar.menuBarCollectionView.rx.itemSelected
+        rankingListTypeMenuBar.menuBarCollectionView.rx.itemSelected
             .asDriver()
             .drive(onNext: { [weak self] indexPath in
                 guard let self = self else { return }
                 
                 let offset = CGFloat(indexPath.row) * self.view.frame.width
                 self.baseScrollView.setContentOffset(CGPoint(x: offset, y: 0), animated: true)
-            })
-            .disposed(by: bag)
-        
-        baseScrollView.rx.contentOffset
-            .asDriver()
-            .drive(onNext: { [weak self] contentOffset in
-                guard let self = self else { return }
-                
-                self.challengeRankingMenuBar.positionBarView.frame.origin.x = contentOffset.x / CGFloat(self.challengeRankingMenuBar.menuList.count)
             })
             .disposed(by: bag)
     }

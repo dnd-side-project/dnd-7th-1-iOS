@@ -13,7 +13,7 @@ class ChallengeRankingMenuBarCVC: MenuBarCVC {
     
     // MARK: - Functions
     
-    override func configureCell() {
+    override func setSameFont() {
         _ = menuTitle
             .then {
                 $0.font = .headline1
@@ -21,7 +21,11 @@ class ChallengeRankingMenuBarCVC: MenuBarCVC {
             }
     }
     
-    // MARK: - Override Function
+}
+
+// MARK: - Override Function
+
+extension ChallengeRankingMenuBarCVC {
     
     /// Set button highlighted status
     

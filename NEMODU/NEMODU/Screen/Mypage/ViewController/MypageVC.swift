@@ -245,6 +245,16 @@ extension MypageVC {
                 self.navigationController?.pushViewController(myRecordDataView, animated: true)
             })
             .disposed(by: bag)
+        
+        friendBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                let friendsVC = FriendsVC()
+                friendsVC.hidesBottomBarWhenPushed = true
+                self.navigationController?.pushViewController(friendsVC, animated: true)
+            })
+            .disposed(by: bag)
     }
     
     private func bindProfileTap() {

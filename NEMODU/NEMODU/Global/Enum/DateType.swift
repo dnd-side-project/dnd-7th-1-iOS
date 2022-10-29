@@ -10,6 +10,7 @@ import Foundation
 enum DateType {
     case withTime
     case hyphen
+    case withT
 }
 
 extension DateType {
@@ -19,6 +20,8 @@ extension DateType {
             return "yyyy-MM-dd"
         case .withTime:
             return "yyyy-MM-dd'T'HH:mm:ss"
+        case .withT:
+            return "yyyy-MM-dd'T'"
         }
     }
 }

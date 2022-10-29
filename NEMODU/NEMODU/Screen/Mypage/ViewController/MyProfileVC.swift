@@ -11,6 +11,7 @@ import RxGesture
 import RxSwift
 import SnapKit
 import Then
+import Kingfisher
 
 class MyProfileVC: BaseViewController {
     
@@ -72,10 +73,16 @@ class MyProfileVC: BaseViewController {
     
     private let signOutBtn = ArrowBtn(title: "회원 탈퇴")
     
+    private let viewModel = UserInfoSettingVM()
     private let bag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.getMyProfile()
     }
     
     override func configureView() {
@@ -96,6 +103,7 @@ class MyProfileVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        bindProfileData()
     }
     
 }
@@ -123,6 +131,14 @@ extension MyProfileVC {
             settingBtnStackView.addArrangedSubview($0)
         }
         settingBtnStackView.addHorizontalSeparators(color: .gray50, height: 1)
+    }
+    
+    private func configureProfileData(_ data: MyProfileResponseModel) {
+        profileImageBtn.kf.setImage(with: URL(string: data.picturePath),
+                                    for: .normal)
+        nicknameLabel.text = data.nickname
+        profileMessageLabel.text = data.intro
+        accountLabel.text = data.mail
     }
 }
 
@@ -196,5 +212,12 @@ extension MyProfileVC {
 // MARK: - Output
 
 extension MyProfileVC {
-    
+    private func bindProfileData() {
+        viewModel.output.myProfile
+            .subscribe(onNext: { [weak self] data in
+                guard let self = self else { return }
+                self.configureProfileData(data)
+            })
+            .disposed(by: bag)
+    }
 }
