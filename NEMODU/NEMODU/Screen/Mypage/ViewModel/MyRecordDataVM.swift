@@ -168,7 +168,7 @@ extension MyRecordDataVM: Output {
 
 extension MyRecordDataVM {
     func getEventList(with param: EventListRequestModel) {
-        let path = "user/eventList"
+        let path = "user/event-list"
         let resource = urlResource<EventListResponseModel>(path: path)
         
         apiSession.postRequest(with: resource, param: param.eventParam)
