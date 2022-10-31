@@ -24,15 +24,9 @@ class ChallengeListTVHV : ChallengeTitleTVHV {
     
     // MARK: - Variables and Properties
     
+    var challengeContainerCVC: ChallengeVC?
+    
     // MARK: - Life Cycle
-    
-    override init(reuseIdentifier: String?) {
-        super.init(reuseIdentifier: reuseIdentifier)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     // MARK: - Function
     

@@ -22,7 +22,7 @@ class ChallengeVC : BaseViewController {
             $0.showsVerticalScrollIndicator = false
         }
     
-    lazy var createChallengeButton = UIButton().then {
+    private lazy var createChallengeButton = UIButton().then {
         $0.setImage(UIImage(named: "add")?.withRenderingMode(.alwaysTemplate), for: .normal)
         $0.contentVerticalAlignment = .fill
         $0.contentHorizontalAlignment = .fill
@@ -41,40 +41,103 @@ class ChallengeVC : BaseViewController {
     
     var reloadCellIndex = 0
     
+    var waitChallengeListResponseModel: WaitChallengeListResponseModel?
+    var progressChallengeListResponseModel: ProgressAndDoneChallengeListResponseModel?
+    var doneChallengeListResponseModel: ProgressAndDoneChallengeListResponseModel?
+    
+    private let viewModel = ChallengeVM()
     private let bag = DisposeBag()
     
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
     }
     
     override func configureView() {
         super.configureView()
         
+        configureTableView()
     }
     
     override func layoutView() {
         super.layoutView()
         
         configureLayout()
-        configureTableView()
     }
     
-    override func bindInput() {
-        super.bindInput()
+    override func bindOutput() {
+        super.bindOutput()
         
-        bindMenuBar()
+        
     }
 
     // MARK: - Functions
     
+    func bindChallengeList(index: Int) {
+        switch index {
+        case 0:
+            getWaitChallenge()
+        case 1:
+            getProgressChallenge()
+        case 2:
+            getDoneChallenge()
+        default:
+            break
+        }
+    }
+    
+    func getWaitChallenge() {
+        viewModel.getWaitChallengeList()
+        
+        viewModel.output.waitChallengeList
+            .subscribe(onNext: { [weak self] data in
+                guard let self = self else { return }
+                
+                self.waitChallengeListResponseModel = data
+                self.reloadChallengeTableView(toMoveIndex: 0)
+            })
+            .disposed(by: bag)
+    }
+    
+    func getProgressChallenge() {
+        viewModel.getProgressChallengeList()
+        
+        viewModel.output.progressChallengeList
+            .subscribe(onNext: { [weak self] data in
+                guard let self = self else { return }
+                
+                self.progressChallengeListResponseModel = data
+                self.reloadChallengeTableView(toMoveIndex: 1)
+            })
+            .disposed(by: bag)
+    }
+    
+    func getDoneChallenge() {
+        viewModel.getDoneChallengeList()
+        
+        viewModel.output.doneChallengeList
+            .subscribe(onNext: { [weak self] data in
+                guard let self = self else { return }
+                
+                self.doneChallengeListResponseModel = data
+                self.reloadChallengeTableView(toMoveIndex: 2)
+            })
+            .disposed(by: bag)
+    }
+    
+    func reloadChallengeTableView(toMoveIndex: Int) {
+        let currentCellIndex = reloadCellIndex
+        if toMoveIndex != currentCellIndex {
+            reloadCellIndex = toMoveIndex
+            challengeTableView.reloadSections(IndexSet(2...2), with: currentCellIndex < toMoveIndex ? .left : .right)
+        }
+    }
+    
     @objc
     func didTapCreateChallengeButton() {
         let selectChallengeCreateVC = SelectChallengeCreateVC()
-        // TODO: 서버연결 - 임시 주석코드 지정
-//        let selectChallengeCreateVC = CreateWeekChallengeVC()
-        
         selectChallengeCreateVC.hidesBottomBarWhenPushed = true
         
         let rootViewController = view.superview?.findViewController()
@@ -83,22 +146,9 @@ class ChallengeVC : BaseViewController {
     
 }
 
-// MARK: - Layout
+// MARK: - Configure
 
 extension ChallengeVC {
-    
-    private func configureLayout() {
-        view.addSubviews([challengeTableView, createChallengeButton])
-        
-        challengeTableView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-        createChallengeButton.snp.makeConstraints {
-            $0.width.height.equalTo(createChallengeButton.layer.cornerRadius * 2)
-
-            $0.right.bottom.equalTo(view).inset(16)
-        }
-    }
     
     private func configureTableView() {
         _ = challengeTableView
@@ -134,26 +184,25 @@ extension ChallengeVC {
     
 }
 
-
-// MARK: - bind
-
-extension ChallengeVC {
-    
-}
-
-// MARK: - Input
+// MARK: - Layout
 
 extension ChallengeVC {
     
-    private func bindMenuBar() {
+    private func configureLayout() {
+        view.addSubviews([challengeTableView,
+                          createChallengeButton])
         
+        
+        challengeTableView.snp.makeConstraints {
+            $0.edges.equalTo(view)
+        }
+        
+        createChallengeButton.snp.makeConstraints {
+            $0.width.height.equalTo(createChallengeButton.layer.cornerRadius * 2)
+
+            $0.right.bottom.equalTo(view).inset(16)
+        }
     }
-    
-}
-
-// MARK: - TableView Delegate
-
-extension ChallengeVC : UITableViewDelegate {
     
 }
 
@@ -161,6 +210,69 @@ extension ChallengeVC : UITableViewDelegate {
 
 extension ChallengeVC : UITableViewDataSource {
 
+    // Cell
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch section {
+        case 0: // 초대받은 챌린지
+            return 2
+        case 1: // 챌린지 내역 및 메뉴바
+            return 0
+        case 2: // 챌린지 목록
+            switch reloadCellIndex {
+            case 0: // 진행 대기중
+                return waitChallengeListResponseModel?.count ?? 0
+            case 1: // 진행 중
+                return progressChallengeListResponseModel?.count ?? 0
+            case 2: // 진행 완료
+                return doneChallengeListResponseModel?.count ?? 0
+            default:
+                return 0
+            }
+        default:
+            return 0
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        switch indexPath.section {
+        case 0: // 초대받은 챌린지
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: InvitedChallengeTVC.className, for: indexPath) as? InvitedChallengeTVC else { return UITableViewCell() }
+            return cell
+            
+        case 2: // 챌린지 목록
+            switch reloadCellIndex {
+            case 0: // 진행 대기중
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: ChallengeWaitingTVC.className, for: indexPath) as? ChallengeWaitingTVC else { return UITableViewCell() }
+                guard let waitChallengeList = waitChallengeListResponseModel else { return UITableViewCell() }
+                cell.configureChallengeWaitTVC(waitChallengeListElement: waitChallengeList[indexPath.row])
+                return cell
+            case 1: // 진행 중
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: ChallengeDoingTVC.className, for: indexPath) as? ChallengeDoingTVC else { return UITableViewCell() }
+                guard let progressChallengeList = progressChallengeListResponseModel else { return UITableViewCell() }
+                cell.configureChallengeDoingTVC(progressChallengeListElement: progressChallengeList[indexPath.row])
+                return cell
+            case 2: // 진행 완료
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: ChallengeFinishTVC.className, for: indexPath) as? ChallengeFinishTVC else { return UITableViewCell() }
+                guard let doneChallengeList = doneChallengeListResponseModel else { return UITableViewCell() }
+                cell.configureChallengeFinishTVC(doneChallengeListElement: doneChallengeList[indexPath.row])
+                return cell
+            default:
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: ChallengeListTVC.className, for: indexPath) as? ChallengeListTVC else { return UITableViewCell() }
+                return cell
+            }
+            
+        default:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: BaseTableViewCell.className, for: indexPath) as? BaseTableViewCell else { return UITableViewCell() }
+            return cell
+        }
+    }
+
+}
+
+// MARK: - TableView Delegate
+
+extension ChallengeVC : UITableViewDelegate {
+    
     // HeaderView
     func numberOfSections(in tableView: UITableView) -> Int {
         3
@@ -176,7 +288,7 @@ extension ChallengeVC : UITableViewDataSource {
             headerId = ChallengeListTVHV.className
             let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerId) as? ChallengeListTVHV
             
-//            headerView?.challengeListTypeMenuBar.challengeContainerCVC = self
+            headerView?.challengeListTypeMenuBar.challengeContainerCVC = self
             
             return headerView
         case 2:
@@ -192,7 +304,7 @@ extension ChallengeVC : UITableViewDataSource {
         
         return headerView
     }
-
+    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         section == 2 ? .leastNormalMagnitude : UITableView.automaticDimension
     }
@@ -202,48 +314,6 @@ extension ChallengeVC : UITableViewDataSource {
     }
 
     // Cell
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0:
-            return 2
-        case 1:
-            return 0
-        case 2:
-            return 5
-        default:
-            return 0
-        }
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cellId: String
-        
-        switch indexPath.section {
-        case 0:
-            cellId = InvitedChallengeTVC.className
-            
-        case 2:
-            switch reloadCellIndex {
-            case 0:
-                cellId = ChallengeWaitingTVC.className
-            case 1:
-                cellId = ChallengeDoingTVC.className
-            case 2:
-                cellId = ChallengeFinishTVC.className
-            default:
-                cellId = ChallengeListTVC.className
-            }
-            
-        default:
-            cellId = BaseTableViewCell.className
-        }
-        
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! BaseTableViewCell
-        
-        return cell
-    }
-
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 116
     }
@@ -252,23 +322,19 @@ extension ChallengeVC : UITableViewDataSource {
         return 116
     }
 
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("challengeTV row selected ", indexPath.row)
-    }
-
     // FooterView
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         var message = ""
         
         switch section {
-        case 0:
+        case 0: // 초대받은 챌린지
             message = "초대받은 챌린지가 없습니다."
-        case 1:
+        case 1: // 챌린지 내역 및 메뉴바
             let fakeView = UIView()
             fakeView.backgroundColor = .yellow
 
             return fakeView
-        case 2:
+        case 2: // 챌린지 목록(진행 대기중, 진행 중, 진행 완료)
             message = NoChallengeStatusMessageType(rawValue: reloadCellIndex)?.message ?? "챌린지 정보를 불러올 수 없습니다."
         default:
             message = NoChallengeStatusMessageType(rawValue: 3)?.message ?? "챌린지 정보를 불러올 수 없습니다."
@@ -288,4 +354,5 @@ extension ChallengeVC : UITableViewDataSource {
         section == 1 ? .leastNormalMagnitude : 93
     }
 
+    
 }
