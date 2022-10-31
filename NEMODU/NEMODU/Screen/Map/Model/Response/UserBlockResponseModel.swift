@@ -12,5 +12,5 @@ struct UserBlockResponseModel: Codable {
     let latitude, longitude: Double?
     let matrices: [Matrix]?
     let matricesNumber: Int?
-    let picturePath: String
+    let picturePath: String?
 }

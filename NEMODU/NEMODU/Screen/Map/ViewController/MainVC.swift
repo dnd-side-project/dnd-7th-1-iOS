@@ -299,7 +299,6 @@ extension MainVC {
             .disposed(by: bag)
     }
     
-    // TODO: - 서버 프로필 이미지 추가 후 수정
     private func bindMyBlocks() {
         viewModel.output.myBlocks
             .subscribe(onNext: { [weak self] user in
@@ -308,7 +307,8 @@ extension MainVC {
                 
                 guard let latitude = user.latitude,
                       let longitude = user.longitude,
-                      let url = URL(string: user.picturePath) else { return }
+                      let picturePath = user.picturePath,
+                      let url = URL(string: picturePath) else { return }
                 
                 KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: url)) { result in
                     switch result {
@@ -336,7 +336,8 @@ extension MainVC {
                 friends.forEach {
                     guard let latitude = $0.latitude,
                           let longitude = $0.longitude,
-                          let url = URL(string: $0.picturePath) else { return }
+                          let picturePath = $0.picturePath,
+                          let url = URL(string: picturePath) else { return }
                     
                     let nickname = $0.nickname
                     KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: url)) { result in
