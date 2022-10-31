@@ -66,7 +66,6 @@ extension CreateWeekChallengeVM {
                 
                 switch result {
                 case .failure(let error):
-                    dump(error)
                     owner.apiError.onError(error)
                     owner.output.isCreateWeekChallengeSuccess.accept(false)
                 case .success(let data):
