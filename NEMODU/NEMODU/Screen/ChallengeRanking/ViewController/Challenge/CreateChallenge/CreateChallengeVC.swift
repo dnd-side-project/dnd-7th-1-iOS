@@ -69,6 +69,7 @@ class CreateChallengeVC: BaseViewController {
         }
     }
     
+    /// override when class inheritance for request create challenge
     @objc
     func didTapConfirmButton() {
     }

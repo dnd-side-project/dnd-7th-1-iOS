@@ -151,6 +151,8 @@
 		23F5718828AA6DEE005F2E21 /* MyAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5718728AA6DEE005F2E21 /* MyAnnotationView.swift */; };
 		23F6959C28C9F6A7008D1378 /* UserInfoSettingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F6959B28C9F6A7008D1378 /* UserInfoSettingVC.swift */; };
 		37783E39C7DFB38581CA78A2 /* Pods_NEMODU.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7400965811C32403A72B2B0 /* Pods_NEMODU.framework */; };
+		3C0029F1290110AE001BB6AE /* CreateWeekChallengeVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C0029F0290110AE001BB6AE /* CreateWeekChallengeVM.swift */; };
+		3C0029F329011378001BB6AE /* CreatChallengeResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C0029F229011378001BB6AE /* CreatChallengeResponseModel.swift */; };
 		3C05FFEB28B71F4F0017F4E1 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C05FFEA28B71F4F0017F4E1 /* PaddingLabel.swift */; };
 		3C05FFED28B7324D0017F4E1 /* ChallengeTermButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C05FFEC28B7324D0017F4E1 /* ChallengeTermButtonView.swift */; };
 		3C05FFEF28B74E2B0017F4E1 /* CreateChallengeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C05FFEE28B74E2B0017F4E1 /* CreateChallengeVC.swift */; };
@@ -353,6 +355,8 @@
 		23F5718528AA6DAD005F2E21 /* MyAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAnnotation.swift; sourceTree = "<group>"; };
 		23F5718728AA6DEE005F2E21 /* MyAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAnnotationView.swift; sourceTree = "<group>"; };
 		23F6959B28C9F6A7008D1378 /* UserInfoSettingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoSettingVC.swift; sourceTree = "<group>"; };
+		3C0029F0290110AE001BB6AE /* CreateWeekChallengeVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWeekChallengeVM.swift; sourceTree = "<group>"; };
+		3C0029F229011378001BB6AE /* CreatChallengeResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatChallengeResponseModel.swift; sourceTree = "<group>"; };
 		3C05FFEA28B71F4F0017F4E1 /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		3C05FFEC28B7324D0017F4E1 /* ChallengeTermButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeTermButtonView.swift; sourceTree = "<group>"; };
 		3C05FFEE28B74E2B0017F4E1 /* CreateChallengeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateChallengeVC.swift; sourceTree = "<group>"; };
@@ -943,10 +947,10 @@
 		3C02802D28B507D5002BF37C /* CreateChallenge */ = {
 			isa = PBXGroup;
 			children = (
-				3CF431C128FE93D3007EB115 /* ChallengeVC.swift */,
 				3CACEBD228C9E9E6001F5109 /* View */,
-				3CC1EC7128D0678C007C87F6 /* CreateWeekChallenge */,
+				3CF431C128FE93D3007EB115 /* ChallengeVC.swift */,
 				3CC1EC7028D0675D007C87F6 /* SelectChallengeType */,
+				3CC1EC7128D0678C007C87F6 /* CreateWeekChallenge */,
 				3C05FFEE28B74E2B0017F4E1 /* CreateChallengeVC.swift */,
 				3C9FD39C28B68D19006FA812 /* ChallengePeriodVC.swift */,
 				3C05FFF228B7C79A0017F4E1 /* SelectFriendsVC.swift */,
@@ -989,6 +993,7 @@
 		3C2A262F28FF8BB5009E0069 /* Challenge */ = {
 			isa = PBXGroup;
 			children = (
+				3C0029F0290110AE001BB6AE /* CreateWeekChallengeVM.swift */,
 			);
 			path = Challenge;
 			sourceTree = "<group>";
@@ -1125,6 +1130,7 @@
 		3C3BD77A28B3A53400AD55B6 /* Response */ = {
 			isa = PBXGroup;
 			children = (
+				3C0029F229011378001BB6AE /* CreatChallengeResponseModel.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -1385,6 +1391,7 @@
 				2348B41E2892DF0D001095BC /* MypageVC.swift in Sources */,
 				23F5716928A6802C005F2E21 /* UIStackView+.swift in Sources */,
 				23B7206B28A12BCD00D3A410 /* MainVC.swift in Sources */,
+				3C0029F329011378001BB6AE /* CreatChallengeResponseModel.swift in Sources */,
 				2348B3F52892D131001095BC /* Service.swift in Sources */,
 				3C48920528B0C8A800B11207 /* NoChallengeStatusMessage.swift in Sources */,
 				23D8B7E528B4D5AA00F48165 /* CalendarSelectStackView.swift in Sources */,
@@ -1518,6 +1525,7 @@
 				23255A8228D0DCE9005D6D5A /* UserDataModel.swift in Sources */,
 				3C72D7C028B50993006E2229 /* ChallengeRankingNC.swift in Sources */,
 				23F5717928A94AA5005F2E21 /* UIString+.swift in Sources */,
+				3C0029F1290110AE001BB6AE /* CreateWeekChallengeVM.swift in Sources */,
 				3CB9DB9C28A92528007BC1BE /* MenuBarCVC.swift in Sources */,
 				230CB2E128AD474E00B11270 /* ChallengeBlockResponseModel.swift in Sources */,
 				237573F928FC0113006026ED /* TabView.swift in Sources */,
