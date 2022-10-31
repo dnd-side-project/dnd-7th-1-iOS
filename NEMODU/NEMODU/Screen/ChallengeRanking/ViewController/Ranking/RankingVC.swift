@@ -21,12 +21,12 @@ class RankingVC : BaseViewController {
         }
     
     private let baseScrollView = UIScrollView()
-    .then {
-        $0.isPagingEnabled = true
-        
-        $0.showsHorizontalScrollIndicator = false
-        $0.isScrollEnabled = false
-    }
+        .then {
+            $0.isPagingEnabled = true
+            
+            $0.showsHorizontalScrollIndicator = false
+            $0.isScrollEnabled = false
+        }
     private let baseStackView = UIStackView()
         .then {
             $0.spacing = 0
