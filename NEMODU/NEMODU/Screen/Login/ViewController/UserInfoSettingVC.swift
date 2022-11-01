@@ -153,11 +153,19 @@ extension UserInfoSettingVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self,
-                      self.page < 3 else { return }
+                      self.page <= 3 else { return }
                 self.page += 1
-                self.page != self.pageCnt + 1
-                ? self.setPage(self.page)
-                : self.navigationController?.pushViewController(EnterVC(), animated: true)
+                
+                if self.page != self.pageCnt + 1 {
+                    self.setPage(self.page)
+                } else {
+                    let enterVC = EnterVC()
+                    // TODO: - 친구 목록 연결
+                    enterVC.userDataModel = UserDataModel(friends: [],
+                                                          isPublicRecord: self.locationSettingVC.getSignupValue())
+                    self.navigationController?.pushViewController(enterVC, animated: true)
+                }
+                
                 if self.page == 3 { self.naviBar.rightBtn.setTitle("완료", for: .normal) }
             })
             .disposed(by: bag)

@@ -49,6 +49,8 @@ class LocationSettingVC: BaseViewController {
     
     private let bag = DisposeBag()
     
+    private var isPublicRecord = true
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -122,6 +124,14 @@ extension LocationSettingVC {
     }
 }
 
+// MARK: - Custom Methods
+
+extension LocationSettingVC {
+    func getSignupValue() -> Bool {
+        return isPublicRecord
+    }
+}
+
 // MARK: - Input
 
 extension LocationSettingVC {
@@ -130,6 +140,7 @@ extension LocationSettingVC {
             .changed
             .withUnretained(self)
             .subscribe(onNext: { owner, status in
+                owner.isPublicRecord = status
                 UIView.transition(with: owner.exampleImageView,
                                   duration: 0.3,
                                   options: .transitionCrossDissolve) {
