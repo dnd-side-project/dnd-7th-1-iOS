@@ -263,9 +263,14 @@ extension EditProfileVC {
                 guard let self = self,
                       let nickname = self.nicknameCheckView.nicknameTextField.text
                 else { return }
-                nickname.count < 2 || nickname.count > 6
-                ? self.nicknameCheckView.setValidationView(.countError)
-                : self.viewModel.getNicknameValidation(nickname: nickname)
+                
+                if nickname == UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) {
+                    self.nicknameCheckView.setValidationView(.notChanged)
+                } else {
+                    nickname.count < 2 || nickname.count > 6
+                    ? self.nicknameCheckView.setValidationView(.countError)
+                    : self.viewModel.getNicknameValidation(nickname: nickname)
+                }
             })
             .disposed(by: bag)
     }

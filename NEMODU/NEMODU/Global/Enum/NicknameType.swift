@@ -11,6 +11,7 @@ enum NicknameType {
     case countError
     case notAvailable
     case available
+    case notChanged
 }
 
 extension NicknameType {
@@ -22,12 +23,14 @@ extension NicknameType {
             return "이미 사용중인 닉네임입니다."
         case .available:
             return "닉네임으로 사용하실 수 있습니다."
+        case .notChanged:
+            return "현재 닉네임입니다."
         }
     }
     
     var image: UIImage {
         switch self {
-        case .countError, .notAvailable:
+        case .countError, .notAvailable, .notChanged:
             return UIImage(named: "warning_Red") ?? UIImage()
         case .available:
             return UIImage(named: "check_main") ?? UIImage()
@@ -36,7 +39,7 @@ extension NicknameType {
     
     var tintColor: UIColor {
         switch self {
-        case .countError, .notAvailable:
+        case .countError, .notAvailable, .notChanged:
             return .red100
         case .available:
             return .main
