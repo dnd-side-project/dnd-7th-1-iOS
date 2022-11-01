@@ -239,7 +239,8 @@ extension MainVC {
         
         // 새로고침 영역
         refreshBtnView.rx.tapGesture()
-            .asDriver()
+            .when(.ended)
+            .asDriver(onErrorJustReturn: .init())
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.mapVC.mapView.removeOverlays(self.mapVC.mapView.overlays)
