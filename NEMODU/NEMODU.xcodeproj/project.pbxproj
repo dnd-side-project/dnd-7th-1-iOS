@@ -159,6 +159,9 @@
 		3C05FFF328B7C79A0017F4E1 /* SelectFriendsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C05FFF228B7C79A0017F4E1 /* SelectFriendsVC.swift */; };
 		3C05FFF528B7E0900017F4E1 /* SelectFriendsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C05FFF428B7E0900017F4E1 /* SelectFriendsTVC.swift */; };
 		3C064BBD290F95B500522274 /* ProgressAndDoneChallengeListResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C064BBC290F95B500522274 /* ProgressAndDoneChallengeListResponseModel.swift */; };
+		3C064BBF290FAEAB00522274 /* InvitedChallengeListResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C064BBE290FAEAB00522274 /* InvitedChallengeListResponseModel.swift */; };
+		3C064BC2290FCA1400522274 /* InvitedChallengeDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C064BC1290FCA1400522274 /* InvitedChallengeDetailVC.swift */; };
+		3C064BC4290FE45600522274 /* InvitedChallengeDetailTVHV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C064BC3290FE45600522274 /* InvitedChallengeDetailTVHV.swift */; };
 		3C08137B28A91C00009F854B /* ChallengeRankingMenuBarCV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C08136A28A91C00009F854B /* ChallengeRankingMenuBarCV.swift */; };
 		3C08137D28A91C00009F854B /* NoListStatusTVFV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C08136F28A91C00009F854B /* NoListStatusTVFV.swift */; };
 		3C08137E28A91C00009F854B /* ChallengeTitleTVHV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C08137028A91C00009F854B /* ChallengeTitleTVHV.swift */; };
@@ -179,6 +182,9 @@
 		3C4FB96328AA92C800A429B8 /* InvitedChallengeTVHV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4FB96228AA92C800A429B8 /* InvitedChallengeTVHV.swift */; };
 		3C4FB96528AA937100A429B8 /* ChallengeListTVHV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4FB96428AA937100A429B8 /* ChallengeListTVHV.swift */; };
 		3C5C2D4428B12AD700EB2799 /* RankingUserTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C5C2D4328B12AD700EB2799 /* RankingUserTVC.swift */; };
+		3C6F03152910B471002829D7 /* InvitedFriendsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C6F03142910B471002829D7 /* InvitedFriendsTVC.swift */; };
+		3C6F03172910E82E002829D7 /* InvitedChallengeDetailVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C6F03162910E82E002829D7 /* InvitedChallengeDetailVM.swift */; };
+		3C6F03192910F779002829D7 /* AcceptRejectChallengeRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C6F03182910F779002829D7 /* AcceptRejectChallengeRequestModel.swift */; };
 		3C72D7BE28B508B2006E2229 /* SelectChallengeTypeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C72D7BD28B508B2006E2229 /* SelectChallengeTypeVC.swift */; };
 		3C72D7C028B50993006E2229 /* ChallengeRankingNC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C72D7BF28B50993006E2229 /* ChallengeRankingNC.swift */; };
 		3C72D7C228B50EAA006E2229 /* SelectChallengeTypeButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C72D7C128B50EAA006E2229 /* SelectChallengeTypeButtonView.swift */; };
@@ -365,6 +371,9 @@
 		3C05FFF228B7C79A0017F4E1 /* SelectFriendsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectFriendsVC.swift; sourceTree = "<group>"; };
 		3C05FFF428B7E0900017F4E1 /* SelectFriendsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectFriendsTVC.swift; sourceTree = "<group>"; };
 		3C064BBC290F95B500522274 /* ProgressAndDoneChallengeListResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressAndDoneChallengeListResponseModel.swift; sourceTree = "<group>"; };
+		3C064BBE290FAEAB00522274 /* InvitedChallengeListResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitedChallengeListResponseModel.swift; sourceTree = "<group>"; };
+		3C064BC1290FCA1400522274 /* InvitedChallengeDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitedChallengeDetailVC.swift; sourceTree = "<group>"; };
+		3C064BC3290FE45600522274 /* InvitedChallengeDetailTVHV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitedChallengeDetailTVHV.swift; sourceTree = "<group>"; };
 		3C08136A28A91C00009F854B /* ChallengeRankingMenuBarCV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChallengeRankingMenuBarCV.swift; sourceTree = "<group>"; };
 		3C08136F28A91C00009F854B /* NoListStatusTVFV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoListStatusTVFV.swift; sourceTree = "<group>"; };
 		3C08137028A91C00009F854B /* ChallengeTitleTVHV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChallengeTitleTVHV.swift; sourceTree = "<group>"; };
@@ -388,6 +397,9 @@
 		3C4FB96228AA92C800A429B8 /* InvitedChallengeTVHV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitedChallengeTVHV.swift; sourceTree = "<group>"; };
 		3C4FB96428AA937100A429B8 /* ChallengeListTVHV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeListTVHV.swift; sourceTree = "<group>"; };
 		3C5C2D4328B12AD700EB2799 /* RankingUserTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankingUserTVC.swift; sourceTree = "<group>"; };
+		3C6F03142910B471002829D7 /* InvitedFriendsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitedFriendsTVC.swift; sourceTree = "<group>"; };
+		3C6F03162910E82E002829D7 /* InvitedChallengeDetailVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitedChallengeDetailVM.swift; sourceTree = "<group>"; };
+		3C6F03182910F779002829D7 /* AcceptRejectChallengeRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptRejectChallengeRequestModel.swift; sourceTree = "<group>"; };
 		3C72D7BD28B508B2006E2229 /* SelectChallengeTypeVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectChallengeTypeVC.swift; sourceTree = "<group>"; };
 		3C72D7BF28B50993006E2229 /* ChallengeRankingNC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChallengeRankingNC.swift; sourceTree = "<group>"; };
 		3C72D7C128B50EAA006E2229 /* SelectChallengeTypeButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectChallengeTypeButtonView.swift; sourceTree = "<group>"; };
@@ -957,6 +969,14 @@
 			path = CreateChallenge;
 			sourceTree = "<group>";
 		};
+		3C064BC0290FC9F600522274 /* InvitedChallenge */ = {
+			isa = PBXGroup;
+			children = (
+				3C064BC1290FCA1400522274 /* InvitedChallengeDetailVC.swift */,
+			);
+			path = InvitedChallenge;
+			sourceTree = "<group>";
+		};
 		3C08136728A91C00009F854B /* ChallengeRanking */ = {
 			isa = PBXGroup;
 			children = (
@@ -993,6 +1013,7 @@
 			children = (
 				3C0029F0290110AE001BB6AE /* CreateWeekChallengeVM.swift */,
 				3CB766BA290E73B700EAE812 /* ChallengeVM.swift */,
+				3C6F03162910E82E002829D7 /* InvitedChallengeDetailVM.swift */,
 			);
 			path = Challenge;
 			sourceTree = "<group>";
@@ -1013,6 +1034,7 @@
 				3C08137028A91C00009F854B /* ChallengeTitleTVHV.swift */,
 				3C4FB96228AA92C800A429B8 /* InvitedChallengeTVHV.swift */,
 				3C4FB96428AA937100A429B8 /* ChallengeListTVHV.swift */,
+				3C064BC3290FE45600522274 /* InvitedChallengeDetailTVHV.swift */,
 			);
 			path = HV;
 			sourceTree = "<group>";
@@ -1025,6 +1047,7 @@
 				3C09AE3628AF6071005DD125 /* ChallengeWaitingTVC.swift */,
 				3C09AE3828AF6345005DD125 /* ChallengeDoingTVC.swift */,
 				3C09AE3A28AF6450005DD125 /* ChallengeFinishTVC.swift */,
+				3C6F03142910B471002829D7 /* InvitedFriendsTVC.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -1098,6 +1121,7 @@
 		3C3BD77728B396B100AD55B6 /* Challenge */ = {
 			isa = PBXGroup;
 			children = (
+				3C064BC0290FC9F600522274 /* InvitedChallenge */,
 				3C48920B28B101D100B11207 /* ChallengeListTypeMenuBarCV.swift */,
 				3CF431C128FE93D3007EB115 /* ChallengeVC.swift */,
 				3C08136E28A91C00009F854B /* ChallengeTV */,
@@ -1123,6 +1147,7 @@
 			isa = PBXGroup;
 			children = (
 				3C80DDAB28B8FD0A00A6EDE4 /* CreateChallengeRequestModel.swift */,
+				3C6F03182910F779002829D7 /* AcceptRejectChallengeRequestModel.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -1133,6 +1158,7 @@
 				3C0029F229011378001BB6AE /* CreatChallengeResponseModel.swift */,
 				3CB766BC290E773600EAE812 /* WaitChallengeListResponseModel.swift */,
 				3C064BBC290F95B500522274 /* ProgressAndDoneChallengeListResponseModel.swift */,
+				3C064BBE290FAEAB00522274 /* InvitedChallengeListResponseModel.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -1380,6 +1406,7 @@
 				237573D328F56A7B006026ED /* EditMemoRequestModel.swift in Sources */,
 				23B7207028A12DBB00D3A410 /* RecordView.swift in Sources */,
 				3C09AE3B28AF6450005DD125 /* ChallengeFinishTVC.swift in Sources */,
+				3C6F03192910F779002829D7 /* AcceptRejectChallengeRequestModel.swift in Sources */,
 				3CF431BC28FE7BAA007EB115 /* StepRankingListVC.swift in Sources */,
 				2348B4252892E007001095BC /* NEMODUTBC.swift in Sources */,
 				23602E0828B5581800B9DC9E /* MapFilteVM.swift in Sources */,
@@ -1438,6 +1465,7 @@
 				2348B4092892D2E5001095BC /* UIViewController+.swift in Sources */,
 				23255A7228CF457E005D6D5A /* AddFriendTVC.swift in Sources */,
 				2312519428B6943B00DF1C69 /* ToastType.swift in Sources */,
+				3C064BC2290FCA1400522274 /* InvitedChallengeDetailVC.swift in Sources */,
 				3C992F1528AE61FC00D96E21 /* ListTypeMenuBarCV.swift in Sources */,
 				3C86821828FD3FE700F37C06 /* RankingListVC.swift in Sources */,
 				23255A6E28CF3787005D6D5A /* NicknameType.swift in Sources */,
@@ -1454,8 +1482,10 @@
 				2348B4072892D286001095BC /* UIView+.swift in Sources */,
 				231A2B8F28B20B5600FF884B /* BlockCntView.swift in Sources */,
 				2348B3EE2892D0ED001095BC /* APIService.swift in Sources */,
+				3C064BBF290FAEAB00522274 /* InvitedChallengeListResponseModel.swift in Sources */,
 				3CC1EC7528D06917007C87F6 /* CreateAccumulateChallengeVC.swift in Sources */,
 				23412FDC28AE375D00B73D62 /* ChallengeElementResponseModel.swift in Sources */,
+				3C6F03152910B471002829D7 /* InvitedFriendsTVC.swift in Sources */,
 				23412FF028AFB74800B73D62 /* RecordResultNC.swift in Sources */,
 				2375740128FC3824006026ED /* NicknameSearchBar.swift in Sources */,
 				2312519628B6944B00DF1C69 /* ToastView.swift in Sources */,
@@ -1540,6 +1570,7 @@
 				2354239428BC8BCD00865E51 /* LoginVC.swift in Sources */,
 				3C9FD39B28B64363006FA812 /* CreateChallengeListButtonView.swift in Sources */,
 				3C4FB96328AA92C800A429B8 /* InvitedChallengeTVHV.swift in Sources */,
+				3C6F03172910E82E002829D7 /* InvitedChallengeDetailVM.swift in Sources */,
 				3C2A263629001E5F009E0069 /* AccumulateRankingListVM.swift in Sources */,
 				2348B3F22892D116001095BC /* urlResource.swift in Sources */,
 				3C05FFED28B7324D0017F4E1 /* ChallengeTermButtonView.swift in Sources */,
@@ -1556,6 +1587,7 @@
 				3C05FFEB28B71F4F0017F4E1 /* PaddingLabel.swift in Sources */,
 				3C72D7BE28B508B2006E2229 /* SelectChallengeTypeVC.swift in Sources */,
 				3CC1EC7328D06811007C87F6 /* CreateWidenChallengeVC.swift in Sources */,
+				3C064BC4290FE45600522274 /* InvitedChallengeDetailTVHV.swift in Sources */,
 				235CD76D28B0FA14000EBAD9 /* OnboardingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
