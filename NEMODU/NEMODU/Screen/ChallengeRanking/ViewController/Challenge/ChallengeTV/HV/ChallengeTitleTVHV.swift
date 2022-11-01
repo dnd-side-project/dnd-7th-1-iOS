@@ -26,7 +26,7 @@ class ChallengeTitleTVHV : UITableViewHeaderFooterView {
     
     let challengeTitleBorderLineView = UIView()
         .then {
-            $0.backgroundColor = .gray100
+            $0.backgroundColor = .gray50
         }
     
     // MARK: - Variables and Properties
