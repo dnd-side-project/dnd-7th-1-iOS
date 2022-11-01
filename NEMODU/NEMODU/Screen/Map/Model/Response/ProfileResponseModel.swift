@@ -8,8 +8,8 @@
 import Foundation
 
 struct ProfileResponseModel: Codable {
-    let nickname, lasted, intro: String
-    let isFriend: Bool
-    let areas, allMatrixNumber, rank: Int
+    let allMatrixNumber, areas, rank: Int
+    let intro, isFriend, lasted, nickname: String
+    let picturePath: String
     let challenges: [ChallengeElementResponseModel]
 }

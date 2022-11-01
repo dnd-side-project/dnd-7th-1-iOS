@@ -11,6 +11,7 @@ import RxGesture
 import RxSwift
 import SnapKit
 import Then
+import Kingfisher
 
 class MainVC: BaseViewController {
     private let mapVC = MapVC()
@@ -298,7 +299,6 @@ extension MainVC {
             .disposed(by: bag)
     }
     
-    // TODO: - 서버 프로필 이미지 추가 후 수정
     private func bindMyBlocks() {
         viewModel.output.myBlocks
             .subscribe(onNext: { [weak self] user in
@@ -306,9 +306,20 @@ extension MainVC {
                 self.configureBlocksCnt(user.matricesNumber ?? 0)
                 
                 guard let latitude = user.latitude,
-                      let longitude = user.longitude else { return }
-                self.mapVC.addMyAnnotation(coordinate: [latitude, longitude],
-                                           profileImage: UIImage(named: "defaultThumbnail")!)
+                      let longitude = user.longitude,
+                      let picturePath = user.picturePath,
+                      let url = URL(string: picturePath) else { return }
+                
+                KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: url)) { result in
+                    switch result {
+                    case .success(let data):
+                        self.mapVC.addMyAnnotation(coordinate: [latitude, longitude],
+                                                   profileImage: data.image)
+                    case .failure(let error):
+                        print(error)
+                    }
+                }
+                
                 self.drawBlockArea(blocks: user.matrices ?? [],
                                    owner: .mine,
                                    blockColor: .main40)
@@ -324,13 +335,25 @@ extension MainVC {
                 guard let self = self else { return }
                 friends.forEach {
                     guard let latitude = $0.latitude,
-                          let longitude = $0.longitude else { return }
-                    self.mapVC.addFriendAnnotation(coordinate: [latitude, longitude],
-                                                   profileImage: UIImage(named: "defaultThumbnail")!,
-                                                   nickname: $0.nickname,
-                                                   color: .main,
-                                                   challengeCnt: 0,
-                                                   isEnabled: true)
+                          let longitude = $0.longitude,
+                          let picturePath = $0.picturePath,
+                          let url = URL(string: picturePath) else { return }
+                    
+                    let nickname = $0.nickname
+                    KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: url)) { result in
+                        switch result {
+                        case .success(let data):
+                            self.mapVC.addFriendAnnotation(coordinate: [latitude, longitude],
+                                                           profileImage: data.image,
+                                                           nickname: nickname,
+                                                           color: .main,
+                                                           challengeCnt: 0,
+                                                           isEnabled: true)
+                        case .failure(let error):
+                            print(error)
+                        }
+                    }
+                    
                     self.drawBlockArea(blocks: $0.matrices ?? [],
                                        owner: .friends,
                                        blockColor: .gray25)
@@ -346,12 +369,23 @@ extension MainVC {
             .subscribe(onNext: { [weak self] friends in
                 guard let self = self else { return }
                 friends.forEach {
-                    self.mapVC.addFriendAnnotation(coordinate: [$0.latitude, $0.longitude],
-                                                   profileImage: UIImage(named: "defaultThumbnail")!,
-                                                   nickname: $0.nickname,
-                                                   color: ChallengeColorType(rawValue: $0.challengeColor)?.primaryColor ?? .main,
-                                                   challengeCnt: $0.challengeNumber,
-                                                   isEnabled: true)
+                    guard let url = URL(string: $0.picturePath) else { return }
+                    let friend = $0
+                    KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: url)) { result in
+                        switch result {
+                        case .success(let data):
+                            self.mapVC.addFriendAnnotation(coordinate: [friend.latitude, friend.longitude],
+                                                           profileImage: data.image,
+                                                           nickname: friend.nickname,
+                                                           color: ChallengeColorType(rawValue: friend.challengeColor)?.primaryColor ?? .main,
+                                                           challengeCnt: friend.challengeNumber,
+                                                           isEnabled: true)
+                        case .failure(let error):
+                            print(error)
+                        }
+                    }
+                    
+                    
                     self.drawBlockArea(blocks: $0.matrices,
                                        owner: .friends,
                                        blockColor: ChallengeColorType(rawValue: $0.challengeColor)?.blockColor ?? .gray25)

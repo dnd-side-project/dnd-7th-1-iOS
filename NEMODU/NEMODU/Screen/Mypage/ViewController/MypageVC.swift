@@ -11,6 +11,7 @@ import RxGesture
 import RxSwift
 import SnapKit
 import Then
+import Kingfisher
 
 class MypageVC: BaseViewController {
     private let baseScrollView = UIScrollView()
@@ -147,8 +148,9 @@ extension MypageVC {
     }
     
     private func configureUserData(_ userData: MypageUserDataResponseModel) {
-        // TODO: - 서버 프로필 이미지 추가 후 수정
-//        profileView.profileImage.image =
+        // TODO: - 에러 알람창
+        guard let profileURL = URL(string: userData.picturePath) else { return }
+        profileView.profileImage.kf.setImage(with: profileURL)
         profileView.nickname.text = userData.nickname
         profileView.profileMessage.text = userData.intro
         blockCntView.configureBlockCnt(userData.allMatrixNumber.insertComma)
