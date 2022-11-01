@@ -12,6 +12,7 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 import DynamicBottomSheet
+import Kingfisher
 
 class FriendProfileBottomSheet: DynamicBottomSheetViewController {
     private let baseView = UIView()
@@ -64,24 +65,25 @@ class FriendProfileBottomSheet: DynamicBottomSheetViewController {
     
     private let addFriendBtn = UIButton()
         .then {
-            $0.setTitle("친구 추가", for: .normal)
-            $0.setTitleColor(.white, for: .normal)
-            $0.setBackgroundColor(.main, for: .normal)
-
-            $0.setTitle("친구중", for: .selected)
-            $0.setTitleColor(.main, for: .selected)
-            $0.setBackgroundColor(.white, for: .selected)
-            
-            $0.toggleButtonImage(defaultImage: UIImage(named: "add")!.withTintColor(.white, renderingMode: .alwaysOriginal),
-                                 selectedImage: UIImage(named: "check")!.withTintColor(.main, renderingMode: .alwaysOriginal))
             $0.imageView?.layer.transform = CATransform3DMakeScale(0.7, 0.7, 0.7)
-            $0.layer.borderColor = UIColor.main.cgColor
             $0.layer.borderWidth = 1
             $0.titleLabel?.font = .body3
             $0.sizeToFit()
             $0.semanticContentAttribute = .forceRightToLeft
             $0.layer.cornerRadius = 17
             $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 8)
+            
+            $0.setTitle(FriendStatusType.noFriend.title, for: .normal)
+            $0.setTitleColor(.white, for: .normal)
+            $0.setBackgroundColor(.main, for: .normal)
+
+            $0.setTitle(FriendStatusType.requesting.title, for: .selected)
+            $0.setTitleColor(.gray700, for: .selected)
+            $0.setBackgroundColor(.white, for: .selected)
+            
+            $0.layer.borderColor = FriendStatusType.noFriend.borderColor
+            $0.toggleButtonImage(defaultImage: FriendStatusType.noFriend.image,
+                                 selectedImage: FriendStatusType.requesting.image)
         }
     
     private let recordStackView = ProfileRecordStackView()
@@ -194,14 +196,32 @@ extension FriendProfileBottomSheet {
     }
     
     private func setProfile(_ profile: ProfileResponseModel) {
+        // TODO: - Error 연결
+        guard let friendType = FriendStatusType(rawValue: profile.isFriend) else { return }
+        profileImageBtn.kf.setImage(with: URL(string: profile.picturePath),
+                                    for: .normal,
+                                    placeholder: UIImage(named: "defaultThumbnail"))
         nicknameLabel.text = profile.nickname
         lastAccessTime.text = "최근 활동 : \(profile.lasted.relativeDateTime())"
         profileMessage.text = profile.intro
-        addFriendBtn.isSelected = profile.isFriend
+        configureAddFriendBtn(friendType)
         recordStackView.setRecordData(value1: profile.areas.insertComma,
                                       value2: profile.allMatrixNumber.insertComma,
                                       value3: "\(profile.rank)")
         recordStackView.secondView.recordValue.insertComma()
+    }
+    
+    private func configureAddFriendBtn(_ friendType: FriendStatusType) {
+        addFriendBtn.isUserInteractionEnabled = friendType.isUserInteractionEnabled
+        addFriendBtn.isSelected = friendType.isSelected ?? false
+        addFriendBtn.layer.borderColor = friendType.borderColor
+        
+        if !friendType.isUserInteractionEnabled {
+            addFriendBtn.setTitle(friendType.title, for: .normal)
+            addFriendBtn.setTitleColor(friendType.textColor, for: .normal)
+            addFriendBtn.setBackgroundColor(friendType.backgroundColor, for: .normal)
+            addFriendBtn.setImage(friendType.image, for: .normal)
+        }
     }
 }
 
@@ -286,6 +306,13 @@ extension FriendProfileBottomSheet {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.addFriendBtn.isSelected.toggle()
+                if self.addFriendBtn.isSelected {
+                    // TODO: - 친구추가 요청
+                    self.addFriendBtn.layer.borderColor = UIColor.gray700.cgColor
+                } else {
+                    // TODO: - 친구추가 철회 요청
+                    self.addFriendBtn.layer.borderColor = UIColor.main.cgColor
+                }
             })
             .disposed(by: bag)
     }

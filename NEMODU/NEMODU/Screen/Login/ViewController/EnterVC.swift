@@ -121,8 +121,9 @@ extension EnterVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                // TODO: - 친구 목록 수정
-                self.viewModel.requestSignup(UserDataModel(friends: []))
+                // TODO: - 친구 목록 & 공개범위 수정
+                self.viewModel.requestSignup(UserDataModel(friends: [],
+                                                           isPublicRecord: false))
             })
             .disposed(by: bag)
     }

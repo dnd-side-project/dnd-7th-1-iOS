@@ -13,4 +13,5 @@ struct ChallengeBlockResponseModel: Codable {
     let matrices: [Matrix]
     let challengeColor: String
     let challengeNumber: Int
+    let picturePath: String
 }
