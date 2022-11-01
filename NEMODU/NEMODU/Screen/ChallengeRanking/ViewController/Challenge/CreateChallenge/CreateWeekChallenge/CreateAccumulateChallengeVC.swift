@@ -33,4 +33,9 @@ class CreateAccumulateChallengeVC: CreateWeekChallengeVC {
                 $0.titleLabel.text = "칸 많이 누적하기 챌린지"
             }
     }
+    
+    override func didTapConfirmButton() {
+        requestCreateWeekChallenge(type: "Accumulate")
+    }
+    
 }

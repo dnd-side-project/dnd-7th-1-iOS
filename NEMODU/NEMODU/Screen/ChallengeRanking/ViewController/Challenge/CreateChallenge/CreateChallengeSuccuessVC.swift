@@ -15,7 +15,7 @@ class CreateChallengeSuccuessVC: CreateChallengeVC {
     
     // MARK: - UI components
     
-    let successTitleLabel = PaddingLabel()
+    private let successTitleLabel = PaddingLabel()
         .then {
             $0.text = "주간 챌린지가 \n만들어졌습니다!"
             $0.numberOfLines = 2
@@ -27,19 +27,19 @@ class CreateChallengeSuccuessVC: CreateChallengeVC {
             $0.backgroundColor = .clear
         }
     
-    let successIconImageView = UIImageView()
+    private let successIconImageView = UIImageView()
         .then {
             $0.image = UIImage(named: "checkCircle")?.withRenderingMode(.alwaysTemplate)
             $0.tintColor = .main
         }
     
-    let informationContainerView = UIView()
+    private let informationContainerView = UIView()
         .then {
             $0.backgroundColor = .gray50
             $0.layer.cornerRadius = 16
         }
     
-    let challengeTitleLabel = PaddingLabel()
+    private let challengeTitleLabel = PaddingLabel()
         .then {
             $0.text = "가즈아!"
             $0.font = .body1
@@ -47,7 +47,7 @@ class CreateChallengeSuccuessVC: CreateChallengeVC {
             
             $0.backgroundColor = .clear
         }
-    let challengeDateLabel = PaddingLabel()
+    private let challengeDateLabel = PaddingLabel()
         .then {
             $0.text = "8월 22일 - 8월 29일" // TODO: - 추후 기본 표시값 수정
             $0.font = .body4
@@ -55,17 +55,17 @@ class CreateChallengeSuccuessVC: CreateChallengeVC {
             
             $0.backgroundColor = .clear
         }
-    let userProfileStackView = UIStackView()
+    private let userProfileStackView = UIStackView()
         .then {
             $0.axis = .horizontal
             $0.spacing = 16
             $0.alignment = .fill
         }
-    let separateView = UIView()
+    private let separateView = UIView()
         .then {
             $0.backgroundColor = .gray300
         }
-    let explainLabel = PaddingLabel()
+    private let explainLabel = PaddingLabel()
         .then {
             $0.text = "챌린지 시작일까지 수락한 친구들과 함께\n 챌린지가 진행됩니다."
             $0.numberOfLines = 2
@@ -84,18 +84,53 @@ class CreateChallengeSuccuessVC: CreateChallengeVC {
         super.viewDidLoad()
     }
     
-    // MARK: - Functions
-    
     override func configureView() {
         super.configureView()
         
+        configureNavigationBar()
+        configureConfirmButton()
+    }
+    
+    override func layoutView() {
+        super.layoutView()
+        
+        configureLayout()
+    }
+    
+    // MARK: - Functions
+    
+    override func didTapConfirmButton() {
+        dismiss(animated: true, completion: { [self] in
+            createWeekChallengeVC?.navigationController?.popToRootViewController(animated: true)
+        })
+    }
+    
+}
+
+// MARK: - Configure
+
+extension CreateChallengeSuccuessVC {
+    
+    func configureCreateChallengeResponse(creatChallengeResponseModel: CreatChallengeResponseModel) {
+        challengeTitleLabel.text = creatChallengeResponseModel.message
+        
+        let startDate = creatChallengeResponseModel.started.split(separator: "-")
+        let endDate = creatChallengeResponseModel.ended.split(separator: "-")
+        challengeDateLabel.text = "\(startDate[1])월 \(startDate[2])일 - \(endDate[1])월 \(endDate[2])일"
+        
+        configureJoinUserInfo(joinUsersInfo: creatChallengeResponseModel.users)
+    }
+    
+    private func configureNavigationBar() {
         _ = navigationBar
             .then {
                 $0.naviType = .present
                 $0.configureNaviBar(targetVC: self, title: "주간 챌린지 만들기")
                 $0.configureBackBtn(targetVC: self)
             }
-        
+    }
+    
+    private func configureConfirmButton() {
         _ = confirmButton
             .then {
                 $0.setTitle("확인", for: .normal)
@@ -103,18 +138,20 @@ class CreateChallengeSuccuessVC: CreateChallengeVC {
                 
                 $0.isSelected = true
             }
-        
-        for userProfile in 1...3 {
+    }
+    
+    private func configureJoinUserInfo(joinUsersInfo: [ChallengeUser]) {
+        for joinUserInfo in joinUsersInfo {
             let containerView = UIView()
             let profileImage = UIImageView()
                 .then {
-                    $0.image = UIImage(named: "defaultThumbnail")
+                    $0.kf.setImage(with: URL(string: joinUserInfo.picturePath))
                     $0.layer.cornerRadius = 28
                     $0.layer.masksToBounds = true
                 }
             let nicknameLabel = PaddingLabel()
                 .then {
-                    $0.text = "아무개 \(userProfile)"
+                    $0.text = joinUserInfo.nickname
                     $0.font = .caption1
                     $0.textColor = .gray900
                 }
@@ -133,13 +170,16 @@ class CreateChallengeSuccuessVC: CreateChallengeVC {
             }
             
             userProfileStackView.addArrangedSubview(containerView)
-            
         }
     }
     
-    override func layoutView() {
-        super.layoutView()
-        
+}
+
+// MARK: - Layout
+
+extension CreateChallengeSuccuessVC {
+    
+    private func configureLayout() {
         view.addSubviews([successTitleLabel, successIconImageView, informationContainerView])
         informationContainerView.addSubviews([challengeTitleLabel, challengeDateLabel, userProfileStackView, separateView, explainLabel])
         
@@ -185,13 +225,6 @@ class CreateChallengeSuccuessVC: CreateChallengeVC {
             $0.top.equalTo(separateView.snp.bottom).offset(20)
             $0.bottom.equalTo(informationContainerView.snp.bottom).inset(28)
         }
-    }
-    
-    override func didTapConfirmButton() {
-        dismiss(animated: true, completion: { [self] in
-            createWeekChallengeVC?.navigationController?.popToRootViewController(animated: true)
-        })
-        
     }
     
 }

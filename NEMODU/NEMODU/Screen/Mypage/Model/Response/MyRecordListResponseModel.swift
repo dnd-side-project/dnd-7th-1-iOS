@@ -9,8 +9,6 @@ import Foundation
 
 struct MyRecordListResponseModel: Codable {
     let activityRecords: [ActivityRecord]
-    let totalMatrixNumber, totalDistance: Int
-    let totalExerciseTime: String
 }
 
 struct ActivityRecord: Codable {
