@@ -39,7 +39,7 @@ extension ChallengeWaitingTVC {
         let dayOfWeekDate = format.date(from: waitChallengeListElement.started)
         let dayOfWeekString = dayOfWeekDate?.getDayOfWeek()
         
-        challengeTermLabel.text = "\(startDate[1]).\(startDate[2])(\(dayOfWeekString ?? "?") - \(endDate[1]). \(endDate[2])(일)"
+        challengeTermLabel.text = "\(startDate[1]).\(startDate[2])(\(dayOfWeekString ?? "?")) - \(endDate[1]). \(endDate[2])(일)"
         
         //        dDayLabel.text =  TODO: - dDay 표시
         
@@ -51,7 +51,7 @@ extension ChallengeWaitingTVC {
         currentStateLabel.text = readyCount == totalCount ? "모집완료" : "대기중"
         currentJoinUserLabel.text = "\(readyCount)/\(totalCount)"
         
-        makeUserImageViews(numberOfUsers: readyCount, usersImageURL: waitChallengeListElement.picturePaths)
+        makeUserImageViews(numberOfUsers: waitChallengeListElement.picturePaths.count, usersImageURL: waitChallengeListElement.picturePaths)
     }
     
 }

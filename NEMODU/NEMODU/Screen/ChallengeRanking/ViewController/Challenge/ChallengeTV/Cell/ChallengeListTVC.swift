@@ -101,7 +101,7 @@ class ChallengeListTVC : BaseTableViewCell {
         let userImageContainerView = UIView()
         
         let spacing = 12
-        for order in 1...numberOfUsers {
+        for order in 0..<numberOfUsers {
             // set userImageView style
             let userImageView = UIImageView()
                 .then {
@@ -111,7 +111,7 @@ class ChallengeListTVC : BaseTableViewCell {
                     $0.layer.borderColor = UIColor.white.cgColor
                     $0.translatesAutoresizingMaskIntoConstraints = false
                     
-                    $0.image = UIImage(named: usersImageURL[order])
+                    $0.kf.setImage(with: URL(string: usersImageURL[order]))
                 }
             
             // make userImageViews contraints

@@ -68,7 +68,7 @@ extension ChallengeDoingTVC {
         let dayOfWeekDate = format.date(from: progressChallengeListElement.started)
         let dayOfWeekString = dayOfWeekDate?.getDayOfWeek()
         
-        challengeTermLabel.text = "\(startDate[1]).\(startDate[2])(\(dayOfWeekString ?? "?") - \(endDate[1]). \(endDate[2])(일)"
+        challengeTermLabel.text = "\(startDate[1]).\(startDate[2])(\(dayOfWeekString ?? "?")) - \(endDate[1]). \(endDate[2])(일)"
         
         //        dDayLabel.text =  TODO: - dDay 표시
         

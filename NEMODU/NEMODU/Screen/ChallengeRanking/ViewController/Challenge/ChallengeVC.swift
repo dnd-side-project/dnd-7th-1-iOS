@@ -41,6 +41,8 @@ class ChallengeVC : BaseViewController {
     
     var reloadCellIndex = 0
     
+    var invitedChallengeListResponseModel: InvitedChallengeListResponseModel?
+    
     var waitChallengeListResponseModel: WaitChallengeListResponseModel?
     var progressChallengeListResponseModel: ProgressAndDoneChallengeListResponseModel?
     var doneChallengeListResponseModel: ProgressAndDoneChallengeListResponseModel?
@@ -52,7 +54,14 @@ class ChallengeVC : BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        viewModel.getWaitChallengeList()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
+        viewModel.getInvitedChallengeList()
     }
     
     override func configureView() {
@@ -70,69 +79,28 @@ class ChallengeVC : BaseViewController {
     override func bindOutput() {
         super.bindOutput()
         
-        
+        bindInvitedList()
+        bindChallengeList()
     }
 
     // MARK: - Functions
     
-    func bindChallengeList(index: Int) {
+    func getChallengeList(index: Int) {
         switch index {
         case 0:
-            getWaitChallenge()
+            viewModel.getWaitChallengeList()
         case 1:
-            getProgressChallenge()
+            viewModel.getProgressChallengeList()
         case 2:
-            getDoneChallenge()
+            viewModel.getDoneChallengeList()
         default:
             break
         }
     }
     
-    func getWaitChallenge() {
-        viewModel.getWaitChallengeList()
-        
-        viewModel.output.waitChallengeList
-            .subscribe(onNext: { [weak self] data in
-                guard let self = self else { return }
-                
-                self.waitChallengeListResponseModel = data
-                self.reloadChallengeTableView(toMoveIndex: 0)
-            })
-            .disposed(by: bag)
-    }
-    
-    func getProgressChallenge() {
-        viewModel.getProgressChallengeList()
-        
-        viewModel.output.progressChallengeList
-            .subscribe(onNext: { [weak self] data in
-                guard let self = self else { return }
-                
-                self.progressChallengeListResponseModel = data
-                self.reloadChallengeTableView(toMoveIndex: 1)
-            })
-            .disposed(by: bag)
-    }
-    
-    func getDoneChallenge() {
-        viewModel.getDoneChallengeList()
-        
-        viewModel.output.doneChallengeList
-            .subscribe(onNext: { [weak self] data in
-                guard let self = self else { return }
-                
-                self.doneChallengeListResponseModel = data
-                self.reloadChallengeTableView(toMoveIndex: 2)
-            })
-            .disposed(by: bag)
-    }
-    
     func reloadChallengeTableView(toMoveIndex: Int) {
-        let currentCellIndex = reloadCellIndex
-        if toMoveIndex != currentCellIndex {
-            reloadCellIndex = toMoveIndex
-            challengeTableView.reloadSections(IndexSet(2...2), with: currentCellIndex < toMoveIndex ? .left : .right)
-        }
+        reloadCellIndex = toMoveIndex
+        challengeTableView.reloadSections(IndexSet(2...2), with: .fade)
     }
     
     @objc
@@ -214,7 +182,7 @@ extension ChallengeVC : UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0: // 초대받은 챌린지
-            return 2
+            return invitedChallengeListResponseModel?.count ?? 0
         case 1: // 챌린지 내역 및 메뉴바
             return 0
         case 2: // 챌린지 목록
@@ -237,6 +205,9 @@ extension ChallengeVC : UITableViewDataSource {
         switch indexPath.section {
         case 0: // 초대받은 챌린지
             guard let cell = tableView.dequeueReusableCell(withIdentifier: InvitedChallengeTVC.className, for: indexPath) as? InvitedChallengeTVC else { return UITableViewCell() }
+            cell.challengeVC = self
+            guard let invitedChallengeList = invitedChallengeListResponseModel else { return UITableViewCell() }
+            cell.configureInvitedChallengeTVC(invitedChallengeListElement: invitedChallengeList[indexPath.row])
             return cell
             
         case 2: // 챌린지 목록
@@ -347,12 +318,91 @@ extension ChallengeVC : UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        section == 1 ? .leastNormalMagnitude : 93
+        switch section {
+        case 0: // 초대받은 챌린지
+            return invitedChallengeListResponseModel?.count ?? 0 == 0 ? 93 : .leastNormalMagnitude
+        case 1: // 챌린지 내역 및 메뉴바
+            return .leastNormalMagnitude
+        case 2: // 챌린지 목록
+            switch reloadCellIndex {
+            case 0: // 진행 대기중
+                return waitChallengeListResponseModel?.count ?? 0 == 0 ? 93 : .leastNormalMagnitude
+            case 1: // 진행 중
+                return progressChallengeListResponseModel?.count ?? 0 == 0 ? 93 : .leastNormalMagnitude
+            case 2: // 진행 완료
+                return doneChallengeListResponseModel?.count ?? 0 == 0 ? 93 : .leastNormalMagnitude
+            default:
+                return 93
+            }
+        default:
+            return 93
+        }
     }
 
     func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
-        section == 1 ? .leastNormalMagnitude : 93
+        switch section {
+        case 0: // 초대받은 챌린지
+            return invitedChallengeListResponseModel?.count ?? 0 == 0 ? 93 : .leastNormalMagnitude
+        case 1: // 챌린지 내역 및 메뉴바
+            return .leastNormalMagnitude
+        case 2: // 챌린지 목록
+            switch reloadCellIndex {
+            case 0: // 진행 대기중
+                return waitChallengeListResponseModel?.count ?? 0 == 0 ? 93 : .leastNormalMagnitude
+            case 1: // 진행 중
+                return progressChallengeListResponseModel?.count ?? 0 == 0 ? 93 : .leastNormalMagnitude
+            case 2: // 진행 완료
+                return doneChallengeListResponseModel?.count ?? 0 == 0 ? 93 : .leastNormalMagnitude
+            default:
+                return 93
+            }
+        default:
+            return 93
+        }
     }
-
     
+}
+
+// MARK: - Output
+
+extension ChallengeVC {
+    private func bindInvitedList() {
+        viewModel.output.invitedChallengeList
+            .subscribe(onNext: { [weak self] data in
+                guard let self = self else { return }
+                
+                self.invitedChallengeListResponseModel = data
+                self.challengeTableView.reloadSections(IndexSet(0...0), with: .none)
+            })
+            .disposed(by: bag)
+    }
+    
+    private func bindChallengeList() {
+        viewModel.output.waitChallengeList
+            .subscribe(onNext: { [weak self] data in
+                guard let self = self else { return }
+                
+                self.waitChallengeListResponseModel = data
+                self.reloadChallengeTableView(toMoveIndex: 0)
+            })
+            .disposed(by: bag)
+        
+        viewModel.output.progressChallengeList
+            .subscribe(onNext: { [weak self] data in
+                guard let self = self else { return }
+                
+                self.progressChallengeListResponseModel = data
+                self.reloadChallengeTableView(toMoveIndex: 1)
+            })
+            .disposed(by: bag)
+        
+        viewModel.output.doneChallengeList
+            .subscribe(onNext: { [weak self] data in
+                guard let self = self else { return }
+                
+                self.doneChallengeListResponseModel = data
+                self.reloadChallengeTableView(toMoveIndex: 2)
+            })
+            .disposed(by: bag)
+    }
 }
