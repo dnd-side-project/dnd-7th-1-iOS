@@ -66,9 +66,15 @@ class EditProfileVC: BaseViewController {
     private var imagePicker = UIImagePickerController()
     private let viewModel = UserInfoSettingVM()
     private let bag = DisposeBag()
+    private var isBasic = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.getMyProfile()
     }
     
     override func configureView() {
@@ -91,6 +97,7 @@ class EditProfileVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        bindProfileData()
         bindValidationView()
         bindBaseScrollView()
     }
@@ -121,6 +128,12 @@ extension EditProfileVC {
         profileImageBtn.addSubview(cameraIconImageView)
         
         imagePicker.delegate = self
+    }
+    
+    private func configureProfileData(_ data: MyProfileResponseModel) {
+        profileImageBtn.kf.setImage(with: URL(string: data.picturePath),
+                                    for: .normal)
+        profileMessageTextView.tv.text = data.intro
     }
 }
 
@@ -243,6 +256,7 @@ extension EditProfileVC {
                 let setDefaultImage =  UIAlertAction(title: "기본 이미지로 변경",
                                                      style: .default) { (action) in
                     self.setDefaultProfile()
+                    self.isBasic = true
                 }
                 
                 let cancel = UIAlertAction(title: "취소",
@@ -295,6 +309,15 @@ extension EditProfileVC {
 // MARK: - Output
 
 extension EditProfileVC {
+    private func bindProfileData() {
+        viewModel.output.myProfile
+            .subscribe(onNext: { [weak self] data in
+                guard let self = self else { return }
+                self.configureProfileData(data)
+            })
+            .disposed(by: bag)
+    }
+    
     /// 사용 가능한 닉네임인지 판단 후 상태에 따라 view를 구성하는 메서드
     private func bindValidationView() {
         viewModel.output.isValidNickname
