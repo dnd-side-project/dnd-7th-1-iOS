@@ -49,11 +49,6 @@ class RankingVC : BaseViewController {
         super.viewDidLoad()
     }
     
-    override func configureView() {
-        super.configureView()
-        
-    }
-    
     override func layoutView() {
         super.layoutView()
         
@@ -80,6 +75,9 @@ extension RankingVC {
         baseScrollView.addSubview(baseStackView)
         [areaRankingListVC.view, stepRankingListVC.view, accumulateRankingListVC.view].forEach {
             baseStackView.addArrangedSubview($0)
+        }
+        [areaRankingListVC, stepRankingListVC, accumulateRankingListVC].forEach {
+            addChild($0)
         }
         
         
@@ -110,44 +108,6 @@ extension RankingVC {
     
 }
 
-
-// MARK: - bind
-
-extension RankingVC {
-    
-    // TODO: - 서버 재연결
-//    func bindAreaRankingTableView() {
-//        viewModel.output.areaRankings
-//            .subscribe(onNext: { [weak self] data in
-//                guard let self = self else { return }
-//                self.areaRankings = data
-//                self.rankingTableView.reloadData()
-//            })
-//            .disposed(by: bag)
-//    }
-//
-//    func bindStepRankingTableView() {
-//        viewModel.output.stepRankings
-//            .subscribe(onNext: { [weak self] data in
-//                guard let self = self else { return }
-//                self.stepRankings = data
-//                self.rankingTableView.reloadSections(IndexSet(1...1), with: .fade)
-//            })
-//            .disposed(by: bag)
-//    }
-//
-//    func bindAccumulateRankingTableView() {
-//        viewModel.output.accumulateRankings
-//            .subscribe(onNext: { [weak self] data in
-//                guard let self = self else { return }
-//                self.accumulateRankings = data
-//                self.rankingTableView.reloadSections(IndexSet(1...1), with: .fade)
-//            })
-//            .disposed(by: bag)
-//    }
-    
-}
-
 // MARK: - Input
 
 extension RankingVC {
@@ -160,45 +120,6 @@ extension RankingVC {
                 
                 let offset = CGFloat(indexPath.row) * self.view.frame.width
                 self.baseScrollView.setContentOffset(CGPoint(x: offset, y: 0), animated: true)
-                
-                
-                // TODO: - 서버 재연결
-                let targetItemIndex = indexPath.item
-        //        let currentItemIndex = rankingContainerCVC?.reloadRankingTypeIndex ?? 0
-        //
-        //        rankingContainerCVC?.reloadRankingTypeIndex = targetItemIndex
-        //        if targetItemIndex != currentItemIndex {
-        //
-        //            guard let userNickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { return }
-                    print(targetItemIndex)
-        //            switch targetItemIndex {
-        //            case 0:
-        //                if rankingContainerCVC?.areaRankings == nil {
-        //                    rankingContainerCVC?.viewModel.getAreaRankingList(with: RankingListRequestModel(end: "2022-08-18T23:59:59",
-        //                                                                                   nickname: userNickname,
-        //                                                                                   start: "2022-08-15T00:00:00"))
-        //                    rankingContainerCVC?.bindAreaRankingTableView()
-        //                }
-        //            case 1:
-        //                if rankingContainerCVC?.stepRankings == nil {
-        //                    rankingContainerCVC?.viewModel.getStepRankingList(with: RankingListRequestModel(end: "2022-08-18T23:59:59",
-        //                                                                                   nickname: userNickname,
-        //                                                                                   start: "2022-08-15T00:00:00"))
-        //                    rankingContainerCVC?.bindStepRankingTableView()
-        //                }
-        //            case 2:
-        //                if rankingContainerCVC?.accumulateRankings == nil {
-        //                    rankingContainerCVC?.viewModel.getAccumulateRankingList(with: userNickname)
-        //                    rankingContainerCVC?.bindAccumulateRankingTableView()
-        //                }
-        //            default:
-        //                break
-        //            }
-                    
-        //            rankingContainerCVC?.rankingTableView.reloadSections(IndexSet(1...1), with: .fade)
-        //            rankingContainerCVC?.rankingTableView.reloadSections(IndexSet(0...0), with: .left)
-        //            rankingContainerCVC?.rankingTableView.scrollToRow(at: IndexPath(row: NSNotFound, section: 0), at: .top, animated: true)
-        //        }
             })
             .disposed(by: bag)
     }

@@ -14,6 +14,7 @@ enum AlertType {
     case minimumBlocks
     case speedWarning
     case realTimeChallenge
+    case createWeekChallenge
 }
 
 extension AlertType {
@@ -31,6 +32,8 @@ extension AlertType {
             return "혹시 자동차나 자전거를\n타고 계신가요?"
         case .realTimeChallenge:
             return "준비중"
+        case .createWeekChallenge:
+            return "주간 챌린지 생성 실패"
         }
     }
     
@@ -48,6 +51,8 @@ extension AlertType {
             return "속도가 너무 빠른 경우\n기록이 일시정지됩니다.\n\n네모두는 산책, 달리기 기록만\n측정가능합니다.\n🏃우리 함께 걸어보아요!🏃‍♀️ "
         case .realTimeChallenge:
             return "조금만 기다려주세요🏃‍♀️"
+        case .createWeekChallenge:
+            return "생성에 오류가 발생하였습니다"
         }
     }
     
@@ -57,7 +62,7 @@ extension AlertType {
             return "시스템 설정 가기"
         case .recordNetworkError:
             return "다시 저장하기"
-        case .defaultNetworkError, .realTimeChallenge:
+        case .defaultNetworkError, .realTimeChallenge, .createWeekChallenge:
             return "확인"
         case .minimumBlocks, .speedWarning:
             return "계속 하기"
@@ -70,7 +75,7 @@ extension AlertType {
             return "다음에"
         case .recordNetworkError:
             return "그냥 나가기"
-        case .defaultNetworkError, .realTimeChallenge:
+        case .defaultNetworkError, .realTimeChallenge, .createWeekChallenge:
             return nil
         case .minimumBlocks, .speedWarning:
             return "기록 끝내기"

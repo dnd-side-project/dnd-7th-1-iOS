@@ -45,7 +45,6 @@ class ChallengePeriodVC: CreateChallengeVC {
     lazy var endChallengeButtonView = ChallengeTermButtonView()
         .then {
             $0.titleLabel.text = "챌린지 종료일"
-            $0.actionButton.addTarget(self, action: #selector(didTapStartChallengeButton), for: .touchUpInside)
         }
     
     let guideLabel = PaddingLabel()
@@ -67,6 +66,7 @@ class ChallengePeriodVC: CreateChallengeVC {
     var datePickerContainerHeightConstraint: Constraint?
     
     var started, ended: String?
+    var startedDate: Date?
     
     // MARK: - Life Cycle
     
@@ -162,6 +162,7 @@ class ChallengePeriodVC: CreateChallengeVC {
         dateFormatter.dateStyle = .medium
         dateFormatter.dateFormat = "yyyy년 MM월 dd일"
         
+        startedDate = datePicker.date
         let selectedDate = datePicker.date
         started = dateFormatter.string(from: selectedDate)
         startChallengeButtonView.settingLabel.text = started
@@ -182,6 +183,7 @@ class ChallengePeriodVC: CreateChallengeVC {
         // 선택된 날짜 챌린지 생성 VC로 전달하기
         createWeekChallengeVC?.started = started
         createWeekChallengeVC?.ended = ended
+        createWeekChallengeVC?.startedDate = startedDate
         
         dismiss(animated: true)
     }

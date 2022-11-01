@@ -6,9 +6,23 @@
 //
 
 import Foundation
+import Alamofire
 
 struct CreateChallengeRequestModel: Codable {
     var friends: [String]
     var message, name, nickname, started: String
-    var type: String
+    let type: String
+}
+
+extension CreateChallengeRequestModel {
+    var createChallenge: Parameters {
+        return [
+          "friends": friends,
+          "message": message,
+          "name": name,
+          "nickname": nickname,
+          "started": started,
+          "type": type
+        ]
+    }
 }

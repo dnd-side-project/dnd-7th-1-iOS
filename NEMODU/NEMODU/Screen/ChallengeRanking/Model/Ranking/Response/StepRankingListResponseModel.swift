@@ -15,7 +15,6 @@ struct StepRankingListResponseModel: Codable {
 // MARK: - StepRanking
 
 struct StepRanking: Codable {
-    let nickname: String
+    let nickname, picturePath: String
     let rank, score: Int
 }
-
