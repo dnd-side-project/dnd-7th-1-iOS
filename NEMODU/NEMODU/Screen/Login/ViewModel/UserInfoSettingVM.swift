@@ -95,13 +95,13 @@ extension UserInfoSettingVM {
             .disposed(by: bag)
     }
     
-    func postEditProfile(profile: EditProfileRequestModel) {
+    func postEditProfile(_ profile: EditProfileRequestModel) {
         let path = "user/info/profile/edit"
         let resource = urlResource<NicknameModel>(path: path)
 
         apiSession.postRequestWithImage(with: resource,
                                         param: profile.profileParam,
-                                        image: profile.profileImage)
+                                        image: profile.picture)
         .withUnretained(self)
         .subscribe(onNext: { owner, result in
             switch result {

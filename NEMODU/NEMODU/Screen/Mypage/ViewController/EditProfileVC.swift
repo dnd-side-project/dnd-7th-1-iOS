@@ -297,10 +297,11 @@ extension EditProfileVC {
                 let newNickname = self.nicknameCheckView.nicknameTextField.text,
                 let profileImage = self.profileImageBtn.currentImage
                 else { return }
-                let model = EditProfileRequestModel(profileImage: profileImage,
-                                                    editNick: newNickname,
-                                                    intro: self.profileMessageTextView.tv.text)
-                self.viewModel.postEditProfile(profile: model)
+                self.viewModel.postEditProfile(
+                    EditProfileRequestModel(picture: profileImage,
+                                            editNickname: newNickname,
+                                            intro: self.profileMessageTextView.tv.text,
+                                            isBasic: false))
             })
             .disposed(by: bag)
     }

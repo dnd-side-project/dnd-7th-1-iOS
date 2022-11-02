@@ -9,17 +9,20 @@ import UIKit
 import Alamofire
 
 struct EditProfileRequestModel {
-    let profileImage: UIImage
-    let editNick, intro: String
+    let picture: UIImage
+    let editNickname: String
+    let intro: String
+    let isBasic: Bool
 }
 
 extension EditProfileRequestModel{
     var profileParam: Parameters {
         guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
         return [
-            "originalNick": nickname,
-            "editNick": editNick,
-            "intro": intro
+            "originNickname": nickname,
+            "editNickname": editNickname,
+            "intro": intro,
+            "isBasic": isBasic
         ]
     }
 }
