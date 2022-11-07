@@ -46,6 +46,8 @@ class EnterVC: BaseViewController {
     private let viewModel = EnterVM()
     private let bag = DisposeBag()
     
+    var userDataModel: UserDataModel?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -120,10 +122,9 @@ extension EnterVC {
         enterBtn.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in
-                guard let self = self else { return }
-                // TODO: - 친구 목록 & 공개범위 수정
-                self.viewModel.requestSignup(UserDataModel(friends: [],
-                                                           isPublicRecord: false))
+                guard let self = self,
+                      let userDataModel = self.userDataModel else { return }
+                self.viewModel.requestSignup(userDataModel)
             })
             .disposed(by: bag)
     }

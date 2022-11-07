@@ -108,6 +108,7 @@
 		2375740728FC4DF4006026ED /* RecommendListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2375740628FC4DF4006026ED /* RecommendListVC.swift */; };
 		2375740928FC50AE006026ED /* RecommendFriendTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2375740828FC50AE006026ED /* RecommendFriendTVC.swift */; };
 		2375740B28FC5808006026ED /* ViewMoreTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2375740A28FC5808006026ED /* ViewMoreTVC.swift */; };
+		2378A4972904106900FB7031 /* LocationSettingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2378A4962904106900FB7031 /* LocationSettingVC.swift */; };
 		238C4DDF28A3AC18000BEE36 /* RecordResultVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DDE28A3AC18000BEE36 /* RecordResultVC.swift */; };
 		238C4DE328A3F0D6000BEE36 /* NemoduTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */; };
 		238C4DE528A4BFE2000BEE36 /* UIScrollView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DE428A4BFE2000BEE36 /* UIScrollView+.swift */; };
@@ -139,6 +140,7 @@
 		23D8B7E528B4D5AA00F48165 /* CalendarSelectStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7E428B4D5AA00F48165 /* CalendarSelectStackView.swift */; };
 		23D8B7E728B4E44700F48165 /* MyRecordDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7E628B4E44700F48165 /* MyRecordDetailVC.swift */; };
 		23ECC09F28D859E000F65692 /* AuthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23ECC09E28D859E000F65692 /* AuthAPI.swift */; };
+		23EFB81C29113A00009A2D01 /* RefreshBtnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EFB81B29113A00009A2D01 /* RefreshBtnView.swift */; };
 		23F5716928A6802C005F2E21 /* UIStackView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5716828A6802C005F2E21 /* UIStackView+.swift */; };
 		23F5716D28A6A61E005F2E21 /* MiniMapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5716C28A6A61D005F2E21 /* MiniMapVC.swift */; };
 		23F5716F28A6AD01005F2E21 /* RecordStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5716E28A6AD01005F2E21 /* RecordStackView.swift */; };
@@ -315,6 +317,7 @@
 		2375740628FC4DF4006026ED /* RecommendListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendListVC.swift; sourceTree = "<group>"; };
 		2375740828FC50AE006026ED /* RecommendFriendTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendFriendTVC.swift; sourceTree = "<group>"; };
 		2375740A28FC5808006026ED /* ViewMoreTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreTVC.swift; sourceTree = "<group>"; };
+		2378A4962904106900FB7031 /* LocationSettingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSettingVC.swift; sourceTree = "<group>"; };
 		238C4DDE28A3AC18000BEE36 /* RecordResultVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordResultVC.swift; sourceTree = "<group>"; };
 		238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NemoduTextView.swift; sourceTree = "<group>"; };
 		238C4DE428A4BFE2000BEE36 /* UIScrollView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+.swift"; sourceTree = "<group>"; };
@@ -346,6 +349,7 @@
 		23D8B7E428B4D5AA00F48165 /* CalendarSelectStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSelectStackView.swift; sourceTree = "<group>"; };
 		23D8B7E628B4E44700F48165 /* MyRecordDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordDetailVC.swift; sourceTree = "<group>"; };
 		23ECC09E28D859E000F65692 /* AuthAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthAPI.swift; sourceTree = "<group>"; };
+		23EFB81B29113A00009A2D01 /* RefreshBtnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshBtnView.swift; sourceTree = "<group>"; };
 		23F5716828A6802C005F2E21 /* UIStackView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+.swift"; sourceTree = "<group>"; };
 		23F5716C28A6A61D005F2E21 /* MiniMapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniMapVC.swift; sourceTree = "<group>"; };
 		23F5716E28A6AD01005F2E21 /* RecordStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordStackView.swift; sourceTree = "<group>"; };
@@ -511,6 +515,7 @@
 				23F6959B28C9F6A7008D1378 /* UserInfoSettingVC.swift */,
 				23255A6928CF12DB005D6D5A /* NicknameVC.swift */,
 				23255A6B28CF1307005D6D5A /* AddFriendsVC.swift */,
+				2378A4962904106900FB7031 /* LocationSettingVC.swift */,
 				23255A7328CF5325005D6D5A /* EnterVC.swift */,
 			);
 			path = ViewController;
@@ -946,6 +951,7 @@
 				23F5717D28AA1A11005F2E21 /* FriendAnnotationView.swift */,
 				23F5718528AA6DAD005F2E21 /* MyAnnotation.swift */,
 				23F5718728AA6DEE005F2E21 /* MyAnnotationView.swift */,
+				23EFB81B29113A00009A2D01 /* RefreshBtnView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1371,12 +1377,14 @@
 				23412FDE28AE396D00B73D62 /* ChallengeListVM.swift in Sources */,
 				232B89FF28C8BCAA00737F18 /* LoginVM.swift in Sources */,
 				237573E928F92A1B006026ED /* NicknameCheckView.swift in Sources */,
+				3C3BD77428B3754A00AD55B6 /* AreaRankingListRequestModel.swift in Sources */,
 				3C3BD77428B3754A00AD55B6 /* RankingListRequestModel.swift in Sources */,
 				2375740328FC43C0006026ED /* FriendRequestTVC.swift in Sources */,
 				23B7207028A12DBB00D3A410 /* RecordView.swift in Sources */,
 				231A2B8D28B20B3E00FF884B /* ProfileView.swift in Sources */,
 				23F5718228AA6038005F2E21 /* UIImage+.swift in Sources */,
 				237573D328F56A7B006026ED /* EditMemoRequestModel.swift in Sources */,
+				2378A4972904106900FB7031 /* LocationSettingVC.swift in Sources */,
 				23B7207028A12DBB00D3A410 /* RecordView.swift in Sources */,
 				3C09AE3B28AF6450005DD125 /* ChallengeFinishTVC.swift in Sources */,
 				3CF431BC28FE7BAA007EB115 /* StepRankingListVC.swift in Sources */,
@@ -1477,6 +1485,7 @@
 				3C08138328A91C00009F854B /* ChallengeRankingVC.swift in Sources */,
 				2339D75028B284C20018013D /* MypageNC.swift in Sources */,
 				23255A6C28CF1307005D6D5A /* AddFriendsVC.swift in Sources */,
+				23EFB81C29113A00009A2D01 /* RefreshBtnView.swift in Sources */,
 				2348B3FB2892D15C001095BC /* Output.swift in Sources */,
 				2339D74E28B2849F0018013D /* MyRecordDataVC.swift in Sources */,
 				2375740928FC50AE006026ED /* RecommendFriendTVC.swift in Sources */,
