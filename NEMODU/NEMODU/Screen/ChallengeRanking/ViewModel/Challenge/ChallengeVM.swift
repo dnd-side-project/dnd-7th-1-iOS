@@ -9,9 +9,7 @@ import Foundation
 import RxCocoa
 import RxSwift
 
-protocol ChallengeViewModelOuput: Lodable {
-//    var areaRankings: PublishRelay<AreaRankingListResponseModel> { get }
-}
+protocol ChallengeViewModelOuput: Lodable { }
 
 final class ChallengeVM: BaseViewModel {
     var apiSession: APIService = APISession()
@@ -30,6 +28,9 @@ final class ChallengeVM: BaseViewModel {
     
     struct Output: ChallengeViewModelOuput {
         var loading = BehaviorRelay<Bool>(value: false)
+        
+        var invitedChallengeList = PublishRelay<InvitedChallengeListResponseModel>()
+        
         var waitChallengeList = PublishRelay<WaitChallengeListResponseModel>()
         var progressChallengeList = PublishRelay<ProgressAndDoneChallengeListResponseModel>()
         var doneChallengeList = PublishRelay<ProgressAndDoneChallengeListResponseModel>()
@@ -62,9 +63,28 @@ extension ChallengeVM: Output {
 // MARK: - Networking
 
 extension ChallengeVM {
+    func getInvitedChallengeList() {
+        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { return }
+        let path = "challenge/invite?nickname=\(nickname)"
+        let resource = urlResource<InvitedChallengeListResponseModel>(path: path)
+        
+        apiSession.getRequest(with: resource)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, result in
+                
+                switch result {
+                case .failure(let error):
+                    owner.apiError.onNext(error)
+                case .success(let data):
+                    owner.output.invitedChallengeList.accept(data)
+                }
+            })
+            .disposed(by: bag)
+    }
+    
     func getWaitChallengeList() {
         guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { return }
-        let path = "challenge​/wait?nickname=\(nickname)"
+        let path = "challenge/wait?nickname=\(nickname)"
         let resource = urlResource<WaitChallengeListResponseModel>(path: path)
         
         apiSession.getRequest(with: resource)

@@ -33,9 +33,7 @@ class ChallengeListTypeMenuBarCV : ListTypeMenuBarCV {
 extension ChallengeListTypeMenuBarCV {
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("ChallengeType selected : ", indexPath.item)
-        
-        challengeContainerCVC?.bindChallengeList(index: indexPath.item)
+        challengeContainerCVC?.getChallengeList(index: indexPath.item)
     }
     
 }
