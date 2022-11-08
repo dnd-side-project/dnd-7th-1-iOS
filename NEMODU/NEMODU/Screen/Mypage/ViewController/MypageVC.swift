@@ -149,7 +149,7 @@ extension MypageVC {
     
     private func configureUserData(_ userData: MypageUserDataResponseModel) {
         profileView.profileImage.kf.setImage(with: userData.profileImageURL,
-                                             placeholder: UIImage(named: "defaultThumbnail")!)
+                                             placeholder: UIImage.defaultThumbnail)
         profileView.nickname.text = userData.nickname
         profileView.profileMessage.text = userData.intro
         blockCntView.configureBlockCnt(userData.allMatrixNumber.insertComma)

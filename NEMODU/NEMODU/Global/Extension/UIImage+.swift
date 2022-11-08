@@ -8,6 +8,11 @@
 import UIKit
 
 extension UIImage {
+    /// NEMODU의 기본 썸네일 이미지를 반환하는 변수
+    @nonobjc class var defaultThumbnail: UIImage {
+        return UIImage(named: "defaultThumbnail")!
+    }
+    
     /// UIImage에 테두리를 그리는 함수
     func drawOutlie(imageKeof: CGFloat = 1.02, color: UIColor) -> UIImage? {
 

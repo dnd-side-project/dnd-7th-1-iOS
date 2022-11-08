@@ -12,7 +12,7 @@ import Then
 class ProfileView: BaseView {
     let profileImage = UIImageView(frame: CGRect(origin: .zero, size: CGSize(width: 56, height: 56)))
         .then {
-            $0.image = UIImage(named: "defaultThumbnail")
+            $0.image = .defaultThumbnail
             $0.layer.cornerRadius = 56 / 2
             $0.clipsToBounds = true
         }

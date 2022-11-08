@@ -19,7 +19,7 @@ class MyProfileVC: BaseViewController {
     
     private let profileImageBtn = UIButton()
         .then {
-            $0.setImage(UIImage(named: "defaultThumbnail"), for: .normal)
+            $0.setImage(.defaultThumbnail, for: .normal)
             $0.layer.cornerRadius = 48
             $0.clipsToBounds = true
         }
@@ -136,7 +136,7 @@ extension MyProfileVC {
     private func configureProfileData(_ data: MyProfileResponseModel) {
         profileImageBtn.kf.setImage(with: data.profileImageURL,
                                     for: .normal,
-                                    placeholder: UIImage(named: "defaultThumbnail"))
+                                    placeholder: .defaultThumbnail)
         nicknameLabel.text = data.nickname
         profileMessageLabel.text = data.intro
         accountLabel.text = data.mail

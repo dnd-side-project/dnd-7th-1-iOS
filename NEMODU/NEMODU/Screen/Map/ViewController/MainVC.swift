@@ -286,7 +286,7 @@ extension MainVC {
                       let profileImageURL = user.profileImageURL else { return }
                 
                 KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: profileImageURL)) { result in
-                    var profileImage = UIImage(named: "defaultThumbnail")!
+                    var profileImage = UIImage.defaultThumbnail
                     
                     switch result {
                     case .success(let data):
@@ -322,7 +322,7 @@ extension MainVC {
                     let nickname = $0.nickname
                     
                     KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: profileImageURL)) { result in
-                        var profileImage = UIImage(named: "defaultThumbnail")!
+                        var profileImage = UIImage.defaultThumbnail
                         
                         switch result {
                         case .success(let data):
@@ -360,7 +360,7 @@ extension MainVC {
                     let friend = $0
                     
                     KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: profileImageURL)) { result in
-                        var profileImage = UIImage(named: "defaultThumbnail")!
+                        var profileImage = UIImage.defaultThumbnail
                         switch result {
                         case .success(let data):
                             profileImage = data.image

@@ -25,7 +25,7 @@ class EditProfileVC: BaseViewController {
     
     private let profileImageBtn = UIButton()
         .then {
-            $0.setImage(UIImage(named: "defaultThumbnail"), for: .normal)
+            $0.setImage(.defaultThumbnail, for: .normal)
             $0.imageView?.layer.cornerRadius = 48
             $0.imageView?.contentMode = .scaleAspectFill
         }
@@ -133,7 +133,7 @@ extension EditProfileVC {
     private func configureProfileData(_ data: MyProfileResponseModel) {
         profileImageBtn.kf.setImage(with: data.profileImageURL,
                                     for: .normal,
-                                    placeholder: UIImage(named: "defaultThumbnail"))
+                                    placeholder: .defaultThumbnail)
         profileMessageTextView.tv.text = data.intro
     }
 }
@@ -199,7 +199,8 @@ extension EditProfileVC {
 
 extension EditProfileVC {
     private func setDefaultProfile() {
-        profileImageBtn.setImage(UIImage(named: "defaultThumbnail"), for: .normal)
+        profileImageBtn.setImage(.defaultThumbnail,
+                                 for: .normal)
     }
     
     private func openGallery() {
