@@ -98,10 +98,10 @@ extension ProceedingChallengeTVC {
         } else {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "M월 dd일"
-            let started = dateFormatter.string(from: element.started.toDate())
+            let started = dateFormatter.string(from: element.started.toDate(.hyphen))
             
             dateFormatter.dateFormat = "dd일"
-            let ended = dateFormatter.string(from: element.ended.toDate())
+            let ended = dateFormatter.string(from: element.ended.toDate(.hyphen))
             
             challengeSubtitle.text = "\(started) ~ \(ended)"
         }
