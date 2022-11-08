@@ -83,7 +83,7 @@ struct APISession: APIService {
                     multipart.append("\(value)".data(using: .utf8, allowLossyConversion: false)!, withName: "\(key)")
                 }
                 if let imageData = image.jpegData(compressionQuality: 1) {
-                    multipart.append(imageData, withName: "files", fileName: "image.png", mimeType: "image/png")
+                    multipart.append(imageData, withName: "picture", fileName: "image.png", mimeType: "image/png")
                 }
             }, to: urlResource.resultURL,
                                  method: .post,
