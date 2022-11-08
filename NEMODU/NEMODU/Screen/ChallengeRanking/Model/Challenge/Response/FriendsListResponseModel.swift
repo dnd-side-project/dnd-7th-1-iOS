@@ -9,7 +9,12 @@ import Foundation
 import Alamofire
 
 struct FriendsListResponseModel: Codable {
-    let infos: [String]
+    let infos: [Info]
     let isLast: Bool
     let size: Int
+}
+
+// MARK: - Info
+struct Info: Codable {
+    let nickname, picturePath: String
 }

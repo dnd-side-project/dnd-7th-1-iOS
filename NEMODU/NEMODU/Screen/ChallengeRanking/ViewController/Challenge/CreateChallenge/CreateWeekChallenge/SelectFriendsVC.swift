@@ -117,7 +117,7 @@ class SelectFriendsVC: CreateChallengeVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewModel.getFriendsList(offset: 1)
+        viewModel.getFriendsList(offset: 0)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -161,11 +161,16 @@ class SelectFriendsVC: CreateChallengeVC {
     @objc
     func didTapCancelButton(_ sender: UIButton) {
         guard let friendsList = friendsListResponseModel else { return }
-        guard let targetIndex = friendsList.infos.firstIndex(of: selectedFriendsList[sender.tag]) else { return }
-        let deselectedIndexPath = IndexPath(row: targetIndex, section: 0)
+//        guard let targetIndex = friendsList.infos.firstIndex(of: selectedFriendsList[sender.tag]) else { return }
+//        for i in friendsList.infos.count {
+//
+//        }
         
-        tableView(friendsListTableView, didDeselectRowAt: deselectedIndexPath)
-        friendsListTableView.deselectRow(at: deselectedIndexPath, animated: true)
+        
+//        let deselectedIndexPath = IndexPath(row: targetIndex, section: 0)
+        
+//        tableView(friendsListTableView, didDeselectRowAt: deselectedIndexPath)
+//        friendsListTableView.deselectRow(at: deselectedIndexPath, animated: true)
     }
     
     func updateLimitFriendsCountLabel() {
@@ -300,7 +305,7 @@ extension SelectFriendsVC : UITableViewDataSource {
             return UITableViewCell()
         }
         guard let friendsList = friendsListResponseModel else { return UITableViewCell() }
-        cell.configureSelectFriendsTVC(profileImageURL: "", nickname: friendsList.infos[indexPath.row])
+        cell.configureSelectFriendsTVC(profileImageURL: "", nickname: friendsList.infos[indexPath.row].nickname)
         
         return cell
     }
@@ -330,7 +335,7 @@ extension SelectFriendsVC : UITableViewDelegate {
         
         cell.didTapCheck()
         
-        selectedFriendsList.append(friendsList.infos[indexPath.row])
+        selectedFriendsList.append(friendsList.infos[indexPath.row].nickname)
 
         updateLimitFriendsCountLabel()
         checkConfirmButtonEnable()
@@ -355,13 +360,13 @@ extension SelectFriendsVC : UITableViewDelegate {
         // 친구 선택목록 표시
         if friendsListView1.isHidden == true {
             friendsListView1.isHidden = false
-            friendsListView1.nicknameLabel.text = friendsList.infos[indexPath.row]
+            friendsListView1.nicknameLabel.text = friendsList.infos[indexPath.row].nickname
         } else if friendsListView2.isHidden == true {
             friendsListView2.isHidden = false
-            friendsListView2.nicknameLabel.text = friendsList.infos[indexPath.row]
+            friendsListView2.nicknameLabel.text = friendsList.infos[indexPath.row].nickname
         } else if friendsListView3.isHidden == true {
             friendsListView3.isHidden = false
-            friendsListView3.nicknameLabel.text = friendsList.infos[indexPath.row]
+            friendsListView3.nicknameLabel.text = friendsList.infos[indexPath.row].nickname
         }
     }
 
@@ -372,7 +377,7 @@ extension SelectFriendsVC : UITableViewDelegate {
         cell.didTapCheck()
         
         // 친구 선택목록 표시
-        guard let targetIndex = selectedFriendsList.firstIndex(of: friendsList.infos[indexPath.row]) else { return }
+        guard let targetIndex = selectedFriendsList.firstIndex(of: friendsList.infos[indexPath.row].nickname) else { return }
         selectedFriendsList.remove(at: targetIndex)
         
         switch selectedFriendsList.count {
@@ -414,13 +419,13 @@ extension SelectFriendsVC : UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        guard let friendsList = friendsListResponseModel else { return 300 }
-        return friendsList.infos.count == 0 ? 300 : .leastNormalMagnitude
+        guard let friendsList = friendsListResponseModel else { return 93 }
+        return friendsList.infos.count == 0 ? 93 : .leastNormalMagnitude
     }
 
     func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
-        guard let friendsList = friendsListResponseModel else { return 300 }
-        return friendsList.infos.count == 0 ? 300 : .leastNormalMagnitude
+        guard let friendsList = friendsListResponseModel else { return 93 }
+        return friendsList.infos.count == 0 ? 93 : .leastNormalMagnitude
     }
     
 }
