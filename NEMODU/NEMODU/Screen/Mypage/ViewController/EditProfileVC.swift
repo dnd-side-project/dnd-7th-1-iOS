@@ -303,7 +303,7 @@ extension EditProfileVC {
                     EditProfileRequestModel(picture: profileImage,
                                             editNickname: newNickname,
                                             intro: self.profileMessageTextView.tv.text,
-                                            isBasic: false))
+                                            isBasic: self.isBasic))
             })
             .disposed(by: bag)
     }
@@ -352,6 +352,7 @@ extension EditProfileVC : UIImagePickerControllerDelegate, UINavigationControlle
         } else if let image = info[.originalImage] as? UIImage {
             profileImageBtn.setImage(image, for: .normal)
         }
+        isBasic = false
         dismiss(animated: true)
     }
     
