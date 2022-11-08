@@ -196,9 +196,8 @@ extension FriendProfileBottomSheet {
     }
     
     private func setProfile(_ profile: ProfileResponseModel) {
-        // TODO: - Error 연결
         guard let friendType = FriendStatusType(rawValue: profile.isFriend) else { return }
-        profileImageBtn.kf.setImage(with: URL(string: profile.picturePath),
+        profileImageBtn.kf.setImage(with: profile.profileImageURL,
                                     for: .normal,
                                     placeholder: UIImage(named: "defaultThumbnail"))
         nicknameLabel.text = profile.nickname

@@ -11,3 +11,10 @@ struct MyProfileResponseModel: Codable {
     let nickname, intro, mail: String
     let picturePath: String
 }
+
+extension MyProfileResponseModel {
+    var profileImageURL: URL? {
+        guard let profileImageURL = picturePath.encodeURL() else { return nil }
+        return URL(string: profileImageURL)
+    }
+}

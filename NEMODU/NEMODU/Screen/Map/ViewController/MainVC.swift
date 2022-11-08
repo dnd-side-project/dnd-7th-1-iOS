@@ -283,19 +283,25 @@ extension MainVC {
                 
                 guard let latitude = user.latitude,
                       let longitude = user.longitude,
-                      let picturePath = user.picturePath,
-                      let url = URL(string: picturePath) else { return }
+                      let profileImageURL = user.profileImageURL else { return }
                 
-                KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: url)) { result in
+                KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: profileImageURL)) { result in
+                    var profileImage = UIImage(named: "defaultThumbnail")!
+                    
                     switch result {
                     case .success(let data):
-                        self.mapVC.addMyAnnotation(coordinate: [latitude, longitude],
-                                                   profileImage: data.image)
+                        profileImage = data.image
+                        print(data)
                     case .failure(let error):
                         print(error)
                     }
+                    
+                    // Annotation
+                    self.mapVC.addMyAnnotation(coordinate: [latitude, longitude],
+                                               profileImage: profileImage)
                 }
                 
+                // Area
                 self.drawBlockArea(blocks: user.matrices ?? [],
                                    owner: .mine,
                                    blockColor: .main40)
@@ -312,24 +318,29 @@ extension MainVC {
                 friends.forEach {
                     guard let latitude = $0.latitude,
                           let longitude = $0.longitude,
-                          let picturePath = $0.picturePath,
-                          let url = URL(string: picturePath) else { return }
-                    
+                          let profileImageURL = $0.profileImageURL else { return }
                     let nickname = $0.nickname
-                    KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: url)) { result in
+                    
+                    KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: profileImageURL)) { result in
+                        var profileImage = UIImage(named: "defaultThumbnail")!
+                        
                         switch result {
                         case .success(let data):
-                            self.mapVC.addFriendAnnotation(coordinate: [latitude, longitude],
-                                                           profileImage: data.image,
-                                                           nickname: nickname,
-                                                           color: .main,
-                                                           challengeCnt: 0,
-                                                           isEnabled: true)
+                            profileImage = data.image
                         case .failure(let error):
                             print(error)
                         }
+                        
+                        // Annotation
+                        self.mapVC.addFriendAnnotation(coordinate: [latitude, longitude],
+                                                       profileImage: profileImage,
+                                                       nickname: nickname,
+                                                       color: .main,
+                                                       challengeCnt: 0,
+                                                       isEnabled: true)
                     }
                     
+                    // Area
                     self.drawBlockArea(blocks: $0.matrices ?? [],
                                        owner: .friends,
                                        blockColor: .gray25)
@@ -345,23 +356,28 @@ extension MainVC {
             .subscribe(onNext: { [weak self] friends in
                 guard let self = self else { return }
                 friends.forEach {
-                    guard let url = URL(string: $0.picturePath) else { return }
+                    guard let profileImageURL = $0.profileImageURL else { return }
                     let friend = $0
-                    KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: url)) { result in
+                    
+                    KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: profileImageURL)) { result in
+                        var profileImage = UIImage(named: "defaultThumbnail")!
                         switch result {
                         case .success(let data):
-                            self.mapVC.addFriendAnnotation(coordinate: [friend.latitude, friend.longitude],
-                                                           profileImage: data.image,
-                                                           nickname: friend.nickname,
-                                                           color: ChallengeColorType(rawValue: friend.challengeColor)?.primaryColor ?? .main,
-                                                           challengeCnt: friend.challengeNumber,
-                                                           isEnabled: true)
+                            profileImage = data.image
                         case .failure(let error):
                             print(error)
                         }
+                        
+                        // Annotation
+                        self.mapVC.addFriendAnnotation(coordinate: [friend.latitude, friend.longitude],
+                                                       profileImage: profileImage,
+                                                       nickname: friend.nickname,
+                                                       color: ChallengeColorType(rawValue: friend.challengeColor)?.primaryColor ?? .main,
+                                                       challengeCnt: friend.challengeNumber,
+                                                       isEnabled: true)
                     }
                     
-                    
+                    // Area
                     self.drawBlockArea(blocks: $0.matrices,
                                        owner: .friends,
                                        blockColor: ChallengeColorType(rawValue: $0.challengeColor)?.blockColor ?? .gray25)

@@ -134,8 +134,9 @@ extension MyProfileVC {
     }
     
     private func configureProfileData(_ data: MyProfileResponseModel) {
-        profileImageBtn.kf.setImage(with: URL(string: data.picturePath),
-                                    for: .normal)
+        profileImageBtn.kf.setImage(with: data.profileImageURL,
+                                    for: .normal,
+                                    placeholder: UIImage(named: "defaultThumbnail"))
         nicknameLabel.text = data.nickname
         profileMessageLabel.text = data.intro
         accountLabel.text = data.mail

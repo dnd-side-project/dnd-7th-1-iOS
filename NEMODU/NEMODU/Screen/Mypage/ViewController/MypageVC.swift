@@ -148,9 +148,8 @@ extension MypageVC {
     }
     
     private func configureUserData(_ userData: MypageUserDataResponseModel) {
-        // TODO: - 에러 알람창
-        guard let profileURL = URL(string: userData.picturePath) else { return }
-        profileView.profileImage.kf.setImage(with: profileURL)
+        profileView.profileImage.kf.setImage(with: userData.profileImageURL,
+                                             placeholder: UIImage(named: "defaultThumbnail")!)
         profileView.nickname.text = userData.nickname
         profileView.profileMessage.text = userData.intro
         blockCntView.configureBlockCnt(userData.allMatrixNumber.insertComma)
