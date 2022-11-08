@@ -97,7 +97,7 @@ extension UserInfoSettingVM {
     
     func postEditProfile(_ profile: EditProfileRequestModel) {
         let path = "user/info/profile/edit"
-        let resource = urlResource<NicknameModel>(path: path)
+        let resource = urlResource<EditProfileResponseModel>(path: path)
 
         apiSession.postRequestWithImage(with: resource,
                                         param: profile.profileParam,

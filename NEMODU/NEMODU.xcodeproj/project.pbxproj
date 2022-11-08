@@ -141,6 +141,7 @@
 		23D8B7E728B4E44700F48165 /* MyRecordDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7E628B4E44700F48165 /* MyRecordDetailVC.swift */; };
 		23ECC09F28D859E000F65692 /* AuthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23ECC09E28D859E000F65692 /* AuthAPI.swift */; };
 		23EFB81C29113A00009A2D01 /* RefreshBtnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EFB81B29113A00009A2D01 /* RefreshBtnView.swift */; };
+		23EFB829291A0D9E009A2D01 /* EditProfileResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EFB828291A0D9E009A2D01 /* EditProfileResponseModel.swift */; };
 		23F5716928A6802C005F2E21 /* UIStackView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5716828A6802C005F2E21 /* UIStackView+.swift */; };
 		23F5716D28A6A61E005F2E21 /* MiniMapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5716C28A6A61D005F2E21 /* MiniMapVC.swift */; };
 		23F5716F28A6AD01005F2E21 /* RecordStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5716E28A6AD01005F2E21 /* RecordStackView.swift */; };
@@ -350,6 +351,7 @@
 		23D8B7E628B4E44700F48165 /* MyRecordDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordDetailVC.swift; sourceTree = "<group>"; };
 		23ECC09E28D859E000F65692 /* AuthAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthAPI.swift; sourceTree = "<group>"; };
 		23EFB81B29113A00009A2D01 /* RefreshBtnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshBtnView.swift; sourceTree = "<group>"; };
+		23EFB828291A0D9E009A2D01 /* EditProfileResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileResponseModel.swift; sourceTree = "<group>"; };
 		23F5716828A6802C005F2E21 /* UIStackView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+.swift"; sourceTree = "<group>"; };
 		23F5716C28A6A61D005F2E21 /* MiniMapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniMapVC.swift; sourceTree = "<group>"; };
 		23F5716E28A6AD01005F2E21 /* RecordStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordStackView.swift; sourceTree = "<group>"; };
@@ -503,6 +505,7 @@
 				2315258C28B4F07D00B80E03 /* DetailRecordDataResponseModel.swift */,
 				2304FB9728F27DFE00DD3A50 /* EventListResponseModel.swift */,
 				237573F428FBE6BE006026ED /* MyProfileResponseModel.swift */,
+				23EFB828291A0D9E009A2D01 /* EditProfileResponseModel.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -1377,7 +1380,7 @@
 				23412FDE28AE396D00B73D62 /* ChallengeListVM.swift in Sources */,
 				232B89FF28C8BCAA00737F18 /* LoginVM.swift in Sources */,
 				237573E928F92A1B006026ED /* NicknameCheckView.swift in Sources */,
-				3C3BD77428B3754A00AD55B6 /* AreaRankingListRequestModel.swift in Sources */,
+				3C3BD77428B3754A00AD55B6 /* RankingListRequestModel.swift in Sources */,
 				3C3BD77428B3754A00AD55B6 /* RankingListRequestModel.swift in Sources */,
 				2375740328FC43C0006026ED /* FriendRequestTVC.swift in Sources */,
 				23B7207028A12DBB00D3A410 /* RecordView.swift in Sources */,
@@ -1451,6 +1454,7 @@
 				23255A6E28CF3787005D6D5A /* NicknameType.swift in Sources */,
 				23F5718828AA6DEE005F2E21 /* MyAnnotationView.swift in Sources */,
 				232F0B6328B6803C005C9A07 /* AlertVC.swift in Sources */,
+				23EFB829291A0D9E009A2D01 /* EditProfileResponseModel.swift in Sources */,
 				2375740B28FC5808006026ED /* ViewMoreTVC.swift in Sources */,
 				23F5717728A92E38005F2E21 /* ProfileRecordView.swift in Sources */,
 				23412FD628AE080000B73D62 /* ChallengeColorType.swift in Sources */,
