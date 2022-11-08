@@ -19,20 +19,27 @@ class ChallengeDoingTVC : ChallengeListTVC {
     
     // MARK: - Life Cycle
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override func configureView() {
+        super.configureView()
         
+        configureContentView()
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    override func layoutView() {
+        super.layoutView()
+        
+        configureLayout()
     }
     
     // MARK: - Function
     
-    override func configureView() {
-        super.configureView()
-        
+}
+
+// MARK: - Configure
+
+extension ChallengeDoingTVC {
+    
+    private func configureContentView() {
         _ = challengeNameImage
             .then {
                 $0.image = UIImage(named: "badge_flag")?.withRenderingMode(.alwaysTemplate)
@@ -49,9 +56,38 @@ class ChallengeDoingTVC : ChallengeListTVC {
             }
     }
     
-    override func layoutView() {
-        super.layoutView()
+    func configureChallengeDoingTVC(progressChallengeListElement: ProgressAndDoneChallengeListElement) {
+        challengeTypeLabel.text = "주간" // TODO: - 서버 response 값으로 주간, 실시간 표시 필요
         
+        let startDate = progressChallengeListElement.started.split(separator: "-")
+        let endDate = progressChallengeListElement.ended.split(separator: "-")
+        
+        let format = DateFormatter()
+        format.dateFormat = "yyyy-MM-dd"
+        
+        let dayOfWeekDate = format.date(from: progressChallengeListElement.started)
+        let dayOfWeekString = dayOfWeekDate?.getDayOfWeek()
+        
+        challengeTermLabel.text = "\(startDate[1]).\(startDate[2])(\(dayOfWeekString ?? "?") - \(endDate[1]). \(endDate[2])(일)"
+        
+        //        dDayLabel.text =  TODO: - dDay 표시
+        
+        challengeNameImage.tintColor = ChallengeColorType(rawValue: progressChallengeListElement.color)?.primaryColor
+        challengeNameLabel.text = progressChallengeListElement.name
+        
+        currentStateLabel.text = "현재순위"
+        currentJoinUserLabel.text = "\(progressChallengeListElement.rank)위"
+        
+        makeUserImageViews(numberOfUsers: progressChallengeListElement.picturePaths.count, usersImageURL: progressChallengeListElement.picturePaths)
+    }
+    
+}
+
+// MARK: - Layout
+
+extension ChallengeDoingTVC {
+    
+    private func configureLayout() {
         // remove for hide
         dDayLabel.snp.makeConstraints {
             $0.width.equalTo(0)
