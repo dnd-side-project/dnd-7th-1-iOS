@@ -26,6 +26,7 @@ final class UserInfoSettingVM: BaseViewModel {
         var myProfile = PublishRelay<MyProfileResponseModel>()
         var isNextBtnActive = BehaviorRelay<Bool>(value: false)
         var isValidNickname = PublishRelay<Bool>()
+        var isProfileSaved = PublishRelay<Bool>()
     }
     
     // MARK: - Init
@@ -109,6 +110,7 @@ extension UserInfoSettingVM {
                 owner.apiError.onNext(error)
             case .success(let data):
                 UserDefaults.standard.set(data.nickname, forKey: UserDefaults.Keys.nickname)
+                owner.output.isProfileSaved.accept(true)
             }
         })
         .disposed(by: bag)

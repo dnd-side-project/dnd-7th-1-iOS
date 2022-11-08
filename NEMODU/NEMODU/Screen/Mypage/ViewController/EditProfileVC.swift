@@ -100,6 +100,7 @@ class EditProfileVC: BaseViewController {
         bindProfileData()
         bindValidationView()
         bindBaseScrollView()
+        bindDismiss()
     }
     
 }
@@ -338,6 +339,17 @@ extension EditProfileVC {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.baseScrollView.scrollToBottom(animated: true)
+            })
+            .disposed(by: bag)
+    }
+    
+    private func bindDismiss() {
+        viewModel.output.isProfileSaved
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                // TODO: - 완료 알람 띄우기
+                self.navigationController?.popViewController(animated: true)
             })
             .disposed(by: bag)
     }
