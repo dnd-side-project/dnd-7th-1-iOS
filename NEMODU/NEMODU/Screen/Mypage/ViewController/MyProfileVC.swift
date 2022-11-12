@@ -134,9 +134,11 @@ extension MyProfileVC {
     }
     
     private func configureProfileData(_ data: MyProfileResponseModel) {
+        // TODO: - options 수정
         profileImageBtn.kf.setImage(with: data.profileImageURL,
                                     for: .normal,
-                                    placeholder: .defaultThumbnail)
+                                    placeholder: .defaultThumbnail,
+                                    options: [.forceRefresh])
         nicknameLabel.text = data.nickname
         profileMessageLabel.text = data.intro
         accountLabel.text = data.mail

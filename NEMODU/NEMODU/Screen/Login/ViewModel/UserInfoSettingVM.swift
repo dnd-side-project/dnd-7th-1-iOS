@@ -100,9 +100,9 @@ extension UserInfoSettingVM {
         let path = "user/info/profile/edit"
         let resource = urlResource<EditProfileResponseModel>(path: path)
 
-        apiSession.postRequestWithImage(with: resource,
-                                        param: profile.profileParam,
-                                        image: profile.picture)
+        AuthAPI.shared.editProfile(with: resource,
+                                   param: profile.profileParam,
+                                   image: profile.picture)
         .withUnretained(self)
         .subscribe(onNext: { owner, result in
             switch result {
