@@ -22,6 +22,7 @@ class MyProfileVC: BaseViewController {
             $0.setImage(.defaultThumbnail, for: .normal)
             $0.layer.cornerRadius = 48
             $0.clipsToBounds = true
+            $0.imageView?.contentMode = .scaleAspectFill
         }
     
     private let nicknameLabel = UILabel()

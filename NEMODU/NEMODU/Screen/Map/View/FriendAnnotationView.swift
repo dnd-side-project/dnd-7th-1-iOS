@@ -36,6 +36,7 @@ class FriendAnnotationView: MKAnnotationView {
     private lazy var profileImage = UIImageView()
         .then {
             $0.clipsToBounds = true
+            $0.contentMode = .scaleAspectFill
         }
     
     private lazy var challengeCntImageView = UIImageView()

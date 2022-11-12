@@ -15,6 +15,7 @@ class ProfileView: BaseView {
             $0.image = .defaultThumbnail
             $0.layer.cornerRadius = 56 / 2
             $0.clipsToBounds = true
+            $0.contentMode = .scaleAspectFill
         }
     
     let textStackView = UIStackView()

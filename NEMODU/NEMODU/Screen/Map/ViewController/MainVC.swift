@@ -291,7 +291,6 @@ extension MainVC {
                     switch result {
                     case .success(let data):
                         profileImage = data.image
-                        print(data)
                     case .failure(let error):
                         print(error)
                     }
