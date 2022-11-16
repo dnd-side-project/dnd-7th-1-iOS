@@ -50,9 +50,8 @@ class SelectChallengeTypeVC: CreateChallengeVC {
     override func layoutView() {
         super.layoutView()
         
-//        view.addSubview(navigationBar)
         view.addSubviews([button1, button2])
-        view.addSubviews([titleLabel])//, confirmButton])
+        view.addSubviews([titleLabel])
         
         
         titleLabel.snp.makeConstraints {
