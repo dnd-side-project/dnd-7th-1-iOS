@@ -15,7 +15,7 @@ class SelectFriendsTVC : BaseTableViewCell {
     
     // MARK: - UI components
     
-    let userProfileImageView = UIImageView()
+    private let userProfileImageView = UIImageView()
         .then {
             $0.image = UIImage(named: "defaultThumbnail")
             $0.layer.cornerRadius = 20
@@ -40,17 +40,49 @@ class SelectFriendsTVC : BaseTableViewCell {
     
     // MARK: - Life Cycle
     
-    // MARK: - Function
-    
     override func configureView() {
         super.configureView()
         
-        selectionStyle = .none
+        configureContentView()
+        
     }
     
     override func layoutView() {
         super.layoutView()
         
+        configureLayout()
+    }
+    
+    // MARK: - Function
+    
+    func didTapCheck() {
+        isSelectCheck.toggle()
+        checkImageView.image = UIImage(named: isSelectCheck ? "checkCircle" : "uncheck")?.withRenderingMode(.alwaysTemplate)
+        checkImageView.tintColor = isSelectCheck ? .secondary : .gray300
+    }
+    
+}
+
+// MARK: - Configure
+
+extension SelectFriendsTVC {
+    
+    private func configureContentView() {
+        selectionStyle = .none
+    }
+    
+    func configureSelectFriendsTVC(friendInfo: Info) {
+        userProfileImageView.kf.setImage(with: URL(string: friendInfo.picturePath))
+        userNicknameLabel.text = friendInfo.nickname
+    }
+    
+}
+
+// MARK: - Layout
+
+extension SelectFriendsTVC {
+    
+    private func configureLayout() {
         contentView.addSubviews([userProfileImageView, userNicknameLabel, checkImageView])
         
         
@@ -70,12 +102,6 @@ class SelectFriendsTVC : BaseTableViewCell {
             $0.centerY.equalTo(contentView)
             $0.right.equalTo(contentView.snp.right).inset(16)
         }
-    }
-    
-    func didTapCheck() {
-        isSelectCheck.toggle()
-        checkImageView.image = UIImage(named: isSelectCheck ? "checkCircle" : "uncheck")?.withRenderingMode(.alwaysTemplate)
-        checkImageView.tintColor = isSelectCheck ? .secondary : .gray300
     }
     
 }
