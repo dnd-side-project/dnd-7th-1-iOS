@@ -15,30 +15,30 @@ class SelectFriendsVC: CreateChallengeVC {
     
     // MARK: - UI components
     
-    let friendsListContainerView = UIView()
+    private let friendsListContainerView = UIView()
         .then {
             $0.isHidden = true
         }
-    lazy var friendsListView1 = FriendListView()
+    private lazy var friendsListView1 = FriendListView()
         .then {
             $0.cancelButton.addTarget(self, action: #selector(didTapCancelButton(_:)), for: .touchUpInside)
             $0.cancelButton.tag = 0
             $0.isHidden = true
         }
-    lazy var friendsListView2 = FriendListView()
+    private lazy var friendsListView2 = FriendListView()
         .then {
             $0.cancelButton.addTarget(self, action: #selector(didTapCancelButton(_:)), for: .touchUpInside)
             $0.cancelButton.tag = 1
             $0.isHidden = true
         }
-    lazy var friendsListView3 = FriendListView()
+    private lazy var friendsListView3 = FriendListView()
         .then {
             $0.cancelButton.addTarget(self, action: #selector(didTapCancelButton(_:)), for: .touchUpInside)
             $0.cancelButton.tag = 2
             $0.isHidden = true
         }
     
-    let searchTextField = UITextField()
+    private let searchTextField = UITextField()
         .then {
             $0.font = .body2
             $0.textColor = .gray900
@@ -59,22 +59,20 @@ class SelectFriendsVC: CreateChallengeVC {
             $0.layer.cornerRadius = 8
     }
     
-    let searchImageView = UIImageView()
+    private let searchImageView = UIImageView()
         .then {
             $0.image = UIImage(named: "search")?.withRenderingMode(.alwaysTemplate)
             $0.tintColor = .gray500
         }
-    lazy var deleteAllTextButton = UIButton()
+    private lazy var deleteAllTextButton = UIButton()
         .then {
             $0.setImage(UIImage(named: "close")?.withRenderingMode(.alwaysTemplate), for: .normal)
             $0.tintColor = .gray400
             
             $0.isHidden = true
-            
-            $0.addTarget(self, action: #selector(didTapDeleteAllTextButton), for: .touchUpInside)
         }
     
-    let guideLabel = PaddingLabel()
+    private let guideLabel = PaddingLabel()
         .then {
             $0.text = "최대 3명까지 초대할 수 있습니다."
             $0.edgeInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
@@ -84,7 +82,7 @@ class SelectFriendsVC: CreateChallengeVC {
             
             $0.backgroundColor = .white
         }
-    let limitFriendsCountLabel = PaddingLabel()
+    private let limitFriendsCountLabel = PaddingLabel()
         .then {
             $0.text = "( 0 / 3 )"
             
@@ -94,7 +92,7 @@ class SelectFriendsVC: CreateChallengeVC {
             $0.backgroundColor = .white
         }
     
-    let friendsListTableView = UITableView()
+    private let friendsListTableView = UITableView()
         .then {
             $0.separatorStyle = .none
             $0.allowsMultipleSelection = true
@@ -108,9 +106,9 @@ class SelectFriendsVC: CreateChallengeVC {
     private let bag = DisposeBag()
     private var friendsListResponseModel: FriendsListResponseModel?
     
-    var selectedFriendsList: [String] = []
+    private var selectedFriendsList: [String] = []
     
-    var friendsListContainerViewHeightConstraint: Constraint?
+    private var friendsListContainerViewHeightConstraint: Constraint?
     
     // MARK: - Life Cycle
     
@@ -142,6 +140,7 @@ class SelectFriendsVC: CreateChallengeVC {
         super.bindInput()
         
         bindSearchTextField()
+        bindButtons()
     }
     
     override func bindOutput() {
@@ -152,32 +151,100 @@ class SelectFriendsVC: CreateChallengeVC {
     
     // MARK: - Functions
     
-    @objc
-    func didTapDeleteAllTextButton() {
-        searchTextField.text = ""
-        bindSearchTextField()
+    private func showSelectedFriend(friendInfo: Info) {
+        selectedFriendsList.append(friendInfo.nickname)
+        
+        // 친구목록 컨테이너 창 크기 조절하기
+        if selectedFriendsList.count == 1 {
+            DispatchQueue.global().sync {
+                friendsListContainerViewHeightConstraint?.layoutConstraints[0].constant = 123
+                
+                UIView.animate(withDuration: 0.3, delay: 0, animations: { [self] in
+                    self.view.layoutIfNeeded()
+                })
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [self] in
+                    friendsListContainerView.isHidden = false
+                    friendsListContainerView.alpha = 1
+                }
+            }
+            
+        }
+        
+        // 선택 친구목록 표시
+        if friendsListView1.isHidden == true {
+            configureFriendListView(friendListView: friendsListView1, friendInfo: friendInfo)
+        } else if friendsListView2.isHidden == true {
+            configureFriendListView(friendListView: friendsListView2, friendInfo: friendInfo)
+        } else if friendsListView3.isHidden == true {
+            configureFriendListView(friendListView: friendsListView3, friendInfo: friendInfo)
+        }
+    }
+    
+    private func deleteSelectedFriend(friendInfo: Info) {
+        var seletedFriendsProfileList: [UIImage] = []
+        [friendsListView1, friendsListView2, friendsListView3].forEach {
+            seletedFriendsProfileList.append($0.profileImage.image ?? UIImage(named: "defaultThumbnail")!)
+        }
+        
+        guard let targetIndex = selectedFriendsList.firstIndex(of: friendInfo.nickname) else { return }
+        
+        selectedFriendsList.remove(at: targetIndex)
+        seletedFriendsProfileList.remove(at: targetIndex)
+        
+        // 선택 친구목록 제거
+        switch selectedFriendsList.count {
+        case 2:
+            friendsListView3.isHidden = true
+            
+            friendsListView2.nicknameLabel.text = selectedFriendsList[1]
+            friendsListView2.profileImage.image = seletedFriendsProfileList[1]
+            
+            friendsListView1.nicknameLabel.text = selectedFriendsList[0]
+            friendsListView1.profileImage.image = seletedFriendsProfileList[0]
+        case 1:
+            friendsListView2.isHidden = true
+            
+            friendsListView1.nicknameLabel.text = selectedFriendsList[0]
+            friendsListView1.profileImage.image = seletedFriendsProfileList[0]
+        case 0:
+            friendsListView1.isHidden = true
+            
+            friendsListContainerViewHeightConstraint?.layoutConstraints[0].constant = 0
+            friendsListContainerView.isHidden = true
+            UIView.animate(withDuration: 0.3, delay: 0, animations: { [self] in
+                friendsListContainerView.alpha = 0
+                self.view.layoutIfNeeded()
+            })
+        default:
+            break
+        }
     }
     
     @objc
-    func didTapCancelButton(_ sender: UIButton) {
+    private func didTapCancelButton(_ sender: UIButton) {
         guard let friendsList = friendsListResponseModel else { return }
-//        guard let targetIndex = friendsList.infos.firstIndex(of: selectedFriendsList[sender.tag]) else { return }
-//        for i in friendsList.infos.count {
-//
-//        }
         
+        var targetIndex = 3
+        for i in 0..<friendsList.infos.count {
+            if friendsList.infos[i].nickname == selectedFriendsList[sender.tag] {
+                targetIndex = i
+                break
+            }
+        }
         
-//        let deselectedIndexPath = IndexPath(row: targetIndex, section: 0)
-        
-//        tableView(friendsListTableView, didDeselectRowAt: deselectedIndexPath)
-//        friendsListTableView.deselectRow(at: deselectedIndexPath, animated: true)
+        if targetIndex != 3 {
+            let deselectedIndexPath = IndexPath(row: targetIndex, section: 0)
+            tableView(friendsListTableView, didDeselectRowAt: deselectedIndexPath)
+            friendsListTableView.deselectRow(at: deselectedIndexPath, animated: true)
+        }
     }
     
-    func updateLimitFriendsCountLabel() {
+    private func updateLimitFriendsCountLabel() {
         limitFriendsCountLabel.text = "( \(selectedFriendsList.count) / 3 )"
     }
     
-    func checkConfirmButtonEnable() {
+    private func checkConfirmButtonEnable() {
         selectedFriendsList.count > 0 ? (confirmButton.isSelected = true) : (confirmButton.isSelected = false)
     }
     
@@ -204,12 +271,10 @@ extension SelectFriendsVC {
             }
     }
     
-    private func configureConfirmButon() {
-        _ = confirmButton
-            .then {
-                $0.setTitle("완료", for: .normal)
-                $0.isEnabled = true
-            }
+    private func configureFriendListView(friendListView: FriendListView, friendInfo: Info) {
+        friendListView.isHidden = false
+        friendListView.nicknameLabel.text = friendInfo.nickname
+        friendListView.profileImage.kf.setImage(with: URL(string: friendInfo.picturePath))
     }
     
     private func configureTableView() {
@@ -220,6 +285,14 @@ extension SelectFriendsVC {
                 
                 $0.register(SelectFriendsTVC.self, forCellReuseIdentifier: SelectFriendsTVC.className)
                 $0.register(NoListStatusTVFV.self, forHeaderFooterViewReuseIdentifier: NoListStatusTVFV.className)
+            }
+    }
+    
+    private func configureConfirmButon() {
+        _ = confirmButton
+            .then {
+                $0.setTitle("완료", for: .normal)
+                $0.isEnabled = true
             }
     }
     
@@ -305,7 +378,7 @@ extension SelectFriendsVC : UITableViewDataSource {
             return UITableViewCell()
         }
         guard let friendsList = friendsListResponseModel else { return UITableViewCell() }
-        cell.configureSelectFriendsTVC(profileImageURL: "", nickname: friendsList.infos[indexPath.row].nickname)
+        cell.configureSelectFriendsTVC(friendInfo: friendsList.infos[indexPath.row])
         
         return cell
     }
@@ -330,79 +403,25 @@ extension SelectFriendsVC : UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath) as! SelectFriendsTVC
-        guard let friendsList = friendsListResponseModel else { return }
-        
+        guard let cell = tableView.cellForRow(at: indexPath) as? SelectFriendsTVC else { return }
         cell.didTapCheck()
         
-        selectedFriendsList.append(friendsList.infos[indexPath.row].nickname)
-
+        guard let friendsList = friendsListResponseModel else { return }
+        showSelectedFriend(friendInfo: friendsList.infos[indexPath.row])
+        
         updateLimitFriendsCountLabel()
         checkConfirmButtonEnable()
-        
-        // 친구목록 컨테이너 표시하기
-        if selectedFriendsList.count == 1 {
-            DispatchQueue.global().sync {
-                friendsListContainerViewHeightConstraint?.layoutConstraints[0].constant = 123
-                
-                UIView.animate(withDuration: 0.3, delay: 0, animations: { [self] in
-                    self.view.layoutIfNeeded()
-                })
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [self] in
-                    friendsListContainerView.isHidden = false
-                    friendsListContainerView.alpha = 1
-                }
-            }
-            
-        }
-        
-        // 친구 선택목록 표시
-        if friendsListView1.isHidden == true {
-            friendsListView1.isHidden = false
-            friendsListView1.nicknameLabel.text = friendsList.infos[indexPath.row].nickname
-        } else if friendsListView2.isHidden == true {
-            friendsListView2.isHidden = false
-            friendsListView2.nicknameLabel.text = friendsList.infos[indexPath.row].nickname
-        } else if friendsListView3.isHidden == true {
-            friendsListView3.isHidden = false
-            friendsListView3.nicknameLabel.text = friendsList.infos[indexPath.row].nickname
-        }
     }
 
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath) as! SelectFriendsTVC
-        guard let friendsList = friendsListResponseModel else { return }
-        
+        guard let cell = tableView.cellForRow(at: indexPath) as? SelectFriendsTVC else { return }
         cell.didTapCheck()
         
-        // 친구 선택목록 표시
-        guard let targetIndex = selectedFriendsList.firstIndex(of: friendsList.infos[indexPath.row].nickname) else { return }
-        selectedFriendsList.remove(at: targetIndex)
-        
-        switch selectedFriendsList.count {
-        case 2:
-            friendsListView3.isHidden = true
-            friendsListView2.nicknameLabel.text = selectedFriendsList[1]
-            friendsListView1.nicknameLabel.text = selectedFriendsList[0]
-        case 1:
-            friendsListView2.isHidden = true
-            friendsListView1.nicknameLabel.text = selectedFriendsList[0]
-        case 0:
-            friendsListView1.isHidden = true
-            
-            friendsListContainerViewHeightConstraint?.layoutConstraints[0].constant = 0
-            friendsListContainerView.isHidden = true
-            UIView.animate(withDuration: 0.3, delay: 0, animations: { [self] in
-                friendsListContainerView.alpha = 0
-                self.view.layoutIfNeeded()
-            })
-        default:
-            break
-        }
-        
-        checkConfirmButtonEnable()
+        guard let friendsList = friendsListResponseModel else { return }
+        deleteSelectedFriend(friendInfo: friendsList.infos[indexPath.row])
+
         updateLimitFriendsCountLabel()
+        checkConfirmButtonEnable()
     }
     
     // 친구선택 수 제한
@@ -412,8 +431,8 @@ extension SelectFriendsVC : UITableViewDelegate {
     
     // FooterView
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let footerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: NoListStatusTVFV.className) as? NoListStatusTVFV
-        footerView?.statusLabel.text = "목록이 없습니다"
+        guard let footerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: NoListStatusTVFV.className) as? NoListStatusTVFV else { return UITableViewHeaderFooterView() }
+        footerView.statusLabel.text = "목록이 없습니다"
 
         return footerView
     }
@@ -442,6 +461,19 @@ extension SelectFriendsVC {
                 let searchNickname = text else { return }
                 
                 searchNickname.count == 0 ? (self.deleteAllTextButton.isHidden = true) : (self.deleteAllTextButton.isHidden = false)
+            })
+            .disposed(by: bag)
+    }
+    
+    private func bindButtons() {
+        deleteAllTextButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                
+                self.searchTextField.text = ""
+                self.deleteAllTextButton.isHidden = true
+                self.searchTextField.becomeFirstResponder()
             })
             .disposed(by: bag)
     }

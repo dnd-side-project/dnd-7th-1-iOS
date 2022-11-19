@@ -71,9 +71,9 @@ extension SelectFriendsTVC {
         selectionStyle = .none
     }
     
-    func configureSelectFriendsTVC(profileImageURL: String, nickname: String) {
-        userProfileImageView.kf.setImage(with: URL(string: profileImageURL))
-        userNicknameLabel.text = nickname
+    func configureSelectFriendsTVC(friendInfo: Info) {
+        userProfileImageView.kf.setImage(with: URL(string: friendInfo.picturePath))
+        userNicknameLabel.text = friendInfo.nickname
     }
     
 }
