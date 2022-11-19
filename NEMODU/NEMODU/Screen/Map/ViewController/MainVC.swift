@@ -11,12 +11,15 @@ import RxGesture
 import RxSwift
 import SnapKit
 import Then
+import Kingfisher
 
 class MainVC: BaseViewController {
     private let mapVC = MapVC()
         .then {
             $0.isWalking = false
         }
+    
+    private let refreshBtnView = RefreshBtnView()
     
     private var filterBtn = UIButton()
         .then {
@@ -62,16 +65,6 @@ class MainVC: BaseViewController {
             $0.semanticContentAttribute = .forceRightToLeft
         }
     
-    private let blocksCnt = UILabel()
-        .then {
-            $0.text = "현재 나의 영역: -칸"
-            $0.font = .headline2
-            $0.textColor = .gray800
-        }
-    
-    private let refreshBtn = UIButton()
-    
-    private let naviBar = NavigationBar()
     private let viewModel = MainVM()
     private let bag = DisposeBag()
     
@@ -88,7 +81,6 @@ class MainVC: BaseViewController {
     override func configureView() {
         super.configureView()
         configureMainView()
-        configureNaviBar()
         mapVC.setUserLocationAnimation(visible: false)
     }
     
@@ -120,23 +112,12 @@ extension MainVC {
     private func configureMainView() {
         addChild(mapVC)
         view.addSubviews([mapVC.view,
-                          blocksCnt,
+                          refreshBtnView,
                           filterBtn,
                           challengeListBtn,
                           infoMessage,
-                          startWalkBtn,
-                          refreshBtn])
+                          startWalkBtn])
         challengeListBtn.addSubview(challengeCnt)
-    }
-    
-    private func configureNaviBar() {
-        view.addSubview(naviBar)
-        naviBar.configureNaviBar(targetVC: self, title: "이번 주 기록")
-        naviBar.setTitleFont(font: .title2)
-    }
-    
-    private func configureBlocksCnt(_ cnt: Int) {
-        blocksCnt.text = "현재 나의 영역: \(cnt.insertComma)칸"
     }
     
     private func configureChallengeListBtn(cnt: Int) {
@@ -172,8 +153,15 @@ extension MainVC {
             $0.edges.equalToSuperview()
         }
         
+        refreshBtnView.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.centerX.equalToSuperview()
+            $0.height.equalTo(66)
+            $0.width.equalTo(163)
+        }
+        
         filterBtn.snp.makeConstraints {
-            $0.top.equalTo(naviBar.snp.bottom).offset(6)
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(50)
             $0.trailing.equalToSuperview().offset(-20)
             $0.width.height.equalTo(48)
         }
@@ -206,18 +194,6 @@ extension MainVC {
             $0.trailing.equalToSuperview().offset(-24)
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-30)
             $0.height.equalTo(48)
-        }
-        
-        blocksCnt.snp.makeConstraints {
-            $0.top.equalTo(naviBar.snp.bottom)
-            $0.centerX.equalToSuperview()
-        }
-        
-        // TODO: - 임시 디자인 적용
-        refreshBtn.snp.makeConstraints {
-            $0.width.height.equalTo(100)
-            $0.leading.equalToSuperview()
-            $0.top.equalTo(view.safeAreaLayoutGuide)
         }
     }
 }
@@ -261,9 +237,10 @@ extension MainVC {
             })
             .disposed(by: bag)
         
-        // 새로고침 버튼
-        refreshBtn.rx.tap
-            .asDriver()
+        // 새로고침 영역
+        refreshBtnView.rx.tapGesture()
+            .when(.ended)
+            .asDriver(onErrorJustReturn: .init())
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.mapVC.mapView.removeOverlays(self.mapVC.mapView.overlays)
@@ -298,17 +275,27 @@ extension MainVC {
             .disposed(by: bag)
     }
     
-    // TODO: - 서버 프로필 이미지 추가 후 수정
     private func bindMyBlocks() {
         viewModel.output.myBlocks
             .subscribe(onNext: { [weak self] user in
                 guard let self = self else { return }
-                self.configureBlocksCnt(user.matricesNumber ?? 0)
+                self.refreshBtnView.configureBlocksCnt(user.matricesNumber ?? 0)
                 
                 guard let latitude = user.latitude,
-                      let longitude = user.longitude else { return }
-                self.mapVC.addMyAnnotation(coordinate: [latitude, longitude],
-                                           profileImage: UIImage(named: "defaultThumbnail")!)
+                      let longitude = user.longitude,
+                      let picturePath = user.picturePath,
+                      let url = URL(string: picturePath) else { return }
+                
+                KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: url)) { result in
+                    switch result {
+                    case .success(let data):
+                        self.mapVC.addMyAnnotation(coordinate: [latitude, longitude],
+                                                   profileImage: data.image)
+                    case .failure(let error):
+                        print(error)
+                    }
+                }
+                
                 self.drawBlockArea(blocks: user.matrices ?? [],
                                    owner: .mine,
                                    blockColor: .main40)
@@ -324,13 +311,25 @@ extension MainVC {
                 guard let self = self else { return }
                 friends.forEach {
                     guard let latitude = $0.latitude,
-                          let longitude = $0.longitude else { return }
-                    self.mapVC.addFriendAnnotation(coordinate: [latitude, longitude],
-                                                   profileImage: UIImage(named: "defaultThumbnail")!,
-                                                   nickname: $0.nickname,
-                                                   color: .main,
-                                                   challengeCnt: 0,
-                                                   isEnabled: true)
+                          let longitude = $0.longitude,
+                          let picturePath = $0.picturePath,
+                          let url = URL(string: picturePath) else { return }
+                    
+                    let nickname = $0.nickname
+                    KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: url)) { result in
+                        switch result {
+                        case .success(let data):
+                            self.mapVC.addFriendAnnotation(coordinate: [latitude, longitude],
+                                                           profileImage: data.image,
+                                                           nickname: nickname,
+                                                           color: .main,
+                                                           challengeCnt: 0,
+                                                           isEnabled: true)
+                        case .failure(let error):
+                            print(error)
+                        }
+                    }
+                    
                     self.drawBlockArea(blocks: $0.matrices ?? [],
                                        owner: .friends,
                                        blockColor: .gray25)
@@ -346,12 +345,23 @@ extension MainVC {
             .subscribe(onNext: { [weak self] friends in
                 guard let self = self else { return }
                 friends.forEach {
-                    self.mapVC.addFriendAnnotation(coordinate: [$0.latitude, $0.longitude],
-                                                   profileImage: UIImage(named: "defaultThumbnail")!,
-                                                   nickname: $0.nickname,
-                                                   color: ChallengeColorType(rawValue: $0.challengeColor)?.primaryColor ?? .main,
-                                                   challengeCnt: $0.challengeNumber,
-                                                   isEnabled: true)
+                    guard let url = URL(string: $0.picturePath) else { return }
+                    let friend = $0
+                    KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: url)) { result in
+                        switch result {
+                        case .success(let data):
+                            self.mapVC.addFriendAnnotation(coordinate: [friend.latitude, friend.longitude],
+                                                           profileImage: data.image,
+                                                           nickname: friend.nickname,
+                                                           color: ChallengeColorType(rawValue: friend.challengeColor)?.primaryColor ?? .main,
+                                                           challengeCnt: friend.challengeNumber,
+                                                           isEnabled: true)
+                        case .failure(let error):
+                            print(error)
+                        }
+                    }
+                    
+                    
                     self.drawBlockArea(blocks: $0.matrices,
                                        owner: .friends,
                                        blockColor: ChallengeColorType(rawValue: $0.challengeColor)?.blockColor ?? .gray25)

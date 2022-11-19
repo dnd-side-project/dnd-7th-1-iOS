@@ -37,6 +37,7 @@
 		23255A7F28D0DC30005D6D5A /* NicknameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A7E28D0DC30005D6D5A /* NicknameModel.swift */; };
 		23255A8228D0DCE9005D6D5A /* UserDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A8128D0DCE9005D6D5A /* UserDataModel.swift */; };
 		232B89FF28C8BCAA00737F18 /* LoginVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232B89FE28C8BCAA00737F18 /* LoginVM.swift */; };
+		232CE4FA290E39D300644AC6 /* FriendStatusType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232CE4F9290E39D300644AC6 /* FriendStatusType.swift */; };
 		232F0B6328B6803C005C9A07 /* AlertVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232F0B6228B6803C005C9A07 /* AlertVC.swift */; };
 		232F0B6528B686C5005C9A07 /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232F0B6428B686C5005C9A07 /* AlertType.swift */; };
 		233258A128D60C370073B09E /* AuthInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233258A028D60C370073B09E /* AuthInterceptor.swift */; };
@@ -105,6 +106,7 @@
 		2375740728FC4DF4006026ED /* RecommendListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2375740628FC4DF4006026ED /* RecommendListVC.swift */; };
 		2375740928FC50AE006026ED /* RecommendFriendTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2375740828FC50AE006026ED /* RecommendFriendTVC.swift */; };
 		2375740B28FC5808006026ED /* ViewMoreTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2375740A28FC5808006026ED /* ViewMoreTVC.swift */; };
+		2378A4972904106900FB7031 /* LocationSettingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2378A4962904106900FB7031 /* LocationSettingVC.swift */; };
 		238C4DDF28A3AC18000BEE36 /* RecordResultVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DDE28A3AC18000BEE36 /* RecordResultVC.swift */; };
 		238C4DE328A3F0D6000BEE36 /* NemoduTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */; };
 		238C4DE528A4BFE2000BEE36 /* UIScrollView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DE428A4BFE2000BEE36 /* UIScrollView+.swift */; };
@@ -136,6 +138,7 @@
 		23D8B7E528B4D5AA00F48165 /* CalendarSelectStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7E428B4D5AA00F48165 /* CalendarSelectStackView.swift */; };
 		23D8B7E728B4E44700F48165 /* MyRecordDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7E628B4E44700F48165 /* MyRecordDetailVC.swift */; };
 		23ECC09F28D859E000F65692 /* AuthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23ECC09E28D859E000F65692 /* AuthAPI.swift */; };
+		23EFB81C29113A00009A2D01 /* RefreshBtnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EFB81B29113A00009A2D01 /* RefreshBtnView.swift */; };
 		23F5716928A6802C005F2E21 /* UIStackView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5716828A6802C005F2E21 /* UIStackView+.swift */; };
 		23F5716D28A6A61E005F2E21 /* MiniMapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5716C28A6A61D005F2E21 /* MiniMapVC.swift */; };
 		23F5716F28A6AD01005F2E21 /* RecordStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5716E28A6AD01005F2E21 /* RecordStackView.swift */; };
@@ -156,7 +159,6 @@
 		3C05FFED28B7324D0017F4E1 /* ChallengeTermButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C05FFEC28B7324D0017F4E1 /* ChallengeTermButtonView.swift */; };
 		3C05FFEF28B74E2B0017F4E1 /* CreateChallengeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C05FFEE28B74E2B0017F4E1 /* CreateChallengeVC.swift */; };
 		3C05FFF128B794390017F4E1 /* CreateChallengeSuccuessVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C05FFF028B794390017F4E1 /* CreateChallengeSuccuessVC.swift */; };
-		3C05FFF328B7C79A0017F4E1 /* SelectFriendsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C05FFF228B7C79A0017F4E1 /* SelectFriendsVC.swift */; };
 		3C05FFF528B7E0900017F4E1 /* SelectFriendsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C05FFF428B7E0900017F4E1 /* SelectFriendsTVC.swift */; };
 		3C064BBD290F95B500522274 /* ProgressAndDoneChallengeListResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C064BBC290F95B500522274 /* ProgressAndDoneChallengeListResponseModel.swift */; };
 		3C064BBF290FAEAB00522274 /* InvitedChallengeListResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C064BBE290FAEAB00522274 /* InvitedChallengeListResponseModel.swift */; };
@@ -214,6 +216,7 @@
 		3CF431BC28FE7BAA007EB115 /* StepRankingListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF431BB28FE7BAA007EB115 /* StepRankingListVC.swift */; };
 		3CF431C028FE82FE007EB115 /* AccumulateRankingListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF431BF28FE82FE007EB115 /* AccumulateRankingListVC.swift */; };
 		3CF431C228FE93D3007EB115 /* ChallengeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF431C128FE93D3007EB115 /* ChallengeVC.swift */; };
+		3CF4F486291AAF1700B588F2 /* SelectFriendsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF4F485291AAF1700B588F2 /* SelectFriendsVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -249,6 +252,7 @@
 		23255A7E28D0DC30005D6D5A /* NicknameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameModel.swift; sourceTree = "<group>"; };
 		23255A8128D0DCE9005D6D5A /* UserDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataModel.swift; sourceTree = "<group>"; };
 		232B89FE28C8BCAA00737F18 /* LoginVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVM.swift; sourceTree = "<group>"; };
+		232CE4F9290E39D300644AC6 /* FriendStatusType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendStatusType.swift; sourceTree = "<group>"; };
 		232F0B6228B6803C005C9A07 /* AlertVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertVC.swift; sourceTree = "<group>"; };
 		232F0B6428B686C5005C9A07 /* AlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertType.swift; sourceTree = "<group>"; };
 		233258A028D60C370073B09E /* AuthInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthInterceptor.swift; sourceTree = "<group>"; };
@@ -320,6 +324,7 @@
 		2375740628FC4DF4006026ED /* RecommendListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendListVC.swift; sourceTree = "<group>"; };
 		2375740828FC50AE006026ED /* RecommendFriendTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendFriendTVC.swift; sourceTree = "<group>"; };
 		2375740A28FC5808006026ED /* ViewMoreTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreTVC.swift; sourceTree = "<group>"; };
+		2378A4962904106900FB7031 /* LocationSettingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSettingVC.swift; sourceTree = "<group>"; };
 		238C4DDE28A3AC18000BEE36 /* RecordResultVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordResultVC.swift; sourceTree = "<group>"; };
 		238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NemoduTextView.swift; sourceTree = "<group>"; };
 		238C4DE428A4BFE2000BEE36 /* UIScrollView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+.swift"; sourceTree = "<group>"; };
@@ -351,6 +356,7 @@
 		23D8B7E428B4D5AA00F48165 /* CalendarSelectStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSelectStackView.swift; sourceTree = "<group>"; };
 		23D8B7E628B4E44700F48165 /* MyRecordDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordDetailVC.swift; sourceTree = "<group>"; };
 		23ECC09E28D859E000F65692 /* AuthAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthAPI.swift; sourceTree = "<group>"; };
+		23EFB81B29113A00009A2D01 /* RefreshBtnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshBtnView.swift; sourceTree = "<group>"; };
 		23F5716828A6802C005F2E21 /* UIStackView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+.swift"; sourceTree = "<group>"; };
 		23F5716C28A6A61D005F2E21 /* MiniMapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniMapVC.swift; sourceTree = "<group>"; };
 		23F5716E28A6AD01005F2E21 /* RecordStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordStackView.swift; sourceTree = "<group>"; };
@@ -370,7 +376,6 @@
 		3C05FFEC28B7324D0017F4E1 /* ChallengeTermButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeTermButtonView.swift; sourceTree = "<group>"; };
 		3C05FFEE28B74E2B0017F4E1 /* CreateChallengeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateChallengeVC.swift; sourceTree = "<group>"; };
 		3C05FFF028B794390017F4E1 /* CreateChallengeSuccuessVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateChallengeSuccuessVC.swift; sourceTree = "<group>"; };
-		3C05FFF228B7C79A0017F4E1 /* SelectFriendsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectFriendsVC.swift; sourceTree = "<group>"; };
 		3C05FFF428B7E0900017F4E1 /* SelectFriendsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectFriendsTVC.swift; sourceTree = "<group>"; };
 		3C064BBC290F95B500522274 /* ProgressAndDoneChallengeListResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressAndDoneChallengeListResponseModel.swift; sourceTree = "<group>"; };
 		3C064BBE290FAEAB00522274 /* InvitedChallengeListResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitedChallengeListResponseModel.swift; sourceTree = "<group>"; };
@@ -434,6 +439,7 @@
 		3CF431BB28FE7BAA007EB115 /* StepRankingListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepRankingListVC.swift; sourceTree = "<group>"; };
 		3CF431BF28FE82FE007EB115 /* AccumulateRankingListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccumulateRankingListVC.swift; sourceTree = "<group>"; };
 		3CF431C128FE93D3007EB115 /* ChallengeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeVC.swift; sourceTree = "<group>"; };
+		3CF4F485291AAF1700B588F2 /* SelectFriendsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectFriendsVC.swift; sourceTree = "<group>"; };
 		E7400965811C32403A72B2B0 /* Pods_NEMODU.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NEMODU.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -527,6 +533,7 @@
 				23F6959B28C9F6A7008D1378 /* UserInfoSettingVC.swift */,
 				23255A6928CF12DB005D6D5A /* NicknameVC.swift */,
 				23255A6B28CF1307005D6D5A /* AddFriendsVC.swift */,
+				2378A4962904106900FB7031 /* LocationSettingVC.swift */,
 				23255A7328CF5325005D6D5A /* EnterVC.swift */,
 			);
 			path = ViewController;
@@ -917,6 +924,7 @@
 				2312519328B6943B00DF1C69 /* ToastType.swift */,
 				23255A6D28CF3787005D6D5A /* NicknameType.swift */,
 				2359B08B28EC724000930EF0 /* DateType.swift */,
+				232CE4F9290E39D300644AC6 /* FriendStatusType.swift */,
 			);
 			path = Enum;
 			sourceTree = "<group>";
@@ -959,6 +967,7 @@
 				23F5717D28AA1A11005F2E21 /* FriendAnnotationView.swift */,
 				23F5718528AA6DAD005F2E21 /* MyAnnotation.swift */,
 				23F5718728AA6DEE005F2E21 /* MyAnnotationView.swift */,
+				23EFB81B29113A00009A2D01 /* RefreshBtnView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -966,6 +975,7 @@
 		3C02802D28B507D5002BF37C /* CreateChallenge */ = {
 			isa = PBXGroup;
 			children = (
+				3CF4F485291AAF1700B588F2 /* SelectFriendsVC.swift */,
 				3CACEBD228C9E9E6001F5109 /* View */,
 				3CC1EC7028D0675D007C87F6 /* SelectChallengeType */,
 				3CC1EC7128D0678C007C87F6 /* CreateWeekChallenge */,
@@ -1246,7 +1256,6 @@
 				3CC1EC7428D06917007C87F6 /* CreateAccumulateChallengeVC.swift */,
 				3C05FFEE28B74E2B0017F4E1 /* CreateChallengeVC.swift */,
 				3C9FD39C28B68D19006FA812 /* ChallengePeriodVC.swift */,
-				3C05FFF228B7C79A0017F4E1 /* SelectFriendsVC.swift */,
 				3C05FFF028B794390017F4E1 /* CreateChallengeSuccuessVC.swift */,
 			);
 			path = CreateWeekChallenge;
@@ -1403,6 +1412,7 @@
 				23412FDE28AE396D00B73D62 /* ChallengeListVM.swift in Sources */,
 				232B89FF28C8BCAA00737F18 /* LoginVM.swift in Sources */,
 				237573E928F92A1B006026ED /* NicknameCheckView.swift in Sources */,
+				3C3BD77428B3754A00AD55B6 /* AreaRankingListRequestModel.swift in Sources */,
 				3C3BD77428B3754A00AD55B6 /* RankingListRequestModel.swift in Sources */,
 				2375740328FC43C0006026ED /* FriendRequestTVC.swift in Sources */,
 				3CB766BD290E773600EAE812 /* WaitChallengeListResponseModel.swift in Sources */,
@@ -1410,6 +1420,7 @@
 				231A2B8D28B20B3E00FF884B /* ProfileView.swift in Sources */,
 				23F5718228AA6038005F2E21 /* UIImage+.swift in Sources */,
 				237573D328F56A7B006026ED /* EditMemoRequestModel.swift in Sources */,
+				2378A4972904106900FB7031 /* LocationSettingVC.swift in Sources */,
 				23B7207028A12DBB00D3A410 /* RecordView.swift in Sources */,
 				3C09AE3B28AF6450005DD125 /* ChallengeFinishTVC.swift in Sources */,
 				3C6F03192910F779002829D7 /* AcceptRejectChallengeRequestModel.swift in Sources */,
@@ -1420,7 +1431,6 @@
 				3C992F1728AE623B00D96E21 /* ListTypeMenuBarCVC.swift in Sources */,
 				23C4CD0728B7A87D00D2F469 /* Int+.swift in Sources */,
 				3C09AE3728AF6071005DD125 /* ChallengeWaitingTVC.swift in Sources */,
-				3C05FFF328B7C79A0017F4E1 /* SelectFriendsVC.swift in Sources */,
 				3C9FD39928B640D7006FA812 /* CreateWeekChallengeVC.swift in Sources */,
 				3CB9DBA628A954EE007BC1BE /* RankingVC.swift in Sources */,
 				3C4FB96528AA937100A429B8 /* ChallengeListTVHV.swift in Sources */,
@@ -1513,6 +1523,7 @@
 				3C08138328A91C00009F854B /* ChallengeRankingVC.swift in Sources */,
 				2339D75028B284C20018013D /* MypageNC.swift in Sources */,
 				23255A6C28CF1307005D6D5A /* AddFriendsVC.swift in Sources */,
+				23EFB81C29113A00009A2D01 /* RefreshBtnView.swift in Sources */,
 				2348B3FB2892D15C001095BC /* Output.swift in Sources */,
 				2339D74E28B2849F0018013D /* MyRecordDataVC.swift in Sources */,
 				2375740928FC50AE006026ED /* RecommendFriendTVC.swift in Sources */,
@@ -1546,6 +1557,7 @@
 				2375740728FC4DF4006026ED /* RecommendListVC.swift in Sources */,
 				3C393FFD28A684DD0012B2B8 /* BaseTableViewCell.swift in Sources */,
 				23412FE228AE64D100B73D62 /* FriendProfileVM.swift in Sources */,
+				3CF4F486291AAF1700B588F2 /* SelectFriendsVC.swift in Sources */,
 				23B72058289808EB00D3A410 /* MapFilterBottomSheet.swift in Sources */,
 				3C08137F28A91C00009F854B /* InvitedChallengeTVC.swift in Sources */,
 				230CB2E428AD478000B11270 /* Matrix.swift in Sources */,
@@ -1561,6 +1573,7 @@
 				3C064BBD290F95B500522274 /* ProgressAndDoneChallengeListResponseModel.swift in Sources */,
 				2348B4012892D1A6001095BC /* UITextField+.swift in Sources */,
 				23F5717528A92D4A005F2E21 /* ProfileRecordStackView.swift in Sources */,
+				232CE4FA290E39D300644AC6 /* FriendStatusType.swift in Sources */,
 				23412FEA28AF795600B73D62 /* RecordDataRequest.swift in Sources */,
 				3C2A263228FF8BE4009E0069 /* AreaRankingListVM.swift in Sources */,
 				23B86D2128A26F0F00B1630E /* NavigationBar.swift in Sources */,
