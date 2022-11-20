@@ -15,8 +15,8 @@ import UITextView_Placeholder
 class NemoduTextView: BaseView {
     let tv = UITextView()
         .then {
-            $0.placeholderColor = .gray600
-            $0.font = .caption1
+            $0.placeholderColor = .gray500
+            $0.font = .body3
             $0.backgroundColor = .gray50
             $0.layer.cornerRadius = 10
             $0.layer.borderWidth = 1
@@ -26,14 +26,12 @@ class NemoduTextView: BaseView {
     
     private let memoCntLabel = UILabel()
         .then {
-            $0.font = .body3
+            $0.font = .caption1
             $0.textColor = .gray500
             $0.textAlignment = .right
         }
     
     var maxTextCnt = 100
-    private let keyboardWillShow = NotificationCenter.default.rx.notification(UIResponder.keyboardWillShowNotification)
-    private let keyboardWillHide = NotificationCenter.default.rx.notification(UIResponder.keyboardWillHideNotification)
     private let bag = DisposeBag()
     
     override func configureView() {
@@ -109,17 +107,23 @@ extension NemoduTextView {
 
 extension NemoduTextView {
     private func bindTextViewActivate() {
-        keyboardWillShow
-            .subscribe(onNext: { [weak self] _ in
+        tv.rx.didBeginEditing
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                self.tv.layer.borderColor = UIColor.secondary.cgColor
+                UIView.animate(withDuration: self.textBorderTime) {
+                    self.tv.layer.borderColor = UIColor.secondary.cgColor
+                }
             })
             .disposed(by: bag)
-        
-        keyboardWillHide
-            .subscribe(onNext: { [weak self] _ in
+
+        tv.rx.didEndEditing
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                self.tv.layer.borderColor = UIColor.clear.cgColor
+                UIView.animate(withDuration: self.textBorderTime) {
+                    self.tv.layer.borderColor = UIColor.clear.cgColor
+                }
             })
             .disposed(by: bag)
     }

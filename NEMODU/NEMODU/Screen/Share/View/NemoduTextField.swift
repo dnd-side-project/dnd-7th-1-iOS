@@ -19,7 +19,7 @@ class NemoduTextField: UITextField {
         backgroundColor = .gray50
         font = .body3
         textColor = .gray900
-        attributedPlaceholder = NSAttributedString(string: placeholder ?? "",
+        attributedPlaceholder = NSAttributedString(string: "tmpPlaceholder",
                                                    attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray500])
     }
     

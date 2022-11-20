@@ -13,3 +13,10 @@ struct ProfileResponseModel: Codable {
     let picturePath: String
     let challenges: [ChallengeElementResponseModel]
 }
+
+extension ProfileResponseModel {
+    var profileImageURL: URL? {
+        guard let profileImageURL = picturePath.encodeURL() else { return nil }
+        return URL(string: profileImageURL)
+    }
+}

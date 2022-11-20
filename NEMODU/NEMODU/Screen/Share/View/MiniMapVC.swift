@@ -87,7 +87,7 @@ extension MiniMapVC {
     /// 영역 전체와 마지막 위치를 지정하는 annotation을 한 눈에 보이게 지도에 그려주는 함수
     func drawDetailMap(latitude: Double, longitude: Double) {
         addMyAnnotation(coordinate: [latitude, longitude],
-                        profileImage: UIImage(named: "defaultThumbnail")!)
+                        profileImage: .defaultThumbnail)
         drawMiniMap()
     }
     

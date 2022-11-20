@@ -72,7 +72,7 @@ struct APISession: APIService {
     }
     
     /// [POST] - multipartForm
-    func postRequestWithImage<T: Decodable>(with urlResource: urlResource<T>, param: Parameters, image: UIImage, method: HTTPMethod) -> Observable<Result<T, APIError>> {
+    func postRequestWithImage<T: Decodable>(with urlResource: urlResource<T>, param: Parameters, image: UIImage) -> Observable<Result<T, APIError>> {
         Observable<Result<T, APIError>>.create { observer in
             let headers: HTTPHeaders = [
                 "Content-Type": "application/json"
@@ -83,9 +83,12 @@ struct APISession: APIService {
                     multipart.append("\(value)".data(using: .utf8, allowLossyConversion: false)!, withName: "\(key)")
                 }
                 if let imageData = image.jpegData(compressionQuality: 1) {
-                    multipart.append(imageData, withName: "files", fileName: "image.png", mimeType: "image/png")
+                    multipart.append(imageData, withName: "picture", fileName: "image.png", mimeType: "image/png")
                 }
-            }, to: urlResource.resultURL, method: method, headers: headers)
+            }, to: urlResource.resultURL,
+                                 method: .post,
+                                 headers: headers,
+                                 interceptor: AuthInterceptor())
                 .validate(statusCode: 200...399)
                 .responseDecodable(of: T.self) { response in
                     switch response.result {

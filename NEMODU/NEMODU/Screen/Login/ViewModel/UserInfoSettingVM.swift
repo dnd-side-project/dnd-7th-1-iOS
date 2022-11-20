@@ -26,6 +26,7 @@ final class UserInfoSettingVM: BaseViewModel {
         var myProfile = PublishRelay<MyProfileResponseModel>()
         var isNextBtnActive = BehaviorRelay<Bool>(value: false)
         var isValidNickname = PublishRelay<Bool>()
+        var isProfileSaved = PublishRelay<Bool>()
     }
     
     // MARK: - Init
@@ -93,5 +94,25 @@ extension UserInfoSettingVM {
                 }
             })
             .disposed(by: bag)
+    }
+    
+    func postEditProfile(_ profile: EditProfileRequestModel) {
+        let path = "user/info/profile/edit"
+        let resource = urlResource<EditProfileResponseModel>(path: path)
+
+        AuthAPI.shared.editProfile(with: resource,
+                                   param: profile.profileParam,
+                                   image: profile.picture)
+        .withUnretained(self)
+        .subscribe(onNext: { owner, result in
+            switch result {
+            case .failure(let error):
+                owner.apiError.onNext(error)
+            case .success(let data):
+                UserDefaults.standard.set(data.nickname, forKey: UserDefaults.Keys.nickname)
+                owner.output.isProfileSaved.accept(true)
+            }
+        })
+        .disposed(by: bag)
     }
 }
