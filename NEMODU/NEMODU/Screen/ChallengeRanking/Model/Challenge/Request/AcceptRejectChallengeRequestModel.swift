@@ -2,7 +2,7 @@
 //  AcceptRejectChallengeRequestModel.swift
 //  NEMODU
 //
-//  Created by Kennadi on 2022/11/01.
+//  Created by Kim HeeJae on 2022/11/01.
 //
 
 import Foundation
