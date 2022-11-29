@@ -34,9 +34,10 @@ class FriendProfileBottomSheet: DynamicBottomSheetViewController {
     
     private let profileImageBtn = UIButton()
         .then {
-            $0.setImage(UIImage(named: "defaultThumbnail"), for: .normal)
+            $0.setImage(.defaultThumbnail, for: .normal)
             $0.layer.cornerRadius = 48
             $0.clipsToBounds = true
+            $0.imageView?.contentMode = .scaleAspectFill
         }
     
     private let nicknameLabel = UILabel()
@@ -196,11 +197,10 @@ extension FriendProfileBottomSheet {
     }
     
     private func setProfile(_ profile: ProfileResponseModel) {
-        // TODO: - Error 연결
         guard let friendType = FriendStatusType(rawValue: profile.isFriend) else { return }
-        profileImageBtn.kf.setImage(with: URL(string: profile.picturePath),
+        profileImageBtn.kf.setImage(with: profile.profileImageURL,
                                     for: .normal,
-                                    placeholder: UIImage(named: "defaultThumbnail"))
+                                    placeholder: .defaultThumbnail)
         nicknameLabel.text = profile.nickname
         lastAccessTime.text = "최근 활동 : \(profile.lasted.relativeDateTime())"
         profileMessage.text = profile.intro

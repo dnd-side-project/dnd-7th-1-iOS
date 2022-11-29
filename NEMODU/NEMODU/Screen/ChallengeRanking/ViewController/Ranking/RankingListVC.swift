@@ -77,7 +77,7 @@ class RankingListVC : BaseViewController {
     override func layoutView() {
         super.layoutView()
         
-        configreLayout()
+        configureLayout()
     }
     
     override func bindInput() {
@@ -134,7 +134,7 @@ class RankingListVC : BaseViewController {
 
 extension RankingListVC {
     
-    private func configreLayout() {
+    private func configureLayout() {
         view.addSubviews([
                                  weeksNavigationView,
                                  myRankingTVC,

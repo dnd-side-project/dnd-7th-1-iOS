@@ -15,7 +15,7 @@ class ChallengeListTVC : BaseTableViewCell {
     
     // MARK: - UI components
     
-    let contentsView = UIView()
+    private let contentsView = UIView()
         .then {
             $0.backgroundColor = .clear
             $0.layer.cornerRadius = 8
@@ -25,7 +25,7 @@ class ChallengeListTVC : BaseTableViewCell {
             $0.layer.borderWidth = 1
         }
     
-    let innerContentsView = UIView()
+    private let innerContentsView = UIView()
     
     let challengeTypeLabel = UILabel()
         .then {
@@ -82,34 +82,81 @@ class ChallengeListTVC : BaseTableViewCell {
     
     // MARK: - Life Cycle
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        makeUserImageViews(numberOfUser: 4, userImageURL: "defaultThumbnail")
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK: - Function
-    
     override func configureView() {
         super.configureView()
         
-        selectionStyle = .none
+        configureContentView()
+        
     }
     
     override func layoutView() {
         super.layoutView()
         
+        configureLayout()
+    }
+    
+    // MARK: - Function
+    
+    func makeUserImageViews(numberOfUsers: Int, usersImageURL: [String]) {
+        let userImageContainerView = UIView()
+        
+        let spacing = 12
+        for order in 0..<numberOfUsers {
+            // set userImageView style
+            let userImageView = UIImageView()
+                .then {
+                    $0.layer.cornerRadius = 8
+                    $0.layer.masksToBounds = true
+                    $0.layer.borderWidth = 1
+                    $0.layer.borderColor = UIColor.white.cgColor
+                    $0.translatesAutoresizingMaskIntoConstraints = false
+                    
+                    $0.kf.setImage(with: URL(string: usersImageURL[order]))
+                }
+            
+            // make userImageViews contraints
+            userImageContainerView.addSubview(userImageView)
+            
+            userImageView.snp.makeConstraints {
+                $0.width.equalTo(16)
+                $0.height.equalTo(userImageView.snp.width)
+                
+                $0.verticalEdges.equalTo(userImageContainerView)
+                $0.right.equalTo(userImageContainerView.snp.right).inset((numberOfUsers - order) * spacing)
+            }
+            
+            // make userImageViews contraints to contentsView
+            innerContentsView.addSubview(userImageContainerView)
+            
+            userImageContainerView.snp.makeConstraints {
+                $0.centerY.equalTo(currentStateLabel)
+                $0.right.equalTo(dDayLabel.snp.right)
+            }
+        }
+    }
+    
+}
+
+// MARK: - Configure
+
+extension ChallengeListTVC {
+    
+    private func configureContentView() {
+        selectionStyle = .none
+    }
+    
+}
+
+// MARK: - Layout
+
+extension ChallengeListTVC {
+    
+    private func configureLayout() {
         contentView.addSubview(contentsView)
         contentsView.addSubview(innerContentsView)
-        
-        innerContentsView.addSubviews([challengeTypeLabel, challengeTermLabel, dDayLabel])
-        innerContentsView.addSubviews([challengeNameImage, challengeNameLabel])
-        innerContentsView.addSubviews([currentStateLabel, currentJoinUserLabel])
-        
+        innerContentsView.addSubviews([challengeTypeLabel, challengeTermLabel, dDayLabel,
+                                       challengeNameImage, challengeNameLabel,
+                                       currentStateLabel, currentJoinUserLabel])
         
         
         let padding1 = 12
@@ -168,42 +215,4 @@ class ChallengeListTVC : BaseTableViewCell {
         }
     }
     
-    func makeUserImageViews(numberOfUser: Int, userImageURL: String) {
-        let userImageContainerView = UIView()
-        
-        let spacing = 12
-        for order in 1...numberOfUser {
-            // set userImageView style
-            let userImageView = UIImageView()
-                .then {
-                    $0.layer.cornerRadius = 8
-                    $0.layer.masksToBounds = true
-                    $0.layer.borderWidth = 1
-                    $0.layer.borderColor = UIColor.white.cgColor
-                    $0.translatesAutoresizingMaskIntoConstraints = false
-                    
-                    $0.image = UIImage(named: userImageURL)
-                }
-            
-            // make userImageViews contraints
-            userImageContainerView.addSubview(userImageView)
-            
-            userImageView.snp.makeConstraints {
-                $0.width.equalTo(16)
-                $0.height.equalTo(userImageView.snp.width)
-                
-                $0.verticalEdges.equalTo(userImageContainerView)
-                $0.right.equalTo(userImageContainerView.snp.right).inset((numberOfUser - order) * spacing)
-            }
-            
-            // make userImageViews contraints to contentsView
-            innerContentsView.addSubview(userImageContainerView)
-            
-            userImageContainerView.snp.makeConstraints {
-                $0.centerY.equalTo(currentStateLabel)
-                $0.right.equalTo(dDayLabel.snp.right)
-            }
-        }
-        
-    }
 }

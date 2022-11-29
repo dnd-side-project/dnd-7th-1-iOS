@@ -38,4 +38,13 @@ extension Date {
             return weekDay - 2
         }
     }
+    
+    /// 특정 날짜의 요일을 반환(ex, 화)
+    func getDayOfWeek() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "EEEEEE"
+        formatter.locale = Locale(identifier:"ko_KR")
+        let convertStr = formatter.string(from: self)
+        return convertStr
+    }
 }

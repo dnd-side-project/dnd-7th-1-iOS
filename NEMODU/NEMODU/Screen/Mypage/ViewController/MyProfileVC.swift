@@ -19,9 +19,10 @@ class MyProfileVC: BaseViewController {
     
     private let profileImageBtn = UIButton()
         .then {
-            $0.setImage(UIImage(named: "defaultThumbnail"), for: .normal)
+            $0.setImage(.defaultThumbnail, for: .normal)
             $0.layer.cornerRadius = 48
             $0.clipsToBounds = true
+            $0.imageView?.contentMode = .scaleAspectFill
         }
     
     private let nicknameLabel = UILabel()
@@ -134,8 +135,11 @@ extension MyProfileVC {
     }
     
     private func configureProfileData(_ data: MyProfileResponseModel) {
-        profileImageBtn.kf.setImage(with: URL(string: data.picturePath),
-                                    for: .normal)
+        // TODO: - options 수정
+        profileImageBtn.kf.setImage(with: data.profileImageURL,
+                                    for: .normal,
+                                    placeholder: .defaultThumbnail,
+                                    options: [.forceRefresh])
         nicknameLabel.text = data.nickname
         profileMessageLabel.text = data.intro
         accountLabel.text = data.mail
@@ -202,7 +206,8 @@ extension MyProfileVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                // TODO: 프로필 수정 화면 연결
+                let editProfileVC = EditProfileVC()
+                self.navigationController?.pushViewController(editProfileVC, animated: true)
             })
             .disposed(by: bag)
     }

@@ -40,4 +40,9 @@ extension String {
         let relativeDate = dateFormatter.localizedString(for: self.toDate(.withTime), relativeTo: Date.now)
         return relativeDate
     }
+    
+    /// 인코딩한 string을 반환하는 메서드
+    func encodeURL() -> String? {
+        return addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+    }
 }

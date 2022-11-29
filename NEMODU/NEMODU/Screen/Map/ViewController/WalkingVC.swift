@@ -363,7 +363,7 @@ extension WalkingVC {
                 if !self.viewModel.output.friendVisible.value { return }
                 friends.forEach {
                     self.mapVC.addFriendAnnotation(coordinate: [$0.latitude, $0.longitude],
-                                                   profileImage: UIImage(named: "defaultThumbnail")!,
+                                                   profileImage: .defaultThumbnail,
                                                    nickname: $0.nickname,
                                                    color: ChallengeColorType(rawValue: $0.challengeColor)?.primaryColor ?? .main,
                                                    challengeCnt: $0.challengeNumber,

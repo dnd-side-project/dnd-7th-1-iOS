@@ -12,7 +12,7 @@ import SnapKit
 class FriendRequestTVC: BaseTableViewCell {
     private let profileImageView = UIImageView()
         .then {
-            $0.image = UIImage(named: "defaultThumbnail")
+            $0.image = .defaultThumbnail
             $0.layer.cornerRadius = 20
             $0.clipsToBounds = true
         }
@@ -54,7 +54,7 @@ class FriendRequestTVC: BaseTableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        profileImageView.image = UIImage(named: "defaultThumbnail")
+        profileImageView.image = .defaultThumbnail
         nicknameLabel.text = nil
     }
 }

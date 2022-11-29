@@ -16,7 +16,7 @@ class FriendListView: BaseView {
     let containerView = UIView()
     let profileImage = UIImageView()
         .then {
-            $0.image = UIImage(named: "defaultThumbnail")
+            $0.image = .defaultThumbnail
             $0.layer.cornerRadius = 36
             $0.layer.masksToBounds = true
         }

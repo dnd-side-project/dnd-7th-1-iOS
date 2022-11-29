@@ -13,6 +13,9 @@ class ProfileImageVC: BaseViewController {
     private let naviBar = NavigationBar()
     
     var profileImage = UIImageView()
+        .then {
+            $0.contentMode = .scaleAspectFill
+        }
     
     private var initialTouchPoint = CGPoint.zero
     

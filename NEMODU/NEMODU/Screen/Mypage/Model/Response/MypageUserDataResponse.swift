@@ -12,3 +12,10 @@ struct MypageUserDataResponseModel: Codable {
     let matrixNumber, stepCount, distance, friendNumber: Int
     let allMatrixNumber: Int
 }
+
+extension MypageUserDataResponseModel {
+    var profileImageURL: URL? {
+        guard let profileImageURL = picturePath.encodeURL() else { return nil }
+        return URL(string: profileImageURL)
+    }
+}
