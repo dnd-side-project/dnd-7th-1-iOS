@@ -8,7 +8,7 @@
 import Foundation
 
 struct urlResource<T: Decodable> {
-    let baseURL = URL(string: "http://43.200.33.109:8080/")
+    let baseURL = URL(string: "http://43.201.133.215:8080/")
     let path: String
     var resultURL: URL {
         return path.contains("http")
