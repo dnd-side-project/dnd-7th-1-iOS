@@ -31,7 +31,7 @@ class ChallengeDetailTVFV : UITableViewHeaderFooterView {
             
             $0.firstView.recordValue.text = "-"
             $0.secondView.recordValue.text = "-"
-            $0.thirdView.recordValue.text = "-".insertComma
+            $0.thirdView.recordValue.text = "-"
         }
     
     // MARK: - Variables and Properties
@@ -51,19 +51,42 @@ class ChallengeDetailTVFV : UITableViewHeaderFooterView {
     
     // MARK: - Function
     
-    func configureFV() {
+}
+
+// MARK: - Configure
+
+extension ChallengeDetailTVFV {
+    
+    private func configureFV() {
         contentView.backgroundColor = .white
     }
     
-    func layoutView() {
+    func configureChallengeDetailTVFV(distance: Int, time: Int, steps: Int) {
+        _ = recordStackView
+            .then {
+                $0.firstView.recordValue.text = "\(distance.toKilometer)"
+                $0.secondView.recordValue.text = "\(time / 60):" + String(format: "%02d", time % 60)
+                $0.thirdView.recordValue.text = "\(steps.insertComma)"
+            }
+    }
+    
+}
+
+// MARK: - Layout
+
+extension ChallengeDetailTVFV {
+    
+    private func layoutView() {
         contentView.addSubviews([titleLabel,
                                 recordStackView])
         
         titleLabel.snp.makeConstraints {
+            $0.height.equalTo(56).priority(.high)
+            
             $0.top.horizontalEdges.equalTo(contentView)
         }
         recordStackView.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(16)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(16).priority(.high)
             $0.horizontalEdges.equalTo(contentView)
             $0.bottom.equalTo(contentView).inset(16)
         }
