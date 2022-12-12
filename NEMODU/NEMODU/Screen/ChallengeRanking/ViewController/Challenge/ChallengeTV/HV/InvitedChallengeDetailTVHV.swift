@@ -11,47 +11,9 @@ import RxSwift
 import Then
 import SnapKit
 
-class InvitedChallengeDetailTVHV : UITableViewHeaderFooterView {
+class InvitedChallengeDetailTVHV : ChallengeDetailTVHV {
     
     // MARK: - UI components
-    
-    private let challengeTypeLabel = UILabel()
-        .then {
-            $0.text = "주간"
-            $0.font = .caption1
-            $0.textColor = .main
-            $0.backgroundColor = .clear
-            $0.textAlignment = .center
-            
-            $0.layer.cornerRadius = 11
-            $0.layer.masksToBounds = true
-            $0.layer.borderWidth = 1
-            $0.layer.borderColor = UIColor.main.cgColor
-        }
-    private let weekChallengeTypeLabel = UILabel()
-        .then {
-            $0.text = "-----"
-            $0.font = .body4
-            $0.textColor = .gray600
-        }
-    
-    private let challengeNameImage = UIImageView()
-        .then {
-            $0.image = UIImage(named: "badge_flag")?.withRenderingMode(.alwaysTemplate)
-            $0.tintColor = ChallengeColorType(rawValue: "Pink")?.primaryColor
-        }
-    private let challengeNameLabel = UILabel()
-        .then {
-            $0.text = "-----"
-            $0.font = .title3SB
-            $0.textColor = .gray900
-        }
-    private let currentStateLabel = UILabel()
-        .then {
-            $0.text = "---- -월 -주차 (--.--~--.--)"
-            $0.font = .body4
-            $0.textColor = .gray600
-        }
     
     private let guideLabelContainerView = UIView()
     private let guideLabel = UILabel()
@@ -109,8 +71,6 @@ class InvitedChallengeDetailTVHV : UITableViewHeaderFooterView {
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         
-        configureHV()
-        configureLayoutView()
         bindButton()
         responseAcceptRejectChallenge()
     }
@@ -128,64 +88,16 @@ class InvitedChallengeDetailTVHV : UITableViewHeaderFooterView {
         }
     }
     
-}
-
-// MARK: - Configure
-
-extension InvitedChallengeDetailTVHV {
-    
-    private func configureHV() {
-        contentView.backgroundColor = .white
-    }
-    
-}
-
-// MARK: - Layout
-
-extension InvitedChallengeDetailTVHV {
-    
-    private func configureLayoutView() {
-        contentView.addSubviews([challengeTypeLabel, weekChallengeTypeLabel,
-                                 challengeNameImage, challengeNameLabel,
-                                 currentStateLabel,
-                                 guideLabelContainerView,
+    override func configureLayoutView() {
+        super.configureLayoutView()
+        
+        contentView.addSubviews([guideLabelContainerView,
                                  acceptButton, rejectButton,
                                  borderLineView,
                                  invitedFriendsListTitleView])
         guideLabelContainerView.addSubviews([guideLabel])
         invitedFriendsListTitleView.addSubviews([invitedFriendsListTitleLabel])
         
-        
-        challengeTypeLabel.snp.makeConstraints {
-            $0.width.equalTo(48)
-            $0.height.equalTo(challengeTypeLabel.layer.cornerRadius * 2)
-            
-            $0.top.left.equalTo(contentView).offset(16)
-        }
-        weekChallengeTypeLabel.snp.makeConstraints {
-            $0.centerY.equalTo(challengeTypeLabel)
-            
-            $0.left.equalTo(challengeTypeLabel.snp.right).offset(8)
-        }
-        
-        challengeNameImage.snp.makeConstraints {
-            $0.width.equalTo(16)
-            $0.height.equalTo(challengeNameImage.snp.width)
-            
-            $0.top.equalTo(challengeTypeLabel.snp.bottom).offset(20)
-            $0.left.equalTo(challengeTypeLabel.snp.left)
-        }
-        challengeNameLabel.snp.makeConstraints {
-            $0.centerY.equalTo(challengeNameImage)
-            
-            $0.left.equalTo(challengeNameImage.snp.right).offset(8)
-            $0.right.equalTo(contentView.snp.right).inset(16)
-        }
-        currentStateLabel.snp.makeConstraints {
-            $0.top.equalTo(challengeNameImage.snp.bottom).offset(12)
-            $0.left.equalTo(challengeNameImage.snp.left)
-            $0.right.equalTo(challengeNameLabel.snp.right)
-        }
         
         guideLabelContainerView.snp.makeConstraints {
             $0.height.equalTo(58)
@@ -232,7 +144,6 @@ extension InvitedChallengeDetailTVHV {
     }
     
 }
-
 
 // MARK: - Input
 

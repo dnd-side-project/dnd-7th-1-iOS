@@ -15,6 +15,7 @@ class ChallengeDetailTVHV : UITableViewHeaderFooterView {
     
     // MARK: - UI components
     
+    let challengeDetailInfoContainerView = UIView()
     private let challengeTypeLabel = UILabel()
         .then {
             $0.text = "주간"
@@ -28,19 +29,19 @@ class ChallengeDetailTVHV : UITableViewHeaderFooterView {
             $0.layer.borderWidth = 1
             $0.layer.borderColor = UIColor.main.cgColor
         }
-    private let weekChallengeTypeLabel = UILabel()
+    let weekChallengeTypeLabel = UILabel()
         .then {
             $0.text = "-----"
             $0.font = .body4
             $0.textColor = .gray600
         }
     
-    private let challengeNameImage = UIImageView()
+    let challengeNameImage = UIImageView()
         .then {
             $0.image = UIImage(named: "badge_flag")?.withRenderingMode(.alwaysTemplate)
             $0.tintColor = ChallengeColorType(rawValue: "Pink")?.primaryColor
         }
-    private let challengeNameLabel = UILabel()
+    let challengeNameLabel = UILabel()
         .then {
             $0.text = "-----"
             $0.font = .title3SB
@@ -73,52 +74,53 @@ class ChallengeDetailTVHV : UITableViewHeaderFooterView {
     
     // MARK: - Function
     
+    // MARK: - Configure
+    
+    func configureHV() {
+        contentView.backgroundColor = .white
+    }
+    
     func configureLayoutView() {
-        contentView.addSubviews([challengeTypeLabel, weekChallengeTypeLabel,
-                                 challengeNameImage, challengeNameLabel,
-                                 currentStateLabel])
+        contentView.addSubviews([challengeDetailInfoContainerView])
+        challengeDetailInfoContainerView.addSubviews([challengeTypeLabel, weekChallengeTypeLabel,
+                                                      challengeNameImage, challengeNameLabel,
+                                                      currentStateLabel])
         
         
+        challengeDetailInfoContainerView.snp.makeConstraints {
+            $0.top.horizontalEdges.equalTo(contentView)
+//            $0.bottom.equalTo(contentView)
+        }
         challengeTypeLabel.snp.makeConstraints {
             $0.width.equalTo(48)
-            $0.height.equalTo(challengeTypeLabel.layer.cornerRadius * 2)
+            $0.height.equalTo(challengeTypeLabel.layer.cornerRadius * 2).priority(.high)
             
-            $0.top.left.equalTo(contentView).offset(16)
+            $0.top.left.equalTo(challengeDetailInfoContainerView).offset(16)
         }
         weekChallengeTypeLabel.snp.makeConstraints {
             $0.centerY.equalTo(challengeTypeLabel)
-            
+
             $0.left.equalTo(challengeTypeLabel.snp.right).offset(8)
         }
-        
+
         challengeNameImage.snp.makeConstraints {
-            $0.width.equalTo(16)
-            $0.height.equalTo(challengeNameImage.snp.width)
-            
-            $0.top.equalTo(challengeTypeLabel.snp.bottom).offset(20)
+            $0.width.height.equalTo(16)
+
+            $0.top.equalTo(challengeTypeLabel.snp.bottom).offset(20).priority(.high)
             $0.left.equalTo(challengeTypeLabel.snp.left)
         }
         challengeNameLabel.snp.makeConstraints {
             $0.centerY.equalTo(challengeNameImage)
-            
+
             $0.left.equalTo(challengeNameImage.snp.right).offset(8)
-            $0.right.equalTo(contentView.snp.right).inset(16)
+            $0.right.equalTo(challengeDetailInfoContainerView.snp.right).inset(16)
         }
         currentStateLabel.snp.makeConstraints {
             $0.top.equalTo(challengeNameImage.snp.bottom).offset(12)
             $0.left.equalTo(challengeNameImage.snp.left)
             $0.right.equalTo(challengeNameLabel.snp.right)
+            $0.bottom.equalTo(challengeDetailInfoContainerView.snp.bottom).inset(16)
         }
-    }
-    
-}
-
-// MARK: - Configure
-
-extension ChallengeDetailTVHV {
-    
-    private func configureHV() {
-        contentView.backgroundColor = .white
     }
     
 }

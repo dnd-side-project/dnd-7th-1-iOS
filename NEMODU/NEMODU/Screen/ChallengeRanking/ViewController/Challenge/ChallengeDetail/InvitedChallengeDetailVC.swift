@@ -11,22 +11,9 @@ import RxSwift
 import Then
 import SnapKit
 
-class InvitedChallengeDetailVC: BaseViewController {
+class InvitedChallengeDetailVC: ChallengeDetailVC {
     
     // MARK: - UI components
-    
-    let navigationBar = NavigationBar()
-        .then {
-            $0.naviType = .push
-            $0.setTitleFont(font: .title3M)
-        }
-    
-    let invitedChallengeDetailTableView = UITableView(frame: .zero, style: .grouped)
-        .then {
-            $0.separatorStyle = .none
-            $0.backgroundColor = .white
-            $0.showsVerticalScrollIndicator = false
-        }
     
     // MARK: - Variables and Properties
     
@@ -39,37 +26,20 @@ class InvitedChallengeDetailVC: BaseViewController {
     override func configureView() {
         super.configureView()
         
-        configureNavigationBar()
-        configureTableView()
     }
     
     override func layoutView() {
         super.layoutView()
         
-        configureLayout()
     }
     
     // MARK: - Functions
     
-}
-
-// MARK: - Configure
-
-extension InvitedChallengeDetailVC {
-    
-    private func configureNavigationBar() {
-        _ = navigationBar
+    override func configureTableView() {
+        super.configureTableView()
+        
+        _ = challengeDetailTableView
             .then {
-                $0.configureNaviBar(targetVC: self, title: "챌린지 상세정보")
-                $0.configureBackBtn(targetVC: self)
-            }
-    }
-    
-    private func configureTableView() {
-        _ = invitedChallengeDetailTableView
-            .then {
-                $0.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: -20, right: 0)
-                
                 $0.delegate = self
                 $0.dataSource = self
                 
@@ -77,21 +47,6 @@ extension InvitedChallengeDetailVC {
                 $0.register(InvitedFriendsTVC.self, forCellReuseIdentifier: InvitedFriendsTVC.className)
                 $0.register(NoListStatusTVFV.self, forHeaderFooterViewReuseIdentifier: NoListStatusTVFV.className)
             }
-    }
-    
-}
-
-// MARK: - Layout
-
-extension InvitedChallengeDetailVC {
-    
-    private func configureLayout() {
-        view.addSubviews([navigationBar, invitedChallengeDetailTableView])
-        
-        invitedChallengeDetailTableView.snp.makeConstraints {
-            $0.top.equalTo(navigationBar.snp.bottom)
-            $0.horizontalEdges.bottom.equalTo(view)
-        }
     }
     
 }
