@@ -101,7 +101,8 @@ class RankingUserTVC : BaseTableViewCell {
         blockLabel.text = "칸"
         
         markTop123(isOn: false)
-        markMyRanking(isOn: false)
+        markRankLabelGreen(isOn: false)
+        markRankLayerGreen(isOn: false)
     }
     
     // MARK: - Functions
@@ -119,7 +120,7 @@ class RankingUserTVC : BaseTableViewCell {
         }
     }
     
-    private func markMyRanking(isOn: Bool) {
+    private func markRankLabelGreen(isOn: Bool) {
         switch isOn {
         case true:
             rankNumberLabel.textColor = .main
@@ -139,18 +140,18 @@ class RankingUserTVC : BaseTableViewCell {
         }
     }
     
-    func markMyRankingTVC(rankNumber: Int, profileImageURL: String, myNickname: String, blocksNumber: Int) {
-        rankNumberLabel.text = String(rankNumber)
-        
-        userProfileImageView.kf.setImage(with: URL(string: profileImageURL))
-        showMeLabel.isHidden = false
-        
-        userNicknameLabel.text = myNickname
-        
-        contentsView.layer.borderColor = UIColor.main.cgColor
-        contentsView.layer.backgroundColor = UIColor.main.withAlphaComponent(0.1).cgColor
-        
-        blocksNumberLabel.text = String(blocksNumber)
+    private func markRankLayerGreen(isOn: Bool) {
+        switch isOn {
+        case true:
+            contentsView.layer.borderColor = UIColor.main.cgColor
+            contentsView.layer.backgroundColor = UIColor.main.withAlphaComponent(0.1).cgColor
+            showMeLabel.isHidden = false
+            
+        case false:
+            contentsView.layer.borderColor = UIColor.clear.cgColor
+            contentsView.layer.backgroundColor = UIColor.clear.withAlphaComponent(0.1).cgColor
+            showMeLabel.isHidden = true
+        }
     }
     
 }
@@ -164,9 +165,13 @@ extension RankingUserTVC {
     }
     
     /// configure TVC acording to Ranking Type
-    func configureRankingCell(rankNumber: Int, profileImageURL: String, nickname: String, blocksNumber: Int) {
+    func configureRankingCell(rankNumber: Int, profileImageURL: String, nickname: String, blocksNumber: Int, cellType: String) {
         rankNumberLabel.text = "\(rankNumber)"
-        userProfileImageView.kf.setImage(with: URL(string: profileImageURL))
+        if profileImageURL != "" {
+            userProfileImageView.kf.setImage(with: URL(string: profileImageURL))
+        } else {
+            userProfileImageView.image = UIImage(named: "defaultThumbnail")
+        }
         userNicknameLabel.text = nickname
         blocksNumberLabel.text = "\(blocksNumber)"
         
@@ -178,7 +183,14 @@ extension RankingUserTVC {
         }
         
         if(nickname == UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname)) {
-            markMyRanking(isOn: true)
+            switch cellType {
+            case "Ranking":
+                markRankLabelGreen(isOn: true)
+            case "RankingTop", "ChallengeDetail":
+                markRankLayerGreen(isOn: true)
+            default:
+                break
+            }
         }
     }
     
