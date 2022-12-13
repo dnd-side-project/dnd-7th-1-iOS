@@ -1,5 +1,5 @@
 //
-//  ProgressChallengeDetailTVHV.swift
+//  ChallengeHistoryDetailTVHV.swift
 //  NEMODU
 //
 //  Created by Kim HeeJae on 2022/11/23.
@@ -11,7 +11,7 @@ import RxSwift
 import Then
 import SnapKit
 
-class ProgressChallengeDetailTVHV : ChallengeDetailTVHV {
+class ChallengeHistoryDetailTVHV : ChallengeDetailTVHV {
     
     // MARK: - UI components
     
@@ -100,7 +100,7 @@ class ProgressChallengeDetailTVHV : ChallengeDetailTVHV {
     
     // MARK: - Variables and Properties
     
-    var progressChallengeDetailVC = ProgressChallengeDetailVC()
+    var challengeHistoryDetailVC = ChallengeHistoryDetailVC()
     private let bag = DisposeBag()
     
     // MARK: - Life Cycle
@@ -119,12 +119,12 @@ class ProgressChallengeDetailTVHV : ChallengeDetailTVHV {
     
     // MARK: - Function
     
-    func configureProgressChallengeDetailTVHV(progressChallengeDetailInfo: ProgressChallengeDetailResponseModel) {
-        let startDate = progressChallengeDetailInfo.started.split(separator: "-")
+    func configureChallengeHistoryDetailTVHV(challengeHistoryDetailInfo: ChallengeHistoryDetailResponseModel) {
+        let startDate = challengeHistoryDetailInfo.started.split(separator: "-")
         let startMonth = startDate[1]
         let startDay = startDate[2]
         
-        let endDate = progressChallengeDetailInfo.ended.split(separator: "-")
+        let endDate = challengeHistoryDetailInfo.ended.split(separator: "-")
         let endMonth = endDate[1]
         let endDay = endDate[2]
         
@@ -133,19 +133,19 @@ class ProgressChallengeDetailTVHV : ChallengeDetailTVHV {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy MM월"
         
-        let challengeDate = dateFormatter.date(from: progressChallengeDetailInfo.started) ?? .now
+        let challengeDate = dateFormatter.date(from: challengeHistoryDetailInfo.started) ?? .now
         let weekOfMonth = calendar.component(.weekOfMonth, from: challengeDate)
         
-        weekChallengeTypeLabel.text = ChallengeType(rawValue: progressChallengeDetailInfo.type)?.title
-        challengeNameImage.tintColor = ChallengeColorType(rawValue: progressChallengeDetailInfo.color)?.primaryColor
-        challengeNameLabel.text = progressChallengeDetailInfo.name
+        weekChallengeTypeLabel.text = ChallengeType(rawValue: challengeHistoryDetailInfo.type)?.title
+        challengeNameImage.tintColor = ChallengeColorType(rawValue: challengeHistoryDetailInfo.color)?.primaryColor
+        challengeNameLabel.text = challengeHistoryDetailInfo.name
         currentStateLabel.text = "\(dateFormatter.string(from: challengeDate)) \(weekOfMonth)주차 (\(startMonth).\(startDay)~\(endMonth).\(endDay))"
         setDDayStatus()
         
         startLabel.text = "\(startMonth).\(startDay) 부터"
         endLabel.text = "\(endMonth).\(endDay) 까지"
         
-        configureMiniMap(matrices: progressChallengeDetailInfo.matrices)
+        configureMiniMap(matrices: challengeHistoryDetailInfo.matrices)
     }
     
     private func setDDayStatus() {
@@ -231,7 +231,7 @@ class ProgressChallengeDetailTVHV : ChallengeDetailTVHV {
             $0.left.equalTo(progressBarWrapperView.snp.left)
         }
         endLabel.snp.makeConstraints {
-            $0.top.equalTo(startLabel)
+            $0.centerX.equalTo(startLabel)
             $0.right.equalTo(progressBarWrapperView.snp.right)
         }
 
@@ -279,9 +279,28 @@ class ProgressChallengeDetailTVHV : ChallengeDetailTVHV {
     
 }
 
+// MARK: - Layout
+
+extension ChallengeHistoryDetailTVHV {
+    
+    func configureChallengeDoneLayout() {
+        progressStatusContainerView.snp.makeConstraints {
+            $0.height.equalTo(0)
+        }
+        borderLineView.snp.updateConstraints {
+            $0.height.equalTo(0).priority(.high)
+        }
+        updateButton.isHidden = true
+        updateStatusLabel.isHidden = true
+        
+        scoreTitleLabel.text = "최종 순위"
+    }
+    
+}
+
 // MARK: - Configure
 
-extension ProgressChallengeDetailTVHV {
+extension ChallengeHistoryDetailTVHV {
     
     private func configureTriangleView() {
         let path = CGMutablePath()
@@ -338,15 +357,15 @@ extension ProgressChallengeDetailTVHV {
 
 // MARK: - Input
 
-extension ProgressChallengeDetailTVHV {
+extension ChallengeHistoryDetailTVHV {
     private func bindButton() {
         updateButton.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 
-                let uuid: String = self.progressChallengeDetailVC.progressChallengeDetailResponseModel?.uuid ?? ""
-                self.progressChallengeDetailVC.getProgressChallengeDetailInfo(uuid: uuid)
+                let uuid: String = self.challengeHistoryDetailVC.challengeHistoryDetailResponseModel?.uuid ?? ""
+                self.challengeHistoryDetailVC.getChallengeHistoryDetailInfo(uuid: uuid)
                 
                 self.configureUpdateStatusLabel()
             })

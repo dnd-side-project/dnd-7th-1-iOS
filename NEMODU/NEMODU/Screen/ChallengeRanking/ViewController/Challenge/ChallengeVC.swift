@@ -289,15 +289,22 @@ extension ChallengeVC : UITableViewDelegate {
             case 0: // 진행 대기중
                 break
             case 1: // 진행 중
-                let progressChallengeDetailVC = ProgressChallengeDetailVC()
-                progressChallengeDetailVC.hidesBottomBarWhenPushed = true
+                let challengeHistoryDetailVC = ChallengeHistoryDetailVC()
+                challengeHistoryDetailVC.hidesBottomBarWhenPushed = true
                 
                 guard let progressChallengeList = progressChallengeListResponseModel else { return }
-                progressChallengeDetailVC.getProgressChallengeDetailInfo(uuid: progressChallengeList[indexPath.row].uuid)
+                challengeHistoryDetailVC.getChallengeHistoryDetailInfo(uuid: progressChallengeList[indexPath.row].uuid)
                 
-                navigationController?.pushViewController(progressChallengeDetailVC, animated: true)
+                navigationController?.pushViewController(challengeHistoryDetailVC, animated: true)
             case 2: // 진행 완료
-                break
+                let challengeHistoryDetailVC = ChallengeHistoryDetailVC()
+                challengeHistoryDetailVC.hidesBottomBarWhenPushed = true
+                challengeHistoryDetailVC.challgeStatus = "Done"
+                
+                guard let doneChallengeList = doneChallengeListResponseModel else { return }
+                challengeHistoryDetailVC.getChallengeHistoryDetailInfo(uuid: doneChallengeList[indexPath.row].uuid)
+                
+                navigationController?.pushViewController(challengeHistoryDetailVC, animated: true)
             default:
                 break
             }
