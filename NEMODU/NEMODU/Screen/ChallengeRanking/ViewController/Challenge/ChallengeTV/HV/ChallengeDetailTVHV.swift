@@ -89,7 +89,6 @@ class ChallengeDetailTVHV : UITableViewHeaderFooterView {
         
         challengeDetailInfoContainerView.snp.makeConstraints {
             $0.top.horizontalEdges.equalTo(contentView)
-//            $0.bottom.equalTo(contentView)
         }
         challengeTypeLabel.snp.makeConstraints {
             $0.width.equalTo(48)
