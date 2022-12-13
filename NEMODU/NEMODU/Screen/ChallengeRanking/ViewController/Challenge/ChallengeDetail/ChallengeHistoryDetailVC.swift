@@ -1,5 +1,5 @@
 //
-//  ProgressChallengeDetailVC.swift
+//  ChallengeHistoryDetailVC.swift
 //  NEMODU
 //
 //  Created by Kim HeeJae on 2022/11/23.
@@ -11,15 +11,17 @@ import RxSwift
 import Then
 import SnapKit
 
-class ProgressChallengeDetailVC: ChallengeDetailVC {
+class ChallengeHistoryDetailVC: ChallengeDetailVC {
     
     // MARK: - UI components
     
     // MARK: - Variables and Properties
     
-    private let viewModel = ProgressChallengeDetailVM()
+    private let viewModel = ChallengeHistoryDetailVM()
     private let bag = DisposeBag()
-    var progressChallengeDetailResponseModel: ProgressChallengeDetailResponseModel?
+    var challengeHistoryDetailResponseModel: ChallengeHistoryDetailResponseModel?
+    
+    var challgeStatus: String?
     
     // MARK: - Life Cycle
     
@@ -39,14 +41,14 @@ class ProgressChallengeDetailVC: ChallengeDetailVC {
     override func bindOutput() {
         super.bindOutput()
         
-        bindProgressChallengeDetail()
+        bindChallengeHistoryDetail()
     }
     
     // MARK: - Functions
     
-    func getProgressChallengeDetailInfo(uuid: String) {
+    func getChallengeHistoryDetailInfo(uuid: String) {
         let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) ?? ""
-        viewModel.getProgressChallengeDetail(nickname: nickname, uuid: uuid)
+        viewModel.getChallengeHistoryDetail(nickname: nickname, uuid: uuid)
     }
     
     override func configureTableView() {
@@ -57,7 +59,7 @@ class ProgressChallengeDetailVC: ChallengeDetailVC {
                 $0.delegate = self
                 $0.dataSource = self
                 
-                $0.register(ProgressChallengeDetailTVHV.self, forHeaderFooterViewReuseIdentifier: ProgressChallengeDetailTVHV.className)
+                $0.register(ChallengeHistoryDetailTVHV.self, forHeaderFooterViewReuseIdentifier: ChallengeHistoryDetailTVHV.className)
                 $0.register(RankingUserTVC.self, forCellReuseIdentifier: RankingUserTVC.className)
                 $0.register(ChallengeDetailTVFV.self, forHeaderFooterViewReuseIdentifier: ChallengeDetailTVFV.className)
             }
@@ -67,18 +69,18 @@ class ProgressChallengeDetailVC: ChallengeDetailVC {
 
 // MARK: - TableView DataSource
 
-extension ProgressChallengeDetailVC : UITableViewDataSource {
+extension ChallengeHistoryDetailVC : UITableViewDataSource {
 
     // Cell
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return progressChallengeDetailResponseModel?.rankings.count ?? 0
+        return challengeHistoryDetailResponseModel?.rankings.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: RankingUserTVC.className, for: indexPath) as? RankingUserTVC else { return UITableViewCell() }
         
-        guard let progressChallengeDetailInfo = progressChallengeDetailResponseModel else { return cell }
-        let userRankingInfo = progressChallengeDetailInfo.rankings[indexPath.row]
+        guard let challengeHistoryDetailInfo = challengeHistoryDetailResponseModel else { return cell }
+        let userRankingInfo = challengeHistoryDetailInfo.rankings[indexPath.row]
         cell.configureRankingCell(rankNumber: userRankingInfo.rank, profileImageURL: userRankingInfo.picturePath, nickname: userRankingInfo.nickname, blocksNumber: userRankingInfo.score, cellType: "ChallengeDetail")
         
         return cell
@@ -88,15 +90,18 @@ extension ProgressChallengeDetailVC : UITableViewDataSource {
 
 // MARK: - TableView Delegate
 
-extension ProgressChallengeDetailVC : UITableViewDelegate {
+extension ChallengeHistoryDetailVC : UITableViewDelegate {
     
     // HeaderView
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ProgressChallengeDetailTVHV.className) as? ProgressChallengeDetailTVHV else { return UITableViewHeaderFooterView() }
-        headerView.progressChallengeDetailVC = self
+        guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ChallengeHistoryDetailTVHV.className) as? ChallengeHistoryDetailTVHV else { return UITableViewHeaderFooterView() }
+        headerView.challengeHistoryDetailVC = self
+        if challgeStatus == "Done" {
+            headerView.configureChallengeDoneLayout()
+        }
         
-        guard let progressChallengeDetailInfo = progressChallengeDetailResponseModel else { return headerView }
-        headerView.configureProgressChallengeDetailTVHV(progressChallengeDetailInfo: progressChallengeDetailInfo)
+        guard let challengeHistoryDetailInfo = challengeHistoryDetailResponseModel else { return headerView }
+        headerView.configureChallengeHistoryDetailTVHV(challengeHistoryDetailInfo: challengeHistoryDetailInfo)
         
         return headerView
     }
@@ -122,8 +127,8 @@ extension ProgressChallengeDetailVC : UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         guard let footerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ChallengeDetailTVFV.className) as? ChallengeDetailTVFV else { return UITableViewHeaderFooterView() }
 
-        guard let progressChallengeDetailInfo = progressChallengeDetailResponseModel else { return footerView }
-        footerView.configureChallengeDetailTVFV(distance: progressChallengeDetailInfo.distance, time: progressChallengeDetailInfo.exerciseTime, steps: progressChallengeDetailInfo.stepCount)
+        guard let challengeHistoryDetailInfo = challengeHistoryDetailResponseModel else { return footerView }
+        footerView.configureChallengeDetailTVFV(distance: challengeHistoryDetailInfo.distance, time: challengeHistoryDetailInfo.exerciseTime, steps: challengeHistoryDetailInfo.stepCount)
 
         return footerView
     }
@@ -140,13 +145,13 @@ extension ProgressChallengeDetailVC : UITableViewDelegate {
 
 // MARK: - Output
 
-extension ProgressChallengeDetailVC {
-    private func bindProgressChallengeDetail() {
-        viewModel.output.progressChallengeDetail
+extension ChallengeHistoryDetailVC {
+    private func bindChallengeHistoryDetail() {
+        viewModel.output.challengeHistoryDetail
             .subscribe(onNext: { [weak self] data in
                 guard let self = self else { return }
                 
-                self.progressChallengeDetailResponseModel = data
+                self.challengeHistoryDetailResponseModel = data
                 self.challengeDetailTableView.reloadData()
             })
             .disposed(by: bag)

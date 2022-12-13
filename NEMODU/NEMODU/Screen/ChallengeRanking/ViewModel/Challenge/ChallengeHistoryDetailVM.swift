@@ -1,5 +1,5 @@
 //
-//  ProgressChallengeDetailVM.swift
+//  ChallengeHistoryDetailVM.swift
 //  NEMODU
 //
 //  Created by Kim HeeJae on 2022/12/02.
@@ -9,11 +9,11 @@ import Foundation
 import RxCocoa
 import RxSwift
 
-protocol ProgressChallengeDetailVMOuput: Lodable {
-    var progressChallengeDetail: PublishRelay<ProgressChallengeDetailResponseModel> { get }
+protocol ChallengeHistoryDetailVMOuput: Lodable {
+    var challengeHistoryDetail: PublishRelay<ChallengeHistoryDetailResponseModel> { get }
 }
 
-final class ProgressChallengeDetailVM: BaseViewModel {
+final class ChallengeHistoryDetailVM: BaseViewModel {
     var apiSession: APIService = APISession()
     let apiError = PublishSubject<APIError>()
     
@@ -28,9 +28,9 @@ final class ProgressChallengeDetailVM: BaseViewModel {
     
     // MARK: - Output
     
-    struct Output: ProgressChallengeDetailVMOuput {
+    struct Output: ChallengeHistoryDetailVMOuput {
         var loading = BehaviorRelay<Bool>(value: false)
-        var progressChallengeDetail = PublishRelay<ProgressChallengeDetailResponseModel>()
+        var challengeHistoryDetail = PublishRelay<ChallengeHistoryDetailResponseModel>()
     }
     
     // MARK: - Init
@@ -47,22 +47,22 @@ final class ProgressChallengeDetailVM: BaseViewModel {
 
 // MARK: - Input
 
-extension ProgressChallengeDetailVM: Input {
+extension ChallengeHistoryDetailVM: Input {
     func bindInput() {}
 }
 
 // MARK: - Output
 
-extension ProgressChallengeDetailVM: Output {
+extension ChallengeHistoryDetailVM: Output {
     func bindOutput() {}
 }
 
 // MARK: - Networking
 
-extension ProgressChallengeDetailVM {
-    func getProgressChallengeDetail(nickname: String, uuid: String) {
+extension ChallengeHistoryDetailVM {
+    func getChallengeHistoryDetail(nickname: String, uuid: String) {
         let path = "challenge/detail?nickname=\(nickname)&uuid=\(uuid)"
-        let resource = urlResource<ProgressChallengeDetailResponseModel>(path: path)
+        let resource = urlResource<ChallengeHistoryDetailResponseModel>(path: path)
         
         apiSession.getRequest(with: resource)
             .withUnretained(self)
@@ -71,7 +71,7 @@ extension ProgressChallengeDetailVM {
                 case .failure(let error):
                     owner.apiError.onError(error)
                 case .success(let data):
-                    owner.output.progressChallengeDetail.accept(data)
+                    owner.output.challengeHistoryDetail.accept(data)
                 }
             })
             .disposed(by: bag)
