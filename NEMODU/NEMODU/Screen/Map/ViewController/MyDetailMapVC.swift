@@ -1,5 +1,5 @@
 //
-//  DetailMapVC.swift
+//  MyDetailMapVC.swift
 //  NEMODU
 //
 //  Created by 황윤경 on 2022/08/19.
@@ -13,7 +13,7 @@ import SnapKit
 import Then
 import Kingfisher
 
-class DetailMapVC: BaseViewController {
+class MyDetailMapVC: BaseViewController {
     private let naviBar = NavigationBar()
 
     private let mapVC = MiniMapVC()
@@ -57,7 +57,7 @@ class DetailMapVC: BaseViewController {
 
 // MARK: - Configure
 
-extension DetailMapVC {
+extension MyDetailMapVC {
     private func configureNaviBar() {
         view.addSubview(naviBar)
         naviBar.backgroundColor = .white
@@ -88,7 +88,7 @@ extension DetailMapVC {
 
 // MARK: - Layout
 
-extension DetailMapVC {
+extension MyDetailMapVC {
     private func configureLayout() {
         mapVC.view.snp.makeConstraints {
             $0.top.equalTo(naviBar.snp.bottom)
@@ -99,13 +99,13 @@ extension DetailMapVC {
 
 // MARK: - Input
 
-extension DetailMapVC {
+extension MyDetailMapVC {
     
 }
 
 // MARK: - Output
 
-extension DetailMapVC {
+extension MyDetailMapVC {
     private func bindUserData() {
         viewModel.output.userData
             .subscribe(onNext: { [weak self] data in

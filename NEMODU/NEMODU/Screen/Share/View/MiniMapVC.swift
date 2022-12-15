@@ -119,7 +119,7 @@ extension MiniMapVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                let detailMapVC = DetailMapVC()
+                let detailMapVC = MyDetailMapVC()
                 detailMapVC.getBlocks(blocks: self.blocks)
                 self.navigationController?.pushViewController(detailMapVC, animated: true)
             })
