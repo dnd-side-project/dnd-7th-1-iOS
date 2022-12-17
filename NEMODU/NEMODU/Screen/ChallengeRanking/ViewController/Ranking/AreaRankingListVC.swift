@@ -24,7 +24,6 @@ class AreaRankingListVC : RankingListVC {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
     }
     
     override func bindInput() {
@@ -39,7 +38,8 @@ class AreaRankingListVC : RankingListVC {
         guard let areaRankingList = areaRankingListResponseModel else { return }
         for areaRanking in areaRankingList.areaRankings {
             if areaRanking.nickname == myUserNickname {
-                myRankingTVC.markMyRankingTVC(rankNumber: areaRanking.rank, profileImageURL: areaRanking.picturePath, myNickname: areaRanking.nickname, blocksNumber: areaRanking.score)
+                myRankingTVC.configureRankingCell(rankNumber: areaRanking.rank, profileImageURL: areaRanking.picturePath, nickname: areaRanking.nickname, blocksNumber: areaRanking.score)
+                myRankingTVC.configureRankingTopCell()
             }
         }
     }
@@ -81,6 +81,7 @@ extension AreaRankingListVC : UITableViewDataSource {
         guard let areaRankingList = areaRankingListResponseModel else { return cell }
         let userAreaRanking = areaRankingList.areaRankings[indexPath.row]
         cell.configureRankingCell(rankNumber: userAreaRanking.rank, profileImageURL: userAreaRanking.picturePath, nickname: userAreaRanking.nickname, blocksNumber: userAreaRanking.score)
+        cell.configureRankingListCell(rankNumber: userAreaRanking.rank, nickname: userAreaRanking.nickname)
         
         return cell
     }
