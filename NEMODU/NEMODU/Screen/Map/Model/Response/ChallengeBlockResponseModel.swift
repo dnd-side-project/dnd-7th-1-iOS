@@ -13,4 +13,12 @@ struct ChallengeBlockResponseModel: Codable {
     let matrices: [Matrix]
     let challengeColor: String
     let challengeNumber: Int
+    let picturePath: String
+}
+
+extension ChallengeBlockResponseModel {
+    var profileImageURL: URL? {
+        guard let profileImageURL = picturePath.encodeURL() else { return nil }
+        return URL(string: profileImageURL)
+    }
 }

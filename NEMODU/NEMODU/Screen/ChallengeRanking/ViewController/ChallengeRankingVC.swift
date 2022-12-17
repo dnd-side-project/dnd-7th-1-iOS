@@ -15,28 +15,32 @@ class ChallengeRankingVC: BaseViewController {
     
     // MARK: - UI components
     
-    let challengeRankingMenuBar = ChallengeRankingMenuBarCV()
+    private let challengeRankingMenuBar = ChallengeRankingMenuBarCV()
         .then {
             $0.menuList = ["챌린지", "랭킹"]
         }
     
-    let challengeRankingContainerCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    private let baseScrollView = UIScrollView()
         .then {
-            let layout = UICollectionViewFlowLayout()
-            layout.scrollDirection = .horizontal
-            layout.minimumLineSpacing = 0
-            layout.minimumInteritemSpacing = 0
-            
-            $0.collectionViewLayout = layout
-            
-            $0.backgroundColor = .white
-            
             $0.isPagingEnabled = true
-            $0.isScrollEnabled = false
+            
             $0.showsHorizontalScrollIndicator = false
+            $0.isScrollEnabled = false
+        }
+    private let baseStackView = UIStackView()
+        .then {
+            $0.spacing = 0
+            $0.axis = .horizontal
+            $0.distribution = .fill
+            $0.alignment = .fill
         }
     
+    private let challengeVC = ChallengeVC()
+    private let rankingVC = RankingVC()
+    
     // MARK: - Variables and Properties
+    
+    private let bag = DisposeBag()
     
     // MARK: - Life Cycle
     
@@ -44,28 +48,41 @@ class ChallengeRankingVC: BaseViewController {
         super.viewDidLoad()
     }
     
-    // MARK: - Functions
-    
     override func configureView() {
         super.configureView()
         
-        challengeRankingMenuBar.challengeRankingVC = self
-        
-        _ = challengeRankingContainerCollectionView
-            .then {
-            $0.delegate = self
-            $0.dataSource = self
-            
-            $0.register(ChallengeContainerCVC.self, forCellWithReuseIdentifier: ChallengeContainerCVC.className)
-            $0.register(RankingContainerCVC.self, forCellWithReuseIdentifier: RankingContainerCVC.className)
-        }
     }
     
     override func layoutView() {
         super.layoutView()
         
-        view.addSubview(challengeRankingMenuBar)
-        view.addSubview(challengeRankingContainerCollectionView)
+        configreLayout()
+    }
+    
+    override func bindInput() {
+        super.bindInput()
+        
+        bindMenuBar()
+    }
+
+    // MARK: - Functions
+    
+}
+
+// MARK: - Layout
+
+extension ChallengeRankingVC {
+    
+    private func configreLayout() {
+        view.addSubviews([challengeRankingMenuBar,
+                          baseScrollView])
+        baseScrollView.addSubview(baseStackView)
+        [challengeVC.view, rankingVC.view].forEach {
+            baseStackView.addArrangedSubview($0)
+        }
+        [challengeVC, rankingVC].forEach {
+            addChild($0)
+        }
         
         challengeRankingMenuBar.snp.makeConstraints {
             $0.height.equalTo(59)
@@ -73,63 +90,51 @@ class ChallengeRankingVC: BaseViewController {
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             $0.horizontalEdges.equalTo(view)
         }
-        challengeRankingContainerCollectionView.snp.makeConstraints {
+
+        baseScrollView.snp.makeConstraints {
             $0.top.equalTo(challengeRankingMenuBar.snp.bottom)
-            $0.horizontalEdges.equalTo(view)
-            $0.bottom.equalTo(view.snp.bottom)
+            $0.horizontalEdges.bottom.equalTo(view)
+        }
+        baseStackView.snp.makeConstraints {
+            $0.width.equalTo(view.frame.width * CGFloat(challengeRankingMenuBar.menuList.count))
+            $0.height.equalTo(baseScrollView)
+            
+            $0.edges.equalTo(baseScrollView)
+        }
+        
+        [challengeVC.view, rankingVC.view].forEach {
+            $0.snp.makeConstraints {
+                $0.width.equalTo(view.frame.width)
+                $0.height.equalTo(baseStackView)
+            }
         }
     }
     
 }
 
-// MARK: - Challenge/Ranking CollectionView Delegate
+// MARK: - Input
 
-extension ChallengeRankingVC : UICollectionViewDelegate { }
+extension ChallengeRankingVC {
 
-// MARK: - Challenge/Ranking CollectionView FlowLayout
-
-extension ChallengeRankingVC : UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(_ collectionView:UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: self.view.frame.width, height: collectionView.frame.height)
-    }
-
-}
-
-// MARK: - Challenge/Ranking CollectionView DataSource
-
-extension ChallengeRankingVC : UICollectionViewDataSource {
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        challengeRankingMenuBar.positionBarView.frame.origin.x = scrollView.contentOffset.x / CGFloat(challengeRankingMenuBar.menuList.count)
-    }
-    
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        let menuIndex = Int(targetContentOffset.pointee.x / view.frame.width)
-        let indexPath = IndexPath(item: menuIndex, section: 0)
-        challengeRankingMenuBar.menuBarCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredHorizontally)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return challengeRankingMenuBar.menuList.count
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cellId: String
+    private func bindMenuBar() {
+        challengeRankingMenuBar.menuBarCollectionView.rx.itemSelected
+            .asDriver()
+            .drive(onNext: { [weak self] indexPath in
+                guard let self = self else { return }
+                
+                let offset = CGFloat(indexPath.row) * self.view.frame.width
+                self.baseScrollView.setContentOffset(CGPoint(x: offset, y: 0), animated: true)
+            })
+            .disposed(by: bag)
         
-        switch indexPath.item {
-        case 0:
-            cellId = ChallengeContainerCVC.className
-        case 1:
-            cellId = RankingContainerCVC.className
-        default:
-            cellId = BaseCollectionViewCell.className
-        }
-        
-        
-        let cell = challengeRankingContainerCollectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! BaseCollectionViewCell
-        
-        return cell
+        baseScrollView.rx.contentOffset
+            .asDriver()
+            .drive(onNext: { [weak self] contentOffset in
+                guard let self = self else { return }
+                
+                self.challengeRankingMenuBar.positionBarView.frame.origin.x = contentOffset.x / CGFloat(self.challengeRankingMenuBar.menuList.count)
+            })
+            .disposed(by: bag)
     }
     
 }

@@ -10,6 +10,7 @@ import Alamofire
 
 struct UserDataModel {
     let friends: [String]
+    let isPublicRecord: Bool
 }
 
 extension UserDataModel {
@@ -17,7 +18,8 @@ extension UserDataModel {
         return [
             "nickname": UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) ?? fatalError(),
             "kakaoRefreshToken": UserDefaults.standard.string(forKey: UserDefaults.Keys.kakaoRefreshToken) ?? fatalError(),
-            "friends": friends
+            "friends": friends,
+            "isPublicRecord": isPublicRecord
         ]
     }
 }

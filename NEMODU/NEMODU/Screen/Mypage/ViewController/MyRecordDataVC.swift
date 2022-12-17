@@ -98,6 +98,8 @@ class MyRecordDataVC: BaseViewController {
             with: MyRecordListRequestModel(
                 start: viewModel.startDateFormatter(viewModel.input.selectedDay.value),
                 end: viewModel.endDateFormatter(viewModel.input.selectedDay.value)))
+        
+        viewModel.getEventDays(viewModel.input.selectedDay.value)
     }
     
     override func viewDidLayoutSubviews() {
@@ -127,6 +129,7 @@ class MyRecordDataVC: BaseViewController {
     override func bindOutput() {
         super.bindOutput()
         bindTableView()
+        bindCalendarReload()
     }
     
 }
@@ -357,6 +360,7 @@ extension MyRecordDataVC {
                 } else {
                     self.viewModel.input.selectedDay.accept(selectedDate)
                     self.viewModel.getMonthlyDays()
+                    self.viewModel.getEventDays(self.viewModel.input.selectedDay.value)
                     self.calendarCV.reloadData()
                     self.selectCV(date: selectedDate)
                 }
@@ -383,6 +387,17 @@ extension MyRecordDataVC {
                 let myRecordDetailVC = MyRecordDetailVC()
                 myRecordDetailVC.recordID = recordID
                 self.navigationController?.pushViewController(myRecordDetailVC, animated: true)
+            })
+            .disposed(by: bag)
+    }
+    
+    private func bindCalendarReload() {
+        viewModel.output.calendarReload
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.calendarCV.reloadData()
+                self.selectCV(date: self.viewModel.input.selectedDay.value)
             })
             .disposed(by: bag)
     }
@@ -469,7 +484,8 @@ extension MyRecordDataVC: UICollectionViewDataSource {
             return weekCell
         default:
             let day = isWeeklyScope ? viewModel.weekDays[indexPath.row] : viewModel.days[indexPath.row]
-            dayCell.configureCell(day)
+            dayCell.configureCell(date: day,
+                                  isEvent: viewModel.eventDays.contains(day.toString(separator: .hyphen)))
             
             // 이전달, 다음달 일자 색상 변경
             if day.get(.month) != viewModel.input.selectedDay.value.get(.month) {

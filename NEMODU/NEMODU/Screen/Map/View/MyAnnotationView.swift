@@ -20,6 +20,7 @@ class MyAnnotationView: MKAnnotationView {
     private lazy var profileImage = UIImageView()
         .then {
             $0.clipsToBounds = true
+            $0.contentMode = .scaleAspectFill
         }
     
     override init(annotation: MKAnnotation?, reuseIdentifier: String?) {

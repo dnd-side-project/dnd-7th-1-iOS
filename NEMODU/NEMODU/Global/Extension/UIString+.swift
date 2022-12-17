@@ -21,9 +21,9 @@ extension String {
     }
     
     /// Date String을 Date 타입으로 반환하는 함수
-    func toDate() -> Date {
+    func toDate(_ dateType: DateType) -> Date {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.dateFormat = dateType.dateFormatter
         dateFormatter.timeZone = TimeZone(identifier: "KST")
         if let date = dateFormatter.date(from: self) {
             return date
@@ -37,7 +37,12 @@ extension String {
     func relativeDateTime() -> String {
         let dateFormatter = RelativeDateTimeFormatter()
         dateFormatter.dateTimeStyle = .named
-        let relativeDate = dateFormatter.localizedString(for: self.toDate(), relativeTo: Date.now)
+        let relativeDate = dateFormatter.localizedString(for: self.toDate(.withTime), relativeTo: Date.now)
         return relativeDate
+    }
+    
+    /// 인코딩한 string을 반환하는 메서드
+    func encodeURL() -> String? {
+        return addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
     }
 }

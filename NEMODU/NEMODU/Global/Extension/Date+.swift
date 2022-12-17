@@ -8,9 +8,9 @@
 import Foundation
 
 extension Date {
-    func toString() -> String {
+    func toString(separator: DateType) -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        dateFormatter.dateFormat = separator.dateFormatter
         dateFormatter.timeZone = TimeZone(identifier: "KST")
         return dateFormatter.string(from: self)
     }
@@ -37,5 +37,14 @@ extension Date {
         default:
             return weekDay - 2
         }
+    }
+    
+    /// 특정 날짜의 요일을 반환(ex, 화)
+    func getDayOfWeek() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "EEEEEE"
+        formatter.locale = Locale(identifier:"ko_KR")
+        let convertStr = formatter.string(from: self)
+        return convertStr
     }
 }

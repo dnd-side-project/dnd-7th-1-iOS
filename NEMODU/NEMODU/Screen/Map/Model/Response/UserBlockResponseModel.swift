@@ -12,4 +12,13 @@ struct UserBlockResponseModel: Codable {
     let latitude, longitude: Double?
     let matrices: [Matrix]?
     let matricesNumber: Int?
+    let picturePath: String?
+}
+
+extension UserBlockResponseModel {
+    var profileImageURL: URL? {
+        guard let picturePath = picturePath,
+              let profileImageURL = picturePath.encodeURL() else { return nil }
+        return URL(string: profileImageURL)
+    }
 }

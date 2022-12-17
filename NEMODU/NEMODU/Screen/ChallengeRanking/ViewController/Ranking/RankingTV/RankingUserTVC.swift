@@ -15,9 +15,9 @@ class RankingUserTVC : BaseTableViewCell {
     
     // MARK: - UI components
     
-    let contentsView = UIView()
+    private let contentsView = UIView()
         .then {
-            $0.backgroundColor = .gray50
+            $0.backgroundColor = .clear
             $0.layer.cornerRadius = 8
             $0.layer.masksToBounds = true
             
@@ -25,20 +25,21 @@ class RankingUserTVC : BaseTableViewCell {
             $0.layer.borderColor = UIColor.clear.cgColor
         }
     
-    let rankNumberLabel = UILabel()
+    private let rankNumberLabel = UILabel()
         .then {
+            $0.text = "-"
             $0.font = .headline1
             $0.textColor = .gray700
             $0.backgroundColor = .clear
             $0.textAlignment = .center
         }
-    let userProfileImageView = UIImageView()
+    private let userProfileImageView = UIImageView()
         .then {
-            $0.image = UIImage(named: "defaultThumbnail")
+            $0.image = .defaultThumbnail
             $0.layer.cornerRadius = 20
             $0.layer.masksToBounds = true
         }
-    let showMeLabel = UILabel()
+    private let showMeLabel = UILabel()
         .then {
             $0.text = "나"
             $0.textAlignment = .center
@@ -55,20 +56,20 @@ class RankingUserTVC : BaseTableViewCell {
             
             $0.isHidden = true
         }
-    let userNicknameLabel = UILabel()
+    private let userNicknameLabel = UILabel()
         .then {
             $0.text = "-"
             $0.font = .body1
             $0.textColor = .gray900
         }
-    let blocksNumberLabel = UILabel()
+    private let blocksNumberLabel = UILabel()
         .then {
             $0.text = "-"
             $0.insertComma()
             $0.font = .title2
             $0.textColor = .gray900
         }
-    let blockLabel = UILabel()
+    private let blockLabel = UILabel()
         .then {
             $0.text = "칸"
             $0.font = .body1
@@ -79,52 +80,117 @@ class RankingUserTVC : BaseTableViewCell {
     
     // MARK: - Life Cycle
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        
-        // remove nickname
-        userNicknameLabel.text = ""
-        
-        // remove 걸음수 랭킹 - '걸음'
-        blockLabel.text = "칸"
-        
-        // remove 칸, 걸음 개수
-        blocksNumberLabel.text = ""
-        
-        // remove mrakMyRanking status
-        _ = contentsView
-            .then {
-                $0.layer.borderColor = UIColor.clear.cgColor
-                $0.layer.backgroundColor = UIColor.gray50.cgColor
-            }
-        showMeLabel.isHidden = true
-        
-        // remove 1, 2, 3 ranker
-        rankNumberLabel.textColor = .gray700
-    }
-    
-    // MARK: - Function
-    
     override func configureView() {
         super.configureView()
         
-        selectionStyle = .none
+        configureContentView()
     }
     
     override func layoutView() {
         super.layoutView()
         
+        configreLayout()
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        userNicknameLabel.text = ""
+        
+        blocksNumberLabel.text = "-"
+        blockLabel.text = "칸"
+        
+        markTop123(isOn: false)
+        markMyRanking(isOn: false)
+    }
+    
+    // MARK: - Functions
+    
+    private func markTop123(isOn: Bool) {
+        switch isOn {
+        case true:
+            rankNumberLabel.textColor = .main
+            contentsView.layer.backgroundColor = UIColor.gray50.cgColor
+            showMeLabel.isHidden = true
+        case false:
+            rankNumberLabel.textColor = .main
+            contentsView.layer.backgroundColor = UIColor.clear.cgColor
+            showMeLabel.isHidden = false
+        }
+    }
+    
+    private func markMyRanking(isOn: Bool) {
+        switch isOn {
+        case true:
+            rankNumberLabel.textColor = .main
+            showMeLabel.isHidden = false
+            userNicknameLabel.textColor = .main
+            
+            blocksNumberLabel.textColor = .main
+            blockLabel.textColor = .main
+            
+        case false:
+            rankNumberLabel.textColor = .gray700
+            showMeLabel.isHidden = true
+            userNicknameLabel.textColor = .gray900
+            
+            blocksNumberLabel.textColor = .gray900
+            blockLabel.textColor = .gray700
+        }
+    }
+    
+    func markMyRankingTVC(rankNumber: Int, profileImageURL: String, myNickname: String, blocksNumber: Int) {
+        rankNumberLabel.text = String(rankNumber)
+        
+        userProfileImageView.kf.setImage(with: URL(string: profileImageURL))
+        showMeLabel.isHidden = false
+        
+        userNicknameLabel.text = myNickname
+        
+        contentsView.layer.borderColor = UIColor.main.cgColor
+        contentsView.layer.backgroundColor = UIColor.main.withAlphaComponent(0.1).cgColor
+        
+        blocksNumberLabel.text = String(blocksNumber)
+    }
+    
+}
+
+// MARK: - Configure
+
+extension RankingUserTVC {
+    
+    private func configureContentView() {
+        selectionStyle = .none
+    }
+    
+    /// configure TVC acording to Ranking Type
+    func configureRankingCell(rankNumber: Int, profileImageURL: String, nickname: String, blocksNumber: Int) {
+        rankNumberLabel.text = "\(rankNumber)"
+        userProfileImageView.kf.setImage(with: URL(string: profileImageURL))
+        userNicknameLabel.text = nickname
+        blocksNumberLabel.text = "\(blocksNumber)"
+        
+        switch rankNumber {
+        case 1,2,3:
+            markTop123(isOn: true)
+        default:
+            break
+        }
+        
+        if(nickname == UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname)) {
+            markMyRanking(isOn: true)
+        }
+    }
+    
+}
+
+// MARK: - Layout
+
+extension RankingUserTVC {
+    
+    private func configreLayout() {
         contentView.addSubview(contentsView)
         contentsView.addSubviews([rankNumberLabel, userProfileImageView, showMeLabel, userNicknameLabel, blocksNumberLabel, blockLabel])
-        
         
         contentsView.snp.makeConstraints {
             let paddingTB = 12
@@ -161,7 +227,7 @@ class RankingUserTVC : BaseTableViewCell {
         }
         blocksNumberLabel.snp.makeConstraints {
             $0.centerY.equalTo(userNicknameLabel)
-            $0.left.lessThanOrEqualTo(userNicknameLabel.snp.right) // TODO: - 닉네임과 칸 수의 영역 침범 가능성을 검토해야 함
+            $0.left.lessThanOrEqualTo(userNicknameLabel.snp.right)
         }
         blockLabel.snp.makeConstraints {
             $0.centerY.equalTo(blocksNumberLabel)
@@ -170,38 +236,4 @@ class RankingUserTVC : BaseTableViewCell {
         }
     }
     
-    func markMyRankingCell() {
-        _ = contentsView
-            .then {
-                $0.layer.borderColor = UIColor.main.cgColor
-                $0.layer.backgroundColor = UIColor.main.withAlphaComponent(0.1).cgColor
-            }
-        showMeLabel.isHidden = false
-    }
-    
-    // MARK: - configure TVC acording to Ranking Type
-    
-    func configureAreaRankingCell(with data: AreaRanking) {
-        // TODO: - 서버 연결 후 프로필 이미지 추가
-//        userProfileImageView.image =
-        userNicknameLabel.text = data.nickname
-        blocksNumberLabel.text = "\(data.score)"
-        rankNumberLabel.text = "\(data.rank)"
-    }
-    
-    func configureStepRankingCell(with data: StepRanking) {
-        // TODO: - 서버 연결 후 프로필 이미지 추가
-//        userProfileImageView.image =
-        userNicknameLabel.text = data.nickname
-        blocksNumberLabel.text = "\(data.score)"
-        rankNumberLabel.text = "\(data.rank)"
-    }
-    
-    func configureAccumulateRankingCell(with data: MatrixRanking) {
-        // TODO: - 서버 연결 후 프로필 이미지 추가
-//        userProfileImageView.image =
-        userNicknameLabel.text = data.nickname
-        blocksNumberLabel.text = "\(data.score)"
-        rankNumberLabel.text = "\(data.rank)"
-    }
 }

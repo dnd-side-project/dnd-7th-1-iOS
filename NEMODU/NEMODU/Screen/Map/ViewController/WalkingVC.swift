@@ -11,6 +11,7 @@ import RxGesture
 import RxSwift
 import SnapKit
 import Then
+import Kingfisher
 
 class WalkingVC: BaseViewController {
     private let mapVC = MapVC()
@@ -238,8 +239,8 @@ extension WalkingVC {
                                                       exerciseTime: self.secondTimeValue,
                                                       blocks: self.mapVC.blocks,
                                                       stepCount: self.mapVC.stepCnt,
-                                                      started: startTime.toString(),
-                                                      ended: Date.now.toString()),
+                                                      started: startTime.toString(separator: .withTime),
+                                                      ended: Date.now.toString(separator: .withTime)),
                         weekBlockCnt: self.weekBlockCnt)
                     self.mapVC.stopUpdateStep()
                     self.present(recordResultNC, animated: true)
@@ -326,13 +327,27 @@ extension WalkingVC {
                 if !self.viewModel.output.friendVisible.value { return }
                 friends.forEach {
                     guard let latitude = $0.latitude,
-                          let longitude = $0.longitude else { return }
-                    self.mapVC.addFriendAnnotation(coordinate: [latitude, longitude],
-                                                   profileImage: UIImage(named: "defaultThumbnail")!,
-                                                   nickname: $0.nickname,
-                                                   color: .main,
-                                                   challengeCnt: 0,
-                                                   isEnabled: false)
+                          let longitude = $0.longitude,
+                          let picturePath = $0.picturePath,
+                          let url = URL(string: picturePath) else { return }
+                    
+                    let resource = ImageResource(downloadURL: url)
+                    let nickname = $0.nickname
+
+                    KingfisherManager.shared.retrieveImage(with: resource) { result in
+                        switch result {
+                        case .success(let value):
+                            self.mapVC.addFriendAnnotation(coordinate: [latitude, longitude],
+                                                           profileImage: value.image,
+                                                           nickname: nickname,
+                                                           color: .main,
+                                                           challengeCnt: 0,
+                                                           isEnabled: false)
+                        case .failure(let error):
+                            print(error)
+                        }
+                    }
+                    
                     self.drawBlockArea(blocks: $0.matrices ?? [],
                                        owner: .friends,
                                        blockColor: .gray25)
@@ -348,7 +363,7 @@ extension WalkingVC {
                 if !self.viewModel.output.friendVisible.value { return }
                 friends.forEach {
                     self.mapVC.addFriendAnnotation(coordinate: [$0.latitude, $0.longitude],
-                                                   profileImage: UIImage(named: "defaultThumbnail")!,
+                                                   profileImage: .defaultThumbnail,
                                                    nickname: $0.nickname,
                                                    color: ChallengeColorType(rawValue: $0.challengeColor)?.primaryColor ?? .main,
                                                    challengeCnt: $0.challengeNumber,

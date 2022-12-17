@@ -15,13 +15,13 @@ class CreateWeekChallengeVC: CreateChallengeVC {
     
     // MARK: - UI components
     
-    let baseScrollView = UIScrollView()
+    private let baseScrollView = UIScrollView()
         .then {
             $0.showsVerticalScrollIndicator = false
 
             $0.backgroundColor = .white
         }
-    let baseStackView = UIStackView()
+    private let baseStackView = UIStackView()
         .then {
             $0.axis = .vertical
             $0.spacing = 1
@@ -37,11 +37,11 @@ class CreateWeekChallengeVC: CreateChallengeVC {
         }
     
     // insert Challenge Name
-    let insertChallengeNameView = UIView()
+    private let insertChallengeNameView = UIView()
         .then {
             $0.backgroundColor = .white
         }
-    let insertChallengeNameLabel = UILabel()
+    private let insertChallengeNameLabel = UILabel()
         .then {
             $0.text = "챌린지 이름"
             $0.font = .body1
@@ -62,12 +62,12 @@ class CreateWeekChallengeVC: CreateChallengeVC {
             $0.layer.borderWidth = 1
             $0.layer.borderColor = UIColor.clear.cgColor
         }
-    let limitedAlertChallengeNameCountImageView = UIImageView()
+    private let limitedAlertChallengeNameCountImageView = UIImageView()
         .then {
             $0.image = UIImage(named: "alert_red")
             $0.isHidden = true
         }
-    let limitedAlertChallengeNameCountLabel = UILabel()
+    private let limitedAlertChallengeNameCountLabel = UILabel()
         .then {
             $0.font = .caption1
             $0.textColor = .red100
@@ -75,7 +75,7 @@ class CreateWeekChallengeVC: CreateChallengeVC {
             
             $0.isHidden = true
         }
-    let limitedChallengeNameCountLabel = UILabel()
+    private let limitedChallengeNameCountLabel = UILabel()
         .then {
             $0.font = .caption1
             $0.textColor = .gray600
@@ -83,15 +83,15 @@ class CreateWeekChallengeVC: CreateChallengeVC {
             $0.text = "0 / 8"
         }
     
-    lazy var challengePeriodButtonView = CreateChallengeListButtonView()
+    private lazy var challengePeriodButtonView = CreateChallengeListButtonView()
         .then {
             $0.titleLabel.text = "챌린지 기간"
             
             $0.actionButton.addTarget(self, action: #selector(didTapChallengePeriod), for: .touchUpInside)
         }
     
-    let selectFriendsButtonViewContainer = UIView()
-    lazy var selectFriendsButtonView = CreateChallengeListButtonView()
+    private let selectFriendsButtonViewContainer = UIView()
+    private lazy var selectFriendsButtonView = CreateChallengeListButtonView()
         .then {
             let attributedText = NSMutableAttributedString(string: "함께할 친구", attributes: [NSAttributedString.Key.font: UIFont.body1,
                                                                                           NSAttributedString.Key.foregroundColor: UIColor.gray900])
@@ -104,11 +104,11 @@ class CreateWeekChallengeVC: CreateChallengeVC {
         }
     
     // insert Challenge Message
-    let insertChallengeMessageView = UIView()
+    private let insertChallengeMessageView = UIView()
         .then {
             $0.backgroundColor = .white
         }
-    let insertChallengeMessageLabel = UILabel()
+    private let insertChallengeMessageLabel = UILabel()
         .then {
             $0.text = "신청 메세지"
             $0.font = .body1
@@ -125,17 +125,19 @@ class CreateWeekChallengeVC: CreateChallengeVC {
     
     // MARK: - Variables and Properties
     
+    private let viewModel = CreateWeekChallengeVM()
     private let bag = DisposeBag()
+    private var creatChallengeResponseModel: CreatChallengeResponseModel?
     
     var friends: [String] = []
     var message, name, nickname, started, ended: String?
-    var type: String = ""
+    var startedDate: Date?
     
-    var confirmButtonBottomConstraint: Constraint?
+    private var confirmButtonBottomConstraint: Constraint?
     
-    var confirmButtonHight: CGFloat = 48
-    var confirmButtonTop: CGFloat = 16
-    var confirmButtonBottom: CGFloat = 20
+    private var confirmButtonHight: CGFloat = 48
+    private var confirmButtonTop: CGFloat = 16
+    private var confirmButtonBottom: CGFloat = 20
     
     // MARK: - Life Cycle
     
@@ -146,6 +148,53 @@ class CreateWeekChallengeVC: CreateChallengeVC {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
+        updateSelectedChallengePeriod()
+        updateSelectedFriends()
+        checkConfirmButtonEnableCondition()
+    }
+    
+    override func bindInput() {
+        super.bindInput()
+        
+        bindChallengeNameTextField()
+        bindInsertChallengeMessageTextView()
+    }
+    
+    override func bindOutput() {
+        super.bindOutput()
+
+        responseCreateWeekChallenge()
+    }
+    
+    override func configureView() {
+        super.configureView()
+        
+        configureNavigationBar()
+        configureConfirmButton()
+    }
+    
+    override func layoutView() {
+        super.layoutView()
+        
+        configureLayout()
+    }
+    
+    // MARK: - Functions
+    
+    func requestCreateWeekChallenge(type: String) {
+        guard let challengeName = insertChallengeNameTextField.text else { return }
+        guard let myNickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { return }
+        guard let challengeMessage = insertChallengeMessageTextView.tv.text else { return }
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let challengeStart = dateFormatter.string(from: startedDate ?? .now)
+        
+        viewModel.requestCreateWeekChallengeVM(with: CreateChallengeRequestModel(friends: friends, message: challengeMessage, name: challengeName, nickname: myNickname, started: challengeStart, type: type))
+    }
+    
+    private func updateSelectedChallengePeriod() {
         if started != nil {
             challengePeriodButtonView.statusImageView.image = UIImage(named: "check")
             
@@ -154,7 +203,9 @@ class CreateWeekChallengeVC: CreateChallengeVC {
             guard let endDate = ended?.split(separator: " ") else { return }
             challengePeriodButtonView.dateLabel.text = "\(startDate[1]) \(startDate[2]) - \(endDate[1]) \(endDate[2])"
         }
-        
+    }
+    
+    private func updateSelectedFriends() {
         if friends.count > 0 {
             _ = selectFriendsButtonView
                 .then {
@@ -204,33 +255,71 @@ class CreateWeekChallengeVC: CreateChallengeVC {
         }
     }
     
-    // MARK: - Functions
+    func checkConfirmButtonEnableCondition() {
+        if insertChallengeNameTextField.text?.trimmingCharacters(in: .whitespaces).count ?? 0 > 0 &&
+            insertChallengeMessageTextView.tv.text.trimmingCharacters(in: .whitespaces).count > 0 &&
+            started != nil {
+            confirmButton.isEnabled = true
+            confirmButton.isSelected = true
+        } else {
+            confirmButton.isEnabled = false
+            confirmButton.isSelected = false
+        }
+    }
     
-    override func configureView() {
-        super.configureView()
+    @objc
+    private func didTapChallengePeriod() {
+        let challengePeriodVC = ChallengePeriodVC()
+        challengePeriodVC.createWeekChallengeVC = self
         
+        challengePeriodVC.modalPresentationStyle = .fullScreen
+        
+        present(challengePeriodVC, animated: true)
+    }
+    
+    @objc
+    private func didTapSelectFriends() {
+        let selectFriendsVC = SelectFriendsVC()
+        selectFriendsVC.createWeekChallengeVC = self
+        selectFriendsVC.modalPresentationStyle = .fullScreen
+        
+        present(selectFriendsVC, animated: true)
+    }
+    
+}
+
+// MARK: - Configure
+
+extension CreateWeekChallengeVC {
+    
+    private func configureNavigationBar() {
         _ = navigationBar
             .then {
                 $0.configureNaviBar(targetVC: self, title: "주간 챌린지 만들기")
                 $0.configureBackBtn(targetVC: self)
             }
-        
+    }
+    
+    private func configureConfirmButton() {
         _ = confirmButton
             .then {
-                $0.isEnabled = true
+                $0.isEnabled = false
             }
+    }
+    
+}
+
+// MARK: - Layout
+
+extension CreateWeekChallengeVC {
+    
+    private func configureLayout() {
+        view.addSubview(baseScrollView)
+        baseScrollView.addSubview(baseStackView)
         
         [challengeTypeTitleButtonView, insertChallengeNameView, challengePeriodButtonView, selectFriendsButtonViewContainer, insertChallengeMessageView].forEach({
             baseStackView.addArrangedSubview($0)
         })
-        
-    }
-    
-    override func layoutView() {
-        super.layoutView()
-        
-        view.addSubview(baseScrollView)
-        baseScrollView.addSubview(baseStackView)
         
         selectFriendsButtonViewContainer.addSubview(selectFriendsButtonView)
         insertChallengeNameView.addSubviews([insertChallengeNameLabel,
@@ -313,41 +402,6 @@ class CreateWeekChallengeVC: CreateChallengeVC {
         }
     }
     
-    override func bindInput() {
-        super.bindInput()
-        
-        bindChallengeNameTextField()
-        bindInsertChallengeMessageTextView()
-    }
-    
-    @objc
-    func didTapChallengePeriod() {
-        let challengePeriodVC = ChallengePeriodVC()
-        challengePeriodVC.createWeekChallengeVC = self
-        
-        challengePeriodVC.modalPresentationStyle = .fullScreen
-        
-        present(challengePeriodVC, animated: true)
-    }
-    
-    @objc
-    func didTapSelectFriends() {
-        let selectFriendsVC = SelectFriendsVC()
-        selectFriendsVC.createWeekChallengeVC = self
-        selectFriendsVC.modalPresentationStyle = .fullScreen
-        
-        present(selectFriendsVC, animated: true)
-    }
-    
-    override func didTapConfirmButton() {
-        let createChallengeSuccuessVC = CreateChallengeSuccuessVC()
-        createChallengeSuccuessVC.createWeekChallengeVC = self
-        
-        createChallengeSuccuessVC.modalPresentationStyle = .fullScreen
-        
-        present(createChallengeSuccuessVC, animated: true)
-    }
-    
 }
 
 // MARK: - Input
@@ -394,6 +448,9 @@ extension CreateWeekChallengeVC {
                     
                     self.limitedChallengeNameCountLabel.text = "\(challengeName.count) / 8"
                 }
+                
+                self.checkConfirmButtonEnableCondition()
+                
             })
             .disposed(by: bag)
     }
@@ -436,9 +493,40 @@ extension CreateWeekChallengeVC {
                     self.baseScrollView.scrollToBottom(animated: true)
                 }
 
-                self.confirmButton.isSelected = true
+                self.checkConfirmButtonEnableCondition()
+                
             })
             .disposed(by: bag)
     }
     
+}
+
+// MARK: - Output
+
+extension CreateWeekChallengeVC {
+    private func responseCreateWeekChallenge() {
+        viewModel.output.isCreateWeekChallengeSuccess
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: { [weak self] isCreateWeekChallengeSuccess in
+                guard let self = self else { return }
+                
+                if(isCreateWeekChallengeSuccess == false) {
+                    self.popUpAlert(alertType: .createWeekChallenge, targetVC: self, highlightBtnAction: #selector(self.dismissAlert), normalBtnAction: nil)
+                }
+            })
+            .disposed(by: bag)
+        
+        viewModel.output.successWithResponseData
+            .subscribe(onNext: { [weak self] data in
+                guard let self = self else { return }
+                
+                let createChallengeSuccuessVC = CreateChallengeSuccuessVC()
+                createChallengeSuccuessVC.configureCreateChallengeResponse(creatChallengeResponseModel: data)
+                createChallengeSuccuessVC.createWeekChallengeVC = self
+                createChallengeSuccuessVC.modalPresentationStyle = .fullScreen
+                self.present(createChallengeSuccuessVC, animated: true)
+            })
+            .disposed(by: bag)
+
+    }
 }

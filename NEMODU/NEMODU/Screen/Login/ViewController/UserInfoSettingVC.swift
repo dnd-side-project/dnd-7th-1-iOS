@@ -36,9 +36,10 @@ class UserInfoSettingVC: BaseViewController {
     
     private let nicknameVC = NicknameVC()
     private let addfriendsVC = AddFriendsVC()
+    private let locationSettingVC = LocationSettingVC()
     
     private var page: Float = 1
-    private let pageCnt: Float = 2
+    private let pageCnt: Float = 3
     
     private let viewModel = UserInfoSettingVM()
     private let bag = DisposeBag()
@@ -96,9 +97,10 @@ extension UserInfoSettingVC {
                           baseScrollView])
         addChild(nicknameVC)
         addChild(addfriendsVC)
+        addChild(locationSettingVC)
         nicknameVC.viewModel = viewModel
         baseScrollView.addSubview(baseStackView)
-        [nicknameVC.view, addfriendsVC.view].forEach {
+        [nicknameVC.view, addfriendsVC.view, locationSettingVC.view].forEach {
             baseStackView.addArrangedSubview($0)
         }
         
@@ -120,8 +122,7 @@ extension UserInfoSettingVC {
         
         baseScrollView.snp.makeConstraints {
             $0.top.equalTo(progressView.snp.bottom)
-            $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(view.keyboardLayoutGuide.snp.top)
+            $0.leading.trailing.bottom.equalToSuperview()
         }
         
         baseStackView.snp.makeConstraints {
@@ -138,7 +139,9 @@ extension UserInfoSettingVC {
         naviBar.backBtn.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in
-                guard let self = self else { return }
+                guard let self = self,
+                      self.page > 1 else { return }
+                if self.page == 3 { self.naviBar.rightBtn.setTitle("다음", for: .normal) }
                 self.page -= 1
                 self.page != 0
                 ? self.setPage(self.page)
@@ -149,11 +152,30 @@ extension UserInfoSettingVC {
         naviBar.rightBtn.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in
-                guard let self = self else { return }
+                guard let self = self,
+                      self.page <= 3 else { return }
                 self.page += 1
-                self.page != self.pageCnt + 1
-                ? self.setPage(self.page)
-                : self.navigationController?.pushViewController(EnterVC(), animated: true)
+                
+                if self.page != self.pageCnt + 1 {
+                    self.setPage(self.page)
+                } else {
+                    let enterVC = EnterVC()
+                    // TODO: - 친구 목록 연결
+                    enterVC.userDataModel = UserDataModel(friends: [],
+                                                          isPublicRecord: self.locationSettingVC.getSignupValue())
+                    self.navigationController?.pushViewController(enterVC, animated: true)
+                }
+                
+                if self.page == 3 { self.naviBar.rightBtn.setTitle("완료", for: .normal) }
+            })
+            .disposed(by: bag)
+        
+        baseScrollView.rx.didScroll
+            .asDriver()
+            .drive(onNext: {[weak self] offset in
+                guard let self = self else { return }
+                let progress = (self.baseScrollView.contentOffset.x + self.screenWidth) / self.screenWidth
+                self.progressView.progress = Float(progress) / self.pageCnt
             })
             .disposed(by: bag)
     }
@@ -177,7 +199,6 @@ extension UserInfoSettingVC {
 
 extension UserInfoSettingVC {
     private func setPage(_ page: Float) {
-        baseScrollView.setContentOffset(CGPoint(x: screenWidth * CGFloat(page - 1), y: 0), animated: true)
-        progressView.progress = page / pageCnt
+        baseScrollView.scrollToHorizontalOffset(offset: screenWidth * CGFloat(page - 1))
     }
 }

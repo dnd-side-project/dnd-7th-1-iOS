@@ -38,22 +38,15 @@ class DayCVC: BaseCollectionViewCell {
         super.prepareForReuse()
         dayLabel.text = nil
         eventDot.isHidden = true
-        contentView.backgroundColor = nil
+        contentView.backgroundColor = .white
     }
     
     override var isSelected: Bool {
         willSet {
-            if newValue {
-                dayLabel.font = .headline1
-                dayLabel.textColor = .white
-                eventDot.backgroundColor = .white
-                contentView.backgroundColor = .main
-            } else {
-                dayLabel.font = .body1
-                dayLabel.textColor = .gray800
-                eventDot.backgroundColor = .main
-                contentView.backgroundColor = nil
-            }
+            dayLabel.font = newValue ? .headline1 : .body1
+            dayLabel.textColor = newValue ? .white : .gray800
+            eventDot.backgroundColor = newValue ? .white : .main
+            contentView.backgroundColor = newValue ? .main : .white
         }
     }
 }
@@ -66,10 +59,11 @@ extension DayCVC {
         contentView.layer.cornerRadius = frame.width / 2
     }
     
-    func configureCell(_ date: Date) {
+    func configureCell(date: Date, isEvent: Bool) {
         self.date = date
         dayLabel.text = "\(date.get(.day))"
-        eventDot.isHidden = false
+        eventDot.isHidden = !isEvent
+        eventDot.backgroundColor = isSelected ? .white : .main
     }
     
     func setOtherMonthDate() {
