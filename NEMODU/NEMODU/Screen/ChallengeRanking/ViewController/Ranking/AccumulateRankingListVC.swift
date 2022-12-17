@@ -52,7 +52,8 @@ class AccumulateRankingListVC : RankingListVC {
         guard let accumulateRankingList = accumulateRankingListResponseModel else { return }
         for accumulateRanking in accumulateRankingList.matrixRankings {
             if accumulateRanking.nickname == myUserNickname {
-                myRankingTVC.configureRankingCell(rankNumber: accumulateRanking.rank, profileImageURL: accumulateRanking.picturePath, nickname: accumulateRanking.nickname, blocksNumber: accumulateRanking.score, cellType: "RankingTop")
+                myRankingTVC.configureRankingCell(rankNumber: accumulateRanking.rank, profileImageURL: accumulateRanking.picturePath, nickname: accumulateRanking.nickname, blocksNumber: accumulateRanking.score)
+                myRankingTVC.configureRankingTopCell()
             }
         }
     }
@@ -80,7 +81,8 @@ extension AccumulateRankingListVC : UITableViewDataSource {
         
         guard let accumulateRankingList = accumulateRankingListResponseModel else { return cell }
         let userAccumulateRanking = accumulateRankingList.matrixRankings[indexPath.row]
-        cell.configureRankingCell(rankNumber: userAccumulateRanking.rank, profileImageURL: userAccumulateRanking.picturePath, nickname: userAccumulateRanking.nickname, blocksNumber: userAccumulateRanking.score, cellType: "Ranking")
+        cell.configureRankingCell(rankNumber: userAccumulateRanking.rank, profileImageURL: userAccumulateRanking.picturePath, nickname: userAccumulateRanking.nickname, blocksNumber: userAccumulateRanking.score)
+        cell.configureRankingListCell(rankNumber: userAccumulateRanking.rank, nickname: userAccumulateRanking.nickname)
         
         return cell
     }

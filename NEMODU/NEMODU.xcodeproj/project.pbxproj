@@ -1182,12 +1182,12 @@
 		3C3BD77828B396B900AD55B6 /* Ranking */ = {
 			isa = PBXGroup;
 			children = (
-				3C48920F28B1087300B11207 /* RankingTV */,
 				3CB9DBA528A954EE007BC1BE /* RankingVC.swift */,
 				3C86821728FD3FE700F37C06 /* RankingListVC.swift */,
 				3CF431B928FE7AE9007EB115 /* AreaRankingListVC.swift */,
 				3CF431BB28FE7BAA007EB115 /* StepRankingListVC.swift */,
 				3CF431BF28FE82FE007EB115 /* AccumulateRankingListVC.swift */,
+				3C48920F28B1087300B11207 /* RankingTV */,
 			);
 			path = Ranking;
 			sourceTree = "<group>";

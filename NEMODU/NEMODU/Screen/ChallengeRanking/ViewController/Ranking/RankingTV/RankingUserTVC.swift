@@ -107,51 +107,26 @@ class RankingUserTVC : BaseTableViewCell {
     
     // MARK: - Functions
     
+    private func isMyNickname(nickname: String) -> Bool {
+        return nickname == UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) ? true : false
+    }
+    
     private func markTop123(isOn: Bool) {
-        switch isOn {
-        case true:
-            rankNumberLabel.textColor = .main
-            contentsView.layer.backgroundColor = UIColor.gray50.cgColor
-            showMeLabel.isHidden = true
-        case false:
-            rankNumberLabel.textColor = .main
-            contentsView.layer.backgroundColor = UIColor.clear.cgColor
-            showMeLabel.isHidden = false
-        }
+        rankNumberLabel.textColor = isOn ? .main : .gray700
+        contentsView.layer.backgroundColor = isOn ? UIColor.gray50.cgColor : UIColor.clear.cgColor
     }
     
     private func markRankLabelGreen(isOn: Bool) {
-        switch isOn {
-        case true:
-            rankNumberLabel.textColor = .main
-            showMeLabel.isHidden = false
-            userNicknameLabel.textColor = .main
-            
-            blocksNumberLabel.textColor = .main
-            blockLabel.textColor = .main
-            
-        case false:
-            rankNumberLabel.textColor = .gray700
-            showMeLabel.isHidden = true
-            userNicknameLabel.textColor = .gray900
-            
-            blocksNumberLabel.textColor = .gray900
-            blockLabel.textColor = .gray700
-        }
+        rankNumberLabel.textColor = isOn ? .main : .gray700
+        userNicknameLabel.textColor = isOn ? .main : .gray900
+        
+        blocksNumberLabel.textColor = isOn ? .main : .gray900
+        blockLabel.textColor = isOn ? .main : .gray700
     }
     
     private func markRankLayerGreen(isOn: Bool) {
-        switch isOn {
-        case true:
-            contentsView.layer.borderColor = UIColor.main.cgColor
-            contentsView.layer.backgroundColor = UIColor.main.withAlphaComponent(0.1).cgColor
-            showMeLabel.isHidden = false
-            
-        case false:
-            contentsView.layer.borderColor = UIColor.clear.cgColor
-            contentsView.layer.backgroundColor = UIColor.clear.withAlphaComponent(0.1).cgColor
-            showMeLabel.isHidden = true
-        }
+        contentsView.layer.borderColor = isOn ? UIColor.main.cgColor : UIColor.clear.cgColor
+        contentsView.layer.backgroundColor = isOn ? UIColor.main.withAlphaComponent(0.1).cgColor : UIColor.clear.withAlphaComponent(0.1).cgColor
     }
     
 }
@@ -165,32 +140,45 @@ extension RankingUserTVC {
     }
     
     /// configure TVC acording to Ranking Type
-    func configureRankingCell(rankNumber: Int, profileImageURL: String, nickname: String, blocksNumber: Int, cellType: String) {
+    func configureRankingCell(rankNumber: Int, profileImageURL: String, nickname: String, blocksNumber: Int) {
         rankNumberLabel.text = "\(rankNumber)"
+        
         if profileImageURL != "" {
             userProfileImageView.kf.setImage(with: URL(string: profileImageURL))
         } else {
             userProfileImageView.image = UIImage(named: "defaultThumbnail")
         }
+        showMeLabel.isHidden = !isMyNickname(nickname: nickname)
+        
         userNicknameLabel.text = nickname
         blocksNumberLabel.text = "\(blocksNumber)"
-        
-        switch rankNumber {
-        case 1,2,3:
+    }
+    
+    func configureRankingListCell(rankNumber: Int, nickname: String) {
+        if 1 <= rankNumber && rankNumber <= 3 {
             markTop123(isOn: true)
-        default:
-            break
         }
+        if isMyNickname(nickname: nickname) {
+            markRankLabelGreen(isOn: true)
+        }
+    }
+    
+    func configureStepRankingCell() {
+        blockLabel.text = "걸음"
+    }
+    
+    func configureRankingTopCell() {
+        markRankLayerGreen(isOn: true)
+        markRankLabelGreen(isOn: false)
+    }
+    
+    func configureChallengeDetailRankingCell(nickname: String) {
+        rankNumberLabel.textColor = .gray700
+        contentsView.layer.backgroundColor = UIColor.gray50.cgColor
         
-        if(nickname == UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname)) {
-            switch cellType {
-            case "Ranking":
-                markRankLabelGreen(isOn: true)
-            case "RankingTop", "ChallengeDetail":
-                markRankLayerGreen(isOn: true)
-            default:
-                break
-            }
+        if isMyNickname(nickname: nickname) {
+            markRankLayerGreen(isOn: true)
+            markRankLabelGreen(isOn: false)
         }
     }
     
