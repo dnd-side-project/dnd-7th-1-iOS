@@ -79,7 +79,8 @@ extension ProgressChallengeDetailVC : UITableViewDataSource {
         
         guard let progressChallengeDetailInfo = progressChallengeDetailResponseModel else { return cell }
         let userRankingInfo = progressChallengeDetailInfo.rankings[indexPath.row]
-        cell.configureRankingCell(rankNumber: userRankingInfo.rank, profileImageURL: userRankingInfo.picturePath, nickname: userRankingInfo.nickname, blocksNumber: userRankingInfo.score, cellType: "ChallengeDetail")
+        cell.configureRankingCell(rankNumber: userRankingInfo.rank, profileImageURL: userRankingInfo.picturePath, nickname: userRankingInfo.nickname, blocksNumber: userRankingInfo.score)
+        cell.configureChallengeDetailRankingCell(nickname: userRankingInfo.nickname)
         
         return cell
     }
