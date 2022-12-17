@@ -79,8 +79,8 @@ extension ChallengeHistoryDetailVC : UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: RankingUserTVC.className, for: indexPath) as? RankingUserTVC else { return UITableViewCell() }
         
-        guard let progressChallengeDetailInfo = progressChallengeDetailResponseModel else { return cell }
-        let userRankingInfo = progressChallengeDetailInfo.rankings[indexPath.row]
+        guard let challengeHistoryDetailInfo = challengeHistoryDetailResponseModel else { return cell }
+        let userRankingInfo = challengeHistoryDetailInfo.rankings[indexPath.row]
         cell.configureRankingCell(rankNumber: userRankingInfo.rank, profileImageURL: userRankingInfo.picturePath, nickname: userRankingInfo.nickname, blocksNumber: userRankingInfo.score)
         cell.configureChallengeDetailRankingCell(nickname: userRankingInfo.nickname)
         
