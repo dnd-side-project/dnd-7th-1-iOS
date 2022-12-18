@@ -1,5 +1,5 @@
 //
-//  ProgressChallengeDetailResponseModel.swift
+//  ChallengeHistoryDetailResponseModel.swift
 //  NEMODU
 //
 //  Created by Kim HeeJae on 2022/12/02.
@@ -8,7 +8,7 @@
 import Foundation
 import Alamofire
 
-struct ProgressChallengeDetailResponseModel: Codable {
+struct ChallengeHistoryDetailResponseModel: Codable {
     let color: String
     let distance: Int
     let ended: String
