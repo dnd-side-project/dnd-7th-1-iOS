@@ -11,7 +11,6 @@ import RxGesture
 import RxSwift
 import SnapKit
 import Then
-import Kingfisher
 
 class WalkingVC: BaseViewController {
     private let mapVC = MapVC()
@@ -141,15 +140,6 @@ extension WalkingVC {
     
     private func setStartTime() {
         startTime = Date.now
-    }
-    
-    private func drawBlockArea(blocks: [Matrix], owner: BlocksType, blockColor: UIColor) {
-        blocks.forEach {
-            mapVC.drawBlock(latitude: $0.latitude,
-                            longitude: $0.longitude,
-                            owner: owner,
-                            color: blockColor)
-        }
     }
 }
 
@@ -311,11 +301,12 @@ extension WalkingVC {
             .subscribe(onNext: { [weak self] user in
                 guard let self = self else { return }
                 self.configureWeekBlockCnt(user.matricesNumber ?? 0)
-                
                 if !self.viewModel.output.myBlocksVisible.value { return }
-                self.drawBlockArea(blocks: user.matrices ?? [],
-                                   owner: .mine,
-                                   blockColor: .main20)
+                
+                // Area
+                self.mapVC.drawBlockArea(blocks: user.matrices ?? [],
+                                         owner: .mine,
+                                         blockColor: .main20)
             })
             .disposed(by: bag)
     }
@@ -329,28 +320,21 @@ extension WalkingVC {
                     guard let latitude = $0.latitude,
                           let longitude = $0.longitude,
                           let picturePath = $0.picturePath,
-                          let url = URL(string: picturePath) else { return }
-                    
-                    let resource = ImageResource(downloadURL: url)
+                          let profileImageURL = URL(string: picturePath) else { return }
                     let nickname = $0.nickname
-
-                    KingfisherManager.shared.retrieveImage(with: resource) { result in
-                        switch result {
-                        case .success(let value):
-                            self.mapVC.addFriendAnnotation(coordinate: [latitude, longitude],
-                                                           profileImage: value.image,
-                                                           nickname: nickname,
-                                                           color: .main,
-                                                           challengeCnt: 0,
-                                                           isEnabled: false)
-                        case .failure(let error):
-                            print(error)
-                        }
-                    }
                     
-                    self.drawBlockArea(blocks: $0.matrices ?? [],
-                                       owner: .friends,
-                                       blockColor: .gray25)
+                    // Annotation
+                    self.mapVC.addFriendAnnotation(coordinate: [latitude, longitude],
+                                                   profileImageURL: profileImageURL,
+                                                   nickname: nickname,
+                                                   color: .main,
+                                                   challengeCnt: 0,
+                                                   isEnabled: false)
+                    
+                    // Area
+                    self.mapVC.drawBlockArea(blocks: $0.matrices ?? [],
+                                             owner: .friends,
+                                             blockColor: .gray25)
                 }
             })
             .disposed(by: bag)
@@ -362,15 +346,20 @@ extension WalkingVC {
                 guard let self = self else { return }
                 if !self.viewModel.output.friendVisible.value { return }
                 friends.forEach {
+                    guard let profileImageURL = $0.profileImageURL else { return }
+                    
+                    // Annotation
                     self.mapVC.addFriendAnnotation(coordinate: [$0.latitude, $0.longitude],
-                                                   profileImage: .defaultThumbnail,
+                                                   profileImageURL: profileImageURL,
                                                    nickname: $0.nickname,
                                                    color: ChallengeColorType(rawValue: $0.challengeColor)?.primaryColor ?? .main,
                                                    challengeCnt: $0.challengeNumber,
                                                    isEnabled: false)
-                    self.drawBlockArea(blocks: $0.matrices,
-                                       owner: .friends,
-                                       blockColor: ChallengeColorType(rawValue: $0.challengeColor)?.blockColor ?? .gray25)
+                    
+                    // Area
+                    self.mapVC.drawBlockArea(blocks: $0.matrices,
+                                             owner: .friends,
+                                             blockColor: ChallengeColorType(rawValue: $0.challengeColor)?.blockColor ?? .gray25)
                 }
             })
             .disposed(by: bag)
