@@ -11,11 +11,10 @@ import RxGesture
 import RxSwift
 import SnapKit
 import Then
-import Kingfisher
 
 class MyDetailMapVC: BaseViewController {
     private let naviBar = NavigationBar()
-
+    
     private let mapVC = MiniMapVC()
         .then {
             $0.hideMagnificationBtn()
@@ -66,7 +65,7 @@ extension MyDetailMapVC {
                                  title: "상세 지도")
         naviBar.configureBackBtn(targetVC: self)
     }
-
+    
     private func configureMap() {
         addChild(mapVC)
         view.addSubview(mapVC.view)
@@ -74,15 +73,9 @@ extension MyDetailMapVC {
         mapVC.isUserInteractionEnabled(true)
     }
     
+    /// 상세보기 이전, 미니맵 화면에서 나의 블록 영역을 받아오는 메서드
     func getBlocks(blocks: [[Double]]) {
         mapVC.blocks = blocks
-    }
-    
-    private func drawDetailMap(_ profileImage: UIImage) {
-        guard let lastBlock = mapVC.blocks.last else { return }
-        mapVC.drawDetailMap(latitude: lastBlock[0],
-                            longitude: lastBlock[1],
-                            profileImage: profileImage)
     }
 }
 
@@ -110,17 +103,11 @@ extension MyDetailMapVC {
         viewModel.output.userData
             .subscribe(onNext: { [weak self] data in
                 guard let self = self,
-                      let url = URL(string: data.picturePath) else { return }
-                let resource = ImageResource(downloadURL: url)
-
-                KingfisherManager.shared.retrieveImage(with: resource) { result in
-                    switch result {
-                    case .success(let value):
-                        self.drawDetailMap(value.image)
-                    case .failure(let error):
-                        print(error)
-                    }
-                }
+                      let profileImageURL = URL(string: data.picturePath),
+                      let lastBlock = self.mapVC.blocks.last else { return }
+                self.mapVC.addMyAnnotation(coordinate: [lastBlock[0], lastBlock[1]],
+                                      profileImageURL: profileImageURL)
+                self.mapVC.drawMiniMap()
             })
             .disposed(by: bag)
     }

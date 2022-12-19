@@ -62,13 +62,19 @@ extension MiniMapVC {
         isUserInteractionEnabled(false)
     }
     
-    /// 영역 전체가 한 눈에 보이게 지도에 그려주는 함수
+    /// 나의 영역을 기준으로 지도가 한 눈에 보이게 미니맵을 그리는 함수
     func drawMiniMap() {
         let sortedLatitude = blocks.sorted(by: { $0[0] < $1[0] })
         let sortedLongitude = blocks.sorted(by: { $0[1] < $1[1] })
         
-        let spanX = Int((sortedLatitude.last![0] - sortedLatitude.first![0]) / latitudeBlockSizePoint)
-        let spanY = Int((sortedLongitude.last![1] - sortedLongitude.first![1]) / longitudeBlockSizePoint)
+        // 영역이 없는 경우 그냥 return & 그냥 현재 위치의 기본 지도가 뜸
+        guard let lastLatitude = sortedLatitude.last,
+              let firstLatitude = sortedLatitude.first,
+              let lastLongitude = sortedLongitude.last,
+              let firstLongitude = sortedLongitude.first else { return }
+        
+        let spanX = Int((lastLatitude[0] - firstLatitude[0]) / latitudeBlockSizePoint)
+        let spanY = Int((lastLongitude[1] - firstLongitude[1]) / longitudeBlockSizePoint)
         var span = Double(spanX > spanY ? spanX : spanY)
         span = (span + 3) * longitudeBlockSizePoint
         
@@ -76,21 +82,12 @@ extension MiniMapVC {
                        longitudeValue: sortedLongitude[blocks.count/2][1],
                        delta: span)
         
-        blocks.forEach {
-            drawBlock(latitude: $0[0],
-                      longitude: $0[1],
+        drawBlockArea(blocks: blocks,
                       owner: .mine,
-                      color: .main40)
-        }
+                      blockColor: .main40)
     }
     
-    /// 영역 전체와 마지막 위치를 지정하는 annotation을 한 눈에 보이게 지도에 그려주는 함수
-    func drawDetailMap(latitude: Double, longitude: Double, profileImage: UIImage) {
-        addMyAnnotation(coordinate: [latitude, longitude],
-                        profileImage: profileImage)
-        drawMiniMap()
-    }
-    
+    /// miniMap의 확대 버튼을 숨기는 메서드
     func hideMagnificationBtn() {
         magnificationBtn.isHidden = true
     }
