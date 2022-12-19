@@ -33,8 +33,6 @@ class ChallengeVC : BaseViewController {
         
         $0.layer.cornerRadius = 30
         $0.layer.masksToBounds = true
-        
-        $0.addTarget(self, action: #selector(didTapCreateChallengeButton), for: .touchUpInside)
     }
     
     // MARK: - Variables and Properties
@@ -76,6 +74,12 @@ class ChallengeVC : BaseViewController {
         configureLayout()
     }
     
+    override func bindInput() {
+        super.bindInput()
+        
+        bindButton()
+    }
+    
     override func bindOutput() {
         super.bindOutput()
         
@@ -101,15 +105,6 @@ class ChallengeVC : BaseViewController {
     func reloadChallengeTableView(toMoveIndex: Int) {
         reloadCellIndex = toMoveIndex
         challengeTableView.reloadSections(IndexSet(2...2), with: .fade)
-    }
-    
-    @objc
-    func didTapCreateChallengeButton() {
-        let selectChallengeCreateVC = SelectChallengeCreateVC()
-        selectChallengeCreateVC.hidesBottomBarWhenPushed = true
-        
-        let rootViewController = view.superview?.findViewController()
-        rootViewController?.navigationController?.pushViewController(selectChallengeCreateVC, animated: true)
     }
     
 }
@@ -285,6 +280,40 @@ extension ChallengeVC : UITableViewDelegate {
     }
 
     // Cell
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.section {
+        case 0: // 초대받은 챌린지
+            break
+        case 2: // 챌린지 목록
+            switch reloadCellIndex {
+            case 0: // 진행 대기중
+                break
+            case 1: // 진행 중
+                let challengeHistoryDetailVC = ChallengeHistoryDetailVC()
+                challengeHistoryDetailVC.hidesBottomBarWhenPushed = true
+                
+                guard let progressChallengeList = progressChallengeListResponseModel else { return }
+                challengeHistoryDetailVC.getChallengeHistoryDetailInfo(uuid: progressChallengeList[indexPath.row].uuid)
+                
+                navigationController?.pushViewController(challengeHistoryDetailVC, animated: true)
+            case 2: // 진행 완료
+                let challengeHistoryDetailVC = ChallengeHistoryDetailVC()
+                challengeHistoryDetailVC.hidesBottomBarWhenPushed = true
+                challengeHistoryDetailVC.challgeStatus = "Done"
+                
+                guard let doneChallengeList = doneChallengeListResponseModel else { return }
+                challengeHistoryDetailVC.getChallengeHistoryDetailInfo(uuid: doneChallengeList[indexPath.row].uuid)
+                
+                navigationController?.pushViewController(challengeHistoryDetailVC, animated: true)
+            default:
+                break
+            }
+            
+        default:
+            break
+        }
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 116
     }
@@ -361,6 +390,23 @@ extension ChallengeVC : UITableViewDelegate {
         }
     }
     
+}
+
+// MARK: - Input
+
+extension ChallengeVC {
+    private func bindButton() {
+        createChallengeButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                let selectChallengeCreateVC = SelectChallengeCreateVC()
+                selectChallengeCreateVC.hidesBottomBarWhenPushed = true
+                
+                let rootViewController = self?.view.superview?.findViewController()
+                rootViewController?.navigationController?.pushViewController(selectChallengeCreateVC, animated: true)
+            })
+            .disposed(by: bag)
+    }
 }
 
 // MARK: - Output

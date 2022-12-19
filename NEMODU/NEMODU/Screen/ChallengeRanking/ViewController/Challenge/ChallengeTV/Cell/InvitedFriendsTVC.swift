@@ -148,8 +148,6 @@ extension InvitedFriendsTVC {
         }
         
         friendStatusLabel.snp.makeConstraints {
-//            $0.width.height.equalTo(24)
-            
             $0.centerY.equalTo(contentView)
             $0.right.equalTo(contentView.snp.right).inset(13)
         }
