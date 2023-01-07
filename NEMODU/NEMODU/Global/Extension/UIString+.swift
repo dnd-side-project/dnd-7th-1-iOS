@@ -34,10 +34,10 @@ extension String {
     }
     
     /// Date String을 RelativeDateTime 타입으로 반환하는 함수
-    func relativeDateTime() -> String {
+    func relativeDateTime(_ dateType: DateType) -> String {
         let dateFormatter = RelativeDateTimeFormatter()
         dateFormatter.dateTimeStyle = .named
-        let relativeDate = dateFormatter.localizedString(for: self.toDate(.withTime), relativeTo: Date.now)
+        let relativeDate = dateFormatter.localizedString(for: self.toDate(dateType), relativeTo: Date.now)
         return relativeDate
     }
     
