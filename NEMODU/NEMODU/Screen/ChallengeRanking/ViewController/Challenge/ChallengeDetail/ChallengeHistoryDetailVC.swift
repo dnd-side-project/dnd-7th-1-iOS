@@ -31,7 +31,6 @@ class ChallengeHistoryDetailVC: ChallengeDetailVC {
     
     override func configureView() {
         super.configureView()
-        
     }
     
     override func layoutView() {

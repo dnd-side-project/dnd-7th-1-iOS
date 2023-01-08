@@ -22,6 +22,7 @@ struct ChallengeHistoryDetailResponseModel: Codable {
 }
 
 // MARK: - Ranking
+
 struct Ranking: Codable {
     let rank: Int
     let picturePath: String
