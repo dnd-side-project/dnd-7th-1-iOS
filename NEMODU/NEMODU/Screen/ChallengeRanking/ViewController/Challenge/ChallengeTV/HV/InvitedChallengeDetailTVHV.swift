@@ -54,16 +54,12 @@ class InvitedChallengeDetailTVHV : ChallengeDetailTVHV {
     private let invitedFriendsListTitleLabel = UILabel()
         .then {
             $0.font = .body2
-            let attributedText = NSMutableAttributedString(string: "함께할 친구 ", attributes: [NSAttributedString.Key.font: UIFont.body2,
-                                                                                          NSAttributedString.Key.foregroundColor: UIColor.gray900])
-            attributedText.append(NSAttributedString(string: "( - / - )", attributes: [NSAttributedString.Key.font: UIFont.body2,
-                                                                                                          NSAttributedString.Key.foregroundColor: UIColor.gray600]))
-            $0.attributedText = attributedText
         }
     
     // MARK: - Variables and Properties
     
-    private let viewModel = InvitedChallengeDetailVM()
+    var invitedChallengeDetailVC: InvitedChallengeDetailVC?
+    
     private let bag = DisposeBag()
     
     // MARK: - Life Cycle
@@ -71,8 +67,9 @@ class InvitedChallengeDetailTVHV : ChallengeDetailTVHV {
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         
+        configureInvitedFriendsListTitleLabel(friendsCnt: 0)
+        
         bindButton()
-        responseAcceptRejectChallenge()
     }
     
     required init?(coder: NSCoder) {
@@ -81,10 +78,65 @@ class InvitedChallengeDetailTVHV : ChallengeDetailTVHV {
     
     // MARK: - Function
     
-    func hideButtons() {
-        rejectButton.snp.updateConstraints {
-            $0.height.equalTo(0)
-            $0.top.equalTo(guideLabelContainerView.snp.bottom).offset(0)
+    func configureInvitedChallengeDetailTVHV(invitedChallengeDetailInfo: InvitedChallengeDetailResponseModel) {
+        let startDate = invitedChallengeDetailInfo.started.split(separator: "-")
+        let endDate = invitedChallengeDetailInfo.ended.split(separator: "-")
+        
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.firstWeekday = 2
+        let weekOfMonth = calendar.component(.weekOfMonth, from: invitedChallengeDetailInfo.started.toDate(.hyphen))
+        
+        weekChallengeTypeLabel.text = ChallengeType(rawValue: invitedChallengeDetailInfo.type)?.title
+        challengeNameImage.tintColor = ChallengeColorType(rawValue: invitedChallengeDetailInfo.color)?.primaryColor
+        challengeNameLabel.text = invitedChallengeDetailInfo.name
+        currentStateLabel.text = "\(startDate[0]) \(startDate[1])월 \(weekOfMonth)주차 (\(startDate[1]).\(startDate[2])~\(endDate[1]).\(endDate[2]))"
+        configureInvitedFriendsListTitleLabel(friendsCnt: invitedChallengeDetailInfo.infos.count)
+        
+        checkIsMyUserAccepted(infos: invitedChallengeDetailInfo.infos)
+        checkIsMyUserCreateChallenge(infos: invitedChallengeDetailInfo.infos)
+    }
+    
+    private func checkIsMyUserAccepted(infos: [InvitedChallengeDetailInfo]) {
+        let myUserNickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname)
+        
+        for info in infos {
+            if info.nickname == myUserNickname && info.status == InvitedChallengeAcceptType.progress.rawValue {
+                rejectButton.isHidden = true
+                acceptButton.isHidden = true
+                
+                let acceptedLabel = UILabel()
+                    .then {
+                        $0.font = .body2
+                        $0.textColor = .gray400
+                        $0.backgroundColor = .gray100
+                        
+                        $0.text = "수락 완료!"
+                        $0.textAlignment = .center
+                        
+                        $0.clipsToBounds = true
+                        $0.layer.cornerRadius = 8
+                    }
+                
+                contentView.addSubview(acceptedLabel)
+                acceptedLabel.snp.makeConstraints {
+                    $0.height.equalTo(rejectButton.snp.height)
+                    $0.top.equalTo(rejectButton.snp.top)
+                    $0.left.right.equalTo(currentStateLabel)
+                }
+            }
+        }
+    }
+    
+    private func checkIsMyUserCreateChallenge(infos: [InvitedChallengeDetailInfo]) {
+        let myUserNickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname)
+        
+        for info in infos {
+            if info.nickname == myUserNickname && info.status == InvitedChallengeAcceptType.master.rawValue {
+                rejectButton.snp.updateConstraints {
+                    $0.height.equalTo(0)
+                    $0.top.equalTo(guideLabelContainerView.snp.bottom).offset(0).priority(.high)
+                }
+            }
         }
     }
     
@@ -100,7 +152,7 @@ class InvitedChallengeDetailTVHV : ChallengeDetailTVHV {
         
         
         guideLabelContainerView.snp.makeConstraints {
-            $0.height.equalTo(58)
+            $0.height.equalTo(58).priority(.high)
             
             $0.top.equalTo(currentStateLabel.snp.bottom).offset(16)
             $0.horizontalEdges.equalTo(contentView)
@@ -113,7 +165,7 @@ class InvitedChallengeDetailTVHV : ChallengeDetailTVHV {
             $0.width.equalTo(167.5)
             $0.height.equalTo(42)
             
-            $0.top.equalTo(guideLabelContainerView.snp.bottom).offset(12)
+            $0.top.equalTo(guideLabelContainerView.snp.bottom).offset(12).priority(.high)
             $0.left.equalTo(currentStateLabel.snp.left)
         }
         acceptButton.snp.makeConstraints {
@@ -145,6 +197,21 @@ class InvitedChallengeDetailTVHV : ChallengeDetailTVHV {
     
 }
 
+// MARK: - Configure
+
+extension InvitedChallengeDetailTVHV {
+    
+    private func configureInvitedFriendsListTitleLabel(friendsCnt: Int) {
+        let titleString = friendsCnt == 0 ? "( - / - )" : "( \(friendsCnt) / 4 )"
+        let attributedText = NSMutableAttributedString(string: "함께할 친구 ", attributes: [NSAttributedString.Key.font: UIFont.body2,
+                                                                                      NSAttributedString.Key.foregroundColor: UIColor.gray900])
+        attributedText.append(NSAttributedString(string: titleString, attributes: [NSAttributedString.Key.font: UIFont.body2,
+                                                                                                      NSAttributedString.Key.foregroundColor: UIColor.gray600]))
+        invitedFriendsListTitleLabel.attributedText = attributedText
+    }
+    
+}
+
 // MARK: - Input
 
 extension InvitedChallengeDetailTVHV {
@@ -155,9 +222,7 @@ extension InvitedChallengeDetailTVHV {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 
-                // TODO: - 서버연결
-//                guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { return }
-//                self.viewModel.requestAcceptChallenge(with: <#T##AcceptRejectChallengeRequestModel#>)
+                self.invitedChallengeDetailVC?.didTapAcceptButton()
             })
             .disposed(by: bag)
         
@@ -166,33 +231,9 @@ extension InvitedChallengeDetailTVHV {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 
-                // TODO: - 서버연결
-//                guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { return }
-//                self.viewModel.requestAcceptChallenge(with: <#T##AcceptRejectChallengeRequestModel#>)
+                self.invitedChallengeDetailVC?.didTapRejectButton()
             })
             .disposed(by: bag)
     }
     
-}
-
-// MARK: - Output
-
-extension InvitedChallengeDetailTVHV {
-    private func responseAcceptRejectChallenge() {
-        
-        viewModel.output.isAcceptChallengeSuccess
-            .subscribe(onNext: {_ in
-                
-                // TODO: - 서버연결 후 작업
-            })
-            .disposed(by: bag)
-
-        viewModel.output.isRejectChallengeSuccess
-            .subscribe(onNext: {_ in
-                
-                // TODO: - 서버연결 후 작업
-            })
-            .disposed(by: bag)
-        
-    }
 }

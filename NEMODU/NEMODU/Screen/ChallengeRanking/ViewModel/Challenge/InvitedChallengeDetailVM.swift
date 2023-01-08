@@ -25,6 +25,8 @@ final class InvitedChallengeDetailVM: BaseViewModel {
     // MARK: - Output
     
     struct Output {
+        var invitedChallengeDetail = PublishRelay<InvitedChallengeDetailResponseModel>()
+        
         var isAcceptChallengeSuccess = PublishRelay<Bool>()
         var isRejectChallengeSuccess = PublishRelay<Bool>()
     }
@@ -56,6 +58,23 @@ extension InvitedChallengeDetailVM: Output {
 // MARK: - Networking
 
 extension InvitedChallengeDetailVM {
+    func getInvitedChallengeDetail(nickname: String, uuid: String) {
+        let path = "challenge/detail/wait?nickname=\(nickname)&uuid=\(uuid)"
+        let resource = urlResource<InvitedChallengeDetailResponseModel>(path: path)
+        
+        apiSession.getRequest(with: resource)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, result in
+                switch result {
+                case .failure(let error):
+                    owner.apiError.onError(error)
+                case .success(let data):
+                    owner.output.invitedChallengeDetail.accept(data)
+                }
+            })
+            .disposed(by: bag)
+    }
+    
     func requestAcceptChallenge(with param: AcceptRejectChallengeRequestModel) {
         let path = "challenge/accept"
         let resource = urlResource<AcceptRejectChallengeRequestModel>(path: path)
@@ -63,7 +82,6 @@ extension InvitedChallengeDetailVM {
         apiSession.postRequest(with: resource, param: param.acceptRejectChallenge)
             .withUnretained(self)
             .subscribe(onNext: { owner, result in
-                
                 switch result {
                 case .failure(let error):
                     owner.apiError.onNext(error)
@@ -82,7 +100,6 @@ extension InvitedChallengeDetailVM {
         apiSession.postRequest(with: resource, param: param.acceptRejectChallenge)
             .withUnretained(self)
             .subscribe(onNext: { owner, result in
-                
                 switch result {
                 case .failure(let error):
                     owner.apiError.onNext(error)
