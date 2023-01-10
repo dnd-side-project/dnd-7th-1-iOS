@@ -39,14 +39,14 @@ class ChallengeListTVHV : ChallengeTitleTVHV {
     override func layoutView() {
         super.layoutView()
         
-        contentView.addSubview(spaceView)
-        contentView.addSubview(challengeListTypeMenuBar)
+        contentView.addSubviews([spaceView,
+                                 challengeListTypeMenuBar])
         
         
         spaceView.snp.makeConstraints {
             $0.height.equalTo(8)
             
-            $0.top.equalTo(contentView.snp.top)
+            $0.top.equalTo(contentView.snp.top).offset(8)
             $0.horizontalEdges.equalTo(contentView)
         }
         containerView.snp.remakeConstraints {

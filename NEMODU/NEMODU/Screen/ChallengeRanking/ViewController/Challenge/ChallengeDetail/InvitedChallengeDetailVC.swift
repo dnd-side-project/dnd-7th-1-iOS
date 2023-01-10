@@ -17,6 +17,12 @@ class InvitedChallengeDetailVC: ChallengeDetailVC {
     
     // MARK: - Variables and Properties
     
+    private let viewModel = InvitedChallengeDetailVM()
+    private let bag = DisposeBag()
+    
+    var uuid: String = ""
+    var invitedChallengeDetailResponseModel: InvitedChallengeDetailResponseModel?
+    
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
@@ -25,15 +31,26 @@ class InvitedChallengeDetailVC: ChallengeDetailVC {
     
     override func configureView() {
         super.configureView()
-        
     }
     
     override func layoutView() {
         super.layoutView()
+    }
+    
+    override func bindOutput() {
+        super.bindOutput()
         
+        bindInvitedChallengeDetail()
+        responseAcceptChallengeSuccess()
+        responseRejectChallengeSuccess()
     }
     
     // MARK: - Functions
+    
+    func getInvitedChallengeDetailInfo() {
+        let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) ?? ""
+        viewModel.getInvitedChallengeDetail(nickname: nickname, uuid: uuid)
+    }
     
     override func configureTableView() {
         super.configureTableView()
@@ -49,6 +66,16 @@ class InvitedChallengeDetailVC: ChallengeDetailVC {
             }
     }
     
+    func didTapAcceptButton() {
+        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { return }
+        viewModel.requestAcceptChallenge(with: AcceptRejectChallengeRequestModel(nickname: nickname, uuid: uuid))
+    }
+    
+    func didTapRejectButton() {
+        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { return }
+        viewModel.requestRejectChallenge(with: AcceptRejectChallengeRequestModel(nickname: nickname, uuid: uuid))
+    }
+    
 }
 
 // MARK: - TableView DataSource
@@ -57,11 +84,14 @@ extension InvitedChallengeDetailVC : UITableViewDataSource {
 
     // Cell
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return invitedChallengeDetailResponseModel?.infos.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: InvitedFriendsTVC.className, for: indexPath) as? InvitedFriendsTVC else { return UITableViewCell() }
+        guard let invitedChallengeDetailInfo = invitedChallengeDetailResponseModel else { return cell }
+        let invitedUserInfo = invitedChallengeDetailInfo.infos[indexPath.row]
+        cell.configureInvitedFriendsTVC(userProfileImage: invitedUserInfo.picturePath, nickname: invitedUserInfo.nickname, status: invitedUserInfo.status)
         
         return cell
     }
@@ -73,7 +103,10 @@ extension InvitedChallengeDetailVC : UITableViewDataSource {
 extension InvitedChallengeDetailVC : UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: InvitedChallengeDetailTVHV.className) as? InvitedChallengeDetailTVHV
+        guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: InvitedChallengeDetailTVHV.className) as? InvitedChallengeDetailTVHV else { return UITableViewHeaderFooterView() }
+        guard let invitedChallengeDetailInfo = invitedChallengeDetailResponseModel else { return headerView }
+        headerView.configureInvitedChallengeDetailTVHV(invitedChallengeDetailInfo: invitedChallengeDetailInfo)
+        headerView.invitedChallengeDetailVC = self
         
         return headerView
     }
@@ -93,6 +126,48 @@ extension InvitedChallengeDetailVC : UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 64
+    }
+    
+}
+
+// MARK: - Output
+
+extension InvitedChallengeDetailVC {
+    private func bindInvitedChallengeDetail() {
+        viewModel.output.invitedChallengeDetail
+            .subscribe(onNext: { [weak self] data in
+                guard let self = self else { return }
+                
+                self.invitedChallengeDetailResponseModel = data
+                self.challengeDetailTableView.reloadData()
+            })
+            .disposed(by: bag)
+    }
+    
+    private func responseAcceptChallengeSuccess() {
+        viewModel.output.isAcceptChallengeSuccess
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: { [weak self] isAcceptChallengeSuccess in
+                guard let self = self else { return }
+                
+                if(isAcceptChallengeSuccess) {
+                    self.popVC()
+                }
+            })
+            .disposed(by: bag)
+    }
+    
+    private func responseRejectChallengeSuccess() {
+        viewModel.output.isRejectChallengeSuccess
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: { [weak self] isRejectChallengeSuccess in
+                guard let self = self else { return }
+                
+                if(isRejectChallengeSuccess) {
+                    self.popVC()
+                }
+            })
+            .disposed(by: bag)
     }
     
 }

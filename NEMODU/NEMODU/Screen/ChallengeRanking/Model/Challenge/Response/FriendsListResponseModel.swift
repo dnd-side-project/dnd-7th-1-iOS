@@ -15,6 +15,7 @@ struct FriendsListResponseModel: Codable {
 }
 
 // MARK: - Info
+
 struct Info: Codable {
     let nickname, picturePath: String
 }

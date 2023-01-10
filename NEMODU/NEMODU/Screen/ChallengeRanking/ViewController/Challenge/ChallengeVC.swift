@@ -287,7 +287,14 @@ extension ChallengeVC : UITableViewDelegate {
         case 2: // 챌린지 목록
             switch reloadCellIndex {
             case 0: // 진행 대기중
-                break
+                guard let waitChallengeList = waitChallengeListResponseModel else { return }
+                
+                let invitedChallengeDetailVC = InvitedChallengeDetailVC()
+                invitedChallengeDetailVC.uuid = waitChallengeList[indexPath.row].uuid
+                invitedChallengeDetailVC.getInvitedChallengeDetailInfo()
+                
+                invitedChallengeDetailVC.hidesBottomBarWhenPushed = true
+                navigationController?.pushViewController(invitedChallengeDetailVC, animated: true)
             case 1: // 진행 중
                 let challengeHistoryDetailVC = ChallengeHistoryDetailVC()
                 challengeHistoryDetailVC.hidesBottomBarWhenPushed = true
