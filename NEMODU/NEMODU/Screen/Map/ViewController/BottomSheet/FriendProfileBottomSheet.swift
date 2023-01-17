@@ -202,7 +202,7 @@ extension FriendProfileBottomSheet {
                                     for: .normal,
                                     placeholder: .defaultThumbnail)
         nicknameLabel.text = profile.nickname
-        lastAccessTime.text = "최근 활동 : \(profile.lasted.relativeDateTime())"
+        lastAccessTime.text = "최근 활동 : \(profile.lasted.relativeDateTime(.withTime))"
         profileMessage.text = profile.intro
         configureAddFriendBtn(friendType)
         recordStackView.setRecordData(value1: profile.areas.insertComma,

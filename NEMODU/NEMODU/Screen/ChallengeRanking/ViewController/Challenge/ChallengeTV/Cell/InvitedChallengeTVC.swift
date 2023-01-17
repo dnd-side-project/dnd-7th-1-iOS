@@ -73,7 +73,7 @@ class InvitedChallengeTVC : BaseTableViewCell {
             $0.font = .caption1
             $0.textColor = .gray500
         }
-    private lazy var seeDetailButton = UIButton()
+    lazy var seeDetailButton = UIButton()
         .then {
             $0.setTitle("상세보기", for: .normal)
             $0.titleLabel?.font = .caption1
@@ -87,6 +87,7 @@ class InvitedChallengeTVC : BaseTableViewCell {
     // MARK: - Variables and Properties
     
     var challengeVC: ChallengeVC?
+    var uuid: String?
     
     private let bag = DisposeBag()
     
@@ -107,10 +108,6 @@ class InvitedChallengeTVC : BaseTableViewCell {
     
     // MARK: - Function
     
-    @objc
-    func didTapSeeDetailButton() {
-    }
-    
 }
 
 // MARK: - Configure
@@ -122,8 +119,10 @@ extension InvitedChallengeTVC {
     }
     
     func configureInvitedChallengeTVC(invitedChallengeListElement: InvitedChallengeListElement) {
+        uuid = invitedChallengeListElement.uuid
+        
         challengeNameLabel.text = invitedChallengeListElement.name
-        timeAgoLabel.text = "\(invitedChallengeListElement.created.relativeDateTime())"
+        timeAgoLabel.text = "\(invitedChallengeListElement.created.relativeDateTime(.withBlank))"
         userProfileImageView.kf.setImage(with: URL(string: invitedChallengeListElement.picturePath))
         userNicknameLabel.text = invitedChallengeListElement.inviterNickname
         invitedMessage.text = "초대 메세지: \(invitedChallengeListElement.message)"
@@ -170,7 +169,7 @@ extension InvitedChallengeTVC {
             $0.right.equalTo(notYetCheckDetailCircleView.snp.left).inset(-4)
         }
         notYetCheckDetailCircleView.snp.makeConstraints {
-            $0.height.equalTo(notYetCheckDetailCircleView.layer.cornerRadius * 2)
+            $0.height.equalTo(0)
             $0.width.equalTo(notYetCheckDetailCircleView.snp.height)
             
             $0.top.equalTo(contentsView.snp.top).offset(20.5)
@@ -209,17 +208,18 @@ extension InvitedChallengeTVC {
 
 extension InvitedChallengeTVC {
     
-    func bindButton() {
+    private func bindButton() {
         seeDetailButton.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 
                 let invitedChallengeDetailVC = InvitedChallengeDetailVC()
+                invitedChallengeDetailVC.uuid = self.uuid ?? ""
+                invitedChallengeDetailVC.getInvitedChallengeDetailInfo()
+                
                 invitedChallengeDetailVC.hidesBottomBarWhenPushed = true
-                
                 self.challengeVC?.navigationController?.pushViewController(invitedChallengeDetailVC, animated: true)
-                
             })
             .disposed(by: bag)
     }

@@ -63,7 +63,6 @@ extension CreateWeekChallengeVM {
         apiSession.postRequest(with: resource, param: param.createChallenge)
             .withUnretained(self)
             .subscribe(onNext: { owner, result in
-                
                 switch result {
                 case .failure(let error):
                     owner.apiError.onError(error)

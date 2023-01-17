@@ -77,26 +77,36 @@ class InvitedFriendsTVC : BaseTableViewCell {
     
     // MARK: - Function
     
-    func configureInvitedFriendsTVC(userProfileImage: String, nickname: String, isAccept: Bool) {
+    func configureInvitedFriendsTVC(userProfileImage: String, nickname: String, status: String) {
         userNicknameLabel.text = nickname
+        friendStatusLabel.text = InvitedChallengeAcceptType(rawValue: status)?.statusText
         
-        if(nickname == UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname)) {
-            markMe(isMe: true)
-        }
-        
-        switch isAccept {
-        case true:
+        switch status {
+        case InvitedChallengeAcceptType.master.rawValue:
+            _ = friendStatusLabel
+                .then {
+                    $0.textColor = .gray600
+                    $0.text = "주최자"
+                }
+        case InvitedChallengeAcceptType.progress.rawValue:
             _ = friendStatusLabel
                 .then {
                     $0.textColor = .main
                     $0.text = "수락 완료"
                 }
-        case false:
+        case InvitedChallengeAcceptType.wait.rawValue:
             _ = friendStatusLabel
                 .then {
                     $0.textColor = .gray600
                     $0.text = "대기중"
                 }
+        default:
+            break
+        }
+        
+        if(nickname == UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname)) {
+            markMe(isMe: true)
+            friendStatusLabel.text?.append(" (나)")
         }
     }
     
@@ -148,8 +158,6 @@ extension InvitedFriendsTVC {
         }
         
         friendStatusLabel.snp.makeConstraints {
-//            $0.width.height.equalTo(24)
-            
             $0.centerY.equalTo(contentView)
             $0.right.equalTo(contentView.snp.right).inset(13)
         }

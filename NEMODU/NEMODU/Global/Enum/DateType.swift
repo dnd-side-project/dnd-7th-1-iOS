@@ -11,6 +11,7 @@ enum DateType {
     case withTime
     case hyphen
     case withT
+    case withBlank
 }
 
 extension DateType {
@@ -22,6 +23,8 @@ extension DateType {
             return "yyyy-MM-dd'T'HH:mm:ss"
         case .withT:
             return "yyyy-MM-dd'T'"
+        case .withBlank:
+            return "yyyy-MM-dd HH:mm:ss"
         }
     }
 }

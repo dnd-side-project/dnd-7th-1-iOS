@@ -30,18 +30,25 @@ extension ChallengeWaitingTVC {
     func configureChallengeWaitTVC(waitChallengeListElement: WaitChallengeListElement) {
         challengeTypeLabel.text = "주간" // TODO: - 서버 response 값으로 주간, 실시간 표시 필요
         
-        let startDate = waitChallengeListElement.started.split(separator: "-")
-        let endDate = waitChallengeListElement.ended.split(separator: "-")
+        let startDates = waitChallengeListElement.started.split(separator: "-")
+        let endDates = waitChallengeListElement.ended.split(separator: "-")
         
         let format = DateFormatter()
+        format.timeZone = TimeZone(identifier: "KST")
         format.dateFormat = "yyyy-MM-dd"
         
         let dayOfWeekDate = format.date(from: waitChallengeListElement.started)
         let dayOfWeekString = dayOfWeekDate?.getDayOfWeek()
         
-        challengeTermLabel.text = "\(startDate[1]).\(startDate[2])(\(dayOfWeekString ?? "?")) - \(endDate[1]). \(endDate[2])(일)"
+        challengeTermLabel.text = "\(startDates[1]).\(startDates[2])(\(dayOfWeekString ?? "?")) - \(endDates[1]). \(endDates[2])(일)"
         
-        //        dDayLabel.text =  TODO: - dDay 표시
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone(identifier: "KST")
+        dateFormatter.dateFormat = DateType.hyphen.dateFormatter
+        
+        let startDate = dateFormatter.date(from: waitChallengeListElement.started) ?? .now
+        let components = Calendar.current.dateComponents([.day], from: .now, to: startDate)
+        dDayLabel.text = "D-\(components.day ?? 0)"
         
         challengeNameImage.tintColor = ChallengeColorType(rawValue: waitChallengeListElement.color)?.primaryColor
         challengeNameLabel.text = waitChallengeListElement.name

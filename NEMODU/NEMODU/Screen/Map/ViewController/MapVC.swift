@@ -15,6 +15,7 @@ import MapKit
 import CoreLocation
 import CoreMotion
 import Lottie
+import Kingfisher
 
 class MapVC: BaseViewController {
     var mapView = MKMapView()
@@ -264,6 +265,26 @@ extension MapVC {
         mapView.addOverlay(blockDraw)
     }
     
+    /// [Matrix] 영역, 소유자, 색상을 받아 전체 영역을 그리는 메서드
+    func drawBlockArea(blocks: [Matrix], owner: BlocksType, blockColor: UIColor) {
+        blocks.forEach {
+            drawBlock(latitude: $0.latitude,
+                      longitude: $0.longitude,
+                      owner: owner,
+                      color: blockColor)
+        }
+    }
+    
+    /// [[Double]] 영역, 소유자, 색상을 받아 전체 영역을 그리는 메서드
+    func drawBlockArea(blocks: [[Double]], owner: BlocksType, blockColor: UIColor) {
+        blocks.forEach {
+            drawBlock(latitude: $0[0],
+                      longitude: $0[1],
+                      owner: owner,
+                      color: blockColor)
+        }
+    }
+    
     /// [Matrix]형 모델을 [[Double]]형 blocks로 변환해주는 함수
     func changeMatriesToBlocks(matrices: [Matrix]) -> [[Double]] {
         var blocks: [[Double]] = []
@@ -340,23 +361,52 @@ extension MapVC: CLLocationManagerDelegate {
     }
     
     /// 내 핀을 설치하는 함수
-    func addMyAnnotation(coordinate: [Double], profileImage: UIImage) {
-        let annotation = MyAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate[0] + latitudeBlockSizePoint / 2,
-                                                                         longitude: coordinate[1] - longitudeBlockSizePoint / 2))
-        annotation.profileImage = profileImage
-        mapView.addAnnotation(annotation)
+    func addMyAnnotation(coordinate: [Double], profileImageURL: URL) {
+        KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: profileImageURL)) { result in
+            var profileImage = UIImage.defaultThumbnail
+            
+            switch result {
+            case .success(let data):
+                profileImage = data.image
+            case .failure(let error):
+                print(error)
+            }
+            
+            let annotation = MyAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate[0] + self.latitudeBlockSizePoint / 2,
+                                                                             longitude: coordinate[1] - self.longitudeBlockSizePoint / 2))
+            annotation.profileImage = profileImage
+            self.mapView.addAnnotation(annotation)
+        }
+        
     }
     
     /// 친구 핀을 설치하는 함수
-    func addFriendAnnotation(coordinate: [Double], profileImage: UIImage, nickname: String, color: UIColor, challengeCnt: Int, isEnabled: Bool) {
-        let annotation = FriendAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate[0] + latitudeBlockSizePoint / 2,
-                                                                             longitude: coordinate[1] - longitudeBlockSizePoint / 2))
-        annotation.title = nickname
-        annotation.profileImage = profileImage
-        annotation.color = color
-        annotation.challengeCnt = challengeCnt
-        annotation.isEnabled = isEnabled
-        mapView.addAnnotation(annotation)
+    func addFriendAnnotation(coordinate: [Double],
+                             profileImageURL: URL,
+                             nickname: String = "",
+                             color: UIColor,
+                             challengeCnt: Int = 0,
+                             isEnabled: Bool = false) {
+        
+        KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: profileImageURL)) { result in
+            var profileImage = UIImage.defaultThumbnail
+            
+            switch result {
+            case .success(let data):
+                profileImage = data.image
+            case .failure(let error):
+                print(error)
+            }
+         
+            let annotation = FriendAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate[0] + self.latitudeBlockSizePoint / 2,
+                                                                                 longitude: coordinate[1] - self.longitudeBlockSizePoint / 2))
+            annotation.title = nickname
+            annotation.profileImage = profileImage
+            annotation.color = color
+            annotation.challengeCnt = challengeCnt
+            annotation.isEnabled = isEnabled
+            self.mapView.addAnnotation(annotation)
+        }
     }
     
     /// 사용자 위치 이동 시 처리 함수

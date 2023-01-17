@@ -11,47 +11,9 @@ import RxSwift
 import Then
 import SnapKit
 
-class InvitedChallengeDetailTVHV : UITableViewHeaderFooterView {
+class InvitedChallengeDetailTVHV : ChallengeDetailTVHV {
     
     // MARK: - UI components
-    
-    private let challengeTypeLabel = UILabel()
-        .then {
-            $0.text = "주간"
-            $0.font = .caption1
-            $0.textColor = .main
-            $0.backgroundColor = .clear
-            $0.textAlignment = .center
-            
-            $0.layer.cornerRadius = 11
-            $0.layer.masksToBounds = true
-            $0.layer.borderWidth = 1
-            $0.layer.borderColor = UIColor.main.cgColor
-        }
-    private let weekChallengeTypeLabel = UILabel()
-        .then {
-            $0.text = "-----"
-            $0.font = .body4
-            $0.textColor = .gray600
-        }
-    
-    private let challengeNameImage = UIImageView()
-        .then {
-            $0.image = UIImage(named: "badge_flag")?.withRenderingMode(.alwaysTemplate)
-            $0.tintColor = ChallengeColorType(rawValue: "Pink")?.primaryColor
-        }
-    private let challengeNameLabel = UILabel()
-        .then {
-            $0.text = "-----"
-            $0.font = .title3SB
-            $0.textColor = .gray900
-        }
-    private let currentStateLabel = UILabel()
-        .then {
-            $0.text = "---- -월 -주차 (--.--~--.--)"
-            $0.font = .body4
-            $0.textColor = .gray600
-        }
     
     private let guideLabelContainerView = UIView()
     private let guideLabel = UILabel()
@@ -92,16 +54,12 @@ class InvitedChallengeDetailTVHV : UITableViewHeaderFooterView {
     private let invitedFriendsListTitleLabel = UILabel()
         .then {
             $0.font = .body2
-            let attributedText = NSMutableAttributedString(string: "함께할 친구 ", attributes: [NSAttributedString.Key.font: UIFont.body2,
-                                                                                          NSAttributedString.Key.foregroundColor: UIColor.gray900])
-            attributedText.append(NSAttributedString(string: "( - / - )", attributes: [NSAttributedString.Key.font: UIFont.body2,
-                                                                                                          NSAttributedString.Key.foregroundColor: UIColor.gray600]))
-            $0.attributedText = attributedText
         }
     
     // MARK: - Variables and Properties
     
-    private let viewModel = InvitedChallengeDetailVM()
+    var invitedChallengeDetailVC: InvitedChallengeDetailVC?
+    
     private let bag = DisposeBag()
     
     // MARK: - Life Cycle
@@ -109,10 +67,9 @@ class InvitedChallengeDetailTVHV : UITableViewHeaderFooterView {
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         
-        configureHV()
-        configureLayoutView()
+        configureInvitedFriendsListTitleLabel(friendsCnt: 0)
+        
         bindButton()
-        responseAcceptRejectChallenge()
     }
     
     required init?(coder: NSCoder) {
@@ -121,34 +78,72 @@ class InvitedChallengeDetailTVHV : UITableViewHeaderFooterView {
     
     // MARK: - Function
     
-    func hideButtons() {
-        rejectButton.snp.updateConstraints {
-            $0.height.equalTo(0)
-            $0.top.equalTo(guideLabelContainerView.snp.bottom).offset(0)
+    func configureInvitedChallengeDetailTVHV(invitedChallengeDetailInfo: InvitedChallengeDetailResponseModel) {
+        let startDate = invitedChallengeDetailInfo.started.split(separator: "-")
+        let endDate = invitedChallengeDetailInfo.ended.split(separator: "-")
+        
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.firstWeekday = 2
+        let weekOfMonth = calendar.component(.weekOfMonth, from: invitedChallengeDetailInfo.started.toDate(.hyphen))
+        
+        weekChallengeTypeLabel.text = ChallengeType(rawValue: invitedChallengeDetailInfo.type)?.title
+        challengeNameImage.tintColor = ChallengeColorType(rawValue: invitedChallengeDetailInfo.color)?.primaryColor
+        challengeNameLabel.text = invitedChallengeDetailInfo.name
+        currentStateLabel.text = "\(startDate[0]) \(startDate[1])월 \(weekOfMonth)주차 (\(startDate[1]).\(startDate[2])~\(endDate[1]).\(endDate[2]))"
+        configureInvitedFriendsListTitleLabel(friendsCnt: invitedChallengeDetailInfo.infos.count)
+        
+        checkIsMyUserAccepted(infos: invitedChallengeDetailInfo.infos)
+        checkIsMyUserCreateChallenge(infos: invitedChallengeDetailInfo.infos)
+    }
+    
+    private func checkIsMyUserAccepted(infos: [InvitedChallengeDetailInfo]) {
+        let myUserNickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname)
+        
+        for info in infos {
+            if info.nickname == myUserNickname && info.status == InvitedChallengeAcceptType.progress.rawValue {
+                rejectButton.isHidden = true
+                acceptButton.isHidden = true
+                
+                let acceptedLabel = UILabel()
+                    .then {
+                        $0.font = .body2
+                        $0.textColor = .gray400
+                        $0.backgroundColor = .gray100
+                        
+                        $0.text = "수락 완료!"
+                        $0.textAlignment = .center
+                        
+                        $0.clipsToBounds = true
+                        $0.layer.cornerRadius = 8
+                    }
+                
+                contentView.addSubview(acceptedLabel)
+                acceptedLabel.snp.makeConstraints {
+                    $0.height.equalTo(rejectButton.snp.height)
+                    $0.top.equalTo(rejectButton.snp.top)
+                    $0.left.right.equalTo(currentStateLabel)
+                }
+            }
         }
     }
     
-}
-
-// MARK: - Configure
-
-extension InvitedChallengeDetailTVHV {
-    
-    private func configureHV() {
-        contentView.backgroundColor = .white
+    private func checkIsMyUserCreateChallenge(infos: [InvitedChallengeDetailInfo]) {
+        let myUserNickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname)
+        
+        for info in infos {
+            if info.nickname == myUserNickname && info.status == InvitedChallengeAcceptType.master.rawValue {
+                rejectButton.snp.updateConstraints {
+                    $0.height.equalTo(0)
+                    $0.top.equalTo(guideLabelContainerView.snp.bottom).offset(0).priority(.high)
+                }
+            }
+        }
     }
     
-}
-
-// MARK: - Layout
-
-extension InvitedChallengeDetailTVHV {
-    
-    private func configureLayoutView() {
-        contentView.addSubviews([challengeTypeLabel, weekChallengeTypeLabel,
-                                 challengeNameImage, challengeNameLabel,
-                                 currentStateLabel,
-                                 guideLabelContainerView,
+    override func configureLayoutView() {
+        super.configureLayoutView()
+        
+        contentView.addSubviews([guideLabelContainerView,
                                  acceptButton, rejectButton,
                                  borderLineView,
                                  invitedFriendsListTitleView])
@@ -156,39 +151,8 @@ extension InvitedChallengeDetailTVHV {
         invitedFriendsListTitleView.addSubviews([invitedFriendsListTitleLabel])
         
         
-        challengeTypeLabel.snp.makeConstraints {
-            $0.width.equalTo(48)
-            $0.height.equalTo(challengeTypeLabel.layer.cornerRadius * 2)
-            
-            $0.top.left.equalTo(contentView).offset(16)
-        }
-        weekChallengeTypeLabel.snp.makeConstraints {
-            $0.centerY.equalTo(challengeTypeLabel)
-            
-            $0.left.equalTo(challengeTypeLabel.snp.right).offset(8)
-        }
-        
-        challengeNameImage.snp.makeConstraints {
-            $0.width.equalTo(16)
-            $0.height.equalTo(challengeNameImage.snp.width)
-            
-            $0.top.equalTo(challengeTypeLabel.snp.bottom).offset(20)
-            $0.left.equalTo(challengeTypeLabel.snp.left)
-        }
-        challengeNameLabel.snp.makeConstraints {
-            $0.centerY.equalTo(challengeNameImage)
-            
-            $0.left.equalTo(challengeNameImage.snp.right).offset(8)
-            $0.right.equalTo(contentView.snp.right).inset(16)
-        }
-        currentStateLabel.snp.makeConstraints {
-            $0.top.equalTo(challengeNameImage.snp.bottom).offset(12)
-            $0.left.equalTo(challengeNameImage.snp.left)
-            $0.right.equalTo(challengeNameLabel.snp.right)
-        }
-        
         guideLabelContainerView.snp.makeConstraints {
-            $0.height.equalTo(58)
+            $0.height.equalTo(58).priority(.high)
             
             $0.top.equalTo(currentStateLabel.snp.bottom).offset(16)
             $0.horizontalEdges.equalTo(contentView)
@@ -201,7 +165,7 @@ extension InvitedChallengeDetailTVHV {
             $0.width.equalTo(167.5)
             $0.height.equalTo(42)
             
-            $0.top.equalTo(guideLabelContainerView.snp.bottom).offset(12)
+            $0.top.equalTo(guideLabelContainerView.snp.bottom).offset(12).priority(.high)
             $0.left.equalTo(currentStateLabel.snp.left)
         }
         acceptButton.snp.makeConstraints {
@@ -233,6 +197,20 @@ extension InvitedChallengeDetailTVHV {
     
 }
 
+// MARK: - Configure
+
+extension InvitedChallengeDetailTVHV {
+    
+    private func configureInvitedFriendsListTitleLabel(friendsCnt: Int) {
+        let titleString = friendsCnt == 0 ? "( - / - )" : "( \(friendsCnt) / 4 )"
+        let attributedText = NSMutableAttributedString(string: "함께할 친구 ", attributes: [NSAttributedString.Key.font: UIFont.body2,
+                                                                                      NSAttributedString.Key.foregroundColor: UIColor.gray900])
+        attributedText.append(NSAttributedString(string: titleString, attributes: [NSAttributedString.Key.font: UIFont.body2,
+                                                                                                      NSAttributedString.Key.foregroundColor: UIColor.gray600]))
+        invitedFriendsListTitleLabel.attributedText = attributedText
+    }
+    
+}
 
 // MARK: - Input
 
@@ -244,9 +222,7 @@ extension InvitedChallengeDetailTVHV {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 
-                // TODO: - 서버연결
-//                guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { return }
-//                self.viewModel.requestAcceptChallenge(with: <#T##AcceptRejectChallengeRequestModel#>)
+                self.invitedChallengeDetailVC?.didTapAcceptButton()
             })
             .disposed(by: bag)
         
@@ -255,33 +231,9 @@ extension InvitedChallengeDetailTVHV {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 
-                // TODO: - 서버연결
-//                guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { return }
-//                self.viewModel.requestAcceptChallenge(with: <#T##AcceptRejectChallengeRequestModel#>)
+                self.invitedChallengeDetailVC?.didTapRejectButton()
             })
             .disposed(by: bag)
     }
     
-}
-
-// MARK: - Output
-
-extension InvitedChallengeDetailTVHV {
-    private func responseAcceptRejectChallenge() {
-        
-        viewModel.output.isAcceptChallengeSuccess
-            .subscribe(onNext: {_ in
-                
-                // TODO: - 서버연결 후 작업
-            })
-            .disposed(by: bag)
-
-        viewModel.output.isRejectChallengeSuccess
-            .subscribe(onNext: {_ in
-                
-                // TODO: - 서버연결 후 작업
-            })
-            .disposed(by: bag)
-        
-    }
 }
