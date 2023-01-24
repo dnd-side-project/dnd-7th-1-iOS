@@ -11,6 +11,7 @@ import RxGesture
 import RxSwift
 import SnapKit
 import Then
+import AuthenticationServices
 
 class LoginVC: BaseViewController {
     private let sloganImageView = UIImageView()
@@ -119,7 +120,7 @@ extension LoginVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                // TODO: - apple 로그인 연결
+                self.appleLogin()
             })
             .disposed(by: bag)
         
@@ -130,6 +131,33 @@ extension LoginVC {
                 self.viewModel.kakaoLogin()
             })
             .disposed(by: bag)
+    }
+    
+    @objc func appleLogin() {
+        // TODO: 분기 조건 추가
+        true
+        ? defaultLogin()
+        : performExistingAccountSetupFlows()
+    }
+    
+    func defaultLogin() {
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        let request = appleIDProvider.createRequest()
+        request.requestedScopes = [.fullName, .email]
+        
+        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+        authorizationController.delegate = self
+        authorizationController.presentationContextProvider = self
+        authorizationController.performRequests()
+    }
+    
+    func performExistingAccountSetupFlows() {
+        let requests = [ASAuthorizationAppleIDProvider().createRequest(),
+                        ASAuthorizationPasswordProvider().createRequest()]
+        let authorizationController = ASAuthorizationController(authorizationRequests: requests)
+        authorizationController.delegate = self
+        authorizationController.presentationContextProvider = self
+        authorizationController.performRequests()
     }
 }
 
@@ -147,4 +175,58 @@ extension LoginVC {
             })
             .disposed(by: bag)
     }
+}
+
+// MARK: - ASAuthorizationControllerDelegate
+
+extension LoginVC: ASAuthorizationControllerDelegate {
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        
+        switch authorization.credential {
+        case let appleIDCredential as ASAuthorizationAppleIDCredential:
+            let appleToken = String(data: appleIDCredential.identityToken!, encoding: .utf8)
+            UserDefaults.standard.set(appleToken, forKey: UserDefaults.Keys.appleToken)
+            
+        case let passwordCredential as ASPasswordCredential:
+            let username = passwordCredential.user
+            let password = passwordCredential.password
+            
+            // TODO: -
+            
+        default:
+            break
+        }
+    }
+    
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        dump(error)
+    }
+}
+
+// MARK: - ASAuthorizationControllerPresentationContextProviding
+
+extension LoginVC: ASAuthorizationControllerPresentationContextProviding {
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        return self.view.window!
+    }
+    
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        guard let currentUserIdentifier = UserDefaults.standard.string(forKey: UserDefaults.Keys.appleToken) else { return false }
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        
+        appleIDProvider.getCredentialState(forUserID: currentUserIdentifier) { (credentialState, error) in
+            switch credentialState {
+            case .authorized:
+                break
+            case .revoked, .notFound:
+                // TODO: - 알람?
+                break
+            default:
+                break
+            }
+        }
+        return true
+    }
+    
 }
