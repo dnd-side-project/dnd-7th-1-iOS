@@ -65,7 +65,7 @@ class LoginVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
-        bindKakaoLoginResult()
+        bindLoginResult()
     }
     
 }
@@ -164,7 +164,7 @@ extension LoginVC {
 // MARK: - Output
 
 extension LoginVC {
-    private func bindKakaoLoginResult() {
+    private func bindLoginResult() {
         viewModel.output.isOriginUser
             .asDriver(onErrorJustReturn: false)
             .drive(onNext: { [weak self] isOriginUser in
