@@ -60,7 +60,7 @@ extension LoginVM: Output {
 // MARK: - Networking
 
 extension LoginVM {
-    /// 카카오 로그인버튼을 눌렀을 때 카카오 토큰을 저장하고 기존 유저인지 판단 메서드를 호출하는 메서드
+    /// 카카오 로그인 버튼을 눌렀을 때 카카오 토큰을 저장하고 소셜 로그인을 진행하는 메서드
     func kakaoLogin() {
         if (UserApi.isKakaoTalkLoginAvailable()) {
             UserApi.shared.loginWithKakaoTalk { (oauthToken, error) in
@@ -69,6 +69,7 @@ extension LoginVM {
                 } else {
                     UserDefaults.standard.set(oauthToken?.accessToken, forKey: UserDefaults.Keys.kakaoAccessToken)
                     UserDefaults.standard.set(oauthToken?.refreshToken, forKey: UserDefaults.Keys.kakaoRefreshToken)
+                    self.socialLogin(type: .kakao)
                 }
             }
         } else {
@@ -93,6 +94,7 @@ extension LoginVM {
                                 else {
                                     UserDefaults.standard.set(oauthToken?.accessToken, forKey: UserDefaults.Keys.kakaoAccessToken)
                                     UserDefaults.standard.set(oauthToken?.refreshToken, forKey: UserDefaults.Keys.kakaoRefreshToken)
+                                    self.socialLogin(type: .kakao)
                                 }
                             }
                         }
@@ -100,6 +102,26 @@ extension LoginVM {
                 }
             }
         }
+    }
+    
+    /// 소셜 로그인을 요청하는 메서드
+    func socialLogin(type: LoginType) {
+        let path = "auth/social/login?type=\(type.rawValue)"
+        let resource = urlResource<SocialLoginResponseModel>(path: path)
+        
+        AuthAPI.shared.socialLoginRequest(with: resource,
+                                          token: type.token)
+        .withUnretained(self)
+        .subscribe(onNext: { owner, result in
+            switch result {
+            case .failure(let error):
+                owner.apiError.onNext(error)
+            case .success(let data):
+                UserDefaults.standard.set(data.email, forKey: UserDefaults.Keys.email)
+                owner.output.isOriginUser.accept(data.signed)
+            }
+        })
+        .disposed(by: bag)
     }
     
     /// 토큰 만료 후 로그인 시 토큰을 발급받는 메서드
