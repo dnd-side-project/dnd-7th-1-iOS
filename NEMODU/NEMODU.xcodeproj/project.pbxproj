@@ -134,9 +134,9 @@
 		23B86D1F28A26EEF00B1630E /* NaviType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B86D1E28A26EEF00B1630E /* NaviType.swift */; };
 		23B86D2128A26F0F00B1630E /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B86D2028A26F0F00B1630E /* NavigationBar.swift */; };
 		23C4CD0728B7A87D00D2F469 /* Int+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C4CD0628B7A87D00D2F469 /* Int+.swift */; };
-		23C64DCB2988AA0D00509E5B /* SocialLoginResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C64DCA2988AA0D00509E5B /* SocialLoginResponseModel.swift */; };
 		23C64DD12988D50100509E5B /* LoginType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C64DD02988D50100509E5B /* LoginType.swift */; };
 		23C64DD32988D86C00509E5B /* LoginRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C64DD22988D86C00509E5B /* LoginRequestModel.swift */; };
+		23C64DD52988DAF400509E5B /* SocialLoginResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C64DD42988DAF400509E5B /* SocialLoginResponseModel.swift */; };
 		23D8B7D728B394FC00F48165 /* MyRecordListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7D628B394FC00F48165 /* MyRecordListDataSource.swift */; };
 		23D8B7D928B3961900F48165 /* MyRecordListResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7D828B3961900F48165 /* MyRecordListResponseModel.swift */; };
 		23D8B7DB28B396A100F48165 /* MyRecordDataVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7DA28B396A100F48165 /* MyRecordDataVM.swift */; };
@@ -372,9 +372,9 @@
 		23B86D1E28A26EEF00B1630E /* NaviType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaviType.swift; sourceTree = "<group>"; };
 		23B86D2028A26F0F00B1630E /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
 		23C4CD0628B7A87D00D2F469 /* Int+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+.swift"; sourceTree = "<group>"; };
-		23C64DCA2988AA0D00509E5B /* SocialLoginResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SocialLoginResponseModel.swift; path = ../../../../../../../../Spring/SocialLoginResponseModel.swift; sourceTree = "<group>"; };
 		23C64DD02988D50100509E5B /* LoginType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginType.swift; sourceTree = "<group>"; };
 		23C64DD22988D86C00509E5B /* LoginRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRequestModel.swift; sourceTree = "<group>"; };
+		23C64DD42988DAF400509E5B /* SocialLoginResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginResponseModel.swift; sourceTree = "<group>"; };
 		23D8B7D628B394FC00F48165 /* MyRecordListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordListDataSource.swift; sourceTree = "<group>"; };
 		23D8B7D828B3961900F48165 /* MyRecordListResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordListResponseModel.swift; sourceTree = "<group>"; };
 		23D8B7DA28B396A100F48165 /* MyRecordDataVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordDataVM.swift; sourceTree = "<group>"; };
@@ -618,8 +618,8 @@
 			isa = PBXGroup;
 			children = (
 				23255A8128D0DCE9005D6D5A /* UserDataModel.swift */,
-				23C64DCA2988AA0D00509E5B /* SocialLoginResponseModel.swift */,
 				23C64DD22988D86C00509E5B /* LoginRequestModel.swift */,
+				23C64DD42988DAF400509E5B /* SocialLoginResponseModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1515,6 +1515,7 @@
 				23F5716928A6802C005F2E21 /* UIStackView+.swift in Sources */,
 				3C304370292F81B800FAD69A /* ChallengeHistoryDetailTVHV.swift in Sources */,
 				23B7206B28A12BCD00D3A410 /* MainVC.swift in Sources */,
+				23C64DD52988DAF400509E5B /* SocialLoginResponseModel.swift in Sources */,
 				3C0029F329011378001BB6AE /* CreatChallengeResponseModel.swift in Sources */,
 				2348B3F52892D131001095BC /* Service.swift in Sources */,
 				3C48920528B0C8A800B11207 /* NoChallengeStatusMessage.swift in Sources */,
@@ -1686,7 +1687,6 @@
 				23255A7428CF5325005D6D5A /* EnterVC.swift in Sources */,
 				23B7206328A0DCAA00D3A410 /* ProceedingChallengeDataSource.swift in Sources */,
 				238C4DE528A4BFE2000BEE36 /* UIScrollView+.swift in Sources */,
-				23C64DCB2988AA0D00509E5B /* SocialLoginResponseModel.swift in Sources */,
 				2348B4052892D1FA001095BC /* UIButton+.swift in Sources */,
 				3C30436A292F7DA000FAD69A /* ChallengeHistoryDetailVC.swift in Sources */,
 				238C4DDF28A3AC18000BEE36 /* RecordResultVC.swift in Sources */,
