@@ -134,6 +134,7 @@
 		23B86D1F28A26EEF00B1630E /* NaviType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B86D1E28A26EEF00B1630E /* NaviType.swift */; };
 		23B86D2128A26F0F00B1630E /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B86D2028A26F0F00B1630E /* NavigationBar.swift */; };
 		23C4CD0728B7A87D00D2F469 /* Int+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C4CD0628B7A87D00D2F469 /* Int+.swift */; };
+		23C64DCB2988AA0D00509E5B /* SocialLoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C64DCA2988AA0D00509E5B /* SocialLoginModel.swift */; };
 		23D8B7D728B394FC00F48165 /* MyRecordListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7D628B394FC00F48165 /* MyRecordListDataSource.swift */; };
 		23D8B7D928B3961900F48165 /* MyRecordListResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7D828B3961900F48165 /* MyRecordListResponseModel.swift */; };
 		23D8B7DB28B396A100F48165 /* MyRecordDataVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7DA28B396A100F48165 /* MyRecordDataVM.swift */; };
@@ -369,6 +370,7 @@
 		23B86D1E28A26EEF00B1630E /* NaviType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaviType.swift; sourceTree = "<group>"; };
 		23B86D2028A26F0F00B1630E /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
 		23C4CD0628B7A87D00D2F469 /* Int+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+.swift"; sourceTree = "<group>"; };
+		23C64DCA2988AA0D00509E5B /* SocialLoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SocialLoginModel.swift; path = ../../../../../../../../Spring/SocialLoginModel.swift; sourceTree = "<group>"; };
 		23D8B7D628B394FC00F48165 /* MyRecordListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordListDataSource.swift; sourceTree = "<group>"; };
 		23D8B7D828B3961900F48165 /* MyRecordListResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordListResponseModel.swift; sourceTree = "<group>"; };
 		23D8B7DA28B396A100F48165 /* MyRecordDataVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordDataVM.swift; sourceTree = "<group>"; };
@@ -612,6 +614,7 @@
 			isa = PBXGroup;
 			children = (
 				23255A8128D0DCE9005D6D5A /* UserDataModel.swift */,
+				23C64DCA2988AA0D00509E5B /* SocialLoginModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1675,6 +1678,7 @@
 				23255A7428CF5325005D6D5A /* EnterVC.swift in Sources */,
 				23B7206328A0DCAA00D3A410 /* ProceedingChallengeDataSource.swift in Sources */,
 				238C4DE528A4BFE2000BEE36 /* UIScrollView+.swift in Sources */,
+				23C64DCB2988AA0D00509E5B /* SocialLoginModel.swift in Sources */,
 				2348B4052892D1FA001095BC /* UIButton+.swift in Sources */,
 				3C30436A292F7DA000FAD69A /* ChallengeHistoryDetailVC.swift in Sources */,
 				238C4DDF28A3AC18000BEE36 /* RecordResultVC.swift in Sources */,

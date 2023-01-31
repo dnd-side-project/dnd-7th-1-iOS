@@ -89,37 +89,6 @@ extension AuthAPI {
         }
     }
     
-    /// [GET] 헤더에 kakaoAccessToken을 붙여 기존 유저인지 확인을 요청하는 메서드
-    func checkOriginUser<T>(with urlResource: urlResource<T>) -> Observable<Result<T, APIError>> where T : Decodable {
-        
-        Observable<Result<T, APIError>>.create { observer in
-            guard let kakaoAccessToken = UserDefaults.standard.string(forKey: UserDefaults.Keys.kakaoAccessToken) else { fatalError() }
-            
-            let headers: HTTPHeaders = [
-                "Content-Type": "application/json",
-                "Kakao-Access-Token": kakaoAccessToken
-            ]
-            
-            let task = AF.request(urlResource.resultURL,
-                                  encoding: URLEncoding.default,
-                                  headers: headers)
-                .validate(statusCode: 200...399)
-                .responseDecodable(of: T.self) { response in
-                    switch response.result {
-                    case .failure:
-                        observer.onNext(urlResource.judgeError(statusCode: response.response?.statusCode ?? -1))
-                        
-                    case .success(let data):
-                        observer.onNext(.success(data))
-                    }
-                }
-            
-            return Disposables.create {
-                task.cancel()
-            }
-        }
-    }
-    
     /// [GET] refreshToken으로 accessToken, refreshToken 재발급
     func renewalToken() -> Observable<Result<Bool, APIError>> {
         

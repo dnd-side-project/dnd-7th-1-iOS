@@ -69,7 +69,6 @@ extension LoginVM {
                 } else {
                     UserDefaults.standard.set(oauthToken?.accessToken, forKey: UserDefaults.Keys.kakaoAccessToken)
                     UserDefaults.standard.set(oauthToken?.refreshToken, forKey: UserDefaults.Keys.kakaoRefreshToken)
-                    self.checkOriginUser()
                 }
             }
         } else {
@@ -94,7 +93,6 @@ extension LoginVM {
                                 else {
                                     UserDefaults.standard.set(oauthToken?.accessToken, forKey: UserDefaults.Keys.kakaoAccessToken)
                                     UserDefaults.standard.set(oauthToken?.refreshToken, forKey: UserDefaults.Keys.kakaoRefreshToken)
-                                    self.checkOriginUser()
                                 }
                             }
                         }
@@ -102,26 +100,6 @@ extension LoginVM {
                 }
             }
         }
-    }
-    
-    /// kakao accessToken으로 기존 유저인지 서버에 판단 요청
-    func checkOriginUser() {
-        let path = "auth/check/origin"
-        let resource = urlResource<Bool>(path: path)
-        
-        AuthAPI.shared.checkOriginUser(with: resource)
-            .withUnretained(self)
-            .subscribe(onNext: { owner, result in
-                switch result {
-                case .failure(let error):
-                    owner.apiError.onNext(error)
-                case .success(let isOriginUser):
-                    isOriginUser
-                    ? owner.nemoduLogin()
-                    : owner.output.isOriginUser.accept(false)
-                }
-            })
-            .disposed(by: bag)
     }
     
     /// 토큰 만료 후 로그인 시 토큰을 발급받는 메서드
