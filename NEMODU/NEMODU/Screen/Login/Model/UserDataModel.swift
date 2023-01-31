@@ -26,7 +26,7 @@ extension UserDataModel {
             "email": email,
             "friends": friends,
             "isPublicRecord": isPublicRecord,
-            "logintype": loginType,
+            "loginType": loginType,
             "pictureName": pictureName,
             "picturePath": picturePath
         ]
