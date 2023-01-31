@@ -151,7 +151,7 @@ extension MypageVC {
         profileView.profileImage.kf.setImage(with: userData.profileImageURL,
                                              placeholder: UIImage.defaultThumbnail)
         profileView.nickname.text = userData.nickname
-        profileView.profileMessage.text = userData.intro
+        if let intro = userData.intro { profileView.profileMessage.text = intro }
         blockCntView.configureBlockCnt(userData.allMatrixNumber.insertComma)
         recordView.firstView.recordValue.text = "\(userData.matrixNumber.insertComma) 칸"
         recordView.secondView.recordValue.text = "\(userData.stepCount.insertComma)"

@@ -8,7 +8,8 @@
 import Foundation
 
 struct MyProfileResponseModel: Codable {
-    let nickname, intro, mail: String
+    let nickname, mail: String
+    let intro: String?
     let picturePath: String
 }
 
