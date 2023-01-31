@@ -117,7 +117,11 @@ extension LoginVM {
             case .failure(let error):
                 owner.apiError.onNext(error)
             case .success(let data):
+                UserDefaults.standard.set(type.rawValue, forKey: UserDefaults.Keys.loginType)
                 UserDefaults.standard.set(data.email, forKey: UserDefaults.Keys.email)
+                UserDefaults.standard.set(data.picturePath, forKey: UserDefaults.Keys.picturePath)
+                UserDefaults.standard.set(data.pictureName, forKey: UserDefaults.Keys.pictureName)
+                
                 owner.output.isOriginUser.accept(data.signed)
             }
         })
