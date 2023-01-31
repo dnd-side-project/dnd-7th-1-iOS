@@ -16,5 +16,6 @@ extension UserDefaults {
         static var kakaoAccessToken = "kakaoAccessToken"
         static var kakaoRefreshToken = "kakaoRefreshToken"
         static var appleToken = "appleToken"
+        static var email = "email"
     }
 }

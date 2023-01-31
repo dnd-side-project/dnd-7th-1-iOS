@@ -58,17 +58,16 @@ extension AuthAPI {
     }
     
     /// [GET] 헤더에 kakaoAccessToken을 붙여 로그인을 요청하는 메서드
-    func loginRequest<T: Decodable>(with urlResource: urlResource<T>) -> Observable<Result<T, APIError>> {
+    func loginRequest<T: Decodable>(with urlResource: urlResource<T>, token: String, param: Parameters) -> Observable<Result<T, APIError>> {
         Observable<Result<T, APIError>>.create { observer in
-            guard let kakaoAccessToken = UserDefaults.standard.string(forKey: UserDefaults.Keys.kakaoAccessToken) else { fatalError() }
-            
             let headers: HTTPHeaders = [
                 "Content-Type": "application/json",
-                "Kakao-Access-Token": kakaoAccessToken
+                "Authorization": token
             ]
             
             let task = AF.request(urlResource.resultURL,
                                   method: .post,
+                                  parameters: param,
                                   encoding: JSONEncoding.default,
                                   headers: headers)
                 .validate(statusCode: 200...399)

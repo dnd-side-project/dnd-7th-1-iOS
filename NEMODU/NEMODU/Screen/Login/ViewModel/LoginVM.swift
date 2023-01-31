@@ -103,10 +103,17 @@ extension LoginVM {
     }
     
     /// 토큰 만료 후 로그인 시 토큰을 발급받는 메서드
-    func nemoduLogin() {
+    func nemoduLogin(type: LoginType) {
+        // TODO: - fatalError 처리
+        guard let email = UserDefaults.standard.string(forKey: UserDefaults.Keys.email) else { fatalError() }
         let path = "login"
         let resource = urlResource<NicknameModel>(path: path)
-        AuthAPI.shared.loginRequest(with: resource)
+        let param = LoginRequestModel(email: email,
+                                      loginType: type.rawValue)
+        
+        AuthAPI.shared.loginRequest(with: resource,
+                                    token: type.token,
+                                    param: param.param)
             .withUnretained(self)
             .subscribe(onNext: { owner, result in
                 switch result {
