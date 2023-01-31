@@ -9,13 +9,18 @@ import Foundation
 
 extension UserDefaults {
     enum Keys {
-        static var nickname = "nickname"
-        static var isFirstAccess = "isFirstAccess"
+        // TODO: - KeyChain으로 관리
         static var accessToken = "accessToken"
         static var refreshToken = "refreshToken"
         static var kakaoAccessToken = "kakaoAccessToken"
         static var kakaoRefreshToken = "kakaoRefreshToken"
         static var appleToken = "appleToken"
+        
+        static var nickname = "nickname"
+        static var isFirstAccess = "isFirstAccess"
         static var email = "email"
+        static var pictureName = "pictureName"
+        static var picturePath = "picturePath"
+        static var loginType = "loginType"
     }
 }

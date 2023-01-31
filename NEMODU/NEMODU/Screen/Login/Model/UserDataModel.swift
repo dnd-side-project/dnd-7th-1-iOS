@@ -15,11 +15,20 @@ struct UserDataModel {
 
 extension UserDataModel {
     var userDataParam: Parameters {
+        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname),
+              let email = UserDefaults.standard.string(forKey: UserDefaults.Keys.email),
+              let pictureName = UserDefaults.standard.string(forKey: UserDefaults.Keys.pictureName),
+              let picturePath = UserDefaults.standard.string(forKey: UserDefaults.Keys.picturePath),
+              let loginType = UserDefaults.standard.string(forKey: UserDefaults.Keys.loginType)
+        else { fatalError() }
         return [
-            "nickname": UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) ?? fatalError(),
-            "kakaoRefreshToken": UserDefaults.standard.string(forKey: UserDefaults.Keys.kakaoRefreshToken) ?? fatalError(),
+            "nickname": nickname,
+            "email": email,
             "friends": friends,
-            "isPublicRecord": isPublicRecord
+            "isPublicRecord": isPublicRecord,
+            "logintype": loginType,
+            "pictureName": pictureName,
+            "picturePath": picturePath
         ]
     }
 }
