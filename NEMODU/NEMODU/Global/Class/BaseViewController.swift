@@ -46,8 +46,15 @@ class BaseViewController: UIViewController {
     
     func bindOutput() {}
     
+    /// 메인화면을 rootViewControllerf로 변경하는 메서드
     func setTBCtoRootVC() {
         guard let ad = UIApplication.shared.delegate as? AppDelegate else { return }
         ad.window?.rootViewController = NEMODUTBC()
+    }
+    
+    /// 로그인 화면을 rootViewControllerf로 변경하는 메서드
+    func setLoginToRootVC() {
+        guard let ad = UIApplication.shared.delegate as? AppDelegate else { return }
+        ad.window?.rootViewController = LoginNC()
     }
 }

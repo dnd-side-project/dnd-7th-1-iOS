@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Frame 7095.png",
+      "filename" : "kakaoIcon.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Frame 7095@2x.png",
+      "filename" : "kakaoIcon@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Frame 7095@3x.png",
+      "filename" : "kakaoIcon@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
