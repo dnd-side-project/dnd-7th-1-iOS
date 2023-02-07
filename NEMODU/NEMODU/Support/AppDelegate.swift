@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // SplashView 1초동안 보이게
         Thread.sleep(forTimeInterval: 1)
         
-        KakaoSDK.initSDK(appKey: "acc678f133b404c0837559c915615ae8")
+        KakaoSDK.initSDK(appKey: "944b6ad264ad0085b68053652ee73b1b")
         
         // set rootViewController
         window = UIWindow()

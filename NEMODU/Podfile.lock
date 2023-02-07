@@ -40,8 +40,8 @@ PODS:
 DEPENDENCIES:
   - Alamofire
   - DynamicBottomSheet
-  - KakaoSDKAuth (= 2.11.1)
-  - KakaoSDKUser (= 2.11.1)
+  - KakaoSDKAuth (< 2.13.1)
+  - KakaoSDKUser (< 2.13.1)
   - Kingfisher (~> 7.0)
   - lottie-ios
   - RxCocoa (< 6.2.0)
@@ -89,6 +89,6 @@ SPEC CHECKSUMS:
   Then: acfe0be7e98221c6204e12f8161459606d5d822d
   "UITextView+Placeholder": d7b0c400921f66523f3a85d74f774512e14f6502
 
-PODFILE CHECKSUM: 604a7274adc8644d397415dc7d3e3e3759c8ad2f
+PODFILE CHECKSUM: 1c9886c5f6934fd0985a2670606bb280647e22e6
 
 COCOAPODS: 1.11.3
