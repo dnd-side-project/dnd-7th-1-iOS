@@ -44,8 +44,8 @@ extension AuthAPI {
                         observer.onNext(urlResource.judgeError(statusCode: response.response?.statusCode ?? -1))
                         
                     case .success(let data):
-                        observer.onNext(.success(data))
                         setUserDefaultsToken(headers: response.response?.headers)
+                        observer.onNext(.success(data))
                     }
                 }
             
@@ -141,15 +141,14 @@ extension AuthAPI {
                                   encoding: URLEncoding.default,
                                   headers: headers)
                 .validate(statusCode: 200...399)
-                .responseDecodable(of: Bool.self) { response in
+                .responseDecodable(of: RenewalTokenModel.self) { response in
                     switch response.result {
                     case .failure:
                         observer.onNext(urlResource.judgeError(statusCode: response.response?.statusCode ?? -1))
                         
-                    case .success(let data):
+                    case .success:
                         setUserDefaultsToken(headers: response.response?.headers)
-                        observer.onNext(.success(data))
-                        print("갱신 성공")
+                        observer.onNext(.success(true))
                     }
                 }
             
