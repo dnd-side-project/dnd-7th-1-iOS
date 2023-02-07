@@ -37,6 +37,7 @@ class AuthInterceptor: RequestInterceptor {
                     DispatchQueue.main.async {
                         guard let ad = UIApplication.shared.delegate as? AppDelegate else { return }
                         ad.window?.rootViewController = LoginNC()
+                        print("토큰 모두 만료 로그인으로 이동")
                     }
                 case .success(_):
                     completion(.retry)

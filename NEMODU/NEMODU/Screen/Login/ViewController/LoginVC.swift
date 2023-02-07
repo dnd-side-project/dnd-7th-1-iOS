@@ -120,6 +120,7 @@ extension LoginVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
+                UserDefaults.standard.set(LoginType.apple.rawValue, forKey: UserDefaults.Keys.loginType)
                 self.appleLogin()
             })
             .disposed(by: bag)
@@ -128,6 +129,7 @@ extension LoginVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
+                UserDefaults.standard.set(LoginType.kakao.rawValue, forKey: UserDefaults.Keys.loginType)
                 self.viewModel.kakaoLogin()
             })
             .disposed(by: bag)
@@ -170,8 +172,16 @@ extension LoginVC {
             .drive(onNext: { [weak self] isOriginUser in
                 guard let self = self else { return }
                 isOriginUser
-                ? self.setTBCtoRootVC()
+                ? self.viewModel.nemoduLogin()
                 : self.navigationController?.pushViewController(UserInfoSettingVC(), animated: true)
+            })
+            .disposed(by: bag)
+        
+        viewModel.output.goToTabBar
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.setTBCtoRootVC()
             })
             .disposed(by: bag)
     }

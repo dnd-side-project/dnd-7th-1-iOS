@@ -27,6 +27,7 @@ final class LoginVM: BaseViewModel {
     
     struct Output {
         var isOriginUser = PublishRelay<Bool>()
+        var goToTabBar = PublishRelay<Bool>()
     }
     
     // MARK: - Init
@@ -123,22 +124,27 @@ extension LoginVM {
                 UserDefaults.standard.set(data.pictureName, forKey: UserDefaults.Keys.pictureName)
                 
                 owner.output.isOriginUser.accept(data.signed)
+                print("소셜 로그인 성공")
             }
         })
         .disposed(by: bag)
     }
     
     /// 토큰 만료 후 로그인 시 토큰을 발급받는 메서드
-    func nemoduLogin(type: LoginType) {
+    func nemoduLogin() {
         // TODO: - fatalError 처리
-        guard let email = UserDefaults.standard.string(forKey: UserDefaults.Keys.email) else { fatalError() }
+        guard let email = UserDefaults.standard.string(forKey: UserDefaults.Keys.email),
+              let loginType = UserDefaults.standard.string(forKey: UserDefaults.Keys.loginType),
+              let token = LoginType(rawValue: loginType)?.token
+        else { fatalError() }
+        
         let path = "login"
         let resource = urlResource<NicknameModel>(path: path)
         let param = LoginRequestModel(email: email,
-                                      loginType: type.rawValue)
+                                      loginType: loginType)
         
         AuthAPI.shared.loginRequest(with: resource,
-                                    token: type.token,
+                                    token: token,
                                     param: param.param)
             .withUnretained(self)
             .subscribe(onNext: { owner, result in
@@ -147,7 +153,8 @@ extension LoginVM {
                     owner.apiError.onNext(error)
                 case .success(let data):
                     UserDefaults.standard.set(data.nickname, forKey: UserDefaults.Keys.nickname)
-                    owner.output.isOriginUser.accept(true)
+                    owner.output.goToTabBar.accept(true)
+                    print("네모두 로그인 성공")
                 }
             })
             .disposed(by: bag)
