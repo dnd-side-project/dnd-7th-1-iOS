@@ -137,6 +137,7 @@
 		23C64DD12988D50100509E5B /* LoginType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C64DD02988D50100509E5B /* LoginType.swift */; };
 		23C64DD32988D86C00509E5B /* LoginRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C64DD22988D86C00509E5B /* LoginRequestModel.swift */; };
 		23C64DD52988DAF400509E5B /* SocialLoginResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C64DD42988DAF400509E5B /* SocialLoginResponseModel.swift */; };
+		23C64DD929923E2300509E5B /* RenewalTokenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C64DD829923E2300509E5B /* RenewalTokenModel.swift */; };
 		23D8B7D728B394FC00F48165 /* MyRecordListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7D628B394FC00F48165 /* MyRecordListDataSource.swift */; };
 		23D8B7D928B3961900F48165 /* MyRecordListResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7D828B3961900F48165 /* MyRecordListResponseModel.swift */; };
 		23D8B7DB28B396A100F48165 /* MyRecordDataVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7DA28B396A100F48165 /* MyRecordDataVM.swift */; };
@@ -375,6 +376,7 @@
 		23C64DD02988D50100509E5B /* LoginType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginType.swift; sourceTree = "<group>"; };
 		23C64DD22988D86C00509E5B /* LoginRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRequestModel.swift; sourceTree = "<group>"; };
 		23C64DD42988DAF400509E5B /* SocialLoginResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginResponseModel.swift; sourceTree = "<group>"; };
+		23C64DD829923E2300509E5B /* RenewalTokenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenewalTokenModel.swift; sourceTree = "<group>"; };
 		23D8B7D628B394FC00F48165 /* MyRecordListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordListDataSource.swift; sourceTree = "<group>"; };
 		23D8B7D828B3961900F48165 /* MyRecordListResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordListResponseModel.swift; sourceTree = "<group>"; };
 		23D8B7DA28B396A100F48165 /* MyRecordDataVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordDataVM.swift; sourceTree = "<group>"; };
@@ -620,6 +622,7 @@
 				23255A8128D0DCE9005D6D5A /* UserDataModel.swift */,
 				23C64DD22988D86C00509E5B /* LoginRequestModel.swift */,
 				23C64DD42988DAF400509E5B /* SocialLoginResponseModel.swift */,
+				23C64DD829923E2300509E5B /* RenewalTokenModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1588,6 +1591,7 @@
 				23412FF028AFB74800B73D62 /* RecordResultNC.swift in Sources */,
 				2375740128FC3824006026ED /* NicknameSearchBar.swift in Sources */,
 				2312519628B6944B00DF1C69 /* ToastView.swift in Sources */,
+				23C64DD929923E2300509E5B /* RenewalTokenModel.swift in Sources */,
 				23412FD828AE245D00B73D62 /* Block.swift in Sources */,
 				237573D728F57824006026ED /* ArrowBtn.swift in Sources */,
 				237573F328FAF2A1006026ED /* EditProfileRequestModel.swift in Sources */,
@@ -1843,6 +1847,7 @@
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "NENODU가 활동 기록 및 위치 공유를 위해 위치 정보를 사용하도록 허용합니다.";
 				INFOPLIST_KEY_NSMotionUsageDescription = "걸음수를 카운트하시려면 NEMODU의 헬스 데이터 접근을 허용해 주십시오.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -1876,6 +1881,7 @@
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "NENODU가 활동 기록 및 위치 공유를 위해 위치 정보를 사용하도록 허용합니다.";
 				INFOPLIST_KEY_NSMotionUsageDescription = "걸음수를 카운트하시려면 NEMODU의 헬스 데이터 접근을 허용해 주십시오.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

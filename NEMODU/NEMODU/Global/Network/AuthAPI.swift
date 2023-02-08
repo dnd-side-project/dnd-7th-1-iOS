@@ -44,8 +44,8 @@ extension AuthAPI {
                         observer.onNext(urlResource.judgeError(statusCode: response.response?.statusCode ?? -1))
                         
                     case .success(let data):
-                        observer.onNext(.success(data))
                         setUserDefaultsToken(headers: response.response?.headers)
+                        observer.onNext(.success(data))
                     }
                 }
             
@@ -104,9 +104,9 @@ extension AuthAPI {
                         observer.onNext(urlResource.judgeError(statusCode: response.response?.statusCode ?? -1))
                         
                     case .success(let data):
-                        observer.onNext(.success(data))
                         // 자체 토큰 저장
                         setUserDefaultsToken(headers: response.response?.headers)
+                        observer.onNext(.success(data))
                     }
                 }
             
@@ -121,28 +121,34 @@ extension AuthAPI {
     func renewalToken() -> Observable<Result<Bool, APIError>> {
         
         Observable<Result<Bool, APIError>>.create { observer in
-            guard let refreshToken = UserDefaults.standard.string(forKey: UserDefaults.Keys.refreshToken) else { fatalError() }
+            guard let refreshToken = UserDefaults.standard.string(forKey: UserDefaults.Keys.refreshToken),
+                  let kakaoRefreshToken
+                    = UserDefaults.standard.string(forKey: UserDefaults.Keys.loginType) == LoginType.kakao.rawValue
+                    ? UserDefaults.standard.string(forKey: UserDefaults.Keys.kakaoRefreshToken)
+                    : ""
+            else { fatalError() }
             
             let headers: HTTPHeaders = [
                 "Content-Type": "application/json",
-                "Refresh-Token": refreshToken
+                "Refresh-Token": refreshToken,
+                "Kakao-Refresh-Token": kakaoRefreshToken
             ]
             
-            let path = "auth/refreshToken"
+            let path = "reissue"
             let urlResource = urlResource<Bool>(path: path)
             
             let task = AF.request(urlResource.resultURL,
                                   encoding: URLEncoding.default,
                                   headers: headers)
                 .validate(statusCode: 200...399)
-                .responseDecodable(of: Bool.self) { response in
+                .responseDecodable(of: RenewalTokenModel.self) { response in
                     switch response.result {
                     case .failure:
                         observer.onNext(urlResource.judgeError(statusCode: response.response?.statusCode ?? -1))
                         
-                    case .success(let data):
+                    case .success:
                         setUserDefaultsToken(headers: response.response?.headers)
-                        observer.onNext(.success(data))
+                        observer.onNext(.success(true))
                     }
                 }
             
