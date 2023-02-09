@@ -136,6 +136,7 @@ class InvitedChallengeDetailTVHV : ChallengeDetailTVHV {
                     $0.height.equalTo(0)
                     $0.top.equalTo(guideLabelContainerView.snp.bottom).offset(0).priority(.high)
                 }
+                break
             }
         }
     }
