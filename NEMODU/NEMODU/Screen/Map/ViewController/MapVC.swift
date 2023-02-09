@@ -131,6 +131,8 @@ extension MapVC {
                          forAnnotationViewWithReuseIdentifier: NSStringFromClass(FriendAnnotation.self))
         mapView.register(MyAnnotationView.self,
                          forAnnotationViewWithReuseIdentifier: NSStringFromClass(MyAnnotation.self))
+        mapView.register(FriendColoredAnnotationView.self,
+                         forAnnotationViewWithReuseIdentifier: NSStringFromClass(FriendColoredAnnotation.self))
     }
     
     private func setupFriendAnnotationView(for annotation: FriendAnnotation, on mapView: MKMapView) -> MKAnnotationView {
@@ -139,6 +141,10 @@ extension MapVC {
     
     private func setupMyAnnotationView(for annotation: MyAnnotation, on mapView: MKMapView) -> MKAnnotationView {
         return mapView.dequeueReusableAnnotationView(withIdentifier: NSStringFromClass(MyAnnotation.self), for: annotation)
+    }
+    
+    private func setupFriendColoredAnnotationView(for annotation: FriendColoredAnnotation, on mapView: MKMapView) -> MKAnnotationView {
+        return mapView.dequeueReusableAnnotationView(withIdentifier: NSStringFromClass(FriendColoredAnnotation.self), for: annotation)
     }
     
     func isUserInteractionEnabled(_ isEnabled: Bool) {
@@ -327,6 +333,7 @@ extension MapVC {
             }
         }
     }
+    
 }
 
 // MARK: - CLLocationManagerDelegate
@@ -405,6 +412,32 @@ extension MapVC: CLLocationManagerDelegate {
             annotation.color = color
             annotation.challengeCnt = challengeCnt
             annotation.isEnabled = isEnabled
+            self.mapView.addAnnotation(annotation)
+        }
+    }
+    
+    /// 색칠된 친구 핀을 설치하는 함수
+    func addFriendColoredAnnotation(coordinate: [Double],
+                             profileImageURL: URL,
+                             nickname: String = "",
+                             color: UIColor) {
+        
+        KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: profileImageURL)) { result in
+            var profileImage = UIImage.defaultThumbnail
+            
+            switch result {
+            case .success(let data):
+                profileImage = data.image
+            case .failure(let error):
+                print(error)
+            }
+         
+            let annotation = FriendColoredAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate[0] + self.latitudeBlockSizePoint / 2,
+                                                                                 longitude: coordinate[1] - self.longitudeBlockSizePoint / 2))
+            annotation.title = nickname
+            annotation.profileImage = profileImage
+            annotation.color = color
+            
             self.mapView.addAnnotation(annotation)
         }
     }
@@ -502,6 +535,8 @@ extension MapVC: MKMapViewDelegate {
                 annotationView = setupFriendAnnotationView(for: annotation, on: mapView)
             } else if let annotation = annotation as? MyAnnotation {
                 annotationView = setupMyAnnotationView(for: annotation, on: mapView)
+            } else if let annotation = annotation as? FriendColoredAnnotation {
+                annotationView = setupFriendColoredAnnotationView(for: annotation, on: mapView)
             }
             
             return annotationView
