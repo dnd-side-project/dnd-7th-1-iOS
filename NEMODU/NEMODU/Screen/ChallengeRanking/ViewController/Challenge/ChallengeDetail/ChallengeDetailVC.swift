@@ -26,6 +26,7 @@ class ChallengeDetailVC: BaseViewController {
             $0.separatorStyle = .none
             $0.backgroundColor = .white
             $0.showsVerticalScrollIndicator = false
+            $0.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: -20, right: 0)
         }
     
     // MARK: - Variables and Properties
@@ -40,7 +41,6 @@ class ChallengeDetailVC: BaseViewController {
         super.configureView()
         
         configureNavigationBar()
-        configureTableView()
     }
     
     override func layoutView() {
@@ -50,13 +50,6 @@ class ChallengeDetailVC: BaseViewController {
     }
     
     // MARK: - Functions
-    
-    func configureTableView() {
-        _ = challengeDetailTableView
-            .then {
-                $0.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: -20, right: 0)
-            }
-    }
     
 }
 
@@ -79,7 +72,7 @@ extension ChallengeDetailVC {
 extension ChallengeDetailVC {
     
     private func configureLayout() {
-        view.addSubviews([navigationBar, challengeDetailTableView])
+        view.addSubviews([challengeDetailTableView])
         
         challengeDetailTableView.snp.makeConstraints {
             $0.top.equalTo(navigationBar.snp.bottom)
