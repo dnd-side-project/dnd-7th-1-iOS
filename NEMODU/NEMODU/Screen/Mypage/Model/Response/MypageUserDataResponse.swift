@@ -8,7 +8,8 @@
 import Foundation
 
 struct MypageUserDataResponseModel: Codable {
-    let nickname, intro, picturePath: String
+    let nickname, picturePath: String
+    let intro: String?
     let matrixNumber, stepCount, distance, friendNumber: Int
     let allMatrixNumber: Int
 }

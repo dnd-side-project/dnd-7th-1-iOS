@@ -87,4 +87,8 @@ extension UIFont {
     class func PretendardSemiBold(size: CGFloat) -> UIFont {
         return UIFont(name: "Pretendard-SemiBold", size: size)!
     }
+    
+    class func AppleSDGothicB(size: CGFloat) -> UIFont {
+        return UIFont(name: "AppleSDGothicNeoB00", size: size)!
+    }
 }
