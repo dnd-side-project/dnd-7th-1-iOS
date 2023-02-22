@@ -69,7 +69,6 @@ class MainVC: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.getAllBlocks()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -235,7 +234,6 @@ extension MainVC {
                 guard let self = self else { return }
                 self.mapVC.mapView.removeOverlays(self.mapVC.mapView.overlays)
                 self.mapVC.mapView.removeAnnotations(self.mapVC.mapView.annotations)
-                self.viewModel.getAllBlocks()
             })
             .disposed(by: bag)
     }
