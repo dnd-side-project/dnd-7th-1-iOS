@@ -89,7 +89,9 @@ class WalkingVC: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.getBlocksCnt()
+        viewModel.getAllBlocks(mapVC.mapView.region.center.latitude,
+                               mapVC.mapView.region.center.longitude,
+                               mapVC.mapView.region.span.latitudeDelta)
     }
     
     override func configureView() {
