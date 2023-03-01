@@ -348,7 +348,7 @@ extension ChallengeHistoryDetailTVHV {
     
     private func configureMiniMap(matrices: [Matrix]) {
         if(!matrices.isEmpty) {
-            miniMap.blocks = miniMap.changeMatriesToBlocks(matrices: matrices)
+            miniMap.blocks = matrices
             miniMap.drawMiniMap()
         }
     }

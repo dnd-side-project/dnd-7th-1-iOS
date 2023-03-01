@@ -76,7 +76,7 @@ class MapVC: BaseViewController {
     
     var isFocusOn = true
     var isWalking: Bool?
-    var blocks: [[Double]] = []
+    var blocks: [Matrix] = []
     var blocksCnt = BehaviorRelay<Int>(value: 0)
     var updateDistance = BehaviorRelay<Int>(value: 0)
     
@@ -244,15 +244,15 @@ extension MapVC {
     }
     
     /// 기준 처리된 좌표를 입력받고 해당 위치에 블록을 그리는 함수
-    func drawBlock(latitude: Double, longitude: Double, owner: BlocksType, color: UIColor) {
-        let overlayTopLeftCoordinate = CLLocationCoordinate2D(latitude: latitude,
-                                                              longitude: longitude - longitudeBlockSizePoint)
-        let overlayTopRightCoordinate = CLLocationCoordinate2D(latitude: latitude,
-                                                               longitude: longitude)
-        let overlayBottomLeftCoordinate = CLLocationCoordinate2D(latitude: latitude + latitudeBlockSizePoint,
-                                                                 longitude: longitude - longitudeBlockSizePoint)
-        let overlayBottomRightCoordinate = CLLocationCoordinate2D(latitude: latitude + latitudeBlockSizePoint,
-                                                                  longitude: longitude)
+    func drawBlock(matrix: Matrix, owner: BlocksType, color: UIColor) {
+        let overlayTopLeftCoordinate = CLLocationCoordinate2D(latitude: matrix.latitude,
+                                                              longitude: matrix.longitude - longitudeBlockSizePoint)
+        let overlayTopRightCoordinate = CLLocationCoordinate2D(latitude: matrix.latitude,
+                                                               longitude: matrix.longitude)
+        let overlayBottomLeftCoordinate = CLLocationCoordinate2D(latitude: matrix.latitude + latitudeBlockSizePoint,
+                                                                 longitude: matrix.longitude - longitudeBlockSizePoint)
+        let overlayBottomRightCoordinate = CLLocationCoordinate2D(latitude: matrix.latitude + latitudeBlockSizePoint,
+                                                                  longitude: matrix.longitude)
         
         let blockDraw = Block(coordinate: [overlayTopLeftCoordinate,
                                            overlayTopRightCoordinate,
@@ -268,30 +268,10 @@ extension MapVC {
     /// [Matrix] 영역, 소유자, 색상을 받아 전체 영역을 그리는 메서드
     func drawBlockArea(blocks: [Matrix], owner: BlocksType, blockColor: UIColor) {
         blocks.forEach {
-            drawBlock(latitude: $0.latitude,
-                      longitude: $0.longitude,
+            drawBlock(matrix: $0,
                       owner: owner,
                       color: blockColor)
         }
-    }
-    
-    /// [[Double]] 영역, 소유자, 색상을 받아 전체 영역을 그리는 메서드
-    func drawBlockArea(blocks: [[Double]], owner: BlocksType, blockColor: UIColor) {
-        blocks.forEach {
-            drawBlock(latitude: $0[0],
-                      longitude: $0[1],
-                      owner: owner,
-                      color: blockColor)
-        }
-    }
-    
-    /// [Matrix]형 모델을 [[Double]]형 blocks로 변환해주는 함수
-    func changeMatriesToBlocks(matrices: [Matrix]) -> [[Double]] {
-        var blocks: [[Double]] = []
-        matrices.forEach {
-            blocks.append([$0.latitude, $0.longitude])
-        }
-        return blocks
     }
     
     /// 영역의 소유자를 입력받아 visible 상태를 지정하는 함수
@@ -434,15 +414,13 @@ extension MapVC: CLLocationManagerDelegate {
             prevLongitude = longitudeUnit
             
             // 실제 저장되고 그려지는 기준 좌표값
-            let latitudePoint = Double((latitudeUnit) * latitudeBlockSize) / mul
-            let longitudePoint = Double((longitudeUnit) * longitudeBlockSize) / mul
-            
-            if !blocks.contains([latitudePoint, longitudePoint]) {
+            let point = Matrix(latitude: Double((latitudeUnit) * latitudeBlockSize) / mul,
+                               longitude: Double((longitudeUnit) * longitudeBlockSize) / mul)
+            if !blocks.contains(where: { $0 == point }) {
                 // block Point 저장
-                blocks.append([latitudePoint, longitudePoint])
+                blocks.append(point)
                 
-                drawBlock(latitude: latitudePoint,
-                          longitude: longitudePoint,
+                drawBlock(matrix: point,
                           owner: .mine,
                           color: .main80)
                 

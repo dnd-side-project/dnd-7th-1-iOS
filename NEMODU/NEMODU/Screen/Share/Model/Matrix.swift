@@ -7,6 +7,10 @@
 
 import Foundation
 
-struct Matrix: Codable {
+struct Matrix: Codable, Equatable {
     let latitude, longitude: Double
+    
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        return lhs.latitude == rhs.latitude && lhs.longitude == rhs.longitude
+    }
 }

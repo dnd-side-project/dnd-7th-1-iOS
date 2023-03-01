@@ -11,7 +11,7 @@ import Alamofire
 struct RecordDataRequest {
     var distance: Int
     var exerciseTime: Int
-    var blocks: [[Double]]
+    var blocks: [Matrix]
     var stepCount: Int
     var message: String?
     let started: String
@@ -25,11 +25,20 @@ extension RecordDataRequest {
             "nickname": nickname,
             "distance": distance,
             "exerciseTime": exerciseTime,
-            "matrices": blocks,
+            "matrices": changeMatriesToBlocks(matrices: blocks),
             "stepCount": stepCount,
             "message": message ?? "",
             "started": started,
             "ended": ended
         ]
+    }
+    
+    /// [Matrix]형 모델을 [[Double]]형 blocks로 변환해주는 함수
+    func changeMatriesToBlocks(matrices: [Matrix]) -> [[Double]] {
+        var blocks: [[Double]] = []
+        matrices.forEach {
+            blocks.append([$0.latitude, $0.longitude])
+        }
+        return blocks
     }
 }

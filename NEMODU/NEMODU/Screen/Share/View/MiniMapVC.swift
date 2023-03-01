@@ -64,8 +64,8 @@ extension MiniMapVC {
     
     /// 나의 영역을 기준으로 지도가 한 눈에 보이게 미니맵을 그리는 함수
     func drawMiniMap() {
-        let sortedLatitude = blocks.sorted(by: { $0[0] < $1[0] })
-        let sortedLongitude = blocks.sorted(by: { $0[1] < $1[1] })
+        let sortedLatitude = blocks.sorted { $0.latitude < $1.latitude}
+        let sortedLongitude = blocks.sorted { $0.longitude < $1.longitude}
         
         // 영역이 없는 경우 그냥 return & 그냥 현재 위치의 기본 지도가 뜸
         guard let lastLatitude = sortedLatitude.last,
@@ -73,13 +73,13 @@ extension MiniMapVC {
               let lastLongitude = sortedLongitude.last,
               let firstLongitude = sortedLongitude.first else { return }
         
-        let spanX = Int((lastLatitude[0] - firstLatitude[0]) / latitudeBlockSizePoint)
-        let spanY = Int((lastLongitude[1] - firstLongitude[1]) / longitudeBlockSizePoint)
+        let spanX = Int((lastLatitude.latitude - firstLatitude.latitude) / latitudeBlockSizePoint)
+        let spanY = Int((lastLongitude.longitude - firstLongitude.longitude) / longitudeBlockSizePoint)
         var span = Double(spanX > spanY ? spanX : spanY)
         span = (span + 3) * longitudeBlockSizePoint
         
-        _ = goLocation(latitudeValue: sortedLatitude[blocks.count/2][0],
-                       longitudeValue: sortedLongitude[blocks.count/2][1],
+        _ = goLocation(latitudeValue: sortedLatitude[blocks.count/2].latitude,
+                       longitudeValue: sortedLongitude[blocks.count/2].longitude,
                        delta: span)
         
         drawBlockArea(blocks: blocks,

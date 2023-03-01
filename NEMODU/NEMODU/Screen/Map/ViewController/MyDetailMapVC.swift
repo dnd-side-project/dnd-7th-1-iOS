@@ -74,7 +74,7 @@ extension MyDetailMapVC {
     }
     
     /// 상세보기 이전, 미니맵 화면에서 나의 블록 영역을 받아오는 메서드
-    func getBlocks(blocks: [[Double]]) {
+    func getBlocks(blocks: [Matrix]) {
         mapVC.blocks = blocks
     }
 }
@@ -105,7 +105,7 @@ extension MyDetailMapVC {
                 guard let self = self,
                       let profileImageURL = URL(string: data.picturePath),
                       let lastBlock = self.mapVC.blocks.last else { return }
-                self.mapVC.addMyAnnotation(coordinate: [lastBlock[0], lastBlock[1]],
+                self.mapVC.addMyAnnotation(coordinate: [lastBlock.latitude, lastBlock.longitude],
                                       profileImageURL: profileImageURL)
                 self.mapVC.drawMiniMap()
             })

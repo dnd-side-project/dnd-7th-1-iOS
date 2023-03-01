@@ -69,6 +69,9 @@ class MainVC: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel.getAllBlocks(mapVC.mapView.region.center.latitude,
+                               mapVC.mapView.region.center.longitude,
+                               mapVC.mapView.region.span.latitudeDelta)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -234,6 +237,9 @@ extension MainVC {
                 guard let self = self else { return }
                 self.mapVC.mapView.removeOverlays(self.mapVC.mapView.overlays)
                 self.mapVC.mapView.removeAnnotations(self.mapVC.mapView.annotations)
+                self.viewModel.getAllBlocks(self.mapVC.mapView.region.center.latitude,
+                                            self.mapVC.mapView.region.center.longitude,
+                                            self.mapVC.mapView.region.span.latitudeDelta)
             })
             .disposed(by: bag)
     }
