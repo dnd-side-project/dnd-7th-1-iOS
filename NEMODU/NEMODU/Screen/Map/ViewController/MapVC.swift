@@ -338,7 +338,7 @@ extension MapVC {
     /// 영역 배열, 소유자, 색상을 받아 소유자의 영역 Set에 추가하고 overlay를 추가하는 메서드로 영역 전체를 그린다.
     /// 중복을 확인하고 탐색 횟수를 줄이기 위해 Matrix를 저장하는 영역 집합(Set)에서 contains 여부를 확인하고 새로 추가된 데이터만 overlay에 추가한다.
     /// 이미 추가된 overlay는 지워지지 않고 새로 받아오는 영역 값만 overlay에 추가된다.
-    func drawBlockArea(blocks: [Matrix], owner: BlocksType, blockColor: UIColor) {
+    func drawBlockArea(matrices: [Matrix], owner: BlocksType, blockColor: UIColor) {
         let newBlocks = owner == .mine
         ? appendMatrix(&myMatrices)
         : appendMatrix(&friendsMatrices)
@@ -352,16 +352,16 @@ extension MapVC {
         /// 중복 영역인지 확인하고 아니라면 사용자 영역에 추가한다.
         /// 추가할 영역(Block)을 return 한다.
         func appendMatrix(_ userMatrices: inout Set<Matrix>) -> [Block] {
-            var newBlocks = [Block]()
-            blocks.forEach {
+            var blocks = [Block]()
+            matrices.forEach {
                 if !userMatrices.contains($0) {
                     userMatrices.insert($0)
-                    newBlocks.append(makeBlocks(matrix: $0,
+                    blocks.append(makeBlocks(matrix: $0,
                                                 owner: owner,
                                                 color: blockColor))
                 }
             }
-            return newBlocks
+            return blocks
         }
     }
     

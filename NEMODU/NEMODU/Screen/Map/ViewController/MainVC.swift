@@ -284,7 +284,7 @@ extension MainVC {
                                            profileImageURL: profileImageURL)
                 
                 // Area
-                self.mapVC.drawBlockArea(blocks: user.matrices ?? [],
+                self.mapVC.drawBlockArea(matrices: user.matrices ?? [],
                                          owner: .mine,
                                          blockColor: .main40)
                 
@@ -312,7 +312,7 @@ extension MainVC {
                                                    isEnabled: true)
                     
                     // Area
-                    self.mapVC.drawBlockArea(blocks: $0.matrices ?? [],
+                    self.mapVC.drawBlockArea(matrices: $0.matrices ?? [],
                                              owner: .friends,
                                              blockColor: .gray25)
                 }
@@ -338,7 +338,7 @@ extension MainVC {
                                                    isEnabled: true)
                     
                     // Area
-                    self.mapVC.drawBlockArea(blocks: $0.matrices,
+                    self.mapVC.drawBlockArea(matrices: $0.matrices,
                                              owner: .friends,
                                              blockColor: ChallengeColorType(rawValue: $0.challengeColor)?.blockColor ?? .gray25)
                 }

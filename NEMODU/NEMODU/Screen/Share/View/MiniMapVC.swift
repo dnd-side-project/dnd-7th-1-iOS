@@ -82,7 +82,7 @@ extension MiniMapVC {
                        longitudeValue: sortedLongitude[blocks.count/2].longitude,
                        delta: span)
         
-        drawBlockArea(blocks: blocks,
+        drawBlockArea(matrices: blocks,
                       owner: .mine,
                       blockColor: .main40)
     }
