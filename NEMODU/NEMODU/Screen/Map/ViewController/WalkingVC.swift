@@ -229,7 +229,7 @@ extension WalkingVC {
                     recordResultNC.recordResultVC.configureRecordValue(
                         recordData: RecordDataRequest(distance: self.mapVC.updateDistance.value,
                                                       exerciseTime: self.secondTimeValue,
-                                                      blocks: self.mapVC.blocks,
+                                                      matrices: self.mapVC.blocks,
                                                       stepCount: self.mapVC.stepCnt,
                                                       started: startTime.toString(separator: .withTime),
                                                       ended: Date.now.toString(separator: .withTime)),

@@ -11,7 +11,7 @@ import Alamofire
 struct RecordDataRequest {
     var distance: Int
     var exerciseTime: Int
-    var blocks: [Matrix]
+    var matrices: [Matrix]
     var stepCount: Int
     var message: String?
     let started: String
@@ -25,7 +25,7 @@ extension RecordDataRequest {
             "nickname": nickname,
             "distance": distance,
             "exerciseTime": exerciseTime,
-            "matrices": changeMatriesToBlocks(matrices: blocks),
+            "matrices": getJSONSerialization(from: matrices),
             "stepCount": stepCount,
             "message": message ?? "",
             "started": started,
@@ -33,12 +33,14 @@ extension RecordDataRequest {
         ]
     }
     
-    /// [Matrix]형 모델을 [[Double]]형 blocks로 변환해주는 함수
-    func changeMatriesToBlocks(matrices: [Matrix]) -> [[Double]] {
-        var blocks: [[Double]] = []
+    func getJSONSerialization(from matrices: [Matrix]) -> [[String: Double]] {
+        var data = [[String: Double]]()
         matrices.forEach {
-            blocks.append([$0.latitude, $0.longitude])
+            data.append( [
+                "latitude": $0.latitude,
+                "longitude": $0.longitude
+            ] )
         }
-        return blocks
+        return data
     }
 }

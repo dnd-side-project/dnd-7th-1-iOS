@@ -133,9 +133,9 @@ extension RecordResultVC {
     
     func configureRecordValue(recordData: RecordDataRequest, weekBlockCnt: Int) {
         self.recordData = recordData
-        miniMap.blocks = recordData.blocks
-        blocksCntView.recordValue.text = "\(recordData.blocks.count.insertComma)"
-        blocksCntView.recordSubtitle.text = "이번주 영역 : \((weekBlockCnt + recordData.blocks.count).insertComma)칸"
+        miniMap.blocks = recordData.matrices
+        blocksCntView.recordValue.text = "\(recordData.matrices.count.insertComma)"
+        blocksCntView.recordSubtitle.text = "이번주 영역 : \((weekBlockCnt + recordData.matrices.count).insertComma)칸"
         recordStackView.firstView.recordValue.text = "\(recordData.distance.toKilometer)"
         recordStackView.secondView.recordValue.text = "\(recordData.exerciseTime / 60):" + String(format: "%02d", recordData.exerciseTime % 60)
         recordStackView.thirdView.recordValue.text = "\(recordData.stepCount.insertComma)"
