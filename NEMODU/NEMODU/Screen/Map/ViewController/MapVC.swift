@@ -239,14 +239,16 @@ extension MapVC {
         
     }
     
-    /// 친구 핀을 설치하는 메서드
+    /// 친구 핀을 설치하는 메서드.
+    /// isEnabled: 마커 선택 가능성
+    /// isBorderOn: 테두리 존재 여부
     func addFriendAnnotation(coordinate: [Double],
                              profileImageURL: URL,
-                             nickname: String = "",
+                             nickname: String,
                              color: UIColor,
                              challengeCnt: Int = 0,
-                             isEnabled: Bool = false) {
-        
+                             isEnabled: Bool = false,
+                             isBorderOn: Bool = false) {
         KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: profileImageURL)) { result in
             var profileImage = UIImage.defaultThumbnail
             
@@ -264,6 +266,7 @@ extension MapVC {
             annotation.color = color
             annotation.challengeCnt = challengeCnt
             annotation.isEnabled = isEnabled
+            annotation.isBorderOn = isBorderOn
             self.mapView.addAnnotation(annotation)
         }
     }
