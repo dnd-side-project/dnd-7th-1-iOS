@@ -22,7 +22,7 @@ class ChallengeDetailMapVC: BaseViewController {
             $0.naviType = .push
         }
     
-    private let mapVC = ChallengeDetailMiniMapVC()
+    private let mapVC = MiniMapVC()
     
     private let userRankingListStackView = UIStackView()
         .then {
@@ -74,9 +74,9 @@ class ChallengeDetailMapVC: BaseViewController {
     // MARK: - Functions
     
     /// 상세보기 이전, 미니맵 화면에서 나의 블록 영역을 받아오는 메서드
-    func getBlocks(blocks: [[Double]]) {
-        mapVC.blocks = blocks
-    }
+//    func getBlocks(blocks: [[Double]]) {
+//        mapVC.blocks = blocks
+//    }
     
     private func drawUsersBlocks() {
         mapVC.isUserInteractionEnabled(true)
@@ -100,8 +100,8 @@ class ChallengeDetailMapVC: BaseViewController {
                 let blockColor = ChallengeColorType(rawValue: $0.color)?.blockColor // TODO: - 사용자 블록색깔 오류 작업
             else { return print("matrixList Data error") }
             
-            mapVC.addFriendColoredAnnotation(coordinate: [targetLatitude, targetLongitude], profileImageURL: profileImageURL, color: blockColor)
-            mapVC.drawBlockArea(blocks: $0.matrices, owner: .friends, blockColor: blockColor)
+//            mapVC.addFriendColoredAnnotation(coordinate: [targetLatitude, targetLongitude], profileImageURL: profileImageURL, color: blockColor)
+//            mapVC.drawBlockArea(blocks: $0.matrices, owner: .friends, blockColor: blockColor)
             
             availableMatrixCnt += 1.0
             

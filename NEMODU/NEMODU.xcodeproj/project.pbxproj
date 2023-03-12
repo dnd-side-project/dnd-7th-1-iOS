@@ -229,7 +229,6 @@
 		3CC1EC7328D06811007C87F6 /* CreateWidenChallengeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CC1EC7228D06811007C87F6 /* CreateWidenChallengeVC.swift */; };
 		3CC1EC7528D06917007C87F6 /* CreateAccumulateChallengeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CC1EC7428D06917007C87F6 /* CreateAccumulateChallengeVC.swift */; };
 		3CDEBB4328B4C86900C91A7F /* AccumulateRankingListResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDEBB4228B4C86900C91A7F /* AccumulateRankingListResponseModel.swift */; };
-		3CE49739298A4E5E00507D8F /* ChallengeDetailMiniMapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE49738298A4E5E00507D8F /* ChallengeDetailMiniMapVC.swift */; };
 		3CEC2FA3298EBA9B0057D813 /* FriendColoredAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CEC2FA2298EBA9B0057D813 /* FriendColoredAnnotation.swift */; };
 		3CEC2FA5298EBAE60057D813 /* FriendColoredAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CEC2FA4298EBAE60057D813 /* FriendColoredAnnotationView.swift */; };
 		3CF1C29C293D962100F7C189 /* ChallengeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF1C29B293D962100F7C189 /* ChallengeType.swift */; };
@@ -475,7 +474,6 @@
 		3CC1EC7228D06811007C87F6 /* CreateWidenChallengeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWidenChallengeVC.swift; sourceTree = "<group>"; };
 		3CC1EC7428D06917007C87F6 /* CreateAccumulateChallengeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccumulateChallengeVC.swift; sourceTree = "<group>"; };
 		3CDEBB4228B4C86900C91A7F /* AccumulateRankingListResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccumulateRankingListResponseModel.swift; sourceTree = "<group>"; };
-		3CE49738298A4E5E00507D8F /* ChallengeDetailMiniMapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeDetailMiniMapVC.swift; sourceTree = "<group>"; };
 		3CEC2FA2298EBA9B0057D813 /* FriendColoredAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendColoredAnnotation.swift; sourceTree = "<group>"; };
 		3CEC2FA4298EBAE60057D813 /* FriendColoredAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendColoredAnnotationView.swift; sourceTree = "<group>"; };
 		3CF1C29B293D962100F7C189 /* ChallengeType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeType.swift; sourceTree = "<group>"; };
@@ -1141,7 +1139,6 @@
 				3C304367292F676700FAD69A /* ChallengeDetailVC.swift */,
 				3C064BC1290FCA1400522274 /* InvitedChallengeDetailVC.swift */,
 				3C304369292F7DA000FAD69A /* ChallengeHistoryDetailVC.swift */,
-				3CE49738298A4E5E00507D8F /* ChallengeDetailMiniMapVC.swift */,
 				3C7ECBAC298A7A7700C964F0 /* ChallengeDetailMapVC.swift */,
 			);
 			path = ChallengeDetail;
@@ -1546,7 +1543,6 @@
 				237573EF28FA773F006026ED /* EditProfileVC.swift in Sources */,
 				3CF431BA28FE7AE9007EB115 /* AreaRankingListVC.swift in Sources */,
 				2348B3BF2892C675001095BC /* AppDelegate.swift in Sources */,
-				3CE49739298A4E5E00507D8F /* ChallengeDetailMiniMapVC.swift in Sources */,
 				3C72D7C428B51BB6006E2229 /* SelectChallengeCreateVC.swift in Sources */,
 				23ECC09F28D859E000F65692 /* AuthAPI.swift in Sources */,
 				23B7205D28A0CBAC00D3A410 /* ChallengeListBottomSheet.swift in Sources */,

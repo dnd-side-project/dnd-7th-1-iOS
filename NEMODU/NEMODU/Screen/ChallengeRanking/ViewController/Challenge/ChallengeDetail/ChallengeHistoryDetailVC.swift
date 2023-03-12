@@ -200,8 +200,6 @@ extension ChallengeHistoryDetailVC {
         startLabel.text = "\(startDate[1]).\(startDate[2]) 부터"
         endLabel.text = "\(endDate[1]).\(endDate[2]) 까지"
         
-        configureChallengeDetailMiniMap(matrices: challengeHistoryDetailInfo.matrices)
-        
         updateChallengeTableViewHeight(rankingsCnt: challengeHistoryDetailInfo.rankings.count)
         
         _ = myRecordStackView
@@ -286,15 +284,6 @@ extension ChallengeHistoryDetailVC {
         let updateTime = dateFormatter.string(from: .now).split(separator: ":")
         updateStatusLabel.text = "\(updateTime[0]):\(updateTime[1]) 기준"
     }
-    
-//    private func configureChallengeDetailMiniMap(matrices: [Matrix]) {
-////        _ = challengeDetailMiniMap.then {
-////            $0.challengeTitle = challengeHistoryDetailResponseModel?.name
-////            $0.uuid = challengeHistoryDetailResponseModel?.uuid
-////            $0.blocks = challengeDetailMiniMap.changeMatriesToBlocks(matrices: matrices)
-////        }
-////        challengeDetailMiniMap.drawChallengeDetailMiniMap()
-//    }
     
     private func configureMyRecordStackView(distance: Int, time: Int, steps: Int) {
         _ = myRecordStackView
@@ -566,6 +555,20 @@ extension ChallengeHistoryDetailVC {
                 self.configureUpdateStatusLabel()
             })
             .disposed(by: bag)
+        
+        challengeDetailMiniMap.magnificationBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                
+                let challengeDetailMapVC = ChallengeDetailMapVC()
+            // TODO: - 제목, uuid
+//                challengeDetailMapVC.viewModel.getChallengeDetailMap(uuid: self.uuid ?? "")
+//                challengeDetailMapVC.challengeTitle = self.challengeTitle
+                
+                self.navigationController?.pushViewController(challengeDetailMapVC, animated: true)
+            })
+            .disposed(by: bag)
     }
 }
 
@@ -582,7 +585,7 @@ extension ChallengeHistoryDetailVC {
                 
                 self.configureChallengeHistoryDetailVC(challengeHistoryDetailInfo: data)
                 
-                self.challengeDetailMiniMap.drawMiniMap(data.matrices)
+                self.challengeDetailMiniMap.drawMyMapAtOnce(matrices: data.matrices)
             })
             .disposed(by: bag)
     }

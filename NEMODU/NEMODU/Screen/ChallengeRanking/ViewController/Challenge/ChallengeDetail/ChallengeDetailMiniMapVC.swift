@@ -73,29 +73,29 @@ extension ChallengeDetailMiniMapVC {
     }
     
     /// 나의 영역을 기준으로 지도가 한 눈에 보이게 미니맵을 그리는 함수
-    func drawChallengeDetailMiniMap() {
-        let sortedLatitude = blocks.sorted(by: { $0[0] < $1[0] })
-        let sortedLongitude = blocks.sorted(by: { $0[1] < $1[1] })
-        
-        // 영역이 없는 경우 그냥 return & 그냥 현재 위치의 기본 지도가 뜸
-        guard let lastLatitude = sortedLatitude.last,
-              let firstLatitude = sortedLatitude.first,
-              let lastLongitude = sortedLongitude.last,
-              let firstLongitude = sortedLongitude.first else { return }
-        
-        let spanX = Int((lastLatitude[0] - firstLatitude[0]) / latitudeBlockSizePoint)
-        let spanY = Int((lastLongitude[1] - firstLongitude[1]) / longitudeBlockSizePoint)
-        var span = Double(spanX > spanY ? spanX : spanY)
-        span = (span + 3) * longitudeBlockSizePoint
-        
-        _ = goLocation(latitudeValue: sortedLatitude[blocks.count/2][0],
-                       longitudeValue: sortedLongitude[blocks.count/2][1],
-                       delta: span)
-        
-        drawBlockArea(blocks: blocks,
-                      owner: .mine,
-                      blockColor: .main40)
-    }
+//    func drawChallengeDetailMiniMap() {
+//        let sortedLatitude = blocks.sorted(by: { $0[0] < $1[0] })
+//        let sortedLongitude = blocks.sorted(by: { $0[1] < $1[1] })
+//        
+//        // 영역이 없는 경우 그냥 return & 그냥 현재 위치의 기본 지도가 뜸
+//        guard let lastLatitude = sortedLatitude.last,
+//              let firstLatitude = sortedLatitude.first,
+//              let lastLongitude = sortedLongitude.last,
+//              let firstLongitude = sortedLongitude.first else { return }
+//        
+//        let spanX = Int((lastLatitude[0] - firstLatitude[0]) / latitudeBlockSizePoint)
+//        let spanY = Int((lastLongitude[1] - firstLongitude[1]) / longitudeBlockSizePoint)
+//        var span = Double(spanX > spanY ? spanX : spanY)
+//        span = (span + 3) * longitudeBlockSizePoint
+//        
+//        _ = goLocation(latitudeValue: sortedLatitude[blocks.count/2][0],
+//                       longitudeValue: sortedLongitude[blocks.count/2][1],
+//                       delta: span)
+//        
+//        drawBlockArea(blocks: blocks,
+//                      owner: .mine,
+//                      blockColor: .main40)
+//    }
     
     /// miniMap의 확대 버튼을 숨기는 메서드
     func hideMagnificationBtn() {
