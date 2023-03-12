@@ -96,8 +96,8 @@ class MyRecordDataVC: BaseViewController {
         super.viewWillAppear(animated)
         viewModel.getMyRecordDataList(
             with: MyRecordListRequestModel(
-                start: viewModel.startDateFormatter(viewModel.input.selectedDay.value),
-                end: viewModel.endDateFormatter(viewModel.input.selectedDay.value)))
+                started: viewModel.startDateFormatter(viewModel.input.selectedDay.value),
+                ended: viewModel.endDateFormatter(viewModel.input.selectedDay.value)))
         
         viewModel.getEventDays(viewModel.input.selectedDay.value)
     }
@@ -337,8 +337,8 @@ extension MyRecordDataVC {
                 
                 // 일자별 tableView 연결
                 self.viewModel.getMyRecordDataList(
-                    with: MyRecordListRequestModel(start: self.viewModel.startDateFormatter(day),
-                                                   end: self.viewModel.endDateFormatter(day)))
+                    with: MyRecordListRequestModel(started: self.viewModel.startDateFormatter(day),
+                                                   ended: self.viewModel.endDateFormatter(day)))
                 self.recordTableView.reloadData()
             })
             .disposed(by: bag)

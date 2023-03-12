@@ -9,17 +9,17 @@ import Foundation
 import Alamofire
 
 struct MyRecordListRequestModel {
-    var start: String
-    var end: String
+    var started: String
+    var ended: String
 }
 
 extension MyRecordListRequestModel {
     var recordParam: Parameters {
         guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
         return [
-            "end": end,
             "nickname": nickname,
-            "start": start
+            "started": started,
+            "ended": ended
         ]
     }
 }
