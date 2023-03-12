@@ -94,12 +94,9 @@ class MyRecordDataVC: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.getMyRecordDataList(
-            with: MyRecordListRequestModel(
-                started: viewModel.startDateFormatter(viewModel.input.selectedDay.value),
-                ended: viewModel.endDateFormatter(viewModel.input.selectedDay.value)))
-        
         viewModel.getEventDays(viewModel.input.selectedDay.value)
+        viewModel.getMyRecordDataList(started: viewModel.startDateFormatter(viewModel.input.selectedDay.value),
+                                      ended: viewModel.endDateFormatter(viewModel.input.selectedDay.value))
     }
     
     override func viewDidLayoutSubviews() {
@@ -336,9 +333,8 @@ extension MyRecordDataVC {
                 self.calendarSelectStackView.setSelectDay(dayIndex: day.getWeekDay())
                 
                 // 일자별 tableView 연결
-                self.viewModel.getMyRecordDataList(
-                    with: MyRecordListRequestModel(started: self.viewModel.startDateFormatter(day),
-                                                   ended: self.viewModel.endDateFormatter(day)))
+                self.viewModel.getMyRecordDataList(started: self.viewModel.startDateFormatter(day),
+                                                   ended: self.viewModel.endDateFormatter(day))
                 self.recordTableView.reloadData()
             })
             .disposed(by: bag)

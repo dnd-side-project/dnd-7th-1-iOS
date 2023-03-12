@@ -187,11 +187,12 @@ extension MyRecordDataVM {
             .disposed(by: bag)
     }
     
-    func getMyRecordDataList(with param: MyRecordListRequestModel) {
-        let path = "user/info/activity"
+    func getMyRecordDataList(started: String, ended: String) {
+        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { return }
+        let path = "user/info/activity?nickname=\(nickname)&started=\(started)&ended=\(ended)"
         let resource = urlResource<MyRecordListResponseModel>(path: path)
         
-        apiSession.postRequest(with: resource, param: param.recordParam)
+        apiSession.getRequest(with: resource)
             .withUnretained(self)
             .subscribe(onNext: { owner, result in
                 switch result {
