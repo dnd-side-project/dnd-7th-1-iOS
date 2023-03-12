@@ -133,6 +133,7 @@ class MyRecordDetailVC: BaseViewController {
     private let viewModel = MyRecordDetailVM()
     private let bag = DisposeBag()
     var recordID: Int?
+    var matrices: [Matrix]?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -213,13 +214,13 @@ extension MyRecordDetailVC {
         recordDate.text = recordData.date
         recordTime.text = recordData.started + "-" + recordData.ended
         blocksCntView.recordValue.text = "\(recordData.matrixNumber)"
-        miniMap.blocks = miniMap.changeMatriesToBlocks(matrices: recordData.matrices)
-        miniMap.drawMiniMap()
+        miniMap.drawMyMapAtOnce(matrices: recordData.matrices)
         recordStackView.firstView.recordValue.text = "\(recordData.distance.toKilometer)"
         recordStackView.secondView.recordValue.text = recordData.exerciseTime
         recordStackView.thirdView.recordValue.text = "\(recordData.stepCount)".insertComma
         memoTextView.isHidden = recordData.message == ""
         memoTextView.tv.text = recordData.message
+        matrices = recordData.matrices
     }
 }
 
@@ -352,6 +353,17 @@ extension MyRecordDetailVC {
                 editRecordMomoVC.getRecordData(recordId: recordId,
                                                memo: self.memoTextView.tv.text)
                 self.navigationController?.pushViewController(editRecordMomoVC, animated: true)
+            })
+            .disposed(by: bag)
+    
+        miniMap.magnificationBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self,
+                      let matrices = self.matrices else { return }
+                let detailMapVC = MyDetailMapVC()
+                detailMapVC.matrices = matrices
+                self.navigationController?.pushViewController(detailMapVC, animated: true)
             })
             .disposed(by: bag)
     }
