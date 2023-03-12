@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		2304FB9828F27DFE00DD3A50 /* EventListResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2304FB9728F27DFE00DD3A50 /* EventListResponseModel.swift */; };
-		2304FB9A28F27EC200DD3A50 /* EventListRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2304FB9928F27EC200DD3A50 /* EventListRequestModel.swift */; };
 		2304FB9C28F2C27A00DD3A50 /* AppleSDGothicNeoB.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2304FB9B28F2C27A00DD3A50 /* AppleSDGothicNeoB.ttf */; };
 		2304FB9F28F2DC3300DD3A50 /* LoginBtn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2304FB9E28F2DC3300DD3A50 /* LoginBtn.swift */; };
 		23062A9828B7F6B00064C978 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23062A9728B7F6B00064C978 /* Date+.swift */; };
@@ -243,7 +242,6 @@
 		084396F5A23B94FBA7C80652 /* Pods-NEMODU.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEMODU.debug.xcconfig"; path = "Target Support Files/Pods-NEMODU/Pods-NEMODU.debug.xcconfig"; sourceTree = "<group>"; };
 		1EBADEEBC1D77F44700E20E8 /* Pods-NEMODU.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEMODU.release.xcconfig"; path = "Target Support Files/Pods-NEMODU/Pods-NEMODU.release.xcconfig"; sourceTree = "<group>"; };
 		2304FB9728F27DFE00DD3A50 /* EventListResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventListResponseModel.swift; sourceTree = "<group>"; };
-		2304FB9928F27EC200DD3A50 /* EventListRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventListRequestModel.swift; sourceTree = "<group>"; };
 		2304FB9B28F2C27A00DD3A50 /* AppleSDGothicNeoB.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AppleSDGothicNeoB.ttf; sourceTree = "<group>"; };
 		2304FB9E28F2DC3300DD3A50 /* LoginBtn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginBtn.swift; sourceTree = "<group>"; };
 		23062A9728B7F6B00064C978 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
@@ -1001,7 +999,6 @@
 			isa = PBXGroup;
 			children = (
 				23D8B7DD28B397DF00F48165 /* MyRecordListRequestModel.swift */,
-				2304FB9928F27EC200DD3A50 /* EventListRequestModel.swift */,
 				237573D228F56A7B006026ED /* EditMemoRequestModel.swift */,
 				237573F228FAF2A1006026ED /* EditProfileRequestModel.swift */,
 			);
@@ -1595,7 +1592,6 @@
 				23412FD828AE245D00B73D62 /* Block.swift in Sources */,
 				237573D728F57824006026ED /* ArrowBtn.swift in Sources */,
 				237573F328FAF2A1006026ED /* EditProfileRequestModel.swift in Sources */,
-				2304FB9A28F27EC200DD3A50 /* EventListRequestModel.swift in Sources */,
 				238C4DE328A3F0D6000BEE36 /* NemoduTextView.swift in Sources */,
 				2354239128BBA54000865E51 /* UserDefaults+.swift in Sources */,
 				23F5717E28AA1A11005F2E21 /* FriendAnnotationView.swift in Sources */,
