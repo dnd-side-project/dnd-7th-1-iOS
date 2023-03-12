@@ -104,7 +104,7 @@ class ChallengeHistoryDetailVC: ChallengeDetailVC {
             $0.setImage(UIImage(named: "update"), for: .normal)
         }
     
-    private var challengeDetailMiniMap = ChallengeDetailMiniMapVC()
+    private var challengeDetailMiniMap = MiniMapVC()
     
     private let myRecordStatusContainerView = UIView()
     private let myRecordTitleLabel = PaddingLabel()
@@ -287,14 +287,14 @@ extension ChallengeHistoryDetailVC {
         updateStatusLabel.text = "\(updateTime[0]):\(updateTime[1]) 기준"
     }
     
-    private func configureChallengeDetailMiniMap(matrices: [Matrix]) {
-        _ = challengeDetailMiniMap.then {
-            $0.challengeTitle = challengeHistoryDetailResponseModel?.name
-            $0.uuid = challengeHistoryDetailResponseModel?.uuid
-            $0.blocks = challengeDetailMiniMap.changeMatriesToBlocks(matrices: matrices)
-        }
-        challengeDetailMiniMap.drawChallengeDetailMiniMap()
-    }
+//    private func configureChallengeDetailMiniMap(matrices: [Matrix]) {
+////        _ = challengeDetailMiniMap.then {
+////            $0.challengeTitle = challengeHistoryDetailResponseModel?.name
+////            $0.uuid = challengeHistoryDetailResponseModel?.uuid
+////            $0.blocks = challengeDetailMiniMap.changeMatriesToBlocks(matrices: matrices)
+////        }
+////        challengeDetailMiniMap.drawChallengeDetailMiniMap()
+//    }
     
     private func configureMyRecordStackView(distance: Int, time: Int, steps: Int) {
         _ = myRecordStackView
@@ -581,6 +581,8 @@ extension ChallengeHistoryDetailVC {
                 self.challengeDetailTableView.reloadData()
                 
                 self.configureChallengeHistoryDetailVC(challengeHistoryDetailInfo: data)
+                
+                self.challengeDetailMiniMap.drawMiniMap(data.matrices)
             })
             .disposed(by: bag)
     }
