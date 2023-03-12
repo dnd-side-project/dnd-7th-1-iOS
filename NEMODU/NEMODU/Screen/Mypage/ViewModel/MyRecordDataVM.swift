@@ -97,7 +97,7 @@ extension MyRecordDataVM {
     }
     
     func getEventDays(_ yearMonth: Date) {
-        getEventList(with: EventListRequestModel(yearMonth: yearMonth.toString(separator: .hyphen)))
+        getEventList(yearMonth: yearMonth.toString(separator: .hyphen))
     }
     
     func firstDayOfMonth() -> Date? {
@@ -167,11 +167,12 @@ extension MyRecordDataVM: Output {
 // MARK: - Networking
 
 extension MyRecordDataVM {
-    func getEventList(with param: EventListRequestModel) {
-        let path = "user/event-list"
+    func getEventList(yearMonth: String) {
+        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { return }
+        let path = "user/event-list?nickname=\(nickname)&yearMonth=\(yearMonth)"
         let resource = urlResource<EventListResponseModel>(path: path)
         
-        apiSession.postRequest(with: resource, param: param.eventParam)
+        apiSession.getRequest(with: resource)
             .withUnretained(self)
             .subscribe(onNext: { owner, result in
                 switch result {
@@ -186,11 +187,12 @@ extension MyRecordDataVM {
             .disposed(by: bag)
     }
     
-    func getMyRecordDataList(with param: MyRecordListRequestModel) {
-        let path = "user/info/activity"
+    func getMyRecordDataList(started: String, ended: String) {
+        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { return }
+        let path = "user/info/activity?nickname=\(nickname)&started=\(started)&ended=\(ended)"
         let resource = urlResource<MyRecordListResponseModel>(path: path)
         
-        apiSession.postRequest(with: resource, param: param.recordParam)
+        apiSession.getRequest(with: resource)
             .withUnretained(self)
             .subscribe(onNext: { owner, result in
                 switch result {
