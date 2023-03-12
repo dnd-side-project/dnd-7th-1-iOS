@@ -76,9 +76,14 @@ class MapVC: BaseViewController {
     
     var isFocusOn = true
     var isWalking: Bool?
-    var blocks: [[Double]] = []
-    var blocksCnt = BehaviorRelay<Int>(value: 0)
     var updateDistance = BehaviorRelay<Int>(value: 0)
+    
+    var userOverlay = [Block]()
+    var friendsOverlay = [Block]()
+    var myMatrices = Set<Matrix>()
+    var friendsMatrices = Set<Matrix>()
+    var blocks: [Matrix] = []
+    var blocksCnt = BehaviorRelay<Int>(value: 0)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -209,6 +214,69 @@ extension MapVC {}
 // MARK: - Custom Methods
 
 extension MapVC {
+    /// 위도, 경도, 스팬(영역 폭)을 입력받아 지도에 표시
+    func goLocation(latitudeValue: CLLocationDegrees,
+                    longitudeValue: CLLocationDegrees,
+                    delta span: Double) -> CLLocationCoordinate2D {
+        let pLocation = CLLocationCoordinate2DMake(latitudeValue, longitudeValue)
+        let spanValue = MKCoordinateSpan(latitudeDelta: span, longitudeDelta: span)
+        let pRegion = MKCoordinateRegion(center: pLocation, span: spanValue)
+        mapView.setRegion(pRegion, animated: true)
+        return pLocation
+    }
+    
+    /// 내 핀을 설치하는 메서드
+    func addMyAnnotation(coordinate: [Double], profileImageURL: URL) {
+        KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: profileImageURL)) { result in
+            var profileImage = UIImage.defaultThumbnail
+            
+            switch result {
+            case .success(let data):
+                profileImage = data.image
+            case .failure(let error):
+                print(error)
+            }
+            
+            let annotation = MyAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate[0] + self.latitudeBlockSizePoint / 2,
+                                                                             longitude: coordinate[1] - self.longitudeBlockSizePoint / 2))
+            annotation.profileImage = profileImage
+            self.mapView.addAnnotation(annotation)
+        }
+        
+    }
+    
+    /// 친구 핀을 설치하는 메서드.
+    /// isEnabled: 마커 선택 가능성
+    /// isBorderOn: 테두리 존재 여부
+    func addFriendAnnotation(coordinate: [Double],
+                             profileImageURL: URL,
+                             nickname: String,
+                             color: UIColor,
+                             challengeCnt: Int = 0,
+                             isEnabled: Bool = false,
+                             isBorderOn: Bool = false) {
+        KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: profileImageURL)) { result in
+            var profileImage = UIImage.defaultThumbnail
+            
+            switch result {
+            case .success(let data):
+                profileImage = data.image
+            case .failure(let error):
+                print(error)
+            }
+         
+            let annotation = FriendAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate[0] + self.latitudeBlockSizePoint / 2,
+                                                                                 longitude: coordinate[1] - self.longitudeBlockSizePoint / 2))
+            annotation.title = nickname
+            annotation.profileImage = profileImage
+            annotation.color = color
+            annotation.challengeCnt = challengeCnt
+            annotation.isEnabled = isEnabled
+            annotation.isBorderOn = isBorderOn
+            self.mapView.addAnnotation(annotation)
+        }
+    }
+    
     /// 사용자 activity를 추적하여 운동 상태와 걸음 수를 측정하는 함수
     func updateStep() {
         // TODO: - 자동차 or 자전거 사용 시 알람 정책 정한 후 수정
@@ -249,65 +317,68 @@ extension MapVC {
         pauseCnt = stepCnt
     }
     
-    /// 기준 처리된 좌표를 입력받고 해당 위치에 블록을 그리는 함수
-    func drawBlock(latitude: Double, longitude: Double, owner: BlocksType, color: UIColor) {
-        let overlayTopLeftCoordinate = CLLocationCoordinate2D(latitude: latitude,
-                                                              longitude: longitude - longitudeBlockSizePoint)
-        let overlayTopRightCoordinate = CLLocationCoordinate2D(latitude: latitude,
-                                                               longitude: longitude)
-        let overlayBottomLeftCoordinate = CLLocationCoordinate2D(latitude: latitude + latitudeBlockSizePoint,
-                                                                 longitude: longitude - longitudeBlockSizePoint)
-        let overlayBottomRightCoordinate = CLLocationCoordinate2D(latitude: latitude + latitudeBlockSizePoint,
-                                                                  longitude: longitude)
+    /// 좌표, 소유자, 색상을 입력받아 네 개의 꼭짓점을 만들어 Block 폴리곤을 반환하는 메서드
+    func makeBlocks(matrix: Matrix, owner: BlocksType, color: UIColor) -> Block {
+        let overlayTopLeftCoordinate = CLLocationCoordinate2D(latitude: matrix.latitude,
+                                                              longitude: matrix.longitude - longitudeBlockSizePoint)
+        let overlayTopRightCoordinate = CLLocationCoordinate2D(latitude: matrix.latitude,
+                                                               longitude: matrix.longitude)
+        let overlayBottomLeftCoordinate = CLLocationCoordinate2D(latitude: matrix.latitude + latitudeBlockSizePoint,
+                                                                 longitude: matrix.longitude - longitudeBlockSizePoint)
+        let overlayBottomRightCoordinate = CLLocationCoordinate2D(latitude: matrix.latitude + latitudeBlockSizePoint,
+                                                                  longitude: matrix.longitude)
         
-        let blockDraw = Block(coordinate: [overlayTopLeftCoordinate,
-                                           overlayTopRightCoordinate,
-                                           overlayBottomRightCoordinate,
-                                           overlayBottomLeftCoordinate],
-                              count: 4,
-                              owner: owner,
-                              color: color)
+        return Block(coordinate: [overlayTopLeftCoordinate,
+                                  overlayTopRightCoordinate,
+                                  overlayBottomRightCoordinate,
+                                  overlayBottomLeftCoordinate],
+                     count: 4,
+                     owner: owner,
+                     color: color)
+    }
+    
+    /// 운동 기록 중 기준 처리된 좌표를 입력받고 해당 위치에 블록을 그리는 메서드로 영역 하나만 그린다.
+    func drawMyBlock(matrix: Matrix) {
+        mapView.addOverlay(makeBlocks(matrix: matrix,
+                                      owner: .mine,
+                                      color: .main80))
+    }
+    
+    /// 영역 배열, 소유자, 색상을 받아 소유자의 영역 Set에 추가하고 overlay를 추가하는 메서드로 영역 전체를 그린다.
+    /// 중복을 확인하고 탐색 횟수를 줄이기 위해 Matrix를 저장하는 영역 집합(Set)에서 contains 여부를 확인하고 새로 추가된 데이터만 overlay에 추가한다.
+    /// 이미 추가된 overlay는 지워지지 않고 새로 받아오는 영역 값만 overlay에 추가된다.
+    func drawBlockArea(matrices: [Matrix], owner: BlocksType, blockColor: UIColor) {
+        let newBlocks = owner == .mine
+        ? appendMatrix(&myMatrices)
+        : appendMatrix(&friendsMatrices)
         
-        mapView.addOverlay(blockDraw)
-    }
-    
-    /// [Matrix] 영역, 소유자, 색상을 받아 전체 영역을 그리는 메서드
-    func drawBlockArea(blocks: [Matrix], owner: BlocksType, blockColor: UIColor) {
-        blocks.forEach {
-            drawBlock(latitude: $0.latitude,
-                      longitude: $0.longitude,
-                      owner: owner,
-                      color: blockColor)
+        owner == .mine
+        ? (userOverlay += newBlocks)
+        : (friendsOverlay += newBlocks)
+        
+        mapView.addOverlays(newBlocks)
+        
+        /// 중복 영역인지 확인하고 아니라면 사용자 영역에 추가한다.
+        /// 추가할 영역(Block)을 return 한다.
+        func appendMatrix(_ userMatrices: inout Set<Matrix>) -> [Block] {
+            var blocks = [Block]()
+            matrices.forEach {
+                if !userMatrices.contains($0) {
+                    userMatrices.insert($0)
+                    blocks.append(makeBlocks(matrix: $0,
+                                                owner: owner,
+                                                color: blockColor))
+                }
+            }
+            return blocks
         }
-    }
-    
-    /// [[Double]] 영역, 소유자, 색상을 받아 전체 영역을 그리는 메서드
-    func drawBlockArea(blocks: [[Double]], owner: BlocksType, blockColor: UIColor) {
-        blocks.forEach {
-            drawBlock(latitude: $0[0],
-                      longitude: $0[1],
-                      owner: owner,
-                      color: blockColor)
-        }
-    }
-    
-    /// [Matrix]형 모델을 [[Double]]형 blocks로 변환해주는 함수
-    func changeMatriesToBlocks(matrices: [Matrix]) -> [[Double]] {
-        var blocks: [[Double]] = []
-        matrices.forEach {
-            blocks.append([$0.latitude, $0.longitude])
-        }
-        return blocks
     }
     
     /// 영역의 소유자를 입력받아 visible 상태를 지정하는 함수
     func setOverlayVisible(of owner: BlocksType, visible: Bool) {
-        mapView.overlays.forEach {
-            guard let overlay = $0 as? Block else { return }
-            if overlay.owner == owner {
-                mapView.renderer(for: overlay)?.alpha = visible ? 1 : 0
-            }
-        }
+        visible
+        ? mapView.addOverlays(owner == .mine ? userOverlay : friendsOverlay)
+        : mapView.removeOverlays(owner == .mine ? userOverlay : friendsOverlay)
     }
     
     /// 내 annotation의 visible 상태를 지정하는 함수
@@ -356,92 +427,6 @@ extension MapVC: CLLocationManagerDelegate {
         }
     }
     
-    /// 위도, 경도, 스팬(영역 폭)을 입력받아 지도에 표시
-    func goLocation(latitudeValue: CLLocationDegrees,
-                    longitudeValue: CLLocationDegrees,
-                    delta span: Double) -> CLLocationCoordinate2D {
-        let pLocation = CLLocationCoordinate2DMake(latitudeValue, longitudeValue)
-        let spanValue = MKCoordinateSpan(latitudeDelta: span, longitudeDelta: span)
-        let pRegion = MKCoordinateRegion(center: pLocation, span: spanValue)
-        mapView.setRegion(pRegion, animated: true)
-        return pLocation
-    }
-    
-    /// 내 핀을 설치하는 함수
-    func addMyAnnotation(coordinate: [Double], profileImageURL: URL) {
-        KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: profileImageURL)) { result in
-            var profileImage = UIImage.defaultThumbnail
-            
-            switch result {
-            case .success(let data):
-                profileImage = data.image
-            case .failure(let error):
-                print(error)
-            }
-            
-            let annotation = MyAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate[0] + self.latitudeBlockSizePoint / 2,
-                                                                             longitude: coordinate[1] - self.longitudeBlockSizePoint / 2))
-            annotation.profileImage = profileImage
-            self.mapView.addAnnotation(annotation)
-        }
-        
-    }
-    
-    /// 친구 핀을 설치하는 함수
-    func addFriendAnnotation(coordinate: [Double],
-                             profileImageURL: URL,
-                             nickname: String = "",
-                             color: UIColor,
-                             challengeCnt: Int = 0,
-                             isEnabled: Bool = false) {
-        
-        KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: profileImageURL)) { result in
-            var profileImage = UIImage.defaultThumbnail
-            
-            switch result {
-            case .success(let data):
-                profileImage = data.image
-            case .failure(let error):
-                print(error)
-            }
-         
-            let annotation = FriendAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate[0] + self.latitudeBlockSizePoint / 2,
-                                                                                 longitude: coordinate[1] - self.longitudeBlockSizePoint / 2))
-            annotation.title = nickname
-            annotation.profileImage = profileImage
-            annotation.color = color
-            annotation.challengeCnt = challengeCnt
-            annotation.isEnabled = isEnabled
-            self.mapView.addAnnotation(annotation)
-        }
-    }
-    
-    /// 색칠된 친구 핀을 설치하는 함수
-    func addFriendColoredAnnotation(coordinate: [Double],
-                             profileImageURL: URL,
-                             nickname: String = "",
-                             color: UIColor) {
-        
-        KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: profileImageURL)) { result in
-            var profileImage = UIImage.defaultThumbnail
-            
-            switch result {
-            case .success(let data):
-                profileImage = data.image
-            case .failure(let error):
-                print(error)
-            }
-         
-            let annotation = FriendColoredAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate[0] + self.latitudeBlockSizePoint / 2,
-                                                                                 longitude: coordinate[1] - self.longitudeBlockSizePoint / 2))
-            annotation.title = nickname
-            annotation.profileImage = profileImage
-            annotation.color = color
-            
-            self.mapView.addAnnotation(annotation)
-        }
-    }
-    
     /// 사용자 위치 이동 시 처리 함수
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
@@ -467,17 +452,13 @@ extension MapVC: CLLocationManagerDelegate {
             prevLongitude = longitudeUnit
             
             // 실제 저장되고 그려지는 기준 좌표값
-            let latitudePoint = Double((latitudeUnit) * latitudeBlockSize) / mul
-            let longitudePoint = Double((longitudeUnit) * longitudeBlockSize) / mul
-            
-            if !blocks.contains([latitudePoint, longitudePoint]) {
+            let point = Matrix(latitude: Double((latitudeUnit) * latitudeBlockSize) / mul,
+                               longitude: Double((longitudeUnit) * longitudeBlockSize) / mul)
+            if !blocks.contains(point) {
                 // block Point 저장
-                blocks.append([latitudePoint, longitudePoint])
+                blocks.append(point)
                 
-                drawBlock(latitude: latitudePoint,
-                          longitude: longitudePoint,
-                          owner: .mine,
-                          color: .main80)
+                drawMyBlock(matrix: point)
                 
                 blocksCnt.accept(blocks.count)
             }

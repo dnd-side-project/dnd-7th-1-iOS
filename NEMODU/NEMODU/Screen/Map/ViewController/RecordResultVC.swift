@@ -81,7 +81,6 @@ class RecordResultVC: BaseViewController {
         super.configureView()
         configureNaviBar()
         configureContentView()
-        miniMap.drawMiniMap()
     }
     
     override func layoutView() {
@@ -92,6 +91,7 @@ class RecordResultVC: BaseViewController {
     override func bindInput() {
         super.bindInput()
         bindSaveBtn()
+        bindMyDetailMap()
     }
     
     override func bindOutput() {
@@ -131,11 +131,12 @@ extension RecordResultVC {
                               memoTextView])
     }
     
+    /// 기록된 데이터를 통해 화면 구현. WalkingVC에서 호출
     func configureRecordValue(recordData: RecordDataRequest, weekBlockCnt: Int) {
         self.recordData = recordData
-        miniMap.blocks = recordData.blocks
-        blocksCntView.recordValue.text = "\(recordData.blocks.count.insertComma)"
-        blocksCntView.recordSubtitle.text = "이번주 영역 : \((weekBlockCnt + recordData.blocks.count).insertComma)칸"
+        miniMap.drawMyMapAtOnce(matrices: recordData.matrices)
+        blocksCntView.recordValue.text = "\(recordData.matrices.count.insertComma)"
+        blocksCntView.recordSubtitle.text = "이번주 영역 : \((weekBlockCnt + recordData.matrices.count).insertComma)칸"
         recordStackView.firstView.recordValue.text = "\(recordData.distance.toKilometer)"
         recordStackView.secondView.recordValue.text = "\(recordData.exerciseTime / 60):" + String(format: "%02d", recordData.exerciseTime % 60)
         recordStackView.thirdView.recordValue.text = "\(recordData.stepCount.insertComma)"
@@ -216,6 +217,19 @@ extension RecordResultVC {
                       var recordData = self.recordData else { return }
                 recordData.message = self.memoTextView.tv.text
                 self.viewModel.postRecordData(with: recordData)
+            })
+            .disposed(by: bag)
+    }
+    
+    private func bindMyDetailMap() {
+        miniMap.magnificationBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self,
+                      let recordData = self.recordData else { return }
+                let detailMapVC = MyDetailMapVC()
+                detailMapVC.matrices = recordData.matrices
+                self.navigationController?.pushViewController(detailMapVC, animated: true)
             })
             .disposed(by: bag)
     }

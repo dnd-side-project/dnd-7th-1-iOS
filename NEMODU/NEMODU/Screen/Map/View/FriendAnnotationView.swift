@@ -103,6 +103,7 @@ extension FriendAnnotationView {
             nickname.text = annotation.title
             color = annotation.color
             isEnabled = annotation.isEnabled ?? false
+            setSelected(annotation.isBorderOn ?? false, animated: false)
             
             challengeCntImageView.image
             = annotation.challengeCnt == 0
