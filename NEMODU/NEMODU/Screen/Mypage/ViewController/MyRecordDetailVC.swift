@@ -213,8 +213,7 @@ extension MyRecordDetailVC {
         recordDate.text = recordData.date
         recordTime.text = recordData.started + "-" + recordData.ended
         blocksCntView.recordValue.text = "\(recordData.matrixNumber)"
-        miniMap.blocks = recordData.matrices
-        miniMap.drawMiniMap()
+        miniMap.drawMyMapAtOnce(matrices: recordData.matrices)
         recordStackView.firstView.recordValue.text = "\(recordData.distance.toKilometer)"
         recordStackView.secondView.recordValue.text = recordData.exerciseTime
         recordStackView.thirdView.recordValue.text = "\(recordData.stepCount)".insertComma

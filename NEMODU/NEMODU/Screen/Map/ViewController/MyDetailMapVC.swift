@@ -72,11 +72,6 @@ extension MyDetailMapVC {
         mapVC.mapView.layer.cornerRadius = 0
         mapVC.isUserInteractionEnabled(true)
     }
-    
-    /// 상세보기 이전, 미니맵 화면에서 나의 블록 영역을 받아오는 메서드
-    func getBlocks(blocks: [Matrix]) {
-        mapVC.blocks = blocks
-    }
 }
 
 // MARK: - Layout
@@ -106,8 +101,7 @@ extension MyDetailMapVC {
                       let profileImageURL = URL(string: data.picturePath),
                       let lastBlock = self.mapVC.blocks.last else { return }
                 self.mapVC.addMyAnnotation(coordinate: [lastBlock.latitude, lastBlock.longitude],
-                                      profileImageURL: profileImageURL)
-                self.mapVC.drawMiniMap()
+                                           profileImageURL: profileImageURL)
             })
             .disposed(by: bag)
     }

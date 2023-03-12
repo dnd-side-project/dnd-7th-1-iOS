@@ -81,7 +81,6 @@ class RecordResultVC: BaseViewController {
         super.configureView()
         configureNaviBar()
         configureContentView()
-        miniMap.drawMiniMap()
     }
     
     override func layoutView() {
@@ -131,9 +130,10 @@ extension RecordResultVC {
                               memoTextView])
     }
     
+    /// 기록된 데이터를 통해 화면 구현. WalkingVC에서 호출
     func configureRecordValue(recordData: RecordDataRequest, weekBlockCnt: Int) {
         self.recordData = recordData
-        miniMap.blocks = recordData.matrices
+        miniMap.drawMyMapAtOnce(matrices: recordData.matrices)
         blocksCntView.recordValue.text = "\(recordData.matrices.count.insertComma)"
         blocksCntView.recordSubtitle.text = "이번주 영역 : \((weekBlockCnt + recordData.matrices.count).insertComma)칸"
         recordStackView.firstView.recordValue.text = "\(recordData.distance.toKilometer)"
