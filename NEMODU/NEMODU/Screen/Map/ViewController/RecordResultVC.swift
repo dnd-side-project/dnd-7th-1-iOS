@@ -91,6 +91,7 @@ class RecordResultVC: BaseViewController {
     override func bindInput() {
         super.bindInput()
         bindSaveBtn()
+        bindMyDetailMap()
     }
     
     override func bindOutput() {
@@ -216,6 +217,19 @@ extension RecordResultVC {
                       var recordData = self.recordData else { return }
                 recordData.message = self.memoTextView.tv.text
                 self.viewModel.postRecordData(with: recordData)
+            })
+            .disposed(by: bag)
+    }
+    
+    private func bindMyDetailMap() {
+        miniMap.magnificationBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self,
+                      let recordData = self.recordData else { return }
+                let detailMapVC = MyDetailMapVC()
+                detailMapVC.matrices = recordData.matrices
+                self.navigationController?.pushViewController(detailMapVC, animated: true)
             })
             .disposed(by: bag)
     }

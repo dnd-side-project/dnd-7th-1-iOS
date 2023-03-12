@@ -23,6 +23,8 @@ class MyDetailMapVC: BaseViewController {
     private let viewModel = MypageVM()
     private let bag = DisposeBag()
     
+    var matrices: [Matrix]?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -98,10 +100,12 @@ extension MyDetailMapVC {
         viewModel.output.userData
             .subscribe(onNext: { [weak self] data in
                 guard let self = self,
+                      let matrices = self.matrices,
                       let profileImageURL = URL(string: data.picturePath),
-                      let lastBlock = self.mapVC.blocks.last else { return }
+                      let lastBlock = matrices.last else { return }
                 self.mapVC.addMyAnnotation(coordinate: [lastBlock.latitude, lastBlock.longitude],
                                            profileImageURL: profileImageURL)
+                self.mapVC.drawMyMapAtOnce(matrices: matrices)
             })
             .disposed(by: bag)
     }
