@@ -8,9 +8,10 @@
 import UIKit
 
 enum ChallengeColorType: String {
-    case red = "Red"
-    case pink = "Pink"
-    case yellow = "Yellow"
+    case red = "RED"
+    case pink = "PINK"
+    case yellow = "YELLOW"
+    case green = "GREEN"
 }
 
 extension ChallengeColorType {
@@ -22,6 +23,8 @@ extension ChallengeColorType {
             return .pink100
         case .yellow:
             return .yellow100
+        case .green:
+            return .main
         }
     }
     
@@ -33,6 +36,8 @@ extension ChallengeColorType {
             return .pink25
         case .yellow:
             return .yellow20
+        case .green:
+            return .main40
         }
     }
 }
