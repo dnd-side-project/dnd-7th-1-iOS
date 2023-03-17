@@ -104,7 +104,7 @@ class ChallengeHistoryDetailVC: ChallengeDetailVC {
             $0.setImage(UIImage(named: "update"), for: .normal)
         }
     
-    private var challengeDetailMiniMap = MiniMapVC()
+    private var miniMapVC = MiniMapVC()
     
     private let myRecordStatusContainerView = UIView()
     private let myRecordTitleLabel = PaddingLabel()
@@ -184,15 +184,17 @@ class ChallengeHistoryDetailVC: ChallengeDetailVC {
 extension ChallengeHistoryDetailVC {
     
     private func configureChallengeHistoryDetailVC(challengeHistoryDetailInfo: ChallengeHistoryDetailResponseModel) {
-        let startDate = challengeHistoryDetailInfo.started.split(separator: "-")
-        let endDate = challengeHistoryDetailInfo.ended.split(separator: "-")
+        var startDate = challengeHistoryDetailInfo.started.split(separator: "T")
+        startDate = startDate[0].split(separator: "-")
+        var endDate = challengeHistoryDetailInfo.ended.split(separator: "T")
+        endDate = endDate[0].split(separator: "-")
         
         var calendar = Calendar(identifier: .gregorian)
         calendar.firstWeekday = 2
         let weekOfMonth = calendar.component(.weekOfMonth, from: challengeHistoryDetailInfo.started.toDate(.hyphen))
         
         challengeDetailInfoView.weekChallengeTypeLabel.text = ChallengeType(rawValue: challengeHistoryDetailInfo.type)?.title
-        challengeDetailInfoView.challengeNameImage.tintColor = ChallengeColorType(rawValue: challengeHistoryDetailInfo.color)?.primaryColor
+        challengeDetailInfoView.challengeNameImageView.tintColor = ChallengeColorType(rawValue: challengeHistoryDetailInfo.color)?.primaryColor
         challengeDetailInfoView.challengeNameLabel.text = challengeHistoryDetailInfo.name
         challengeDetailInfoView.currentStateLabel.text = "\(startDate[0]) \(startDate[1])월 \(weekOfMonth)주차 (\(startDate[1]).\(startDate[2])~\(endDate[1]).\(endDate[2]))"
         setDDayStatus()
@@ -295,12 +297,15 @@ extension ChallengeHistoryDetailVC {
     }
     
     func configureChallengeDoneLayout() {
-        progressStatusContainerView.snp.makeConstraints {
+        progressStatusContainerView.snp.updateConstraints {
             $0.height.equalTo(0)
         }
+        progressStatusContainerView.isHidden = true
+        
         borderLineView.snp.updateConstraints {
             $0.height.equalTo(0).priority(.high)
         }
+        
         updateButton.isHidden = true
         updateStatusLabel.isHidden = true
         
@@ -339,8 +344,8 @@ extension ChallengeHistoryDetailVC {
         progressBarWrapperView.addSubviews([progressBarStackView, progressBlackBarStackView])
         scoreStatusContainerView.addSubviews([scoreTitleLabel,
                                               updateStatusLabel, updateButton,
-                                              challengeDetailMiniMap.view])
-        addChild(challengeDetailMiniMap)
+                                              miniMapVC.view])
+        addChild(miniMapVC)
         myRecordStatusContainerView.addSubviews([myRecordTitleLabel, myRecordStackView])
         
         
@@ -357,7 +362,7 @@ extension ChallengeHistoryDetailVC {
         
         progressStatusContainerView.snp.makeConstraints {
             $0.width.equalTo(baseScrollView.snp.width)
-            $0.height.equalTo(134)
+            $0.height.equalTo(134).priority(.high)
 
             $0.top.equalTo(challengeDetailInfoView.snp.bottom)
         }
@@ -431,8 +436,8 @@ extension ChallengeHistoryDetailVC {
             $0.left.equalTo(updateStatusLabel.snp.right).offset(4)
             $0.right.equalTo(scoreStatusContainerView.snp.right).inset(16)
         }
-        challengeDetailMiniMap.view.snp.makeConstraints {
-            $0.height.equalTo(challengeDetailMiniMap.view.snp.width).multipliedBy(0.76).priority(.high)
+        miniMapVC.view.snp.makeConstraints {
+            $0.height.equalTo(miniMapVC.view.snp.width).multipliedBy(0.76).priority(.high)
 
             $0.top.equalTo(scoreTitleLabel.snp.bottom)
             $0.horizontalEdges.equalTo(scoreStatusContainerView).inset(16)
@@ -556,15 +561,15 @@ extension ChallengeHistoryDetailVC {
             })
             .disposed(by: bag)
         
-        challengeDetailMiniMap.magnificationBtn.rx.tap
+        miniMapVC.magnificationBtn.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 
                 let challengeDetailMapVC = ChallengeDetailMapVC()
-            // TODO: - 제목, uuid
-//                challengeDetailMapVC.viewModel.getChallengeDetailMap(uuid: self.uuid ?? "")
-//                challengeDetailMapVC.challengeTitle = self.challengeTitle
+                guard let responseModel: ChallengeHistoryDetailResponseModel = self.challengeHistoryDetailResponseModel else { return print("No challengeHistoryDetailResponseModel") }
+                challengeDetailMapVC.challengeTitle = responseModel.name
+                challengeDetailMapVC.getChallengeDetailMap(uuid: responseModel.uuid)
                 
                 self.navigationController?.pushViewController(challengeDetailMapVC, animated: true)
             })
@@ -579,13 +584,11 @@ extension ChallengeHistoryDetailVC {
         viewModel.output.challengeHistoryDetail
             .subscribe(onNext: { [weak self] data in
                 guard let self = self else { return }
-                
                 self.challengeHistoryDetailResponseModel = data
+                
                 self.challengeDetailTableView.reloadData()
-                
                 self.configureChallengeHistoryDetailVC(challengeHistoryDetailInfo: data)
-                
-                self.challengeDetailMiniMap.drawMyMapAtOnce(matrices: data.matrices)
+                self.miniMapVC.drawMyMapAtOnce(matrices: data.matrices)
             })
             .disposed(by: bag)
     }

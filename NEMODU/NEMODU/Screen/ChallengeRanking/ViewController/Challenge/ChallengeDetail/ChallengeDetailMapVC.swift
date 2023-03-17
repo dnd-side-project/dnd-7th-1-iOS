@@ -23,6 +23,10 @@ class ChallengeDetailMapVC: BaseViewController {
         }
     
     private let mapVC = MiniMapVC()
+        .then {
+            $0.hideMagnificationBtn()
+            $0.mapView.layer.masksToBounds = false
+        }
     
     private let userRankingListStackView = UIStackView()
         .then {
@@ -38,8 +42,7 @@ class ChallengeDetailMapVC: BaseViewController {
     
     var challengeTitle: String?
     
-    let viewModel = ChallengeDetailMapVM()
-    var challengeDetailMapResponseModel: ChallengeDetailMapResponseModel?
+    private let viewModel = ChallengeDetailMapVM()
     private let bag = DisposeBag()
     
     // MARK: - Life Cycle
@@ -52,7 +55,6 @@ class ChallengeDetailMapVC: BaseViewController {
         super.configureView()
         
         configureNavigationBar()
-        configureMapVC()
     }
     
     override func layoutView() {
@@ -73,55 +75,9 @@ class ChallengeDetailMapVC: BaseViewController {
     
     // MARK: - Functions
     
-    /// 상세보기 이전, 미니맵 화면에서 나의 블록 영역을 받아오는 메서드
-//    func getBlocks(blocks: [[Double]]) {
-//        mapVC.blocks = blocks
-//    }
-    
-    private func drawUsersBlocks() {
-        mapVC.isUserInteractionEnabled(true)
-        
-        var availableMatrixCnt = 0.0
-        
-        var totalLatitude = 0.0
-        var totalLongitude = 0.0
-        
-        var minLatitude = 90.0 + 1.0
-        var maxLatitude = 0.0
-        
-        var minLongitude = 180.0 + 1.0
-        var maxLongitude = 0.0
-        
-        challengeDetailMapResponseModel?.matrixList.forEach {
-            guard
-                let targetLatitude = $0.latitude,
-                let targetLongitude = $0.longitude,
-                let profileImageURL = URL(string: $0.picturePath),
-                let blockColor = ChallengeColorType(rawValue: $0.color)?.blockColor // TODO: - 사용자 블록색깔 오류 작업
-            else { return print("matrixList Data error") }
-            
-//            mapVC.addFriendColoredAnnotation(coordinate: [targetLatitude, targetLongitude], profileImageURL: profileImageURL, color: blockColor)
-//            mapVC.drawBlockArea(blocks: $0.matrices, owner: .friends, blockColor: blockColor)
-            
-            availableMatrixCnt += 1.0
-            
-            totalLatitude += targetLatitude
-            totalLongitude += targetLongitude
-            
-            minLatitude = min(minLatitude, abs(targetLatitude))
-            maxLatitude = max(maxLatitude, abs(targetLatitude))
-            
-            minLongitude = min(minLongitude, abs(targetLongitude))
-            maxLongitude = max(maxLongitude, abs(targetLongitude))
-        }
-        
-        let centerLatitude = totalLatitude / availableMatrixCnt
-        let centerLongtitde = totalLongitude / availableMatrixCnt
-
-        var zoomScale = maxLongitude - minLongitude
-        zoomScale += mapVC.longitudeBlockSizePoint * 6.0
-
-        _ = mapVC.goLocation(latitudeValue: centerLatitude, longitudeValue: centerLongtitde, delta: zoomScale)
+    func getChallengeDetailMap(uuid: String) {
+        let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) ?? ""
+        viewModel.getChallengeDetailMap(nickname: nickname, uuid: uuid)
     }
     
 }
@@ -133,49 +89,76 @@ extension ChallengeDetailMapVC {
     private func configureNavigationBar() {
         _ = navigationBar
             .then {
-                $0.configureNaviBar(targetVC: self, title: challengeTitle)
                 $0.configureBackBtn(targetVC: self)
+                $0.configureNaviBar(targetVC: self, title: challengeTitle)
             }
     }
     
-    private func configureMapVC() {
-        _ = mapVC.then {
-            $0.hideMagnificationBtn()
-            $0.mapView.layer.masksToBounds = false
+    private func drawUsersRoute(matrixList: [MatrixList], rankingList: [RankingList]) {
+        mapVC.isUserInteractionEnabled(true)
+
+        let myUserNickName = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) ?? ""
+        for i in rankingList.indices {
+            let matrixInfo = matrixList[i]
+            guard let color = ChallengeColorType(rawValue: matrixInfo.color) else {
+                print("challenge user color error")
+                continue
+            }
+            
+            guard let latitude = matrixInfo.latitude,
+                  let longitude = matrixInfo.longitude,
+                  let imageURL = URL(string: rankingList[i].picturePath)
+            else { continue }
+            
+            if(rankingList[i].nickname == myUserNickName) {
+                mapVC.drawMyMapAtOnce(matrices: matrixInfo.matrices)
+                mapVC.addMyAnnotation(coordinate: [latitude, longitude],
+                                      profileImageURL: imageURL)
+            } else {
+                mapVC.drawBlockArea(matrices: matrixInfo.matrices,
+                                    owner: .friends,
+                                    blockColor: color.blockColor)
+                
+                mapVC.addFriendAnnotation(coordinate: [latitude, longitude],
+                                          profileImageURL: imageURL,
+                                          nickname: rankingList[i].nickname,
+                                          color: color.primaryColor,
+                                          challengeCnt: rankingList[i].rank,
+                                          isBorderOn: true)
+            }
         }
     }
     
-    private func configureUserRankigListStackView() {
-        guard let myUserNickName = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { return }
+    private func configureUserRankigListStackView(matrixList: [MatrixList], rankingList: [RankingList]) {
+        let myUserNickName = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) ?? ""
         
-        challengeDetailMapResponseModel?.rankingList.forEach {
+        for i in rankingList.indices {
             let userRankingView = UIView()
             userRankingView.backgroundColor = .clear
             
             let rankLabel = UILabel()
             rankLabel.font = .caption1
             rankLabel.textColor = .gray700
-            rankLabel.text = String($0.rank) + "위"
+            rankLabel.text = String(rankingList[i].rank) + "위"
             
             let userProfileImageView = UIImageView()
-            userProfileImageView.kf.setImage(with: URL(string: $0.picturePath))
+            userProfileImageView.kf.setImage(with: URL(string: rankingList[i].picturePath))
             userProfileImageView.layer.cornerRadius = 20
             userProfileImageView.layer.masksToBounds = true
             userProfileImageView.layer.borderWidth = 2
-            userProfileImageView.layer.borderColor = UIColor.pink100.cgColor
-            // TODO: - 사용자 프로필 이미지 라운드 색깔 작업
+            userProfileImageView.layer.borderColor = ChallengeColorType(rawValue: matrixList[i].color)?.primaryColor.cgColor
             
             let userNicknameLabel = UILabel()
             userNicknameLabel.font = .caption1
             userNicknameLabel.textColor = .gray700
-            userNicknameLabel.text = $0.nickname
+            userNicknameLabel.text = rankingList[i].nickname
             
             let blocksNumberLabel = UILabel()
                 .then {
                     $0.font = .title3M
                     $0.textColor = .gray900
                 }
-            blocksNumberLabel.text = String($0.score) + "칸"
+            blocksNumberLabel.text = String(rankingList[i].score) + "칸"
             
             
             userRankingView.addSubviews([rankLabel,
@@ -252,11 +235,6 @@ extension ChallengeDetailMapVC {
     
 }
 
-// MARK: - Input
-
-extension ChallengeDetailMapVC {
-}
-
 // MARK: - Output
 
 extension ChallengeDetailMapVC {
@@ -266,9 +244,10 @@ extension ChallengeDetailMapVC {
             .subscribe(onNext: { [weak self] data in
                 guard let self = self else { return }
                 
-                self.challengeDetailMapResponseModel = data
-                self.drawUsersBlocks()
-                self.configureUserRankigListStackView()
+                self.drawUsersRoute(matrixList: data.matrixList,
+                                    rankingList: data.rankingList)
+                self.configureUserRankigListStackView(matrixList: data.matrixList,
+                                                      rankingList: data.rankingList)
             })
             .disposed(by: bag)
     }
