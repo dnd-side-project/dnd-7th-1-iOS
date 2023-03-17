@@ -55,8 +55,8 @@ extension ChallengeDetailMapVM: Output {
 // MARK: - Networking
 
 extension ChallengeDetailMapVM {
-    func getChallengeDetailMap(uuid: String) {
-        let path = "challenge/detail/map?uuid=\(uuid)"
+    func getChallengeDetailMap(nickname: String, uuid: String) {
+        let path = "challenge/detail/map?nickname=\(nickname)&uuid=\(uuid)"
         let resource = urlResource<ChallengeDetailMapResponseModel>(path: path)
         
         apiSession.getRequest(with: resource)
