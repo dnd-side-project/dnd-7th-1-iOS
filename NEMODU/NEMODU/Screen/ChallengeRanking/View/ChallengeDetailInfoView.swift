@@ -36,10 +36,10 @@ class ChallengeDetailInfoView: BaseView {
             $0.textColor = .gray600
         }
     
-    let challengeNameImage = UIImageView()
+    let challengeNameImageView = UIImageView()
         .then {
             $0.image = UIImage(named: "badge_flag")?.withRenderingMode(.alwaysTemplate)
-            $0.tintColor = ChallengeColorType(rawValue: "Pink")?.primaryColor
+            $0.tintColor = ChallengeColorType.pink.primaryColor
         }
     let challengeNameLabel = UILabel()
         .then {
@@ -69,7 +69,7 @@ class ChallengeDetailInfoView: BaseView {
         
         addSubviews([challengeDetailInfoContainerView])
         challengeDetailInfoContainerView.addSubviews([challengeTypeLabel, weekChallengeTypeLabel,
-                                                      challengeNameImage, challengeNameLabel,
+                                                      challengeNameImageView, challengeNameLabel,
                                                       currentStateLabel])
         
         
@@ -88,21 +88,21 @@ class ChallengeDetailInfoView: BaseView {
             $0.left.equalTo(challengeTypeLabel.snp.right).offset(8)
         }
 
-        challengeNameImage.snp.makeConstraints {
+        challengeNameImageView.snp.makeConstraints {
             $0.width.height.equalTo(16)
 
             $0.top.equalTo(challengeTypeLabel.snp.bottom).offset(20).priority(.high)
             $0.left.equalTo(challengeTypeLabel.snp.left)
         }
         challengeNameLabel.snp.makeConstraints {
-            $0.centerY.equalTo(challengeNameImage)
+            $0.centerY.equalTo(challengeNameImageView)
 
-            $0.left.equalTo(challengeNameImage.snp.right).offset(8)
+            $0.left.equalTo(challengeNameImageView.snp.right).offset(8)
             $0.right.equalTo(challengeDetailInfoContainerView.snp.right).inset(16)
         }
         currentStateLabel.snp.makeConstraints {
-            $0.top.equalTo(challengeNameImage.snp.bottom).offset(12)
-            $0.left.equalTo(challengeNameImage.snp.left)
+            $0.top.equalTo(challengeNameImageView.snp.bottom).offset(12)
+            $0.left.equalTo(challengeNameImageView.snp.left)
             $0.right.equalTo(challengeNameLabel.snp.right)
             $0.bottom.equalTo(challengeDetailInfoContainerView.snp.bottom).inset(16)
         }
