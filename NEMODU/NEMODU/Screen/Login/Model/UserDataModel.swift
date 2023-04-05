@@ -21,7 +21,8 @@ extension UserDataModel {
               let picturePath = UserDefaults.standard.string(forKey: UserDefaults.Keys.picturePath),
               let loginType = UserDefaults.standard.string(forKey: UserDefaults.Keys.loginType)
         else { fatalError() }
-        return [
+        
+        var parameter: Parameters = [
             "nickname": nickname,
             "email": email,
             "friends": friends,
@@ -30,5 +31,12 @@ extension UserDataModel {
             "pictureName": pictureName,
             "picturePath": picturePath
         ]
+        
+        if loginType == LoginType.kakao.rawValue,
+           let kakaoUserId = UserDefaults.standard.string(forKey: UserDefaults.Keys.kakaoUserID) {
+            parameter.merge(["socialId": kakaoUserId])
+        }
+        
+        return parameter
     }
 }
