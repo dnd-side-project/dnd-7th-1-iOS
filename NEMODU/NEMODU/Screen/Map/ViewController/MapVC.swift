@@ -61,12 +61,6 @@ class MapVC: BaseViewController {
     private var pauseCnt = 0
     var stepCnt = 0
     
-    let latitudeBlockSizePoint: Double = 0.0003040
-    let longitudeBlockSizePoint: Double = 0.0003740
-    private let latitudeBlockSize: Int = 30400
-    private let longitudeBlockSize: Int = 37400
-    private let mapZoomScale = 0.003
-    private let mul: Double = 100000000
     private let bag = DisposeBag()
     
     private var prevLatitude: Int = 0
@@ -128,7 +122,7 @@ extension MapVC {
         // 현재 위치로 이동
         _ = goLocation(latitudeValue: locationManager.location?.coordinate.latitude ?? 0,
                        longitudeValue: locationManager.location?.coordinate.longitude ?? 0,
-                       delta: mapZoomScale)
+                       delta: Map.defalutZoomScale)
     }
     
     private func registerMapAnnotationViews() {
@@ -192,7 +186,7 @@ extension MapVC {
                       let coordinate = self.locationManager.location?.coordinate else { return }
                 _ = self.goLocation(latitudeValue: coordinate.latitude,
                                     longitudeValue: coordinate.longitude,
-                                    delta: self.mapZoomScale)
+                                    delta: Map.defalutZoomScale)
                 
                 // 사용자 추적 On
                 self.isFocusOn = true
@@ -231,8 +225,8 @@ extension MapVC {
                 print(error)
             }
             
-            let annotation = MyAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate[0] + self.latitudeBlockSizePoint / 2,
-                                                                             longitude: coordinate[1] - self.longitudeBlockSizePoint / 2))
+            let annotation = MyAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate[0] + Map.latitudeBlockSize / 2,
+                                                                             longitude: coordinate[1] - Map.longitudeBlockSize / 2))
             annotation.profileImage = profileImage
             self.mapView.addAnnotation(annotation)
         }
@@ -259,8 +253,8 @@ extension MapVC {
                 print(error)
             }
          
-            let annotation = FriendAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate[0] + self.latitudeBlockSizePoint / 2,
-                                                                                 longitude: coordinate[1] - self.longitudeBlockSizePoint / 2))
+            let annotation = FriendAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate[0] + Map.latitudeBlockSize / 2,
+                                                                                 longitude: coordinate[1] - Map.longitudeBlockSize / 2))
             annotation.title = nickname
             annotation.profileImage = profileImage
             annotation.color = color
@@ -314,12 +308,12 @@ extension MapVC {
     /// 좌표, 소유자, 색상을 입력받아 네 개의 꼭짓점을 만들어 Block 폴리곤을 반환하는 메서드
     func makeBlocks(matrix: Matrix, owner: BlocksType, color: UIColor) -> Block {
         let overlayTopLeftCoordinate = CLLocationCoordinate2D(latitude: matrix.latitude,
-                                                              longitude: matrix.longitude - longitudeBlockSizePoint)
+                                                              longitude: matrix.longitude - Map.longitudeBlockSize)
         let overlayTopRightCoordinate = CLLocationCoordinate2D(latitude: matrix.latitude,
                                                                longitude: matrix.longitude)
-        let overlayBottomLeftCoordinate = CLLocationCoordinate2D(latitude: matrix.latitude + latitudeBlockSizePoint,
-                                                                 longitude: matrix.longitude - longitudeBlockSizePoint)
-        let overlayBottomRightCoordinate = CLLocationCoordinate2D(latitude: matrix.latitude + latitudeBlockSizePoint,
+        let overlayBottomLeftCoordinate = CLLocationCoordinate2D(latitude: matrix.latitude + Map.latitudeBlockSize,
+                                                                 longitude: matrix.longitude - Map.longitudeBlockSize)
+        let overlayBottomRightCoordinate = CLLocationCoordinate2D(latitude: matrix.latitude + Map.latitudeBlockSize,
                                                                   longitude: matrix.longitude)
         
         return Block(coordinate: [overlayTopLeftCoordinate,
@@ -428,14 +422,14 @@ extension MapVC: CLLocationManagerDelegate {
         let longitude = location.coordinate.longitude
         
         // 영역 이동 판단을 위한 단위값
-        let latitudeUnit = Int(latitude * mul) / latitudeBlockSize
-        let longitudeUnit = Int(longitude * mul) / longitudeBlockSize
+        let latitudeUnit = Int(latitude * Map.mul) / Map.latitudeBlockMultipleSize
+        let longitudeUnit = Int(longitude * Map.mul) / Map.longitudeBlockMultipleSize
         
         // 사용자 이동에 맞춰 화면 이동
         if isFocusOn {
             _ = goLocation(latitudeValue: latitude,
                            longitudeValue: longitude,
-                           delta: mapZoomScale)
+                           delta: Map.defalutZoomScale)
         }
         
         // 기록 중이고
@@ -445,8 +439,8 @@ extension MapVC: CLLocationManagerDelegate {
             prevLongitude = longitudeUnit
             
             // 실제 저장되고 그려지는 기준 좌표값
-            let point = Matrix(latitude: Double((latitudeUnit) * latitudeBlockSize) / mul,
-                               longitude: Double((longitudeUnit) * longitudeBlockSize) / mul)
+            let point = Matrix(latitude: Double((latitudeUnit) * Map.latitudeBlockMultipleSize) / Map.mul,
+                               longitude: Double((longitudeUnit) * Map.longitudeBlockMultipleSize) / Map.mul)
             if !blocks.contains(point) {
                 // block Point 저장
                 blocks.append(point)

@@ -74,10 +74,10 @@ extension MiniMapVC {
               let lastLongitude = sortedLongitude.last,
               let firstLongitude = sortedLongitude.first else { return }
         
-        let spanX = Int((lastLatitude.latitude - firstLatitude.latitude) / latitudeBlockSizePoint)
-        let spanY = Int((lastLongitude.longitude - firstLongitude.longitude) / longitudeBlockSizePoint)
+        let spanX = Int((lastLatitude.latitude - firstLatitude.latitude) / Map.latitudeBlockSize)
+        let spanY = Int((lastLongitude.longitude - firstLongitude.longitude) / Map.longitudeBlockSize)
         var span = Double(spanX > spanY ? spanX : spanY)
-        span = (span + 3) * longitudeBlockSizePoint
+        span = (span + 3) * Map.longitudeBlockSize
         
         _ = goLocation(latitudeValue: sortedLatitude[matrices.count/2].latitude,
                        longitudeValue: sortedLongitude[matrices.count/2].longitude,
