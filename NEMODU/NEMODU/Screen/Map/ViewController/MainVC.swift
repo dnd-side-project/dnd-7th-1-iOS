@@ -70,8 +70,7 @@ class MainVC: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.getAllBlocks(mapVC.mapView.region.center.latitude,
-                               mapVC.mapView.region.center.longitude,
-                               mapVC.mapView.region.span.latitudeDelta)
+                               mapVC.mapView.region.center.longitude)
     }
     
     override func viewWillAppear(_ animated: Bool) {
