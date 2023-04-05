@@ -16,6 +16,8 @@ extension UserDefaults {
         static var kakaoRefreshToken = "kakaoRefreshToken"
         static var appleToken = "appleToken"
         static var kakaoUserID = "kakaoUserID"
+        static var fcmToken = "fcmToken"
+        static var isNotification = "isNotification"
         
         static var nickname = "nickname"
         static var isFirstAccess = "isFirstAccess"

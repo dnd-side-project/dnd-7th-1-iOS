@@ -19,8 +19,13 @@ extension UserDataModel {
               let email = UserDefaults.standard.string(forKey: UserDefaults.Keys.email),
               let pictureName = UserDefaults.standard.string(forKey: UserDefaults.Keys.pictureName),
               let picturePath = UserDefaults.standard.string(forKey: UserDefaults.Keys.picturePath),
-              let loginType = UserDefaults.standard.string(forKey: UserDefaults.Keys.loginType)
-        else { fatalError() }
+              let loginType = UserDefaults.standard.string(forKey: UserDefaults.Keys.loginType),
+              let fcmToken = UserDefaults.standard.string(forKey: UserDefaults.Keys.fcmToken),
+              let isNotification = UserDefaults.standard.string(forKey: UserDefaults.Keys.isNotification)
+        else {
+            // TODO: - 회원가입에 실패했습니다 알람 띄우기
+            fatalError()
+        }
         
         var parameter: Parameters = [
             "nickname": nickname,
@@ -29,7 +34,9 @@ extension UserDataModel {
             "isPublicRecord": isPublicRecord,
             "loginType": loginType,
             "pictureName": pictureName,
-            "picturePath": picturePath
+            "picturePath": picturePath,
+            "fcmToken": fcmToken,
+            "isNotification": isNotification
         ]
         
         if loginType == LoginType.kakao.rawValue,
