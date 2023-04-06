@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct Matrix: Codable {
+struct Matrix: Codable, Hashable {
     let latitude, longitude: Double
 }

@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		2304FB9828F27DFE00DD3A50 /* EventListResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2304FB9728F27DFE00DD3A50 /* EventListResponseModel.swift */; };
-		2304FB9A28F27EC200DD3A50 /* EventListRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2304FB9928F27EC200DD3A50 /* EventListRequestModel.swift */; };
 		2304FB9C28F2C27A00DD3A50 /* AppleSDGothicNeoB.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2304FB9B28F2C27A00DD3A50 /* AppleSDGothicNeoB.ttf */; };
 		2304FB9F28F2DC3300DD3A50 /* LoginBtn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2304FB9E28F2DC3300DD3A50 /* LoginBtn.swift */; };
 		23062A9828B7F6B00064C978 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23062A9728B7F6B00064C978 /* Date+.swift */; };
@@ -18,6 +17,7 @@
 		230CB2DF28AD473100B11270 /* UserBlockResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230CB2DE28AD473100B11270 /* UserBlockResponseModel.swift */; };
 		230CB2E128AD474E00B11270 /* ChallengeBlockResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230CB2E028AD474E00B11270 /* ChallengeBlockResponseModel.swift */; };
 		230CB2E428AD478000B11270 /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230CB2E328AD478000B11270 /* Matrix.swift */; };
+		2312200529DE5A5400928E4E /* ToggleButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2312200429DE5A5400928E4E /* ToggleButtonView.swift */; };
 		2312519428B6943B00DF1C69 /* ToastType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2312519328B6943B00DF1C69 /* ToastType.swift */; };
 		2312519628B6944B00DF1C69 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2312519528B6944B00DF1C69 /* ToastView.swift */; };
 		2315258D28B4F07D00B80E03 /* DetailRecordDataResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2315258C28B4F07D00B80E03 /* DetailRecordDataResponseModel.swift */; };
@@ -141,7 +141,6 @@
 		23D8B7D728B394FC00F48165 /* MyRecordListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7D628B394FC00F48165 /* MyRecordListDataSource.swift */; };
 		23D8B7D928B3961900F48165 /* MyRecordListResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7D828B3961900F48165 /* MyRecordListResponseModel.swift */; };
 		23D8B7DB28B396A100F48165 /* MyRecordDataVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7DA28B396A100F48165 /* MyRecordDataVM.swift */; };
-		23D8B7DE28B397DF00F48165 /* MyRecordListRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7DD28B397DF00F48165 /* MyRecordListRequestModel.swift */; };
 		23D8B7E128B3AC9C00F48165 /* MyRecordListTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7E028B3AC9C00F48165 /* MyRecordListTVC.swift */; };
 		23D8B7E528B4D5AA00F48165 /* CalendarSelectStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7E428B4D5AA00F48165 /* CalendarSelectStackView.swift */; };
 		23D8B7E728B4E44700F48165 /* MyRecordDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7E628B4E44700F48165 /* MyRecordDetailVC.swift */; };
@@ -244,7 +243,6 @@
 		084396F5A23B94FBA7C80652 /* Pods-NEMODU.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEMODU.debug.xcconfig"; path = "Target Support Files/Pods-NEMODU/Pods-NEMODU.debug.xcconfig"; sourceTree = "<group>"; };
 		1EBADEEBC1D77F44700E20E8 /* Pods-NEMODU.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NEMODU.release.xcconfig"; path = "Target Support Files/Pods-NEMODU/Pods-NEMODU.release.xcconfig"; sourceTree = "<group>"; };
 		2304FB9728F27DFE00DD3A50 /* EventListResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventListResponseModel.swift; sourceTree = "<group>"; };
-		2304FB9928F27EC200DD3A50 /* EventListRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventListRequestModel.swift; sourceTree = "<group>"; };
 		2304FB9B28F2C27A00DD3A50 /* AppleSDGothicNeoB.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AppleSDGothicNeoB.ttf; sourceTree = "<group>"; };
 		2304FB9E28F2DC3300DD3A50 /* LoginBtn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginBtn.swift; sourceTree = "<group>"; };
 		23062A9728B7F6B00064C978 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
@@ -254,6 +252,7 @@
 		230CB2DE28AD473100B11270 /* UserBlockResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBlockResponseModel.swift; sourceTree = "<group>"; };
 		230CB2E028AD474E00B11270 /* ChallengeBlockResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeBlockResponseModel.swift; sourceTree = "<group>"; };
 		230CB2E328AD478000B11270 /* Matrix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Matrix.swift; sourceTree = "<group>"; };
+		2312200429DE5A5400928E4E /* ToggleButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleButtonView.swift; sourceTree = "<group>"; };
 		2312519328B6943B00DF1C69 /* ToastType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastType.swift; sourceTree = "<group>"; };
 		2312519528B6944B00DF1C69 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		2315258C28B4F07D00B80E03 /* DetailRecordDataResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRecordDataResponseModel.swift; sourceTree = "<group>"; };
@@ -381,7 +380,6 @@
 		23D8B7D628B394FC00F48165 /* MyRecordListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordListDataSource.swift; sourceTree = "<group>"; };
 		23D8B7D828B3961900F48165 /* MyRecordListResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordListResponseModel.swift; sourceTree = "<group>"; };
 		23D8B7DA28B396A100F48165 /* MyRecordDataVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordDataVM.swift; sourceTree = "<group>"; };
-		23D8B7DD28B397DF00F48165 /* MyRecordListRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordListRequestModel.swift; sourceTree = "<group>"; };
 		23D8B7E028B3AC9C00F48165 /* MyRecordListTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordListTVC.swift; sourceTree = "<group>"; };
 		23D8B7E428B4D5AA00F48165 /* CalendarSelectStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSelectStackView.swift; sourceTree = "<group>"; };
 		23D8B7E628B4E44700F48165 /* MyRecordDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordDetailVC.swift; sourceTree = "<group>"; };
@@ -560,6 +558,7 @@
 				23D8B7E428B4D5AA00F48165 /* CalendarSelectStackView.swift */,
 				237573D628F57824006026ED /* ArrowBtn.swift */,
 				2375740028FC3824006026ED /* NicknameSearchBar.swift */,
+				2312200429DE5A5400928E4E /* ToggleButtonView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1003,8 +1002,6 @@
 		23D8B7DC28B397D000F48165 /* Request */ = {
 			isa = PBXGroup;
 			children = (
-				23D8B7DD28B397DF00F48165 /* MyRecordListRequestModel.swift */,
-				2304FB9928F27EC200DD3A50 /* EventListRequestModel.swift */,
 				237573D228F56A7B006026ED /* EditMemoRequestModel.swift */,
 				237573F228FAF2A1006026ED /* EditProfileRequestModel.swift */,
 			);
@@ -1481,7 +1478,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				23D8B7DE28B397DF00F48165 /* MyRecordListRequestModel.swift in Sources */,
 				2348B3F92892D151001095BC /* Input.swift in Sources */,
 				3C08137B28A91C00009F854B /* ChallengeRankingMenuBarCV.swift in Sources */,
 				3C30436C292F7DC800FAD69A /* DoneChallengeDetailVC.swift in Sources */,
@@ -1599,7 +1595,6 @@
 				23412FD828AE245D00B73D62 /* Block.swift in Sources */,
 				237573D728F57824006026ED /* ArrowBtn.swift in Sources */,
 				237573F328FAF2A1006026ED /* EditProfileRequestModel.swift in Sources */,
-				2304FB9A28F27EC200DD3A50 /* EventListRequestModel.swift in Sources */,
 				238C4DE328A3F0D6000BEE36 /* NemoduTextView.swift in Sources */,
 				2354239128BBA54000865E51 /* UserDefaults+.swift in Sources */,
 				23F5717E28AA1A11005F2E21 /* FriendAnnotationView.swift in Sources */,
@@ -1642,6 +1637,7 @@
 				237573FB28FC053D006026ED /* TabCVC.swift in Sources */,
 				3C304368292F676700FAD69A /* ChallengeDetailVC.swift in Sources */,
 				2348B40D2892D360001095BC /* UIColor+.swift in Sources */,
+				2312200529DE5A5400928E4E /* ToggleButtonView.swift in Sources */,
 				3C2A2634290018C0009E0069 /* StepRankingListVM.swift in Sources */,
 				3C3BD76E28B36E1400AD55B6 /* AreaRankingListResponseModel.swift in Sources */,
 				23F5718628AA6DAD005F2E21 /* MyAnnotation.swift in Sources */,

@@ -68,9 +68,21 @@ extension LoginVM {
                 if let error = error {
                     print(error)
                 } else {
-                    UserDefaults.standard.set(oauthToken?.accessToken, forKey: UserDefaults.Keys.kakaoAccessToken)
-                    UserDefaults.standard.set(oauthToken?.refreshToken, forKey: UserDefaults.Keys.kakaoRefreshToken)
-                    self.socialLogin(type: .kakao)
+                    var scopes = [String]()
+                    scopes.append("friends")
+                    scopes.append("account_email")
+                    
+                    UserApi.shared.me() { (user, error) in
+                        if let error = error {
+                            print(error)
+                        }
+                        else {
+                            UserDefaults.standard.set(oauthToken?.accessToken, forKey: UserDefaults.Keys.kakaoAccessToken)
+                            UserDefaults.standard.set(oauthToken?.refreshToken, forKey: UserDefaults.Keys.kakaoRefreshToken)
+                            UserDefaults.standard.set(user?.id, forKey: UserDefaults.Keys.kakaoUserID)
+                            self.socialLogin(type: .kakao)
+                        }
+                    }
                 }
             }
         } else {
@@ -95,6 +107,7 @@ extension LoginVM {
                                 else {
                                     UserDefaults.standard.set(oauthToken?.accessToken, forKey: UserDefaults.Keys.kakaoAccessToken)
                                     UserDefaults.standard.set(oauthToken?.refreshToken, forKey: UserDefaults.Keys.kakaoRefreshToken)
+                                    UserDefaults.standard.set(user?.id, forKey: UserDefaults.Keys.kakaoUserID)
                                     self.socialLogin(type: .kakao)
                                 }
                             }

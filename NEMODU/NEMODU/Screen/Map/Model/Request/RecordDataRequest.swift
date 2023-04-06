@@ -11,7 +11,7 @@ import Alamofire
 struct RecordDataRequest {
     var distance: Int
     var exerciseTime: Int
-    var blocks: [[Double]]
+    var matrices: [Matrix]
     var stepCount: Int
     var message: String?
     let started: String
@@ -25,11 +25,22 @@ extension RecordDataRequest {
             "nickname": nickname,
             "distance": distance,
             "exerciseTime": exerciseTime,
-            "matrices": blocks,
+            "matrices": getJSONSerialization(from: matrices),
             "stepCount": stepCount,
             "message": message ?? "",
             "started": started,
             "ended": ended
         ]
+    }
+    
+    func getJSONSerialization(from matrices: [Matrix]) -> [[String: Double]] {
+        var data = [[String: Double]]()
+        matrices.forEach {
+            data.append( [
+                "latitude": $0.latitude,
+                "longitude": $0.longitude
+            ] )
+        }
+        return data
     }
 }

@@ -347,10 +347,10 @@ extension ChallengeHistoryDetailTVHV {
     }
     
     private func configureMiniMap(matrices: [Matrix]) {
-        if(!matrices.isEmpty) {
-            miniMap.blocks = miniMap.changeMatriesToBlocks(matrices: matrices)
-            miniMap.drawMiniMap()
-        }
+//        if(!matrices.isEmpty) {   // 요거 없이 냅다 넣으면 됨미당 메서드 내부에서 처리됨
+//            miniMap.blocks = matrices   // 삭제 요망
+//            miniMap.drawMyMapAtOnce(matrices: matrices)   // 요렇게 변경
+//        }
     }
     
 }

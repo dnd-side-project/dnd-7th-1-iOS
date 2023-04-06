@@ -69,7 +69,9 @@ class MainVC: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.getAllBlocks()
+        viewModel.getAllBlocks(mapVC.mapView.region.center.latitude,
+                               mapVC.mapView.region.center.longitude,
+                               mapVC.mapView.region.span.latitudeDelta)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -235,7 +237,9 @@ extension MainVC {
                 guard let self = self else { return }
                 self.mapVC.mapView.removeOverlays(self.mapVC.mapView.overlays)
                 self.mapVC.mapView.removeAnnotations(self.mapVC.mapView.annotations)
-                self.viewModel.getAllBlocks()
+                self.viewModel.getAllBlocks(self.mapVC.mapView.region.center.latitude,
+                                            self.mapVC.mapView.region.center.longitude,
+                                            self.mapVC.mapView.region.span.latitudeDelta)
             })
             .disposed(by: bag)
     }
@@ -280,7 +284,7 @@ extension MainVC {
                                            profileImageURL: profileImageURL)
                 
                 // Area
-                self.mapVC.drawBlockArea(blocks: user.matrices ?? [],
+                self.mapVC.drawBlockArea(matrices: user.matrices ?? [],
                                          owner: .mine,
                                          blockColor: .main40)
                 
@@ -308,7 +312,7 @@ extension MainVC {
                                                    isEnabled: true)
                     
                     // Area
-                    self.mapVC.drawBlockArea(blocks: $0.matrices ?? [],
+                    self.mapVC.drawBlockArea(matrices: $0.matrices ?? [],
                                              owner: .friends,
                                              blockColor: .gray25)
                 }
@@ -334,7 +338,7 @@ extension MainVC {
                                                    isEnabled: true)
                     
                     // Area
-                    self.mapVC.drawBlockArea(blocks: $0.matrices,
+                    self.mapVC.drawBlockArea(matrices: $0.matrices,
                                              owner: .friends,
                                              blockColor: ChallengeColorType(rawValue: $0.challengeColor)?.blockColor ?? .gray25)
                 }

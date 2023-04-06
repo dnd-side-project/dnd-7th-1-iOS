@@ -23,6 +23,8 @@ class MyDetailMapVC: BaseViewController {
     private let viewModel = MypageVM()
     private let bag = DisposeBag()
     
+    var matrices: [Matrix]?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -72,11 +74,6 @@ extension MyDetailMapVC {
         mapVC.mapView.layer.cornerRadius = 0
         mapVC.isUserInteractionEnabled(true)
     }
-    
-    /// 상세보기 이전, 미니맵 화면에서 나의 블록 영역을 받아오는 메서드
-    func getBlocks(blocks: [[Double]]) {
-        mapVC.blocks = blocks
-    }
 }
 
 // MARK: - Layout
@@ -103,11 +100,12 @@ extension MyDetailMapVC {
         viewModel.output.userData
             .subscribe(onNext: { [weak self] data in
                 guard let self = self,
+                      let matrices = self.matrices,
                       let profileImageURL = URL(string: data.picturePath),
-                      let lastBlock = self.mapVC.blocks.last else { return }
-                self.mapVC.addMyAnnotation(coordinate: [lastBlock[0], lastBlock[1]],
-                                      profileImageURL: profileImageURL)
-                self.mapVC.drawMiniMap()
+                      let lastBlock = matrices.last else { return }
+                self.mapVC.addMyAnnotation(coordinate: [lastBlock.latitude, lastBlock.longitude],
+                                           profileImageURL: profileImageURL)
+                self.mapVC.drawMyMapAtOnce(matrices: matrices)
             })
             .disposed(by: bag)
     }
