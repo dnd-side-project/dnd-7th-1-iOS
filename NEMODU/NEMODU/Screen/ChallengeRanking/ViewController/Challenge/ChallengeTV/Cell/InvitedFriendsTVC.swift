@@ -82,23 +82,29 @@ class InvitedFriendsTVC : BaseTableViewCell {
         friendStatusLabel.text = InvitedChallengeAcceptType(rawValue: status)?.statusText
         
         switch status {
-        case InvitedChallengeAcceptType.master.rawValue:
+        case InvitedChallengeAcceptType.master.description:
             _ = friendStatusLabel
                 .then {
                     $0.textColor = .gray600
                     $0.text = "주최자"
                 }
-        case InvitedChallengeAcceptType.progress.rawValue:
+        case InvitedChallengeAcceptType.progress.description:
             _ = friendStatusLabel
                 .then {
                     $0.textColor = .main
                     $0.text = "수락 완료"
                 }
-        case InvitedChallengeAcceptType.wait.rawValue:
+        case InvitedChallengeAcceptType.wait.description:
             _ = friendStatusLabel
                 .then {
                     $0.textColor = .gray600
                     $0.text = "대기중"
+                }
+        case InvitedChallengeAcceptType.reject.description:
+            _ = friendStatusLabel
+                .then {
+                    $0.textColor = .gray600
+                    $0.text = "거절"
                 }
         default:
             break
