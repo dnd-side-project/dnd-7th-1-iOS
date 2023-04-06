@@ -27,14 +27,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Messaging.messaging().delegate = self
         
         UNUserNotificationCenter.current().delegate = self
-        
-        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-        UNUserNotificationCenter.current().requestAuthorization(
-            options: authOptions,
-            completionHandler: { _, _ in }
-        )
+        requestNotificationSetting()
         application.registerForRemoteNotifications()
-                
+        
+        // 카카오톡 Key 설정
         KakaoSDK.initSDK(appKey: "944b6ad264ad0085b68053652ee73b1b")
         
         // set rootViewController
@@ -50,7 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             window?.rootViewController = NEMODUTBC()
         }
         window?.makeKeyAndVisible()
-        
+         
         return true
     }
     
@@ -83,6 +79,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate: UNUserNotificationCenterDelegate {
 
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        print("deviceToken: \(deviceToken.debugDescription)")
         Messaging.messaging().apnsToken = deviceToken
     }
     
@@ -92,10 +89,49 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     
 }
 
+// MARK: - Notification Setting
+
+extension AppDelegate {
+    
+    /// 푸시알림 요청 보내기
+    private func requestNotificationSetting() {
+        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+        UNUserNotificationCenter.current().requestAuthorization(
+            options: authOptions,
+            completionHandler: { _, _ in
+                self.checkNotificationSetting()
+            }
+        )
+    }
+    
+    /// 디바이스 사용자의 푸시알림(Notification) 설정 상태 확인후 UserDefaults.isNotification에 값 설정
+    private func checkNotificationSetting() {
+        UNUserNotificationCenter.current()
+            .getNotificationSettings { permission in
+                switch permission.authorizationStatus {
+                case .authorized,
+                    .ephemeral,
+                    .provisional:
+                    UserDefaults.standard.set(true, forKey: UserDefaults.Keys.isNotification)
+                    
+                case .denied,
+                    .notDetermined:
+                    UserDefaults.standard.set(false, forKey: UserDefaults.Keys.isNotification)
+                    
+                @unknown default:
+                    UserDefaults.standard.set(false, forKey: UserDefaults.Keys.isNotification)
+                }
+            }
+    }
+    
+}
+
+// MARK: - Firebase Messaging
+
 extension AppDelegate: MessagingDelegate {
     
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-        print("FCM Token: \(String(describing: fcmToken))")
+        UserDefaults.standard.set(fcmToken, forKey: UserDefaults.Keys.fcmToken)
     }
     
 }
