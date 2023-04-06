@@ -54,7 +54,7 @@ extension EnterVM: Output {
 
 extension EnterVM {
     func requestSignup(_ userData: UserDataModel) {
-        let path = "sign"
+        let path = "auth/sign"
         let resource = urlResource<NicknameModel>(path: path)
         
         AuthAPI.shared.signupRequest(with: resource, param: userData.userDataParam)
