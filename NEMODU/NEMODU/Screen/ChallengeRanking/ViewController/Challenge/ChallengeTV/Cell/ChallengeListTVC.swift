@@ -27,7 +27,7 @@ class ChallengeListTVC : BaseTableViewCell {
     
     private let innerContentsView = UIView()
     
-    let challengeTypeLabel = UILabel()
+    private let challengeTypeLabel = UILabel()
         .then {
             $0.text = "종류"
             $0.font = .caption1
@@ -40,7 +40,7 @@ class ChallengeListTVC : BaseTableViewCell {
             $0.layer.borderWidth = 1
             $0.layer.borderColor = UIColor.main.cgColor
         }
-    let challengeTermLabel = UILabel()
+    private let challengeTermLabel = UILabel()
         .then {
             $0.text = "00.00(-) - 00.00(-)"
             $0.font = .body4
@@ -53,12 +53,12 @@ class ChallengeListTVC : BaseTableViewCell {
             $0.textColor = .gray600
         }
     
-    let challengeNameImage = UIImageView()
+    private let challengeNameImageView = UIImageView()
         .then {
             $0.image = UIImage(named: "badge_flag")?.withRenderingMode(.alwaysTemplate)
-            $0.tintColor = ChallengeColorType(rawValue: "Pink")?.primaryColor
+            $0.tintColor = ChallengeColorType.pink.primaryColor
         }
-    let challengeNameLabel = UILabel()
+    private let challengeNameLabel = UILabel()
         .then {
             $0.text = "챌린지 이름"
             $0.font = .body3
@@ -86,7 +86,6 @@ class ChallengeListTVC : BaseTableViewCell {
         super.configureView()
         
         configureContentView()
-        
     }
     
     override func layoutView() {
@@ -97,7 +96,35 @@ class ChallengeListTVC : BaseTableViewCell {
     
     // MARK: - Function
     
-    func makeUserImageViews(numberOfUsers: Int, usersImageURL: [String]) {
+    /// 챌린지 목록 TVC 내 구성 요소 중 공통 항목을 설정하는 함수
+    func configureChallengeListTVC(startDate: String, endDate: String, challengeName: String, challengeColor: String, userProfileImagePaths: [String]) {
+        challengeTypeLabel.text = "주간" // TODO: - 서버 response 값으로 주간, 실시간 표시 필요
+        
+        // 날짜
+        let startDates = startDate.parsingResponseValueTime()
+        let endDates = endDate.parsingResponseValueTime()
+        
+        let format = DateFormatter()
+        format.timeZone = TimeZone(identifier: "KST")
+        format.dateFormat = "yyyy-MM-dd"
+        
+        let dayOfWeekDate = format.date(from: String(startDate.split(separator: "T")[0]))
+        let dayOfWeekString = dayOfWeekDate?.getDayOfWeek()
+        
+        challengeTermLabel.text = "\(startDates.month).\(startDates.day)(\(dayOfWeekString ?? "?")) - \(endDates.month).\(endDates.day)(일)"
+        
+        // 챌린지 아이콘 색상 설정
+        challengeNameImageView.tintColor = ChallengeColorType(rawValue: challengeColor)?.primaryColor
+        
+        // 챌린지 이름 설정
+        challengeNameLabel.text = challengeName
+        
+        // 참가 사용자 프로필 이미지 구성
+        makeUserImageViews(numberOfUsers: userProfileImagePaths.count, usersImageURL: userProfileImagePaths)
+    }
+    
+    /// 챌린지 참가 사용자 프로필 이미지 구성 함수
+    private func makeUserImageViews(numberOfUsers: Int, usersImageURL: [String]) {
         let userImageContainerView = UIView()
         
         let spacing = 12
@@ -113,6 +140,9 @@ class ChallengeListTVC : BaseTableViewCell {
                     
                     $0.kf.setImage(with: URL(string: usersImageURL[order]))
                 }
+            if userImageView.image == nil {
+                userImageView.image = .defaultThumbnail
+            }
             
             // make userImageViews contraints
             userImageContainerView.addSubview(userImageView)
@@ -155,7 +185,7 @@ extension ChallengeListTVC {
         contentView.addSubview(contentsView)
         contentsView.addSubview(innerContentsView)
         innerContentsView.addSubviews([challengeTypeLabel, challengeTermLabel, dDayLabel,
-                                       challengeNameImage, challengeNameLabel,
+                                       challengeNameImageView, challengeNameLabel,
                                        currentStateLabel, currentJoinUserLabel])
         
         
@@ -192,22 +222,22 @@ extension ChallengeListTVC {
             $0.right.equalTo(innerContentsView.snp.right)//.inset(12)
         }
         
-        challengeNameImage.snp.makeConstraints {
+        challengeNameImageView.snp.makeConstraints {
             $0.width.equalTo(16)
-            $0.height.equalTo(challengeNameImage.snp.width)
+            $0.height.equalTo(challengeNameImageView.snp.width)
             
             $0.top.equalTo(challengeTypeLabel.snp.bottom).offset(8)
             $0.left.equalTo(challengeTypeLabel.snp.left)
         }
         challengeNameLabel.snp.makeConstraints {
-            $0.centerY.equalTo(challengeNameImage)
+            $0.centerY.equalTo(challengeNameImageView)
             
-            $0.left.equalTo(challengeNameImage.snp.right).offset(8)
+            $0.left.equalTo(challengeNameImageView.snp.right).offset(8)
             $0.right.equalTo(dDayLabel.snp.right)
         }
         currentStateLabel.snp.makeConstraints {
-            $0.top.equalTo(challengeNameImage.snp.bottom).offset(9)
-            $0.left.equalTo(challengeNameImage.snp.left)
+            $0.top.equalTo(challengeNameImageView.snp.bottom).offset(9)
+            $0.left.equalTo(challengeNameImageView.snp.left)
         }
         currentJoinUserLabel.snp.makeConstraints {
             $0.centerY.equalTo(currentStateLabel)
