@@ -9,13 +9,15 @@ import Foundation
 import Alamofire
 
 struct CreatChallengeResponseModel: Codable {
-    let users: [ChallengeUser]
+    let members: [Member]
     let message, started, ended: String
+    let exceptMemberCount: Int
+    let exceptMembers: [String]
 }
 
-// MARK: - User
+// MARK: - Member
 
-struct ChallengeUser: Codable {
+struct Member: Codable {
     let nickname: String
     let picturePath: String
 }
