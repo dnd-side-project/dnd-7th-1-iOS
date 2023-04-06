@@ -81,7 +81,8 @@ extension ToggleButtonView {
 extension ToggleButtonView {
     private func configureLayout() {
         baseStackView.snp.makeConstraints {
-            $0.top.leading.equalToSuperview().offset(8)
+            $0.top.equalToSuperview().offset(8)
+            $0.leading.equalToSuperview()
             $0.bottom.equalToSuperview().offset(-8)
         }
         
