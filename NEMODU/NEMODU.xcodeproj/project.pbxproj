@@ -212,6 +212,7 @@
 		3C75C6F329290F2300452E7A /* SelectFriendsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C75C6F229290F2300452E7A /* SelectFriendsVC.swift */; };
 		3C80DDAC28B8FD0A00A6EDE4 /* CreateChallengeRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C80DDAB28B8FD0A00A6EDE4 /* CreateChallengeRequestModel.swift */; };
 		3C86821828FD3FE700F37C06 /* RankingListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C86821728FD3FE700F37C06 /* RankingListVC.swift */; };
+		3C8B558129BDD035000545D6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3C8B558029BDD035000545D6 /* GoogleService-Info.plist */; };
 		3C992F1528AE61FC00D96E21 /* ListTypeMenuBarCV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C992F1428AE61FC00D96E21 /* ListTypeMenuBarCV.swift */; };
 		3C992F1728AE623B00D96E21 /* ListTypeMenuBarCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C992F1628AE623B00D96E21 /* ListTypeMenuBarCVC.swift */; };
 		3C9AAC03293451ED005D3F6C /* ChallengeDetailTVFV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C9AAC02293451ED005D3F6C /* ChallengeDetailTVFV.swift */; };
@@ -456,6 +457,7 @@
 		3C7FC22B28A102CE0071A752 /* ChallengeRankingMenuBarCV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeRankingMenuBarCV.swift; sourceTree = "<group>"; };
 		3C80DDAB28B8FD0A00A6EDE4 /* CreateChallengeRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateChallengeRequestModel.swift; sourceTree = "<group>"; };
 		3C86821728FD3FE700F37C06 /* RankingListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankingListVC.swift; sourceTree = "<group>"; };
+		3C8B558029BDD035000545D6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/NEMODU_files/FCM/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3C992F1428AE61FC00D96E21 /* ListTypeMenuBarCV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTypeMenuBarCV.swift; sourceTree = "<group>"; };
 		3C992F1628AE623B00D96E21 /* ListTypeMenuBarCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTypeMenuBarCVC.swift; sourceTree = "<group>"; };
 		3C9AAC02293451ED005D3F6C /* ChallengeDetailTVFV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeDetailTVFV.swift; sourceTree = "<group>"; };
@@ -679,6 +681,7 @@
 			isa = PBXGroup;
 			children = (
 				237CED1629767F3900A8F23C /* NEMODU.entitlements */,
+				3C8B558029BDD035000545D6 /* GoogleService-Info.plist */,
 				2348B3DE2892D027001095BC /* Global */,
 				2348B3D32892CE89001095BC /* Screen */,
 				2348B3D22892CE56001095BC /* Support */,
@@ -1419,6 +1422,7 @@
 				23B7208228A2394200D3A410 /* Pretendard-Regular.otf in Resources */,
 				230CB2D428ABEC4D00B11270 /* countdown.json in Resources */,
 				23B7208328A2394200D3A410 /* Pretendard-SemiBold.otf in Resources */,
+				3C8B558129BDD035000545D6 /* GoogleService-Info.plist in Resources */,
 				23A0E7D628B6614300057EE7 /* concentricCircles.json in Resources */,
 				2348B3C82892C676001095BC /* Assets.xcassets in Resources */,
 				23B7207F28A2394200D3A410 /* Pretendard-ExtraBold.otf in Resources */,

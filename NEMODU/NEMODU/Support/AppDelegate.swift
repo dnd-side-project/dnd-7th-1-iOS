@@ -6,9 +6,12 @@
 //
 
 import UIKit
+
 import KakaoSDKCommon
 import KakaoSDKAuth
 import KakaoSDKUser
+
+import Firebase
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,6 +22,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // SplashView 1초동안 보이게
         Thread.sleep(forTimeInterval: 1)
         
+        // FCM Push Notification Settings
+        FirebaseApp.configure()
+        Messaging.messaging().delegate = self
+        
+        UNUserNotificationCenter.current().delegate = self
+        
+        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+        UNUserNotificationCenter.current().requestAuthorization(
+            options: authOptions,
+            completionHandler: { _, _ in }
+        )
+        application.registerForRemoteNotifications()
+                
         KakaoSDK.initSDK(appKey: "944b6ad264ad0085b68053652ee73b1b")
         
         // set rootViewController
@@ -64,3 +80,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 }
 
+extension AppDelegate: UNUserNotificationCenterDelegate {
+
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        Messaging.messaging().apnsToken = deviceToken
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.banner, .sound, .badge])
+    }
+    
+}
+
+extension AppDelegate: MessagingDelegate {
+    
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+        print("FCM Token: \(String(describing: fcmToken))")
+    }
+    
+}
