@@ -17,6 +17,7 @@
 		230CB2DF28AD473100B11270 /* UserBlockResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230CB2DE28AD473100B11270 /* UserBlockResponseModel.swift */; };
 		230CB2E128AD474E00B11270 /* ChallengeBlockResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230CB2E028AD474E00B11270 /* ChallengeBlockResponseModel.swift */; };
 		230CB2E428AD478000B11270 /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230CB2E328AD478000B11270 /* Matrix.swift */; };
+		2312200529DE5A5400928E4E /* ToggleButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2312200429DE5A5400928E4E /* ToggleButtonView.swift */; };
 		2312519428B6943B00DF1C69 /* ToastType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2312519328B6943B00DF1C69 /* ToastType.swift */; };
 		2312519628B6944B00DF1C69 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2312519528B6944B00DF1C69 /* ToastView.swift */; };
 		2315258D28B4F07D00B80E03 /* DetailRecordDataResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2315258C28B4F07D00B80E03 /* DetailRecordDataResponseModel.swift */; };
@@ -250,6 +251,7 @@
 		230CB2DE28AD473100B11270 /* UserBlockResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBlockResponseModel.swift; sourceTree = "<group>"; };
 		230CB2E028AD474E00B11270 /* ChallengeBlockResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeBlockResponseModel.swift; sourceTree = "<group>"; };
 		230CB2E328AD478000B11270 /* Matrix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Matrix.swift; sourceTree = "<group>"; };
+		2312200429DE5A5400928E4E /* ToggleButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleButtonView.swift; sourceTree = "<group>"; };
 		2312519328B6943B00DF1C69 /* ToastType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastType.swift; sourceTree = "<group>"; };
 		2312519528B6944B00DF1C69 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		2315258C28B4F07D00B80E03 /* DetailRecordDataResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRecordDataResponseModel.swift; sourceTree = "<group>"; };
@@ -554,6 +556,7 @@
 				23D8B7E428B4D5AA00F48165 /* CalendarSelectStackView.swift */,
 				237573D628F57824006026ED /* ArrowBtn.swift */,
 				2375740028FC3824006026ED /* NicknameSearchBar.swift */,
+				2312200429DE5A5400928E4E /* ToggleButtonView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1630,6 +1633,7 @@
 				237573FB28FC053D006026ED /* TabCVC.swift in Sources */,
 				3C304368292F676700FAD69A /* ChallengeDetailVC.swift in Sources */,
 				2348B40D2892D360001095BC /* UIColor+.swift in Sources */,
+				2312200529DE5A5400928E4E /* ToggleButtonView.swift in Sources */,
 				3C2A2634290018C0009E0069 /* StepRankingListVM.swift in Sources */,
 				3C3BD76E28B36E1400AD55B6 /* AreaRankingListResponseModel.swift in Sources */,
 				23F5718628AA6DAD005F2E21 /* MyAnnotation.swift in Sources */,
