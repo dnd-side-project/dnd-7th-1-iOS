@@ -35,7 +35,7 @@ class CreateAccumulateChallengeVC: CreateWeekChallengeVC {
     }
     
     override func didTapConfirmButton() {
-        requestCreateWeekChallenge(type: "Accumulate")
+        requestCreateWeekChallenge(type: ChallengeType.accumulate.description)
     }
     
 }
