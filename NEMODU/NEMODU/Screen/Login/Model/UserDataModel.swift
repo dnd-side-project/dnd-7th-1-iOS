@@ -20,8 +20,7 @@ extension UserDataModel {
               let pictureName = UserDefaults.standard.string(forKey: UserDefaults.Keys.pictureName),
               let picturePath = UserDefaults.standard.string(forKey: UserDefaults.Keys.picturePath),
               let loginType = UserDefaults.standard.string(forKey: UserDefaults.Keys.loginType),
-              let fcmToken = UserDefaults.standard.string(forKey: UserDefaults.Keys.fcmToken),
-              let isNotification = UserDefaults.standard.string(forKey: UserDefaults.Keys.isNotification)
+              let fcmToken = UserDefaults.standard.string(forKey: UserDefaults.Keys.fcmToken)
         else {
             // TODO: - 회원가입에 실패했습니다 알람 띄우기
             fatalError()
@@ -36,7 +35,7 @@ extension UserDataModel {
             "pictureName": pictureName,
             "picturePath": picturePath,
             "fcmToken": fcmToken,
-            "isNotification": isNotification
+            "isNotification": UserDefaults.standard.bool(forKey: UserDefaults.Keys.isNotification)
         ]
         
         if loginType == LoginType.kakao.rawValue,
