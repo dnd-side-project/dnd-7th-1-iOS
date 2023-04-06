@@ -53,6 +53,7 @@ extension NavigationBar {
     /// naviBar 구성 이후, 인터랙션에 따라 title을 변경하거나 다른 폰트로 커스텀하고싶을 때 사용합니다.
     func setNaviBarTitleText(title: String, font: UIFont = .title3M) {
         self.title.text = title
+        self.title.font = font
     }
     
     /// title의 font를 변경하는 함수입니다.
