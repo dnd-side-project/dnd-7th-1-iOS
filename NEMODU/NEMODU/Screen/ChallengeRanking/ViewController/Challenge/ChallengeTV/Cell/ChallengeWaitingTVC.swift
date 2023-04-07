@@ -35,11 +35,11 @@ extension ChallengeWaitingTVC {
         dateFormatter.timeZone = TimeZone(identifier: "KST")
         dateFormatter.dateFormat = DateType.hyphen.dateFormatter
 
-        let startDate = dateFormatter.date(from: String(waitChallengeListElement.started.split(separator: "T")[0])) ?? .now
-        let components = Calendar.current.dateComponents([.day], from: .now, to: startDate)
+        var startDate = dateFormatter.date(from: String(waitChallengeListElement.started.split(separator: "T")[0])) ?? .now
+        startDate = Calendar.current.startOfDay(for: startDate)
+        let todayDate = Calendar.current.startOfDay(for: .now)
         
-        
-
+        let components = Calendar.current.dateComponents([.day], from: todayDate, to: startDate)
         dDayLabel.text = "D-\(components.day ?? 0)"
         
         // 상태 메세지 표시
