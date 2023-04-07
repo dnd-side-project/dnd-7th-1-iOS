@@ -358,7 +358,7 @@ extension WalkingVC {
                                                    isEnabled: false)
                     
                     // Area
-                    self.mapVC.drawBlockArea(matrices: $0.matrices,
+                    self.mapVC.drawBlockArea(matrices: $0.matrices ?? [],
                                              owner: .friends,
                                              blockColor: ChallengeColorType(rawValue: $0.challengeColor)?.blockColor ?? .gray25)
                 }
