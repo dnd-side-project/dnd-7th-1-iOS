@@ -187,7 +187,6 @@
 		3C30436E292F7F9C00FAD69A /* ChallengeDetailTVHV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C30436D292F7F9C00FAD69A /* ChallengeDetailTVHV.swift */; };
 		3C393FFD28A684DD0012B2B8 /* BaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C393FFC28A684DD0012B2B8 /* BaseTableViewCell.swift */; };
 		3C3BD76E28B36E1400AD55B6 /* AreaRankingListResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3BD76D28B36E1400AD55B6 /* AreaRankingListResponseModel.swift */; };
-		3C3BD77428B3754A00AD55B6 /* RankingListRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3BD77328B3754A00AD55B6 /* RankingListRequestModel.swift */; };
 		3C3BD77C28B3B0F800AD55B6 /* StepRankingListResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3BD77B28B3B0F800AD55B6 /* StepRankingListResponseModel.swift */; };
 		3C44DEE4294896D00039681A /* InvitedChallengeDetailResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C44DEE3294896D00039681A /* InvitedChallengeDetailResponseModel.swift */; };
 		3C44DEE62948A4360039681A /* InvitedChallengeAcceptType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C44DEE52948A4360039681A /* InvitedChallengeAcceptType.swift */; };
@@ -431,7 +430,6 @@
 		3C393FF828A659C90012B2B8 /* NoInvitedChallengeTVFV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoInvitedChallengeTVFV.swift; sourceTree = "<group>"; };
 		3C393FFC28A684DD0012B2B8 /* BaseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewCell.swift; sourceTree = "<group>"; };
 		3C3BD76D28B36E1400AD55B6 /* AreaRankingListResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AreaRankingListResponseModel.swift; sourceTree = "<group>"; };
-		3C3BD77328B3754A00AD55B6 /* RankingListRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankingListRequestModel.swift; sourceTree = "<group>"; };
 		3C3BD77B28B3B0F800AD55B6 /* StepRankingListResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepRankingListResponseModel.swift; sourceTree = "<group>"; };
 		3C44DEE3294896D00039681A /* InvitedChallengeDetailResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitedChallengeDetailResponseModel.swift; sourceTree = "<group>"; };
 		3C44DEE52948A4360039681A /* InvitedChallengeAcceptType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitedChallengeAcceptType.swift; sourceTree = "<group>"; };
@@ -1180,7 +1178,6 @@
 		3C3BD77228B3749700AD55B6 /* Request */ = {
 			isa = PBXGroup;
 			children = (
-				3C3BD77328B3754A00AD55B6 /* RankingListRequestModel.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -1499,8 +1496,6 @@
 				23412FDE28AE396D00B73D62 /* ChallengeListVM.swift in Sources */,
 				232B89FF28C8BCAA00737F18 /* LoginVM.swift in Sources */,
 				237573E928F92A1B006026ED /* NicknameCheckView.swift in Sources */,
-				3C3BD77428B3754A00AD55B6 /* RankingListRequestModel.swift in Sources */,
-				3C3BD77428B3754A00AD55B6 /* RankingListRequestModel.swift in Sources */,
 				2375740328FC43C0006026ED /* FriendRequestTVC.swift in Sources */,
 				3CB766BD290E773600EAE812 /* WaitChallengeListResponseModel.swift in Sources */,
 				3C4E8558298CDA95001E8766 /* ChallengeDetailMapVM.swift in Sources */,
