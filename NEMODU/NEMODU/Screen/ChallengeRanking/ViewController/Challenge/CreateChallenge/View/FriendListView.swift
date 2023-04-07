@@ -49,11 +49,7 @@ class FriendListView: BaseView {
     
     func configureFriendsListView(friendInfo: Info) {
         nicknameLabel.text = friendInfo.nickname
-        
-        profileImageView.kf.setImage(with: URL(string: friendInfo.picturePath))
-        if profileImageView.image == nil {
-            profileImageView.image = .defaultThumbnail
-        }
+        profileImageView.kf.setImage(with: friendInfo.picturePathURL, placeholder: UIImage.defaultThumbnail)
     }
     
 }

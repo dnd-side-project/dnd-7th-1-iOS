@@ -92,7 +92,7 @@ extension InvitedChallengeDetailVC : UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: InvitedFriendsTVC.className, for: indexPath) as? InvitedFriendsTVC else { return UITableViewCell() }
         guard let invitedChallengeDetailInfo = invitedChallengeDetailResponseModel else { return cell }
         let invitedUserInfo = invitedChallengeDetailInfo.infos[indexPath.row]
-        cell.configureInvitedFriendsTVC(userProfileImage: invitedUserInfo.picturePath, nickname: invitedUserInfo.nickname, status: invitedUserInfo.status)
+        cell.configureInvitedFriendsTVC(userProfileImageURL: invitedUserInfo.picturePathURL, nickname: invitedUserInfo.nickname, status: invitedUserInfo.status)
         
         return cell
     }

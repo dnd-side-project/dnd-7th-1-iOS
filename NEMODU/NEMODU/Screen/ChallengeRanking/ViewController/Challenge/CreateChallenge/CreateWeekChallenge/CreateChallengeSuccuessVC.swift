@@ -145,13 +145,10 @@ extension CreateChallengeSuccuessVC {
             let containerView = UIView()
             let profileImageView = UIImageView()
                 .then {
-                    $0.kf.setImage(with: URL(string: joinUserInfo.picturePath))
+                    $0.kf.setImage(with: joinUserInfo.picturePathURL, placeholder: UIImage.defaultThumbnail)
                     $0.layer.cornerRadius = 28
                     $0.layer.masksToBounds = true
                 }
-            if profileImageView.image == nil {
-                profileImageView.image = .defaultThumbnail
-            }
             
             let nicknameLabel = PaddingLabel()
                 .then {

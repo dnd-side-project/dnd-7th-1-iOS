@@ -21,3 +21,10 @@ struct Member: Codable {
     let nickname: String
     let picturePath: String
 }
+
+extension Member {
+    var picturePathURL: URL? {
+        guard let picturePathURL = picturePath.encodeURL() else { return nil }
+        return URL(string: picturePathURL)
+    }
+}

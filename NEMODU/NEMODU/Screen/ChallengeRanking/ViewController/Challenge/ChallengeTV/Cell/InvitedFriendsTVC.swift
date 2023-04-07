@@ -17,7 +17,7 @@ class InvitedFriendsTVC : BaseTableViewCell {
     
     private let userProfileImageView = UIImageView()
         .then {
-            $0.image = UIImage(named: "defaultThumbnail")
+            $0.image = .defaultThumbnail
             $0.layer.cornerRadius = 20
             $0.layer.masksToBounds = true
         }
@@ -77,7 +77,8 @@ class InvitedFriendsTVC : BaseTableViewCell {
     
     // MARK: - Function
     
-    func configureInvitedFriendsTVC(userProfileImage: String, nickname: String, status: String) {
+    func configureInvitedFriendsTVC(userProfileImageURL: URL?, nickname: String, status: String) {
+        userProfileImageView.kf.setImage(with: userProfileImageURL, placeholder: UIImage.defaultThumbnail)
         userNicknameLabel.text = nickname
         friendStatusLabel.text = InvitedChallengeAcceptType(rawValue: status)?.statusText
         

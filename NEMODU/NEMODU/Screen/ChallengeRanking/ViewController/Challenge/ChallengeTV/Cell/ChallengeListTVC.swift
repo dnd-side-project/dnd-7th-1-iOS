@@ -138,11 +138,8 @@ class ChallengeListTVC : BaseTableViewCell {
                     $0.layer.borderColor = UIColor.white.cgColor
                     $0.translatesAutoresizingMaskIntoConstraints = false
                     
-                    $0.kf.setImage(with: URL(string: usersImageURL[order]))
+                    $0.kf.setImage(with: URL(string: usersImageURL[order]), placeholder: UIImage.defaultThumbnail)
                 }
-            if userImageView.image == nil {
-                userImageView.image = .defaultThumbnail
-            }
             
             // make userImageViews contraints
             userImageContainerView.addSubview(userImageView)
