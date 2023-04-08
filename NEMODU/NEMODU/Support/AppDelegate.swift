@@ -86,6 +86,57 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         completionHandler([.banner, .sound, .badge])
     }
     
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
+        let nemoduTBC = window?.rootViewController as? NEMODUTBC
+        
+        let content = response.notification.request.content
+        switch content.categoryIdentifier {
+            // 친구 요청, 수락 시 마이페이지의 친구화면으로 전환
+        case NotificationCategoryType.friendRequest.identifier,
+            NotificationCategoryType.friendAccept.identifier:
+            nemoduTBC?.selectedIndex = 2
+            let mypageNC = nemoduTBC?.viewControllers?[2] as? MypageNC
+            let mypageVC = mypageNC?.viewControllers[0] as? MypageVC
+            
+            let friendsVC = FriendsVC()
+            friendsVC.hidesBottomBarWhenPushed = true
+            mypageVC?.navigationController?.pushViewController(friendsVC, animated: true)
+        
+            // 초대, 수락, 시작 전, 취소된 챌린지의 상세화면으로 전환
+        case NotificationCategoryType.challengeInvited.identifier,
+            NotificationCategoryType.challengeAccepted.identifier,
+            NotificationCategoryType.challengeStart.identifier,
+            NotificationCategoryType.challengeCancelled.identifier:
+            nemoduTBC?.selectedIndex = 0
+            let challengeRankingNC = nemoduTBC?.viewControllers?[0] as? ChallengeRankingNC
+            let challengeVC = challengeRankingNC?.viewControllers[0] as? ChallengeVC
+            
+            let invitedChallengeDetailVC = InvitedChallengeDetailVC()
+            invitedChallengeDetailVC.hidesBottomBarWhenPushed = true
+
+            invitedChallengeDetailVC.uuid = "11edd54eb4e38b67aac54d3b9a37e33f" // TODO: - reponse 내용 중 uuid값 추출 후 넘기는 작업 필요
+            invitedChallengeDetailVC.getInvitedChallengeDetailInfo()
+            
+            challengeVC?.navigationController?.pushViewController(invitedChallengeDetailVC, animated: true)
+            
+            // 진행 완료 챌린지 상세화면으로 전환
+        case NotificationCategoryType.challengeResult.identifier:
+            nemoduTBC?.selectedIndex = 0
+            let challengeRankingNC = nemoduTBC?.viewControllers?[0] as? ChallengeRankingNC
+            let challengeVC = challengeRankingNC?.viewControllers[0] as? ChallengeVC
+            
+            let challengeHistoryDetailVC = ChallengeHistoryDetailVC()
+            challengeHistoryDetailVC.hidesBottomBarWhenPushed = true
+            challengeHistoryDetailVC.challgeStatus = "Done"
+            
+            challengeHistoryDetailVC.getChallengeHistoryDetailInfo(uuid: "11edd54eb4e38b67aac54d3b9a37e33f") // TODO: - 변경된 요청값 반영필요(nickname&uuid로 완료된 챌린지 조회)
+            
+            challengeVC?.navigationController?.pushViewController(challengeHistoryDetailVC, animated: true)
+        default:
+            break
+        }
+    }
+    
 }
 
 // MARK: - Notification Setting

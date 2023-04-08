@@ -209,6 +209,7 @@
 		3C72D7C228B50EAA006E2229 /* SelectChallengeTypeButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C72D7C128B50EAA006E2229 /* SelectChallengeTypeButtonView.swift */; };
 		3C72D7C428B51BB6006E2229 /* SelectChallengeCreateVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C72D7C328B51BB6006E2229 /* SelectChallengeCreateVC.swift */; };
 		3C75C6F329290F2300452E7A /* SelectFriendsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C75C6F229290F2300452E7A /* SelectFriendsVC.swift */; };
+		3C79AEB429E128B40035EA12 /* NotificationCategoryType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C79AEB329E128B40035EA12 /* NotificationCategoryType.swift */; };
 		3C80DDAC28B8FD0A00A6EDE4 /* CreateChallengeRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C80DDAB28B8FD0A00A6EDE4 /* CreateChallengeRequestModel.swift */; };
 		3C86821828FD3FE700F37C06 /* RankingListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C86821728FD3FE700F37C06 /* RankingListVC.swift */; };
 		3C8B558129BDD035000545D6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3C8B558029BDD035000545D6 /* GoogleService-Info.plist */; };
@@ -450,6 +451,7 @@
 		3C72D7C128B50EAA006E2229 /* SelectChallengeTypeButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectChallengeTypeButtonView.swift; sourceTree = "<group>"; };
 		3C72D7C328B51BB6006E2229 /* SelectChallengeCreateVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectChallengeCreateVC.swift; sourceTree = "<group>"; };
 		3C75C6F229290F2300452E7A /* SelectFriendsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectFriendsVC.swift; sourceTree = "<group>"; };
+		3C79AEB329E128B40035EA12 /* NotificationCategoryType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCategoryType.swift; sourceTree = "<group>"; };
 		3C7FC21C289B9FE00071A752 /* ChallengeRankingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeRankingVC.swift; sourceTree = "<group>"; };
 		3C7FC22728A0F8F30071A752 /* Identify+Enum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Identify+Enum.swift"; sourceTree = "<group>"; };
 		3C7FC22B28A102CE0071A752 /* ChallengeRankingMenuBarCV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeRankingMenuBarCV.swift; sourceTree = "<group>"; };
@@ -987,6 +989,7 @@
 				3CF1C29B293D962100F7C189 /* ChallengeType.swift */,
 				3C44DEE52948A4360039681A /* InvitedChallengeAcceptType.swift */,
 				23C64DD02988D50100509E5B /* LoginType.swift */,
+				3C79AEB329E128B40035EA12 /* NotificationCategoryType.swift */,
 			);
 			path = Enum;
 			sourceTree = "<group>";
@@ -1510,6 +1513,7 @@
 				3CB9DBA628A954EE007BC1BE /* RankingVC.swift in Sources */,
 				3C4FB96528AA937100A429B8 /* ChallengeListTVHV.swift in Sources */,
 				237573F528FBE6BE006026ED /* MyProfileResponseModel.swift in Sources */,
+				3C79AEB429E128B40035EA12 /* NotificationCategoryType.swift in Sources */,
 				23C64DD32988D86C00509E5B /* LoginRequestModel.swift in Sources */,
 				2348B3E92892D0BF001095BC /* BaseNavigationController.swift in Sources */,
 				231A2B9128B2787200FF884B /* MypageVM.swift in Sources */,
