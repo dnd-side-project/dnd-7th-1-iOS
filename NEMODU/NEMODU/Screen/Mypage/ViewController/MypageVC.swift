@@ -12,6 +12,8 @@ import RxSwift
 import SnapKit
 import Then
 import Kingfisher
+import SafariServices
+import MessageUI
 
 class MypageVC: BaseViewController {
     private let baseScrollView = UIScrollView()
@@ -65,6 +67,8 @@ class MypageVC: BaseViewController {
         }
     
     private let setLocationBtn = ArrowBtn(title: "위치 정보 동의 설정")
+    
+    private let setPrivacyBtn = ArrowBtn(title: "개인 정보 설정")
     
     private let setAlarmBtn = ArrowBtn(title: "알림 설정")
     
@@ -141,7 +145,7 @@ extension MypageVC {
             $0.setBackgroundColor(.gray50, for: .highlighted)
         }
         
-        [setLocationBtn, setAlarmBtn, termsBtn, inquiryBtn].forEach {
+        [setLocationBtn, setPrivacyBtn, setAlarmBtn, termsBtn, inquiryBtn].forEach {
             settingBtnStackView.addArrangedSubview($0)
         }
         settingBtnStackView.addHorizontalSeparators(color: .gray50, height: 1)
@@ -182,7 +186,7 @@ extension MypageVC {
         
         btnView.snp.makeConstraints {
             $0.top.equalTo(separatorView.snp.bottom)
-            $0.height.equalTo(430)
+            $0.height.equalTo(486)
             $0.width.bottom.equalToSuperview()
         }
         
@@ -225,7 +229,7 @@ extension MypageVC {
             $0.bottom.equalToSuperview().offset(-68)
         }
         
-        [setLocationBtn, setAlarmBtn, termsBtn, inquiryBtn].forEach {
+        [setLocationBtn, setPrivacyBtn, setAlarmBtn, termsBtn, inquiryBtn].forEach {
             $0.snp.makeConstraints {
                 $0.height.equalTo(56)
             }
@@ -256,6 +260,82 @@ extension MypageVC {
                 self.navigationController?.pushViewController(friendsVC, animated: true)
             })
             .disposed(by: bag)
+        
+        setPrivacyBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                let setPrivacyVC = SetPrivacyVC()
+                setPrivacyVC.hidesBottomBarWhenPushed = true
+                self.navigationController?.pushViewController(setPrivacyVC, animated: true)
+            })
+            .disposed(by: bag)
+        
+        setAlarmBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                let setNotificationVC = SetNotificationVC()
+                setNotificationVC.hidesBottomBarWhenPushed = true
+                self.navigationController?.pushViewController(setNotificationVC, animated: true)
+            })
+            .disposed(by: bag)
+        
+        setLocationBtn.rx.tap
+            .asDriver()
+            .drive(onNext: {
+                guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+                if UIApplication.shared.canOpenURL(url) {
+                    UIApplication.shared.open(url)
+                }
+            })
+            .disposed(by: bag)
+        
+        termsBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                guard let url = URL(string: "https://curious-particle-6a6.notion.site/4331a9e974bb4d0d9812c952e4d24903") else { return }
+                
+                let safariViewController = SFSafariViewController(url: url)
+                safariViewController.preferredControlTintColor = .main
+                
+                present(safariViewController, animated: true, completion: nil)
+            })
+            .disposed(by: bag)
+        
+        inquiryBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                if MFMailComposeViewController.canSendMail() {
+                    let composeViewController = MFMailComposeViewController()
+                    composeViewController.mailComposeDelegate = self
+                    
+                    let dictionary = Bundle.main.infoDictionary
+                    let appVersion = dictionary?["CFBundleShortVersionString"]
+                    
+                    let bodyString = """
+                                         안녕하세요 네모두 서비스와 관련하여 문의드립니다.
+                                         
+                                         <-- 문의내용 입력 -->
+                                         
+                                         -------------------
+                                         Device OS Version : \(UIDevice.current.systemVersion)
+                                         App Version : \(appVersion ?? "unknown")
+                                         -------------------
+                                    """
+                    
+                        composeViewController.setToRecipients(["nemodu.official@gmail.com"])
+                        composeViewController.setSubject("네모두 서비스 관련문의")
+                        composeViewController.setMessageBody(bodyString, isHTML: false)
+                        
+                        self.present(composeViewController, animated: true, completion: nil)
+                    } else {
+                        self.popUpAlert(alertType: .sendMailError, targetVC: self, highlightBtnAction: #selector(self.dismissAlert), normalBtnAction: nil)
+                    }
+            })
+            .disposed(by: bag)
     }
     
     private func bindProfileTap() {
@@ -281,5 +361,13 @@ extension MypageVC {
                 self.configureUserData(data)
             })
             .disposed(by: bag)
+    }
+}
+
+// MARK: - Mail Delegate
+
+extension MypageVC: MFMailComposeViewControllerDelegate {
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        self.dismiss(animated: true, completion: nil)
     }
 }
