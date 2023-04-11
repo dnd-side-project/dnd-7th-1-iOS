@@ -8,8 +8,8 @@
 import UIKit
 
 enum ChallengeType: String {
-    case widen = "Widen"
-    case accumulate = "Accumulate"
+    case widen = "WIDEN"
+    case accumulate = "ACCUMULATE"
 }
 
 extension ChallengeType {
