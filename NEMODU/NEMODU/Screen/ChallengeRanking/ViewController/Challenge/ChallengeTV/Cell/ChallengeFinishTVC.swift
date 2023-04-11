@@ -53,18 +53,18 @@ extension ChallengeFinishTVC {
     func configureChallengeFinishTVC(doneChallengeListElement: ProgressAndDoneChallengeListElement) {
         challengeTypeLabel.text = "주간" // TODO: - 서버 response 값으로 주간, 실시간 표시 필요
         
-        let startDate = doneChallengeListElement.started.split(separator: "-")
-        let endDate = doneChallengeListElement.ended.split(separator: "-")
+        var startDate = doneChallengeListElement.started.split(separator: "T")
+        startDate = startDate[0].split(separator: "-")
+        var endDate = doneChallengeListElement.ended.split(separator: "T")
+        endDate = endDate[0].split(separator: "-")
         
         let format = DateFormatter()
         format.dateFormat = "yyyy-MM-dd"
         
-        let dayOfWeekDate = format.date(from: doneChallengeListElement.started)
+        let dayOfWeekDate = format.date(from: String(doneChallengeListElement.started.split(separator: "T")[0]))
         let dayOfWeekString = dayOfWeekDate?.getDayOfWeek()
         
         challengeTermLabel.text = "\(startDate[1]).\(startDate[2])(\(dayOfWeekString ?? "?")) - \(endDate[1]). \(endDate[2])(일)"
-        
-        //        dDayLabel.text =  TODO: - dDay 표시
         
         challengeNameImage.tintColor = ChallengeColorType(rawValue: doneChallengeListElement.color)?.primaryColor
         challengeNameLabel.text = doneChallengeListElement.name
