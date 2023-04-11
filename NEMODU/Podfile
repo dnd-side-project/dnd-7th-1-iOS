@@ -26,6 +26,9 @@ target 'NEMODU' do
   pod 'UITextView+Placeholder'
   pod 'lottie-ios'
   pod 'Kingfisher', '~> 7.0'
+
+  # FCM
+  pod 'Firebase/Messaging'
 end
 
 post_install do |installer|
