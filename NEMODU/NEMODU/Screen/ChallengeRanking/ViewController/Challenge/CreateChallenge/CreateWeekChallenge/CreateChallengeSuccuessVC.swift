@@ -114,9 +114,12 @@ extension CreateChallengeSuccuessVC {
     func configureCreateChallengeResponse(creatChallengeResponseModel: CreatChallengeResponseModel) {
         challengeTitleLabel.text = creatChallengeResponseModel.message
         
-        let startDates = creatChallengeResponseModel.started.parsingResponseValueTime()
-        let endDates = creatChallengeResponseModel.ended.parsingResponseValueTime()
-        challengeDateLabel.text = "\(startDates.month)월 \(startDates.day)일 - \(endDates.month)월 \(endDates.day)일"
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = DateType.withTime.dateFormatter
+        guard let startDate: Date = dateFormatter.date(from: creatChallengeResponseModel.started) else { return }
+        guard let endDate: Date = dateFormatter.date(from: creatChallengeResponseModel.ended) else { return }
+        
+        challengeDateLabel.text = "\(startDate.month)월 \(startDate.day)일 - \(endDate.month)월 \(endDate.day)일"
         
         configureJoinUserInfo(joinUsersInfo: creatChallengeResponseModel.members)
     }

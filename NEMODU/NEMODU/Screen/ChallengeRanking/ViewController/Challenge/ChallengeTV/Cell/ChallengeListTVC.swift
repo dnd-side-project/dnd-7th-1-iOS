@@ -101,12 +101,14 @@ class ChallengeListTVC : BaseTableViewCell {
         challengeTypeLabel.text = "주간" // TODO: - 서버 response 값으로 주간, 실시간 표시 필요
         
         // 날짜
-        let startDates = startDate.parsingResponseValueTime()
-        let endDates = endDate.parsingResponseValueTime()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = DateType.withTime.dateFormatter
+        guard let startDates: Date = dateFormatter.date(from: startDate) else { return }
+        guard let endDates: Date = dateFormatter.date(from: endDate) else { return }
         
         let format = DateFormatter()
         format.timeZone = TimeZone(identifier: "KST")
-        format.dateFormat = "yyyy-MM-dd"
+        format.dateFormat = DateType.hyphen.dateFormatter
         
         let dayOfWeekDate = format.date(from: String(startDate.split(separator: "T")[0]))
         let dayOfWeekString = dayOfWeekDate?.getDayOfWeek()

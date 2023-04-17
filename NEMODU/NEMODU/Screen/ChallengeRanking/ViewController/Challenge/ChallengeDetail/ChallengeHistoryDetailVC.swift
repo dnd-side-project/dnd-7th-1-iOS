@@ -183,9 +183,11 @@ class ChallengeHistoryDetailVC: ChallengeDetailVC {
 
 extension ChallengeHistoryDetailVC {
     
-    private func configureChallengeHistoryDetailVC(challengeHistoryDetailInfo: ChallengeHistoryDetailResponseModel) {
-        let startDate = challengeHistoryDetailInfo.started.parsingResponseValueTime()
-        let endDate = challengeHistoryDetailInfo.ended.parsingResponseValueTime()
+    private func configureChallengeHistoryDetailVC(challengeHistoryDetailInfo: ChallengeHistoryDetailResponseModel) {   
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = DateType.withTime.dateFormatter
+        guard let startDate: Date = dateFormatter.date(from: challengeHistoryDetailInfo.started) else { return }
+        guard let endDate: Date = dateFormatter.date(from: challengeHistoryDetailInfo.ended) else { return }
         
         var calendar = Calendar(identifier: .gregorian)
         calendar.firstWeekday = 2

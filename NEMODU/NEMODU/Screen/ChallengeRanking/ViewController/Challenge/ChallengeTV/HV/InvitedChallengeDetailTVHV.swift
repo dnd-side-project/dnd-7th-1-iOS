@@ -79,8 +79,10 @@ class InvitedChallengeDetailTVHV : ChallengeDetailTVHV {
     // MARK: - Function
     
     func configureInvitedChallengeDetailTVHV(invitedChallengeDetailInfo: InvitedChallengeDetailResponseModel) {
-        let startDate = invitedChallengeDetailInfo.started.parsingResponseValueTime()
-        let endDate = invitedChallengeDetailInfo.ended.parsingResponseValueTime()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = DateType.withTime.dateFormatter
+        guard let startDate: Date = dateFormatter.date(from: invitedChallengeDetailInfo.started) else { return }
+        guard let endDate: Date = dateFormatter.date(from: invitedChallengeDetailInfo.ended) else { return }
         
         var calendar = Calendar(identifier: .gregorian)
         calendar.firstWeekday = 2

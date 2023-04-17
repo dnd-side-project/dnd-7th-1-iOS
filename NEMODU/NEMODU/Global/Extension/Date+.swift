@@ -48,3 +48,29 @@ extension Date {
         return convertStr
     }
 }
+
+extension Date {
+    var year: String {
+        String(format: "%02d", Calendar.current.component(.year, from: self))
+    }
+    
+    var month: String {
+        String(format: "%02d", Calendar.current.component(.month, from: self))
+    }
+    
+    var day: String {
+        String(format: "%02d", Calendar.current.component(.day, from: self))
+    }
+    
+    var hour: String {
+        String(format: "%02d", Calendar.current.component(.hour, from: self))
+    }
+    
+    var minute: String {
+        String(format: "%02d", Calendar.current.component(.minute, from: self))
+    }
+    
+    var second: String {
+        String(format: "%02d", Calendar.current.component(.second, from: self))
+    }
+}
