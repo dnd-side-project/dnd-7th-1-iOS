@@ -186,14 +186,14 @@ extension AppDelegate {
         switch targetTabIndex {
         case 0:
             let challengeRankingNC = nemoduTBC?.viewControllers?[0] as? ChallengeRankingNC
-            let challengeVC = challengeRankingNC?.viewControllers[0] as? ChallengeVC
+            let challengeVC = challengeRankingNC?.viewControllers[0]
             targetIndexInstance = challengeVC ?? UIViewController()
         case 1:
             let mainVC = nemoduTBC?.viewControllers?[1] as? MainVC
             targetIndexInstance = mainVC ?? UIViewController()
         case 2:
             let mypageNC = nemoduTBC?.viewControllers?[2] as? MypageNC
-            let mypageVC = mypageNC?.viewControllers[0] as? MypageVC
+            let mypageVC = mypageNC?.viewControllers[0]
             targetIndexInstance = mypageVC ?? UIViewController()
         default:
             targetIndexInstance = UIViewController()
