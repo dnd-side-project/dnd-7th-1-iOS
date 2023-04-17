@@ -45,20 +45,4 @@ extension String {
     func encodeURL() -> String? {
         return addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
     }
-    
-    /// 서버에서 응답한 시간값을 시간 속성별로 나눠서 반환하는 함수
-    func parsingResponseValueTime() -> NemoduResponseTimeFomat {
-        let dateList = self.split(separator: "T")
-        let date = dateList[0].split(separator: "-")
-        let time = dateList[1].split(separator: ":")
-        
-        let parsingTimeResult = NemoduResponseTimeFomat(year: String(date[0]),
-                                                        month: String(date[1]),
-                                                        day: String(date[2]),
-                                                        hour: String(time[0]),
-                                                        minute: String(time[1]),
-                                                        second: String(time[2]))
-        
-        return parsingTimeResult
-    }
 }
