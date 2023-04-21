@@ -392,6 +392,7 @@ extension MapVC {
             }
         }
     }
+    
 }
 
 // MARK: - CLLocationManagerDelegate

@@ -1,18 +1,20 @@
 //
-//  EnterVM.swift
+//  ChallengeDetailMapVM.swift
 //  NEMODU
 //
-//  Created by 황윤경 on 2022/09/14.
+//  Created by Kim HeeJae on 2023/01/21.
 //
 
 import Foundation
 import RxCocoa
 import RxSwift
 
-final class EnterVM: BaseViewModel {
+final class ChallengeDetailMapVM: BaseViewModel {
     var apiSession: APIService = APISession()
     let apiError = PublishSubject<APIError>()
+    
     var bag = DisposeBag()
+    
     var input = Input()
     var output = Output()
     
@@ -23,7 +25,7 @@ final class EnterVM: BaseViewModel {
     // MARK: - Output
     
     struct Output {
-        var isLoginSuccess = PublishRelay<Bool>()
+        var challengeDetailMap = PublishRelay<ChallengeDetailMapResponseModel>()
     }
     
     // MARK: - Init
@@ -40,32 +42,31 @@ final class EnterVM: BaseViewModel {
 
 // MARK: - Input
 
-extension EnterVM: Input {
+extension ChallengeDetailMapVM: Input {
     func bindInput() {}
 }
 
 // MARK: - Output
 
-extension EnterVM: Output {
+extension ChallengeDetailMapVM: Output {
     func bindOutput() {}
 }
 
 // MARK: - Networking
 
-extension EnterVM {
-    func requestSignup(_ userData: UserDataModel) {
-        let path = "auth/sign"
-        let resource = urlResource<NicknameModel>(path: path)
+extension ChallengeDetailMapVM {
+    func getChallengeDetailMap(nickname: String, uuid: String) {
+        let path = "challenge/detail/map?nickname=\(nickname)&uuid=\(uuid)"
+        let resource = urlResource<ChallengeDetailMapResponseModel>(path: path)
         
-        AuthAPI.shared.signupRequest(with: resource, param: userData.userDataParam)
+        apiSession.getRequest(with: resource)
             .withUnretained(self)
             .subscribe(onNext: { owner, result in
                 switch result {
                 case .failure(let error):
-                    owner.apiError.onNext(error)
+                    owner.apiError.onError(error)
                 case .success(let data):
-                    UserDefaults.standard.set(data.nickname, forKey: UserDefaults.Keys.nickname)
-                    owner.output.isLoginSuccess.accept(true)
+                    owner.output.challengeDetailMap.accept(data)
                 }
             })
             .disposed(by: bag)

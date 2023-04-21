@@ -31,6 +31,8 @@ class InvitedChallengeDetailVC: ChallengeDetailVC {
     
     override func configureView() {
         super.configureView()
+        
+        configureTableView()
     }
     
     override func layoutView() {
@@ -52,9 +54,7 @@ class InvitedChallengeDetailVC: ChallengeDetailVC {
         viewModel.getInvitedChallengeDetail(nickname: nickname, uuid: uuid)
     }
     
-    override func configureTableView() {
-        super.configureTableView()
-        
+    func configureTableView() {
         _ = challengeDetailTableView
             .then {
                 $0.delegate = self
@@ -133,6 +133,7 @@ extension InvitedChallengeDetailVC : UITableViewDelegate {
 // MARK: - Output
 
 extension InvitedChallengeDetailVC {
+    
     private func bindInvitedChallengeDetail() {
         viewModel.output.invitedChallengeDetail
             .subscribe(onNext: { [weak self] data in

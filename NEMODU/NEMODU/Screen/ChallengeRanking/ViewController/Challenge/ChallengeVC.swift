@@ -306,7 +306,7 @@ extension ChallengeVC : UITableViewDelegate {
             case 2: // 진행 완료
                 let challengeHistoryDetailVC = ChallengeHistoryDetailVC()
                 challengeHistoryDetailVC.hidesBottomBarWhenPushed = true
-                challengeHistoryDetailVC.challgeStatus = "Done"
+                challengeHistoryDetailVC.configureChallengeDoneLayout()
                 
                 guard let doneChallengeList = doneChallengeListResponseModel else { return }
                 challengeHistoryDetailVC.getChallengeHistoryDetailInfo(uuid: doneChallengeList[indexPath.row].uuid)
