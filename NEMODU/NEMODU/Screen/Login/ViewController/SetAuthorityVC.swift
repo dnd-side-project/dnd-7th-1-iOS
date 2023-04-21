@@ -101,9 +101,10 @@ class SetAuthorityVC: BaseViewController {
 extension SetAuthorityVC {
     
     private func configureAuthorityListStackView() {
-        let authList = [["LocationOn", "위치", "(필수)", "현재 위치를 바탕으로 기록 저장"],
-                    ["CameraAlt", "카메라", "(선택)", "프로필 사진 촬영 및 저장"],
-                    ["AllInbox", "저장 공간", "(선택)", "앱을 통해 프로필 사진 촬영 시 기기에 저장"]]
+        typealias Auth = (imageNamed: String, title: String, option: String, explain: String)
+        let authList: [Auth] = [("LocationOn", "위치", "(필수)", "현재 위치를 바탕으로 기록 저장"),
+                                  ("CameraAlt", "카메라", "(선택)", "프로필 사진 촬영 및 저장"),
+                                  ("AllInbox", "저장 공간", "(선택)", "앱을 통해 프로필 사진 촬영 시 기기에 저장")]
         
         authList.forEach { auth in
             let baseView = UIView()
@@ -115,23 +116,23 @@ extension SetAuthorityVC {
                 }
             let iconImageView = UIImageView()
                 .then {
-                    $0.image = UIImage(named: auth[0])?.withRenderingMode(.alwaysTemplate)
+                    $0.image = UIImage(named: auth.imageNamed)?.withRenderingMode(.alwaysTemplate)
                     $0.tintColor = .gray300
                 }
             
             let titleLabel = UILabel()
                 .then {
-                    let attributedText = NSMutableAttributedString(string: auth[1],
+                    let attributedText = NSMutableAttributedString(string: auth.title,
                                                                    attributes: [NSAttributedString.Key.font: UIFont.headline1,
                                                                                 NSAttributedString.Key.foregroundColor: UIColor.gray900])
-                    attributedText.append(NSAttributedString(string: " \(auth[2])",
+                    attributedText.append(NSAttributedString(string: " \(auth.option)",
                                                              attributes: [NSAttributedString.Key.font: UIFont.headline1,
-                                                                          NSAttributedString.Key.foregroundColor: auth[2] == "(필수)" ? UIColor.main : UIColor.gray500]))
+                                                                          NSAttributedString.Key.foregroundColor: auth.option == "(필수)" ? UIColor.main : UIColor.gray500]))
                     $0.attributedText = attributedText
                 }
             let explainLabel = UILabel()
                 .then {
-                    $0.text = auth[3]
+                    $0.text = auth.explain
                     $0.textColor = .gray700
                     $0.font = .caption1
                 }
@@ -215,6 +216,8 @@ extension SetAuthorityVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
+                // TODO: - 앱 권한 설정안내 확인버튼 바인딩
+                print("confirmButton pressed")
             })
             .disposed(by: bag)
     }
