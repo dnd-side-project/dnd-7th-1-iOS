@@ -17,6 +17,7 @@
 		230CB2DF28AD473100B11270 /* UserBlockResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230CB2DE28AD473100B11270 /* UserBlockResponseModel.swift */; };
 		230CB2E128AD474E00B11270 /* ChallengeBlockResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230CB2E028AD474E00B11270 /* ChallengeBlockResponseModel.swift */; };
 		230CB2E428AD478000B11270 /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230CB2E328AD478000B11270 /* Matrix.swift */; };
+		2312200329DDD6E400928E4E /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2312200229DDD6E400928E4E /* Map.swift */; };
 		2312200529DE5A5400928E4E /* ToggleButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2312200429DE5A5400928E4E /* ToggleButtonView.swift */; };
 		2312519428B6943B00DF1C69 /* ToastType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2312519328B6943B00DF1C69 /* ToastType.swift */; };
 		2312519628B6944B00DF1C69 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2312519528B6944B00DF1C69 /* ToastView.swift */; };
@@ -257,6 +258,7 @@
 		230CB2DE28AD473100B11270 /* UserBlockResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBlockResponseModel.swift; sourceTree = "<group>"; };
 		230CB2E028AD474E00B11270 /* ChallengeBlockResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeBlockResponseModel.swift; sourceTree = "<group>"; };
 		230CB2E328AD478000B11270 /* Matrix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Matrix.swift; sourceTree = "<group>"; };
+		2312200229DDD6E400928E4E /* Map.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
 		2312200429DE5A5400928E4E /* ToggleButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleButtonView.swift; sourceTree = "<group>"; };
 		2312519328B6943B00DF1C69 /* ToastType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastType.swift; sourceTree = "<group>"; };
 		2312519528B6944B00DF1C69 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
@@ -938,6 +940,7 @@
 		239B52CC2892ED7A0030E8C0 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				2312200229DDD6E400928E4E /* Map.swift */,
 				230CB2DB28AD06E300B11270 /* Request */,
 				230CB2D928AD05E600B11270 /* Response */,
 				230CB2DA28AD06DA00B11270 /* DataSource */,
@@ -1519,6 +1522,7 @@
 				3C79AEB629E1AEAA0035EA12 /* SetPrivacyVC.swift in Sources */,
 				3C992F1728AE623B00D96E21 /* ListTypeMenuBarCVC.swift in Sources */,
 				23C4CD0728B7A87D00D2F469 /* Int+.swift in Sources */,
+				2312200329DDD6E400928E4E /* Map.swift in Sources */,
 				3C09AE3728AF6071005DD125 /* ChallengeWaitingTVC.swift in Sources */,
 				3C75C6F329290F2300452E7A /* SelectFriendsVC.swift in Sources */,
 				3C9FD39928B640D7006FA812 /* CreateWeekChallengeVC.swift in Sources */,
