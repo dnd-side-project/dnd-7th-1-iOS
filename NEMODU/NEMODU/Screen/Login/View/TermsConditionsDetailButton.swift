@@ -25,6 +25,7 @@ class TermsConditionsDetailButton: UIButton {
             $0.spacing = 8
             $0.distribution = .fillProportionally
             $0.alignment = .center
+            $0.isUserInteractionEnabled = false
         }
     
     private let checkImageView = UIImageView()
@@ -86,7 +87,7 @@ extension TermsConditionsDetailButton {
         }
         
         self.snp.makeConstraints {
-            $0.height.equalTo(18.0)
+            $0.height.equalTo(34.0)
         }
         baseStackView.snp.makeConstraints {
             $0.edges.equalTo(self)
