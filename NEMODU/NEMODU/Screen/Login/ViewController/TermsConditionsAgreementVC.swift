@@ -51,7 +51,7 @@ class TermsConditionsAgreementVC: BaseViewController {
     
     private let agreeListStackView = UIStackView()
         .then {
-            $0.spacing = 12.0
+            $0.spacing = 0.0
             $0.axis = .vertical
             $0.distribution = .fill
         }
@@ -120,6 +120,12 @@ class TermsConditionsAgreementVC: BaseViewController {
         present(safariViewController, animated: true, completion: nil)
     }
     
+    private func updateStartButtonStatus(isAgree: Bool) {
+        startButton.setTitleColor(isAgree ? .secondary : .gray400, for: .normal)
+        startButton.backgroundColor = isAgree ? .main: .gray100
+        startButton.isEnabled = isAgree
+    }
+    
 }
 
 // MARK: - Layout
@@ -171,13 +177,13 @@ extension TermsConditionsAgreementVC {
             $0.height.equalTo(1.0)
             
             $0.horizontalEdges.equalTo(startButton)
-            $0.bottom.equalTo(agreeListStackView.snp.top).offset(-22.0)
+            $0.bottom.equalTo(agreeListStackView.snp.top).offset(-8.0)
         }
         
         agreeListStackView.snp.makeConstraints {
             $0.left.equalTo(startButton.snp.left).offset(16.0)
             $0.right.equalTo(startButton.snp.right)
-            $0.bottom.equalTo(startButton.snp.top).offset(-90.0)
+            $0.bottom.equalTo(startButton.snp.top).offset(-60.0)
         }
         
         startButton.snp.makeConstraints {
@@ -200,33 +206,29 @@ extension TermsConditionsAgreementVC {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 
-                agreeAllButton.isSelected.toggle()
+                self.agreeAllButton.isSelected.toggle()
                 
-                let isAgree = agreeAllButton.isSelected
-                agreeAllImageView.tintColor = isAgree ? .main : .gray300
+                let isAgree = self.agreeAllButton.isSelected
+                self.agreeAllImageView.tintColor = isAgree ? .main : .gray300
                 
-                for subview in agreeListStackView.subviews {
-                    if subview is TermsConditionsDetailButton {
-                        let detailButton = subview as? TermsConditionsDetailButton
-                        detailButton?.isAgreeDetailButton(isAgree: isAgree)
+                for subview in self.agreeListStackView.subviews {
+                    if let detailButton = subview as? TermsConditionsDetailButton {
+                        detailButton.isAgreeDetailButton(isAgree: isAgree)
                     }
                 }
                 
-                _ = startButton
-                    .then {
-                        $0.setTitleColor(isAgree ? .secondary : .gray400, for: .normal)
-                        $0.backgroundColor = isAgree ? .main: .gray100
-                        $0.isEnabled = isAgree
-                    }
+                updateStartButtonStatus(isAgree: isAgree)
             })
             .disposed(by: bag)
         
+        let baseURL = "https://nemodu-s3.s3.ap-northeast-2.amazonaws.com/terms/"
         serviceTermsConditionsDetailButton.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 
-                showTermsConditionsWebPage(url: "https://curious-particle-6a6.notion.site/e7cae02c04a9452aa89dd18d827b2ccd")
+                // 서비스 이용약관 URL
+                self.showTermsConditionsWebPage(url: baseURL + "terms_service.html")
             })
             .disposed(by: bag)
         
@@ -235,7 +237,8 @@ extension TermsConditionsAgreementVC {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
 
-                showTermsConditionsWebPage(url: "https://curious-particle-6a6.notion.site/877922d5ca5d42a8ae87780ae95ad6bf")
+                // 개인 정보 수집 및 이용 동의 URL
+                self.showTermsConditionsWebPage(url: baseURL + "terms_personal_information_collection.html")
             })
             .disposed(by: bag)
         
@@ -244,7 +247,8 @@ extension TermsConditionsAgreementVC {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 
-                showTermsConditionsWebPage(url: "https://curious-particle-6a6.notion.site/811ea9cf09654c0b87ee50b505b5f6be")
+                // 위치 기반 서비스 약관 동의 URL
+                self.showTermsConditionsWebPage(url: baseURL + "terms_location_service.html")
             })
             .disposed(by: bag)
     }
