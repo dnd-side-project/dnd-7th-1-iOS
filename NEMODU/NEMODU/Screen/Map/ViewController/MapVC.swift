@@ -56,28 +56,36 @@ class MapVC: BaseViewController {
             $0.layer.borderColor = UIColor.white.cgColor
         }
     
+    private let bag = DisposeBag()
+    
+    // Map Overlay
+    var userOverlay = Area()
+    var friendsOverlay = Area()
+    var myMatrices = Set<Matrix>()
+    var friendsMatrices = Set<Matrix>()
+    var myBlocks = [Block]()
+    var friendsBlocks = [Block]()
+    
+    // 사용자 위치 이동
+    var isFocusOn = true
+    
+    // 운동 기록
+    var blocks: [Matrix] = []
+    var blocksCnt = BehaviorRelay<Int>(value: 0)
+    var isWalking: Bool?
+    var updateDistance = BehaviorRelay<Int>(value: 0)
+    
     private let activityManager = CMMotionActivityManager()
     private let pedoMeter = CMPedometer()
     private var pauseCnt = 0
     var stepCnt = 0
-    
-    private let bag = DisposeBag()
     
     private var prevLatitude: Int = 0
     private var prevLongitude: Int = 0
     private var previousCoordinate: CLLocationCoordinate2D?
     private var walkDistance: Double = 0
     
-    var isFocusOn = true
-    var isWalking: Bool?
-    var updateDistance = BehaviorRelay<Int>(value: 0)
-    
-    var userOverlay = [Block]()
-    var friendsOverlay = [Block]()
-    var myMatrices = Set<Matrix>()
-    var friendsMatrices = Set<Matrix>()
-    var blocks: [Matrix] = []
-    var blocksCnt = BehaviorRelay<Int>(value: 0)
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -332,41 +340,43 @@ extension MapVC {
                                       color: .main80))
     }
     
-    /// 영역 배열, 소유자, 색상을 받아 소유자의 영역 Set에 추가하고 overlay를 추가하는 메서드로 영역 전체를 그린다.
-    /// 중복을 확인하고 탐색 횟수를 줄이기 위해 Matrix를 저장하는 영역 집합(Set)에서 contains 여부를 확인하고 새로 추가된 데이터만 overlay에 추가한다.
-    /// 이미 추가된 overlay는 지워지지 않고 새로 받아오는 영역 값만 overlay에 추가된다.
+    /// 영역 배열, 소유자, 색상을 받아 소유자의 영역 Set에 추가하고 기존 overlay를 remove 후 지도에 Area 추가
     func drawBlockArea(matrices: [Matrix], owner: BlocksType, blockColor: UIColor) {
-        let newBlocks = owner == .mine
-        ? appendMatrix(&myMatrices)
-        : appendMatrix(&friendsMatrices)
-        
-        owner == .mine
-        ? (userOverlay += newBlocks)
-        : (friendsOverlay += newBlocks)
-        
-        mapView.addOverlays(newBlocks)
-        
-        /// 중복 영역인지 확인하고 아니라면 사용자 영역에 추가한다.
-        /// 추가할 영역(Block)을 return 한다.
-        func appendMatrix(_ userMatrices: inout Set<Matrix>) -> [Block] {
-            var blocks = [Block]()
+        if owner == .mine {
             matrices.forEach {
-                if !userMatrices.contains($0) {
-                    userMatrices.insert($0)
-                    blocks.append(makeBlocks(matrix: $0,
-                                                owner: owner,
-                                                color: blockColor))
+                if !myMatrices.contains($0) {
+                    myMatrices.insert($0)
+                    myBlocks.append(makeBlocks(matrix: $0,
+                                               owner: owner,
+                                               color: blockColor))
                 }
             }
-            return blocks
+            mapView.removeOverlay(userOverlay)
+            userOverlay = Area(myBlocks)
+            userOverlay.color = blockColor
+            mapView.addOverlay(userOverlay)
+        } else {
+            matrices.forEach {
+                if !friendsMatrices.contains($0) {
+                    friendsMatrices.insert($0)
+                    friendsBlocks.append(makeBlocks(matrix: $0,
+                                                    owner: owner,
+                                                    color: blockColor))
+                }
+            }
+            mapView.removeOverlay(friendsOverlay)
+            friendsOverlay = Area(friendsBlocks)
+            friendsOverlay.color = blockColor
+            mapView.addOverlay(friendsOverlay)
         }
     }
+    
     
     /// 영역의 소유자를 입력받아 visible 상태를 지정하는 함수
     func setOverlayVisible(of owner: BlocksType, visible: Bool) {
         visible
-        ? mapView.addOverlays(owner == .mine ? userOverlay : friendsOverlay)
-        : mapView.removeOverlays(owner == .mine ? userOverlay : friendsOverlay)
+        ? mapView.addOverlay(owner == .mine ? userOverlay : friendsOverlay)
+        : mapView.removeOverlay(owner == .mine ? userOverlay : friendsOverlay)
     }
     
     /// 내 annotation의 visible 상태를 지정하는 함수
