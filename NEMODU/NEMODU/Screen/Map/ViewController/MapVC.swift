@@ -25,6 +25,8 @@ class MapVC: BaseViewController {
             $0.showsUserLocation = true
             $0.isZoomEnabled = true
             $0.showsTraffic = false
+            $0.cameraZoomRange = MKMapView.CameraZoomRange(minCenterCoordinateDistance: 0,
+                                                           maxCenterCoordinateDistance: Map.cameraZoomRange)
         }
     
     var locationManager = CLLocationManager()
