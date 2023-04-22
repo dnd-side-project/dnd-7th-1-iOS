@@ -10,7 +10,7 @@ import Foundation
 struct ChallengeBlockResponseModel: Codable {
     let nickname: String
     let latitude, longitude: Double
-    let matrices: [Matrix]
+    let matrices: [Matrix]?
     let challengeColor: String
     let challengeNumber: Int
     let picturePath: String
