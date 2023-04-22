@@ -703,7 +703,6 @@
 			isa = PBXGroup;
 			children = (
 				237CED1629767F3900A8F23C /* NEMODU.entitlements */,
-				3CE87A5429F3AA000080CA39 /* GoogleService-Info.plist */,
 				2348B3DE2892D027001095BC /* Global */,
 				2348B3D32892CE89001095BC /* Screen */,
 				2348B3D22892CE56001095BC /* Support */,
@@ -717,6 +716,7 @@
 			children = (
 				2348B3BE2892C675001095BC /* AppDelegate.swift */,
 				2348B3C72892C676001095BC /* Assets.xcassets */,
+				3CE87A5429F3AA000080CA39 /* GoogleService-Info.plist */,
 				2348B3CC2892C676001095BC /* Info.plist */,
 			);
 			path = Support;
