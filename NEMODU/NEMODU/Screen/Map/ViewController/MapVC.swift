@@ -467,17 +467,24 @@ extension MapVC: CLLocationManagerDelegate {
 }
 
 extension MapVC: MKMapViewDelegate {
-    /// 사용자 땅을 칠하는 함수
+    /// 사용자 땅을 칠하는 함수 /
+    /// 운동 기록 - Block: MKPolygon /
+    /// 영역 기록(덩어리) - Area: MKMultiPolygon /
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        let renderer: MKOverlayPathRenderer
+        
         if let block = overlay as? Block {
-            let blockRenderer = MKPolygonRenderer(overlay: overlay)
-            blockRenderer.fillColor = block.color
-            return blockRenderer
+            renderer = MKPolygonRenderer(overlay: overlay)
+            renderer.fillColor = block.color
+        } else if let area = overlay as? Area {
+            renderer = MKMultiPolygonRenderer(overlay: overlay)
+            renderer.fillColor = area.color
         } else {
-            // TODO: - Alert 띄우기
             print("영역을 그릴 수 없습니다")
             return MKOverlayRenderer()
         }
+        
+        return renderer
     }
     
     /// custom annotationView를 반환하는 함수
