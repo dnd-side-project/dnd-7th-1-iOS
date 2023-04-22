@@ -78,7 +78,7 @@ extension WalkingVM: Output {
 // MARK: - Networking
 
 extension WalkingVM {
-    func getAllBlocks(_ latitude: Double, _ longitude: Double, _ spanDelta: Double) {
+    func getAllBlocks(_ latitude: Double, _ longitude: Double, _ spanDelta: Double = Map.defalutZoomScale) {
         guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
         let path = "user/home?nickname=\(nickname)&latitude=\(latitude)&longitude=\(longitude)&spanDelta=\(spanDelta)"
         let resource = urlResource<MainMapResponseModel>(path: path)

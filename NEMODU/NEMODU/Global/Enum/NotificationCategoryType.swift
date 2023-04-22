@@ -26,7 +26,7 @@ extension NotificationCategoryType {
         case .friendRequest:
             return "FRIEND_RECEIVED_REQUEST"
         case .friendAccept:
-            return "FRIEND_AGREE"
+            return "FRIEND_ACCEPT"
         // 챌린지
         case .challengeInvited:
             return "CHALLENGE_RECEIVED_REQUEST"

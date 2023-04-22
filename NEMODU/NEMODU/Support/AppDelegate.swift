@@ -87,43 +87,44 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
-        let nemoduTBC = window?.rootViewController as? NEMODUTBC
+        let userInfo = response.notification.request.content.userInfo
         
-        let content = response.notification.request.content
-        switch content.categoryIdentifier {
+        guard let action = userInfo["action"] as? String else { return }
+        
+        var toGoTabVC = UIViewController()
+        var toPushVC = UIViewController()
+        
+        switch action {
             // 친구 요청, 수락 시 마이페이지의 친구화면으로 전환
         case NotificationCategoryType.friendRequest.identifier,
             NotificationCategoryType.friendAccept.identifier:
-            nemoduTBC?.selectedIndex = 2
-            let mypageNC = nemoduTBC?.viewControllers?[2] as? MypageNC
-            let mypageVC = mypageNC?.viewControllers[0] as? MypageVC
+            toGoTabVC = getTabIndexInstance(targetTabIndex: 2)
             
             let friendsVC = FriendsVC()
             friendsVC.hidesBottomBarWhenPushed = true
-            mypageVC?.navigationController?.pushViewController(friendsVC, animated: true)
-        
+            
+            toPushVC = friendsVC
+            
             // 초대, 수락, 시작 전, 취소된 챌린지의 상세화면으로 전환
         case NotificationCategoryType.challengeInvited.identifier,
             NotificationCategoryType.challengeAccepted.identifier,
             NotificationCategoryType.challengeStart.identifier,
             NotificationCategoryType.challengeCancelled.identifier:
-            nemoduTBC?.selectedIndex = 0
-            let challengeRankingNC = nemoduTBC?.viewControllers?[0] as? ChallengeRankingNC
-            let challengeVC = challengeRankingNC?.viewControllers[0] as? ChallengeVC
+            toGoTabVC = getTabIndexInstance(targetTabIndex: 0)
+            
+            guard let targetUUID = userInfo["challenge_uuid"] as? String else { return }
             
             let invitedChallengeDetailVC = InvitedChallengeDetailVC()
             invitedChallengeDetailVC.hidesBottomBarWhenPushed = true
-
-            invitedChallengeDetailVC.uuid = "11edd54eb4e38b67aac54d3b9a37e33f" // TODO: - reponse 내용 중 uuid값 추출 후 넘기는 작업 필요
+            
+            invitedChallengeDetailVC.uuid = targetUUID
             invitedChallengeDetailVC.getInvitedChallengeDetailInfo()
             
-            challengeVC?.navigationController?.pushViewController(invitedChallengeDetailVC, animated: true)
+            toPushVC = invitedChallengeDetailVC
             
             // 진행 완료 챌린지 상세화면으로 전환
         case NotificationCategoryType.challengeResult.identifier:
-            nemoduTBC?.selectedIndex = 0
-            let challengeRankingNC = nemoduTBC?.viewControllers?[0] as? ChallengeRankingNC
-            let challengeVC = challengeRankingNC?.viewControllers[0] as? ChallengeVC
+            toGoTabVC = getTabIndexInstance(targetTabIndex: 0)
             
             let challengeHistoryDetailVC = ChallengeHistoryDetailVC()
             challengeHistoryDetailVC.hidesBottomBarWhenPushed = true
@@ -131,15 +132,18 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             
             challengeHistoryDetailVC.getChallengeHistoryDetailInfo(uuid: "11edd54eb4e38b67aac54d3b9a37e33f") // TODO: - 변경된 요청값 반영필요(nickname&uuid로 완료된 챌린지 조회)
             
-            challengeVC?.navigationController?.pushViewController(challengeHistoryDetailVC, animated: true)
+            toPushVC = challengeHistoryDetailVC
+            
         default:
             break
         }
+        
+        toGoTabVC.navigationController?.pushViewController(toPushVC, animated: true)
     }
     
 }
 
-// MARK: - Notification Setting
+// MARK: - 푸시알림(Notification) 관련 Functions
 
 extension AppDelegate {
     
@@ -172,6 +176,30 @@ extension AppDelegate {
                     UserDefaults.standard.set(false, forKey: UserDefaults.Keys.isNotification)
                 }
             }
+    }
+    
+    private func getTabIndexInstance(targetTabIndex: Int) -> UIViewController {
+        let nemoduTBC = window?.rootViewController as? NEMODUTBC
+        nemoduTBC?.selectedIndex = targetTabIndex
+        
+        var targetIndexInstance = UIViewController()
+        switch targetTabIndex {
+        case 0:
+            let challengeRankingNC = nemoduTBC?.viewControllers?[0] as? ChallengeRankingNC
+            let challengeVC = challengeRankingNC?.viewControllers[0]
+            targetIndexInstance = challengeVC ?? UIViewController()
+        case 1:
+            let mainVC = nemoduTBC?.viewControllers?[1] as? MainVC
+            targetIndexInstance = mainVC ?? UIViewController()
+        case 2:
+            let mypageNC = nemoduTBC?.viewControllers?[2] as? MypageNC
+            let mypageVC = mypageNC?.viewControllers[0]
+            targetIndexInstance = mypageVC ?? UIViewController()
+        default:
+            targetIndexInstance = UIViewController()
+        }
+        
+        return targetIndexInstance
     }
     
 }
