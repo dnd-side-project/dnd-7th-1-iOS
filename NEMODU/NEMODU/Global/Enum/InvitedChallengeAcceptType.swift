@@ -28,6 +28,15 @@ extension InvitedChallengeAcceptType {
             return "거절"
         }
     }
+    
+    var statusColor: UIColor {
+        switch self {
+        case .progress:
+            return .main
+        default:
+            return .gray600
+        }
+    }
 }
 
 // MARK: - Custom String Convertible
