@@ -119,7 +119,7 @@ extension CreateChallengeSuccuessVC {
         guard let startDate: Date = dateFormatter.date(from: creatChallengeResponseModel.started) else { return }
         guard let endDate: Date = dateFormatter.date(from: creatChallengeResponseModel.ended) else { return }
         
-        challengeDateLabel.text = "\(startDate.month)월 \(startDate.day)일 - \(endDate.month)월 \(endDate.day)일"
+        challengeDateLabel.text = "\(startDate.month.showTwoDigitNumber)월 \(startDate.day.showTwoDigitNumber)일 - \(endDate.month.showTwoDigitNumber)월 \(endDate.day.showTwoDigitNumber)일"
         
         configureJoinUserInfo(joinUsersInfo: creatChallengeResponseModel.members)
     }

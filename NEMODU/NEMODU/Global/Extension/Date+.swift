@@ -50,27 +50,27 @@ extension Date {
 }
 
 extension Date {
-    var year: String {
-        String(format: "%02d", Calendar.current.component(.year, from: self))
+    var year: Int {
+        Calendar.current.component(.year, from: self)
     }
     
-    var month: String {
-        String(format: "%02d", Calendar.current.component(.month, from: self))
+    var month: Int {
+        Calendar.current.component(.month, from: self)
     }
     
-    var day: String {
-        String(format: "%02d", Calendar.current.component(.day, from: self))
+    var day: Int {
+        Calendar.current.component(.day, from: self)
     }
     
-    var hour: String {
-        String(format: "%02d", Calendar.current.component(.hour, from: self))
+    var hour: Int {
+        Calendar.current.component(.hour, from: self)
     }
     
-    var minute: String {
-        String(format: "%02d", Calendar.current.component(.minute, from: self))
+    var minute: Int {
+        Calendar.current.component(.minute, from: self)
     }
     
-    var second: String {
-        String(format: "%02d", Calendar.current.component(.second, from: self))
+    var second: Int {
+        Calendar.current.component(.second, from: self)
     }
 }

@@ -196,11 +196,11 @@ extension ChallengeHistoryDetailVC {
         challengeDetailInfoView.weekChallengeTypeLabel.text = ChallengeType(rawValue: challengeHistoryDetailInfo.type)?.title
         challengeDetailInfoView.challengeNameImageView.tintColor = ChallengeColorType(rawValue: challengeHistoryDetailInfo.color)?.primaryColor
         challengeDetailInfoView.challengeNameLabel.text = challengeHistoryDetailInfo.name
-        challengeDetailInfoView.currentStateLabel.text = "\(startDate.year) \(startDate.month)월 \(weekOfMonth)주차 (\(startDate.month).\(startDate.day)~\(endDate.month).\(endDate.day))"
+        challengeDetailInfoView.currentStateLabel.text = "\(startDate.year) \(startDate.month.showTwoDigitNumber)월 \(weekOfMonth)주차 (\(startDate.month.showTwoDigitNumber).\(startDate.day.showTwoDigitNumber)~\(endDate.month.showTwoDigitNumber).\(endDate.day.showTwoDigitNumber))"
         setDDayStatus()
         
-        startLabel.text = "\(startDate.month).\(startDate.day) 부터"
-        endLabel.text = "\(endDate.month).\(endDate.day) 까지"
+        startLabel.text = "\(startDate.month.showTwoDigitNumber).\(startDate.day.showTwoDigitNumber) 부터"
+        endLabel.text = "\(endDate.month.showTwoDigitNumber).\(endDate.day.showTwoDigitNumber) 까지"
         
         updateChallengeTableViewHeight(rankingsCnt: challengeHistoryDetailInfo.rankings.count)
         

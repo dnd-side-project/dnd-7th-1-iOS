@@ -113,7 +113,7 @@ class ChallengeListTVC : BaseTableViewCell {
         let dayOfWeekDate = format.date(from: String(startDate.split(separator: "T")[0]))
         let dayOfWeekString = dayOfWeekDate?.getDayOfWeek()
         
-        challengeTermLabel.text = "\(startDates.month).\(startDates.day)(\(dayOfWeekString ?? "?")) - \(endDates.month).\(endDates.day)(일)"
+        challengeTermLabel.text = "\(startDates.month.showTwoDigitNumber).\(startDates.day.showTwoDigitNumber)(\(dayOfWeekString ?? "?")) - \(endDates.month.showTwoDigitNumber).\(endDates.day.showTwoDigitNumber)(일)"
         
         // 챌린지 아이콘 색상 설정
         challengeNameImageView.tintColor = ChallengeColorType(rawValue: challengeColor)?.primaryColor

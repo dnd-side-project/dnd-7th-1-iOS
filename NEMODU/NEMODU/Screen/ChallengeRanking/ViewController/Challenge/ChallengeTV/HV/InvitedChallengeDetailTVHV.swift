@@ -91,7 +91,7 @@ class InvitedChallengeDetailTVHV : ChallengeDetailTVHV {
         weekChallengeTypeLabel.text = ChallengeType(rawValue: invitedChallengeDetailInfo.type)?.title
         challengeNameImage.tintColor = ChallengeColorType(rawValue: invitedChallengeDetailInfo.color)?.primaryColor
         challengeNameLabel.text = invitedChallengeDetailInfo.name
-        currentStateLabel.text = "\(startDate.year) \(startDate.month)월 \(weekOfMonth)주차 (\(startDate.month).\(startDate.day)~\(endDate.month).\(endDate.day))"
+        currentStateLabel.text = "\(startDate.year) \(startDate.month.showTwoDigitNumber)월 \(weekOfMonth)주차 (\(startDate.month.showTwoDigitNumber).\(startDate.day.showTwoDigitNumber)~\(endDate.month.showTwoDigitNumber).\(endDate.day.showTwoDigitNumber))"
         configureInvitedFriendsListTitleLabel(friendsCnt: invitedChallengeDetailInfo.infos.count)
         
         updateInviteChallengeByMyUserStatus(infos: invitedChallengeDetailInfo.infos)

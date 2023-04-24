@@ -14,6 +14,10 @@ extension Int {
         return numberFormatter.string(from: NSNumber(value: self))!
     }
     
+    var showTwoDigitNumber: String {
+        String(format: "%02d", self)
+    }
+    
     var toKilometer: String {
         let formatter = LengthFormatter()
         formatter.numberFormatter.maximumFractionDigits = 2
