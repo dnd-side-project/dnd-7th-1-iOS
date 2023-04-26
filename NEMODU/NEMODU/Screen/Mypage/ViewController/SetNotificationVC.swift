@@ -91,12 +91,14 @@ class SetNotificationVC: BaseViewController {
     // MARK: - Variables and Properties
     
     private let bag = DisposeBag()
+    private let viewModel = SetNotificationVM()
     
     // MARK: - Life Cycle
     
     override func configureView() {
         super.configureView()
-        
+    
+        checkUserNotificationEnabled()
         configureNavigationBar()
         configureSettingListStackView()
     }
@@ -110,7 +112,13 @@ class SetNotificationVC: BaseViewController {
     override func bindInput() {
         super.bindInput()
         
-        bindButton()
+        bindNotificationToggleButton()
+    }
+    
+    override func bindOutput() {
+        super.bindOutput()
+        
+        fetchUserNotificationSettings()
     }
     
 }
@@ -118,6 +126,52 @@ class SetNotificationVC: BaseViewController {
 // MARK: - Configure
 
 extension SetNotificationVC {
+    
+    private func checkUserNotificationEnabled() {
+        UNUserNotificationCenter.current()
+            .getNotificationSettings { permission in
+                switch permission.authorizationStatus {
+                case .authorized,
+                    .ephemeral,
+                    .provisional:
+                    self.viewModel.getUserNotificationSettings()
+                    
+                case .denied,
+                    .notDetermined:
+                    self.setDisabledNotificationSettings()
+                    
+                @unknown default:
+                    break
+                }
+        }
+    }
+    
+    private func setDisabledNotificationSettings() {
+        DispatchQueue.main.async { [self] in
+            for subview in settingListStackView.subviews {
+                if let toggleButton = subview as? ToggleButtonView {
+                    toggleButton.toggleBtn.isOn = false
+                }
+            }
+            settingListStackView.isUserInteractionEnabled = false
+            settingListStackView.alpha = 0.5
+        }
+    }
+    
+    private func setUserNotificaionSettings(userSettings: SetNotificationResponseModel) {
+        // 새로운 주차 알림
+        newWeekStartToggleButtonView.toggleBtn.isOn = userSettings.notiWeekStart
+        newWeekEndToggleButtonView.toggleBtn.isOn = userSettings.notiWeekEnd
+        // 친구 알림
+        friendRequestToggleButtonView.toggleBtn.isOn = userSettings.notiFriendRequest
+        friendAcceptToggleButtonView.toggleBtn.isOn = userSettings.notiFriendAccept
+        // 챌린지 알림
+        challengeInviteToggleButtonView.toggleBtn.isOn = userSettings.notiChallengeRequest
+        challengeAcceptToggleButtonView.toggleBtn.isOn = userSettings.notiChallengeAccept
+        challengeProgressToggleButtonView.toggleBtn.isOn = userSettings.notiChallengeStart
+        challengeCancelToggleButtonView.toggleBtn.isOn = userSettings.notiChallengeCancel
+        challengeResultToggleButtonView.toggleBtn.isOn = userSettings.notiChallengeResult
+    }
     
     private func configureNavigationBar() {
         navigationBar.naviType = .push
@@ -203,8 +257,36 @@ extension SetNotificationVC {
 
 extension SetNotificationVC {
     
-    private func bindButton() {
-        // TODO: - 알림설정 서버연결
+    private func bindNotificationToggleButton() {
+        typealias BindList = (toggleButton: ToggleButtonView, notificationType: NotificationCategoryType)
+        let toggleButtonList: [BindList] = [(newWeekStartToggleButtonView, .challengeWeekStart), (newWeekEndToggleButtonView, .challengeWeekEnd),
+                                            (friendRequestToggleButtonView, .friendRequest), (friendAcceptToggleButtonView, .friendAccept),
+                                            (challengeInviteToggleButtonView, .challengeInvited), (challengeAcceptToggleButtonView, .challengeAccepted), (challengeProgressToggleButtonView, .challengeStart), (challengeCancelToggleButtonView, .challengeCancelled), (challengeResultToggleButtonView, .challengeResult)]
+        
+        toggleButtonList.forEach { target in
+            target.toggleButton.toggleBtn.rx.isOn
+                .changed
+                .withUnretained(self)
+                .subscribe(onNext: { owner, status in
+                    owner.viewModel.updateNotificationSetting(notificationType: target.notificationType)
+                })
+                .disposed(by: bag)
+        }
+    }
+    
+}
+
+// MARK: - Output
+
+extension SetNotificationVC {
+    
+    private func fetchUserNotificationSettings() {
+        viewModel.output.userNotificationSettings
+            .subscribe(onNext: { [weak self] data in
+                guard let self = self else { return }
+                self.setUserNotificaionSettings(userSettings: data)
+            })
+            .disposed(by: bag)
     }
     
 }
