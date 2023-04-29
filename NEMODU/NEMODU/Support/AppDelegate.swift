@@ -105,11 +105,14 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             
             toPushVC = friendsVC
             
-            // 초대, 수락, 시작 전, 취소된 챌린지의 상세화면으로 전환
+            // 취소된 챌린지 메인화면으로 전환
+        case NotificationCategoryType.challengeCancelled.identifier:
+            toGoTabVC = getTabIndexInstance(targetTabIndex: 1)
+            
+            // 초대, 수락, 시작 전 챌린지의 상세화면으로 전환
         case NotificationCategoryType.challengeInvited.identifier,
             NotificationCategoryType.challengeAccepted.identifier,
-            NotificationCategoryType.challengeStart.identifier,
-            NotificationCategoryType.challengeCancelled.identifier:
+            NotificationCategoryType.challengeStart.identifier:
             toGoTabVC = getTabIndexInstance(targetTabIndex: 0)
             
             guard let targetUUID = userInfo["challenge_uuid"] as? String else { return }
