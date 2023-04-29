@@ -40,8 +40,8 @@ class TermsConditionsDetailButton: UIButton {
         }
     private let arrowImageView = UIImageView()
         .then {
-            $0.image = UIImage(named: "RightArrow")?.withTintColor(.gray700, renderingMode: .alwaysTemplate)
-            $0.tintColor = .gray700
+            $0.image = UIImage(named: "arrow_right")?.withTintColor(.gray300, renderingMode: .alwaysTemplate)
+            $0.tintColor = .gray300
         }
     
     // MARK: - Variables and Properties
@@ -87,7 +87,7 @@ extension TermsConditionsDetailButton {
         }
         
         self.snp.makeConstraints {
-            $0.height.equalTo(34.0)
+            $0.height.equalTo(40.0)
         }
         baseStackView.snp.makeConstraints {
             $0.edges.equalTo(self)
@@ -97,7 +97,7 @@ extension TermsConditionsDetailButton {
             $0.width.height.equalTo(16.0)
         }
         arrowImageView.snp.makeConstraints {
-            $0.width.height.equalTo(12.0)
+            $0.width.height.equalTo(24.0)
         }
     }
     
