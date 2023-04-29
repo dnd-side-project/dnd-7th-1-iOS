@@ -177,9 +177,12 @@ extension MapVC {
 // MARK: - Input
 
 extension MapVC {
+    /// 지도 제스쳐 시작 시(스크롤, 줌인/아웃) isFocusOn값을 false로 변경.
+    /// 사용자 위치에 따른 화면 추적을 막는 메서드
     private func bindMapGesture() {
         mapView.rx.anyGesture(.pan(), .pinch())
             .when(.began)
+            .filter({ _ in self.isFocusOn })
             .subscribe(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.isFocusOn = false
