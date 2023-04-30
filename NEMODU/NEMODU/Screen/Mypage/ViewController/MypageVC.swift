@@ -298,7 +298,6 @@ extension MypageVC {
                 let termsConditionsVC = TermsConditionsVC()
                 termsConditionsVC.hidesBottomBarWhenPushed = true
                 self.navigationController?.pushViewController(termsConditionsVC, animated: true)
-                 
             })
             .disposed(by: bag)
         

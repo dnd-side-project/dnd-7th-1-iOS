@@ -60,11 +60,11 @@ extension StepRankingListVM: Output {
 // MARK: - Networking
 
 extension StepRankingListVM {
-    func getStepRankingList(with param: RankingListRequestModel) {
-        let path = "record/rank/step"
+    func getStepRankingList(with nickname: String, started: String, ended: String) {
+        let path = "matrix/rank/step?nickname=\(nickname)&started=\(started)&ended=\(ended)"
         let resource = urlResource<StepRankingListResponseModel>(path: path)
         
-        apiSession.postRequest(with: resource, param: param.rankingParam)
+        apiSession.getRequest(with: resource)
             .withUnretained(self)
             .subscribe(onNext: { owner, result in
                 

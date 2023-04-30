@@ -18,3 +18,10 @@ struct InvitedChallengeDetailResponseModel: Codable {
 struct InvitedChallengeDetailInfo: Codable {
     let picturePath, nickname, status: String
 }
+
+extension InvitedChallengeDetailInfo {
+    var picturePathURL: URL? {
+        guard let picturePathURL = picturePath.encodeURL() else { return nil }
+        return URL(string: picturePathURL)
+    }
+}

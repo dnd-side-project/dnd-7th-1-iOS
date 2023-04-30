@@ -183,11 +183,11 @@ class ChallengeHistoryDetailVC: ChallengeDetailVC {
 
 extension ChallengeHistoryDetailVC {
     
-    private func configureChallengeHistoryDetailVC(challengeHistoryDetailInfo: ChallengeHistoryDetailResponseModel) {
-        var startDate = challengeHistoryDetailInfo.started.split(separator: "T")
-        startDate = startDate[0].split(separator: "-")
-        var endDate = challengeHistoryDetailInfo.ended.split(separator: "T")
-        endDate = endDate[0].split(separator: "-")
+    private func configureChallengeHistoryDetailVC(challengeHistoryDetailInfo: ChallengeHistoryDetailResponseModel) {   
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = DateType.withTime.dateFormatter
+        guard let startDate: Date = dateFormatter.date(from: challengeHistoryDetailInfo.started) else { return }
+        guard let endDate: Date = dateFormatter.date(from: challengeHistoryDetailInfo.ended) else { return }
         
         var calendar = Calendar(identifier: .gregorian)
         calendar.firstWeekday = 2
@@ -196,11 +196,11 @@ extension ChallengeHistoryDetailVC {
         challengeDetailInfoView.weekChallengeTypeLabel.text = ChallengeType(rawValue: challengeHistoryDetailInfo.type)?.title
         challengeDetailInfoView.challengeNameImageView.tintColor = ChallengeColorType(rawValue: challengeHistoryDetailInfo.color)?.primaryColor
         challengeDetailInfoView.challengeNameLabel.text = challengeHistoryDetailInfo.name
-        challengeDetailInfoView.currentStateLabel.text = "\(startDate[0]) \(startDate[1])월 \(weekOfMonth)주차 (\(startDate[1]).\(startDate[2])~\(endDate[1]).\(endDate[2]))"
+        challengeDetailInfoView.currentStateLabel.text = "\(startDate.year) \(startDate.month.showTwoDigitNumber)월 \(weekOfMonth)주차 (\(startDate.month.showTwoDigitNumber).\(startDate.day.showTwoDigitNumber)~\(endDate.month.showTwoDigitNumber).\(endDate.day.showTwoDigitNumber))"
         setDDayStatus()
         
-        startLabel.text = "\(startDate[1]).\(startDate[2]) 부터"
-        endLabel.text = "\(endDate[1]).\(endDate[2]) 까지"
+        startLabel.text = "\(startDate.month.showTwoDigitNumber).\(startDate.day.showTwoDigitNumber) 부터"
+        endLabel.text = "\(endDate.month.showTwoDigitNumber).\(endDate.day.showTwoDigitNumber) 까지"
         
         updateChallengeTableViewHeight(rankingsCnt: challengeHistoryDetailInfo.rankings.count)
         
@@ -230,10 +230,10 @@ extension ChallengeHistoryDetailVC {
         
         dDayTextLabel.text = "D-\(toGoSundayNum)"
         progressBlackBarStackView.snp.makeConstraints {
-            let bar = (Int(UIScreen.main.bounds.size.width) - 16*2 - 6) / 7
+            let bar = (progressBarStackView.frame.size.width - 6.0) / 7
             let pastDay = 7 - toGoSundayNum
-            let spaceBetweenBar = toGoSundayNum - 1
-            let length = (bar * pastDay) + (1 * spaceBetweenBar)
+            let spaceBetweenBar = pastDay == 7 ? 0 : pastDay-1;
+            let length = (Int(bar) * pastDay) + (1 * spaceBetweenBar)
             
             $0.width.equalTo(length)
         }
@@ -490,7 +490,7 @@ extension ChallengeHistoryDetailVC : UITableViewDataSource {
         
         guard let challengeHistoryDetailInfo = challengeHistoryDetailResponseModel else { return cell }
         let userRankingInfo = challengeHistoryDetailInfo.rankings[indexPath.row]
-        cell.configureRankingCell(rankNumber: userRankingInfo.rank, profileImageURL: userRankingInfo.picturePath, nickname: userRankingInfo.nickname, blocksNumber: userRankingInfo.score)
+        cell.configureRankingCell(rankNumber: userRankingInfo.rank, profileImageURL: userRankingInfo.picturePathURL, nickname: userRankingInfo.nickname, blocksNumber: userRankingInfo.score)
         cell.configureChallengeDetailRankingCell(nickname: userRankingInfo.nickname)
         
         return cell

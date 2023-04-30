@@ -107,15 +107,18 @@ class RankingUserTVC : BaseTableViewCell {
     
     // MARK: - Functions
     
+    /// 해당 파라미터의 닉네임이 현재 로그인한 사용자인지 확인해주는 함수
     private func isMyNickname(nickname: String) -> Bool {
         return nickname == UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) ? true : false
     }
     
+    /// 랭킹목록 1,2,3등 표시 설정 함수
     private func markTop123(isOn: Bool) {
         rankNumberLabel.textColor = isOn ? .main : .gray700
         contentsView.layer.backgroundColor = isOn ? UIColor.gray50.cgColor : UIColor.clear.cgColor
     }
     
+    /// 랭킹 항목 중 닉네임에 초록색을 설정하는 함수
     private func markRankLabelGreen(isOn: Bool) {
         rankNumberLabel.textColor = isOn ? .main : .gray700
         userNicknameLabel.textColor = isOn ? .main : .gray900
@@ -124,6 +127,7 @@ class RankingUserTVC : BaseTableViewCell {
         blockLabel.textColor = isOn ? .main : .gray700
     }
     
+    /// 랭킹 항목 중 셀 배경과 테두리에 초록색을 설정하는 함수
     private func markRankLayerGreen(isOn: Bool) {
         contentsView.layer.borderColor = isOn ? UIColor.main.cgColor : UIColor.clear.cgColor
         contentsView.layer.backgroundColor = isOn ? UIColor.main.withAlphaComponent(0.1).cgColor : UIColor.clear.withAlphaComponent(0.1).cgColor
@@ -139,39 +143,37 @@ extension RankingUserTVC {
         selectionStyle = .none
     }
     
-    /// configure TVC acording to Ranking Type
-    func configureRankingCell(rankNumber: Int, profileImageURL: String, nickname: String, blocksNumber: Int) {
+    /// 기본적인 랭킹 목록 정보를 입력하는 함수
+    func configureRankingCell(rankNumber: Int, profileImageURL: URL?, nickname: String, blocksNumber: Int) {
         rankNumberLabel.text = "\(rankNumber)"
-        
-        if profileImageURL != "" {
-            userProfileImageView.kf.setImage(with: URL(string: profileImageURL))
-        } else {
-            userProfileImageView.image = UIImage(named: "defaultThumbnail")
-        }
+        userProfileImageView.kf.setImage(with: profileImageURL, placeholder: UIImage.defaultThumbnail)
         showMeLabel.isHidden = !isMyNickname(nickname: nickname)
         
         userNicknameLabel.text = nickname
-        blocksNumberLabel.text = "\(blocksNumber)"
+        blocksNumberLabel.text = "\(blocksNumber.insertComma)"
     }
     
+    /// 영역(Area), 걸음수(Step), 역대 누적(Accumulate) 랭킹 목록의 특정상황(1,2,3위 / 자신랭킹) 표시 함수
     func configureRankingListCell(rankNumber: Int, nickname: String) {
-        if 1 <= rankNumber && rankNumber <= 3 {
-            markTop123(isOn: true)
-        }
+        markTop123(isOn: 1 <= rankNumber && rankNumber <= 3 ? true : false)
+        
         if isMyNickname(nickname: nickname) {
             markRankLabelGreen(isOn: true)
         }
     }
     
+    /// 걸음수(Step) 랭킹에 표시되는 기본 단위 설정
     func configureStepRankingCell() {
         blockLabel.text = "걸음"
     }
     
+    /// 랭킹 목록 최상단에 고정된 자신의 랭킹 항목을 설정하는 함수
     func configureRankingTopCell() {
         markRankLayerGreen(isOn: true)
         markRankLabelGreen(isOn: false)
     }
     
+    /// 진행중, 진행완료 챌린지에 표시되는 사용자 랭킹 목록을 설정하는 함수
     func configureChallengeDetailRankingCell(nickname: String) {
         rankNumberLabel.textColor = .gray700
         contentsView.layer.backgroundColor = UIColor.gray50.cgColor
