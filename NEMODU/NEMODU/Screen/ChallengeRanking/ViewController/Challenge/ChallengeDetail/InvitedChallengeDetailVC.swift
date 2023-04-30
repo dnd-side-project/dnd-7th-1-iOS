@@ -49,12 +49,13 @@ class InvitedChallengeDetailVC: ChallengeDetailVC {
     
     // MARK: - Functions
     
+    /// 서버에 초대받은 챌린지 상세정보 요청하는 함수
     func getInvitedChallengeDetailInfo() {
         let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) ?? ""
         viewModel.getInvitedChallengeDetail(nickname: nickname, uuid: uuid)
     }
     
-    func configureTableView() {
+    private func configureTableView() {
         _ = challengeDetailTableView
             .then {
                 $0.delegate = self
@@ -91,7 +92,7 @@ extension InvitedChallengeDetailVC : UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: InvitedFriendsTVC.className, for: indexPath) as? InvitedFriendsTVC else { return UITableViewCell() }
         guard let invitedChallengeDetailInfo = invitedChallengeDetailResponseModel else { return cell }
         let invitedUserInfo = invitedChallengeDetailInfo.infos[indexPath.row]
-        cell.configureInvitedFriendsTVC(userProfileImage: invitedUserInfo.picturePath, nickname: invitedUserInfo.nickname, status: invitedUserInfo.status)
+        cell.configureInvitedFriendsTVC(userProfileImageURL: invitedUserInfo.picturePathURL, nickname: invitedUserInfo.nickname, status: invitedUserInfo.status)
         
         return cell
     }
@@ -152,7 +153,7 @@ extension InvitedChallengeDetailVC {
                 guard let self = self else { return }
                 
                 if(isAcceptChallengeSuccess) {
-                    self.popVC()
+                    self.getInvitedChallengeDetailInfo()
                 }
             })
             .disposed(by: bag)

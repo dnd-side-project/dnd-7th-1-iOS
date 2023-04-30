@@ -19,12 +19,6 @@ class ChallengeDoingTVC : ChallengeListTVC {
     
     // MARK: - Life Cycle
     
-    override func configureView() {
-        super.configureView()
-        
-        configureContentView()
-    }
-    
     override func layoutView() {
         super.layoutView()
         
@@ -32,53 +26,19 @@ class ChallengeDoingTVC : ChallengeListTVC {
     }
     
     // MARK: - Function
-    
 }
 
 // MARK: - Configure
 
 extension ChallengeDoingTVC {
     
-    private func configureContentView() {
-        _ = challengeNameImage
-            .then {
-                $0.image = UIImage(named: "badge_flag")?.withRenderingMode(.alwaysTemplate)
-                $0.tintColor = ChallengeColorType(rawValue: "Yellow")?.primaryColor
-            }
-        
-        _ = currentStateLabel
-            .then {
-                $0.text = "현재 순위: -위"
-            }
-        _ = currentJoinUserLabel
-            .then {
-                $0.text = "-/-"
-            }
-    }
-    
     func configureChallengeDoingTVC(progressChallengeListElement: ProgressAndDoneChallengeListElement) {
-        challengeTypeLabel.text = "주간" // TODO: - 서버 response 값으로 주간, 실시간 표시 필요
+        // 공통 요소 설정
+        configureChallengeListTVC(startDate: progressChallengeListElement.started, endDate: progressChallengeListElement.ended, challengeName: progressChallengeListElement.name, challengeColor: progressChallengeListElement.color, userProfileImagePaths: progressChallengeListElement.picturePaths)
         
-        let startDate = progressChallengeListElement.started.split(separator: "-")
-        let endDate = progressChallengeListElement.ended.split(separator: "-")
-        
-        let format = DateFormatter()
-        format.dateFormat = "yyyy-MM-dd"
-        
-        let dayOfWeekDate = format.date(from: progressChallengeListElement.started)
-        let dayOfWeekString = dayOfWeekDate?.getDayOfWeek()
-        
-        challengeTermLabel.text = "\(startDate[1]).\(startDate[2])(\(dayOfWeekString ?? "?")) - \(endDate[1]). \(endDate[2])(일)"
-        
-        //        dDayLabel.text =  TODO: - dDay 표시
-        
-        challengeNameImage.tintColor = ChallengeColorType(rawValue: progressChallengeListElement.color)?.primaryColor
-        challengeNameLabel.text = progressChallengeListElement.name
-        
+        // 현재 상태 메세지 표시
         currentStateLabel.text = "현재순위"
         currentJoinUserLabel.text = "\(progressChallengeListElement.rank)위"
-        
-        makeUserImageViews(numberOfUsers: progressChallengeListElement.picturePaths.count, usersImageURL: progressChallengeListElement.picturePaths)
     }
     
 }

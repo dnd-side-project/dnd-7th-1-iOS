@@ -60,11 +60,11 @@ extension AreaRankingListVM: Output {
 // MARK: - Networking
 
 extension AreaRankingListVM {
-    func getAreaRankingList(with param: RankingListRequestModel) {
-        let path = "matrix/rank/widen"
+    func getAreaRankingList(with nickname: String, started: String, ended: String) {
+        let path = "matrix/rank/widen?nickname=\(nickname)&started=\(started)&ended=\(ended)"
         let resource = urlResource<AreaRankingListResponseModel>(path: path)
         
-        apiSession.postRequest(with: resource, param: param.rankingParam)
+        apiSession.getRequest(with: resource)
             .withUnretained(self)
             .subscribe(onNext: { owner, result in
                 

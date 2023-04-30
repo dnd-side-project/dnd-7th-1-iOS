@@ -20,7 +20,6 @@ class ChallengeWaitingTVC : ChallengeListTVC {
     // MARK: - Life Cycle
     
     // MARK: - Function
-    
 }
 
 // MARK: - Configure
@@ -28,37 +27,26 @@ class ChallengeWaitingTVC : ChallengeListTVC {
 extension ChallengeWaitingTVC {
     
     func configureChallengeWaitTVC(waitChallengeListElement: WaitChallengeListElement) {
-        challengeTypeLabel.text = "주간" // TODO: - 서버 response 값으로 주간, 실시간 표시 필요
+        // 공통 요소 설정
+        configureChallengeListTVC(startDate: waitChallengeListElement.started, endDate: waitChallengeListElement.ended, challengeName: waitChallengeListElement.name, challengeColor: waitChallengeListElement.color, userProfileImagePaths: waitChallengeListElement.picturePaths)
         
-        let startDates = waitChallengeListElement.started.split(separator: "-")
-        let endDates = waitChallengeListElement.ended.split(separator: "-")
-        
-        let format = DateFormatter()
-        format.timeZone = TimeZone(identifier: "KST")
-        format.dateFormat = "yyyy-MM-dd"
-        
-        let dayOfWeekDate = format.date(from: waitChallengeListElement.started)
-        let dayOfWeekString = dayOfWeekDate?.getDayOfWeek()
-        
-        challengeTermLabel.text = "\(startDates[1]).\(startDates[2])(\(dayOfWeekString ?? "?")) - \(endDates[1]). \(endDates[2])(일)"
-        
+        // D-day 계산
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(identifier: "KST")
         dateFormatter.dateFormat = DateType.hyphen.dateFormatter
+
+        var startDate = dateFormatter.date(from: String(waitChallengeListElement.started.split(separator: "T")[0])) ?? .now
+        startDate = Calendar.current.startOfDay(for: startDate)
+        let todayDate = Calendar.current.startOfDay(for: .now)
         
-        let startDate = dateFormatter.date(from: waitChallengeListElement.started) ?? .now
-        let components = Calendar.current.dateComponents([.day], from: .now, to: startDate)
+        let components = Calendar.current.dateComponents([.day], from: todayDate, to: startDate)
         dDayLabel.text = "D-\(components.day ?? 0)"
         
-        challengeNameImage.tintColor = ChallengeColorType(rawValue: waitChallengeListElement.color)?.primaryColor
-        challengeNameLabel.text = waitChallengeListElement.name
-        
+        // 상태 메세지 표시
         let readyCount = waitChallengeListElement.readyCount
         let totalCount = waitChallengeListElement.totalCount
         currentStateLabel.text = readyCount == totalCount ? "모집완료" : "대기중"
         currentJoinUserLabel.text = "\(readyCount)/\(totalCount)"
-        
-        makeUserImageViews(numberOfUsers: waitChallengeListElement.picturePaths.count, usersImageURL: waitChallengeListElement.picturePaths)
     }
     
 }

@@ -47,7 +47,7 @@ class CreateWeekChallengeVC: CreateChallengeVC {
             $0.font = .body1
             $0.textColor = .gray900
         }
-    let insertChallengeNameTextField = UITextField()
+    private let insertChallengeNameTextField = UITextField()
         .then {
             $0.attributedPlaceholder = NSAttributedString(string: "챌린지 이름을 작성해주세요.",
                                                           attributes: [NSAttributedString.Key.foregroundColor : UIColor.gray600,
@@ -114,7 +114,7 @@ class CreateWeekChallengeVC: CreateChallengeVC {
             $0.font = .body1
             $0.textColor = .gray900
         }
-    let insertChallengeMessageTextView = NemoduTextView()
+    private let insertChallengeMessageTextView = NemoduTextView()
         .then {
             $0.tv.placeholder = "신청 메세지를 작성해주세요."
             $0.maxTextCnt = 30
@@ -129,7 +129,7 @@ class CreateWeekChallengeVC: CreateChallengeVC {
     private let bag = DisposeBag()
     private var creatChallengeResponseModel: CreatChallengeResponseModel?
     
-    var friends: [String] = []
+    var friends: [Info] = []
     var message, name, nickname, started, ended: String?
     var startedDate: Date?
     
@@ -153,19 +153,6 @@ class CreateWeekChallengeVC: CreateChallengeVC {
         checkConfirmButtonEnableCondition()
     }
     
-    override func bindInput() {
-        super.bindInput()
-        
-        bindChallengeNameTextField()
-        bindInsertChallengeMessageTextView()
-    }
-    
-    override func bindOutput() {
-        super.bindOutput()
-
-        responseCreateWeekChallenge()
-    }
-    
     override func configureView() {
         super.configureView()
         
@@ -179,6 +166,19 @@ class CreateWeekChallengeVC: CreateChallengeVC {
         configureLayout()
     }
     
+    override func bindInput() {
+        super.bindInput()
+        
+        bindChallengeNameTextField()
+        bindInsertChallengeMessageTextView()
+    }
+    
+    override func bindOutput() {
+        super.bindOutput()
+
+        responseCreateWeekChallenge()
+    }
+    
     // MARK: - Functions
     
     func requestCreateWeekChallenge(type: String) {
@@ -186,12 +186,17 @@ class CreateWeekChallengeVC: CreateChallengeVC {
         guard let myNickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { return }
         guard let challengeMessage = insertChallengeMessageTextView.tv.text else { return }
         
+        var friendsNickname: [String] = []
+        for friend in friends {
+            friendsNickname.append(friend.nickname)
+        }
+        
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
-        dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.dateFormat = DateType.withTime.dateFormatter
         let challengeStart = dateFormatter.string(from: startedDate ?? .now)
         
-        viewModel.requestCreateWeekChallengeVM(with: CreateChallengeRequestModel(friends: friends, message: challengeMessage, name: challengeName, nickname: myNickname, started: challengeStart, type: type))
+        viewModel.requestCreateWeekChallengeVM(with: CreateChallengeRequestModel(friends: friendsNickname, message: challengeMessage, name: challengeName, nickname: myNickname, started: challengeStart, type: type))
     }
     
     private func updateSelectedChallengePeriod() {
@@ -206,6 +211,10 @@ class CreateWeekChallengeVC: CreateChallengeVC {
     }
     
     private func updateSelectedFriends() {
+        for subView in selectFriendsButtonView.subviews where subView is UIStackView {
+            subView.removeFromSuperview()
+        }
+        
         if friends.count > 0 {
             _ = selectFriendsButtonView
                 .then {
@@ -225,12 +234,11 @@ class CreateWeekChallengeVC: CreateChallengeVC {
                     $0.alignment = .fill
                     
                 }
-
             
-            for i in 0..<friends.count {
+            for friend in friends {
                 let tableViewCell = SelectFriendsTVC()
                     .then {
-                        $0.userNicknameLabel.text = friends[i]
+                        $0.configureSelectFriendsTVC(friendInfo: friend)
                         $0.checkImageView.isHidden = true
                     }
                 
@@ -255,9 +263,10 @@ class CreateWeekChallengeVC: CreateChallengeVC {
         }
     }
     
-    func checkConfirmButtonEnableCondition() {
+    private func checkConfirmButtonEnableCondition() {
         if insertChallengeNameTextField.text?.trimmingCharacters(in: .whitespaces).count ?? 0 > 0 &&
             insertChallengeMessageTextView.tv.text.trimmingCharacters(in: .whitespaces).count > 0 &&
+            friends.count > 0 &&
             started != nil {
             confirmButton.isEnabled = true
             confirmButton.isSelected = true
@@ -527,6 +536,5 @@ extension CreateWeekChallengeVC {
                 self.present(createChallengeSuccuessVC, animated: true)
             })
             .disposed(by: bag)
-
     }
 }

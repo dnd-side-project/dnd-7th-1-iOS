@@ -12,4 +12,11 @@ struct InvitedChallengeListElement: Codable {
     let picturePath, uuid: String
 }
 
+extension InvitedChallengeListElement {
+    var picturePathURL: URL? {
+        guard let picturePathURL = picturePath.encodeURL() else { return nil }
+        return URL(string: picturePathURL)
+    }
+}
+
 typealias InvitedChallengeListResponseModel = [InvitedChallengeListElement]

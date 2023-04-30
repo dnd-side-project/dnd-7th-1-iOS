@@ -29,3 +29,11 @@ struct Ranking: Codable {
     let nickname: String
     let score: Int
 }
+
+extension Ranking {
+    var picturePathURL: URL? {
+        guard let picturePathURL = picturePath.encodeURL() else { return nil }
+        return URL(string: picturePathURL)
+    }
+}
+

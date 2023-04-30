@@ -295,12 +295,9 @@ extension MypageVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                guard let url = URL(string: "https://curious-particle-6a6.notion.site/4331a9e974bb4d0d9812c952e4d24903") else { return }
-                
-                let safariViewController = SFSafariViewController(url: url)
-                safariViewController.preferredControlTintColor = .main
-                
-                self.present(safariViewController, animated: true, completion: nil)
+                let termsConditionsVC = TermsConditionsVC()
+                termsConditionsVC.hidesBottomBarWhenPushed = true
+                self.navigationController?.pushViewController(termsConditionsVC, animated: true)
             })
             .disposed(by: bag)
         
