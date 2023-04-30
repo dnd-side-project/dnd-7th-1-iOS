@@ -19,7 +19,7 @@ class LoadingView: BaseView {
         }
 
     override func configureView() {
-        backgroundColor = .black.withAlphaComponent(0.3)
+        backgroundColor = .backgroundBlack
         addSubview(indicator)
     }
     
