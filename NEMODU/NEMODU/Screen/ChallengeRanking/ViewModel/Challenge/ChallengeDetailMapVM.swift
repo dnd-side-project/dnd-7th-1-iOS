@@ -24,7 +24,8 @@ final class ChallengeDetailMapVM: BaseViewModel {
     
     // MARK: - Output
     
-    struct Output {
+    struct Output: Lodable {
+        var loading = BehaviorRelay<Bool>(value: false)
         var challengeDetailMap = PublishRelay<ChallengeDetailMapResponseModel>()
     }
     
@@ -59,6 +60,7 @@ extension ChallengeDetailMapVM {
         let path = "challenge/detail/map?nickname=\(nickname)&uuid=\(uuid)"
         let resource = urlResource<ChallengeDetailMapResponseModel>(path: path)
         
+        output.beginLoading()
         apiSession.getRequest(with: resource)
             .withUnretained(self)
             .subscribe(onNext: { owner, result in
@@ -68,6 +70,7 @@ extension ChallengeDetailMapVM {
                 case .success(let data):
                     owner.output.challengeDetailMap.accept(data)
                 }
+                owner.output.endLoading()
             })
             .disposed(by: bag)
     }

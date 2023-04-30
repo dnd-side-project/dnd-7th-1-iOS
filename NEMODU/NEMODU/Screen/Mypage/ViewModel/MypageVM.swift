@@ -67,6 +67,7 @@ extension MypageVM {
         let path = "user/info?nickname=\(nickname)"
         let resource = urlResource<MypageUserDataResponseModel>(path: path)
         
+        output.beginLoading()
         apiSession.getRequest(with: resource)
             .withUnretained(self)
             .subscribe(onNext: { owner, result in
@@ -76,6 +77,7 @@ extension MypageVM {
                 case .success(let data):
                     owner.output.userData.accept(data)
                 }
+                owner.output.endLoading()
             })
             .disposed(by: bag)
     }

@@ -104,6 +104,16 @@ class MainVC: BaseViewController {
         bindMapGesture()
     }
     
+    override func bindLoading() {
+        super.bindLoading()
+        viewModel.output.loading
+            .asDriver()
+            .drive(onNext: { [weak self] isLoading in
+                guard let self = self else { return }
+                self.loading(loading: isLoading)
+            })
+            .disposed(by: bag)
+    }
 }
 
 // MARK: - Configure
