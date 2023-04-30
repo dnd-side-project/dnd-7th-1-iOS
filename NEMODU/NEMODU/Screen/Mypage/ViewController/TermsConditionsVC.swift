@@ -113,8 +113,8 @@ extension TermsConditionsVC {
     private func bindButton() {
         typealias ButtonType = (button: ArrowBtn, webLink: TermsConditionsWebLink)
         let buttonTypeList: [ButtonType] = [(serviceTermsConditionsButton, TermsConditionsWebLink.service),
-                                        (privacyTermsConditionsButton, TermsConditionsWebLink.privacy),
-                                        (locationTermsConditionsButton, TermsConditionsWebLink.location)]
+                                            (privacyTermsConditionsButton, TermsConditionsWebLink.privacy),
+                                            (locationTermsConditionsButton, TermsConditionsWebLink.location)]
         
         buttonTypeList.forEach { buttonType in
             buttonType.button.rx.tap
