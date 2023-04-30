@@ -17,7 +17,7 @@ class InvitedFriendsTVC : BaseTableViewCell {
     
     private let userProfileImageView = UIImageView()
         .then {
-            $0.image = UIImage(named: "defaultThumbnail")
+            $0.image = .defaultThumbnail
             $0.layer.cornerRadius = 20
             $0.layer.masksToBounds = true
         }
@@ -77,32 +77,12 @@ class InvitedFriendsTVC : BaseTableViewCell {
     
     // MARK: - Function
     
-    func configureInvitedFriendsTVC(userProfileImage: String, nickname: String, status: String) {
+    func configureInvitedFriendsTVC(userProfileImageURL: URL?, nickname: String, status: String) {
+        userProfileImageView.kf.setImage(with: userProfileImageURL, placeholder: UIImage.defaultThumbnail)
         userNicknameLabel.text = nickname
-        friendStatusLabel.text = InvitedChallengeAcceptType(rawValue: status)?.statusText
         
-        switch status {
-        case InvitedChallengeAcceptType.master.rawValue:
-            _ = friendStatusLabel
-                .then {
-                    $0.textColor = .gray600
-                    $0.text = "주최자"
-                }
-        case InvitedChallengeAcceptType.progress.rawValue:
-            _ = friendStatusLabel
-                .then {
-                    $0.textColor = .main
-                    $0.text = "수락 완료"
-                }
-        case InvitedChallengeAcceptType.wait.rawValue:
-            _ = friendStatusLabel
-                .then {
-                    $0.textColor = .gray600
-                    $0.text = "대기중"
-                }
-        default:
-            break
-        }
+        friendStatusLabel.text = InvitedChallengeAcceptType(rawValue: status.lowercased())?.statusText
+        friendStatusLabel.textColor = InvitedChallengeAcceptType(rawValue: status.lowercased())?.statusColor
         
         if(nickname == UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname)) {
             markMe(isMe: true)

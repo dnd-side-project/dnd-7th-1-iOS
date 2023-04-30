@@ -15,7 +15,7 @@ class SelectFriendsTVC : BaseTableViewCell {
     
     // MARK: - UI components
     
-    private let userProfileImageView = UIImageView()
+    let userProfileImageView = UIImageView()
         .then {
             $0.image = .defaultThumbnail
             $0.layer.cornerRadius = 20
@@ -44,7 +44,6 @@ class SelectFriendsTVC : BaseTableViewCell {
         super.configureView()
         
         configureContentView()
-        
     }
     
     override func layoutView() {
@@ -72,8 +71,11 @@ extension SelectFriendsTVC {
     }
     
     func configureSelectFriendsTVC(friendInfo: Info) {
-        userProfileImageView.kf.setImage(with: URL(string: friendInfo.picturePath))
         userNicknameLabel.text = friendInfo.nickname
+        userProfileImageView.kf.setImage(with: URL(string: friendInfo.picturePath))
+        if userProfileImageView.image == nil {
+            userProfileImageView.image = .defaultThumbnail
+        }
     }
     
 }

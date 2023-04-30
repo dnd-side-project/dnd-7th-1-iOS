@@ -72,7 +72,10 @@ class FriendProfileBottomSheet: DynamicBottomSheetViewController {
             $0.sizeToFit()
             $0.semanticContentAttribute = .forceRightToLeft
             $0.layer.cornerRadius = 17
-            $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 8)
+            $0.contentEdgeInsets = UIEdgeInsets(top: 0,
+                                                left: 12,
+                                                bottom: 0,
+                                                right: 8)
             
             $0.setTitle(FriendStatusType.noFriend.title, for: .normal)
             $0.setTitleColor(.white, for: .normal)
@@ -116,23 +119,26 @@ class FriendProfileBottomSheet: DynamicBottomSheetViewController {
         .then {
             $0.isScrollEnabled = false
             $0.separatorStyle = .singleLine
-            $0.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+            $0.separatorInset = UIEdgeInsets(top: 0,
+                                             left: 16,
+                                             bottom: 0,
+                                             right: 16)
             $0.backgroundColor = .white
         }
     
     var nickname: String?
+    weak var delegate: DeselectAnnotation?
     private let viewModel = FriendProfileVM()
     private let bag = DisposeBag()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        presentingViewController?.viewWillDisappear(true)
         getFriendProfile()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        presentingViewController?.viewWillAppear(true)
+        delegate?.deselectAnnotation()
     }
     
     override func configureView() {
@@ -142,6 +148,7 @@ class FriendProfileBottomSheet: DynamicBottomSheetViewController {
         bindBtn()
         bindProfile()
         bindTableView()
+        bindToastMessage()
     }
 }
 
@@ -304,13 +311,16 @@ extension FriendProfileBottomSheet {
         addFriendBtn.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in
-                guard let self = self else { return }
+                guard let self = self,
+                      let friendNickname = self.nicknameLabel.text else { return }
+                let friend = FriendRequestModel(friendNickname: friendNickname)
                 self.addFriendBtn.isSelected.toggle()
+                
                 if self.addFriendBtn.isSelected {
-                    // TODO: - 친구추가 요청
+                    self.viewModel.requestFriend(to: friend)
                     self.addFriendBtn.layer.borderColor = UIColor.gray700.cgColor
                 } else {
-                    // TODO: - 친구추가 철회 요청
+                    self.viewModel.deleteFriend(to: friend)
                     self.addFriendBtn.layer.borderColor = UIColor.main.cgColor
                 }
             })
@@ -342,6 +352,23 @@ extension FriendProfileBottomSheet {
                 ? owner.configureNoneData()
                 : owner.configureChallengeListTV(challengeCnt: item.count)
                 owner.proceedingChallengeTV.reloadData()
+            })
+            .disposed(by: bag)
+    }
+    
+    
+    func bindToastMessage() {
+        viewModel.output.requestStatus
+            .withUnretained(self)
+            .subscribe(onNext: { owner, status in
+                self.popupToast(toastType: status ? .friendAdded : .networkError)
+            })
+            .disposed(by: bag)
+        
+        viewModel.output.deleteStatus
+            .withUnretained(self)
+            .subscribe(onNext: { owner, status in
+                self.popupToast(toastType: status ? .friendDeleted : .networkError)
             })
             .disposed(by: bag)
     }
@@ -377,4 +404,9 @@ extension FriendProfileBottomSheet: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
+}
+
+// MARK: - DeselectAnnotation Protocol
+protocol DeselectAnnotation: AnyObject {
+    func deselectAnnotation()
 }

@@ -75,7 +75,7 @@ class MainVC: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        deselectAnnotation()
+        mapVC.deselectAnnotation()
     }
     
     override func configureView() {
@@ -350,26 +350,20 @@ extension MainVC {
     private func bindVisible() {
         viewModel.output.myBlocksVisible
             .asDriver()
-            .drive(onNext: { [weak self] isVisible in
+            .drive(onNext: { [weak self] status in
                 guard let self = self else { return }
-                self.setMyArea(visible: isVisible)
+                self.setMyArea(visible: status)
             })
             .disposed(by: bag)
         
         viewModel.output.friendVisible
             .asDriver()
-            .drive(onNext: { [weak self] isVisible in
+            .drive(onNext: { [weak self] status in
                 guard let self = self else { return }
-                self.setFriendsArea(visible: isVisible)
+                self.setFriendsArea(visible: status)
             })
             .disposed(by: bag)
         
         // TODO: - myLocationVisible MVP2 부터 개발!!
-    }
-    
-    private func deselectAnnotation() {
-        mapVC.mapView.selectedAnnotations.forEach {
-            mapVC.mapView.deselectAnnotation($0, animated: true)
-        }
     }
 }

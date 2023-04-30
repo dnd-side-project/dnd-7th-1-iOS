@@ -79,8 +79,10 @@ class InvitedChallengeDetailTVHV : ChallengeDetailTVHV {
     // MARK: - Function
     
     func configureInvitedChallengeDetailTVHV(invitedChallengeDetailInfo: InvitedChallengeDetailResponseModel) {
-        let startDate = invitedChallengeDetailInfo.started.split(separator: "-")
-        let endDate = invitedChallengeDetailInfo.ended.split(separator: "-")
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = DateType.withTime.dateFormatter
+        guard let startDate: Date = dateFormatter.date(from: invitedChallengeDetailInfo.started) else { return }
+        guard let endDate: Date = dateFormatter.date(from: invitedChallengeDetailInfo.ended) else { return }
         
         var calendar = Calendar(identifier: .gregorian)
         calendar.firstWeekday = 2
@@ -89,54 +91,50 @@ class InvitedChallengeDetailTVHV : ChallengeDetailTVHV {
         weekChallengeTypeLabel.text = ChallengeType(rawValue: invitedChallengeDetailInfo.type)?.title
         challengeNameImage.tintColor = ChallengeColorType(rawValue: invitedChallengeDetailInfo.color)?.primaryColor
         challengeNameLabel.text = invitedChallengeDetailInfo.name
-        currentStateLabel.text = "\(startDate[0]) \(startDate[1])월 \(weekOfMonth)주차 (\(startDate[1]).\(startDate[2])~\(endDate[1]).\(endDate[2]))"
+        currentStateLabel.text = "\(startDate.year) \(startDate.month.showTwoDigitNumber)월 \(weekOfMonth)주차 (\(startDate.month.showTwoDigitNumber).\(startDate.day.showTwoDigitNumber)~\(endDate.month.showTwoDigitNumber).\(endDate.day.showTwoDigitNumber))"
         configureInvitedFriendsListTitleLabel(friendsCnt: invitedChallengeDetailInfo.infos.count)
         
-        checkIsMyUserAccepted(infos: invitedChallengeDetailInfo.infos)
-        checkIsMyUserCreateChallenge(infos: invitedChallengeDetailInfo.infos)
+        updateInviteChallengeByMyUserStatus(infos: invitedChallengeDetailInfo.infos)
     }
     
-    private func checkIsMyUserAccepted(infos: [InvitedChallengeDetailInfo]) {
+    private func updateInviteChallengeByMyUserStatus(infos: [InvitedChallengeDetailInfo]) {
         let myUserNickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname)
         
         for info in infos {
-            if info.nickname == myUserNickname && info.status == InvitedChallengeAcceptType.progress.rawValue {
-                rejectButton.isHidden = true
-                acceptButton.isHidden = true
-                
-                let acceptedLabel = UILabel()
-                    .then {
-                        $0.font = .body2
-                        $0.textColor = .gray400
-                        $0.backgroundColor = .gray100
-                        
-                        $0.text = "수락 완료!"
-                        $0.textAlignment = .center
-                        
-                        $0.clipsToBounds = true
-                        $0.layer.cornerRadius = 8
+            if info.nickname == myUserNickname {
+                switch info.status {
+                case InvitedChallengeAcceptType.progress.description:
+                    rejectButton.isHidden = true
+                    acceptButton.isHidden = true
+                    
+                    let acceptedLabel = UILabel()
+                        .then {
+                            $0.font = .body2
+                            $0.textColor = .gray400
+                            $0.backgroundColor = .gray100
+                            
+                            $0.text = "수락 완료!"
+                            $0.textAlignment = .center
+                            
+                            $0.clipsToBounds = true
+                            $0.layer.cornerRadius = 8
+                        }
+                    
+                    contentView.addSubview(acceptedLabel)
+                    acceptedLabel.snp.makeConstraints {
+                        $0.height.equalTo(rejectButton.snp.height)
+                        $0.top.equalTo(rejectButton.snp.top)
+                        $0.left.right.equalTo(currentStateLabel)
                     }
-                
-                contentView.addSubview(acceptedLabel)
-                acceptedLabel.snp.makeConstraints {
-                    $0.height.equalTo(rejectButton.snp.height)
-                    $0.top.equalTo(rejectButton.snp.top)
-                    $0.left.right.equalTo(currentStateLabel)
+                case InvitedChallengeAcceptType.master.description,
+                    InvitedChallengeAcceptType.reject.description:
+                    rejectButton.snp.updateConstraints {
+                        $0.height.equalTo(0)
+                        $0.top.equalTo(guideLabelContainerView.snp.bottom).offset(0).priority(.high)
+                    }
+                default:
+                    break
                 }
-            }
-        }
-    }
-    
-    private func checkIsMyUserCreateChallenge(infos: [InvitedChallengeDetailInfo]) {
-        let myUserNickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname)
-        
-        for info in infos {
-            if info.nickname == myUserNickname && info.status == InvitedChallengeAcceptType.master.rawValue {
-                rejectButton.snp.updateConstraints {
-                    $0.height.equalTo(0)
-                    $0.top.equalTo(guideLabelContainerView.snp.bottom).offset(0).priority(.high)
-                }
-                break
             }
         }
     }

@@ -59,7 +59,7 @@ extension ToastView {
                 baseStackView.addArrangedSubview($0)
             }
             setImageSize()
-        case .friendAdded, .nicknameChanged:
+        case .friendAdded, .friendDeleted, .nicknameChanged:
             baseStackView.addArrangedSubview(toastMessage)
         }
     }
@@ -69,10 +69,6 @@ extension ToastView {
 
 extension ToastView {
     private func configureLayout() {
-        self.snp.makeConstraints {
-            $0.height.equalTo(48)
-        }
-        
         baseStackView.snp.makeConstraints {
             $0.center.equalToSuperview()
         }

@@ -8,6 +8,9 @@
 import Foundation
 
 enum NotificationCategoryType {
+    // 공통
+    case challengeWeekStart // 주차 시작 알림
+    case challengeWeekEnd // 주차 종료 알림
     // 친구
     case friendRequest // 친구 요청이 온 경우
     case friendAccept // 상대가 (친구신청을) 승낙한 경우
@@ -22,6 +25,11 @@ enum NotificationCategoryType {
 extension NotificationCategoryType {
     var identifier: String {
         switch self {
+        // 공통
+        case .challengeWeekStart:
+            return "COMMON_WEEK_START"
+        case .challengeWeekEnd:
+            return "COMMON_WEEK_END"
         // 친구
         case .friendRequest:
             return "FRIEND_RECEIVED_REQUEST"

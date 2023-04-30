@@ -142,7 +142,7 @@ extension ChallengeDetailMapVC {
             rankLabel.text = String(rankingList[i].rank) + "위"
             
             let userProfileImageView = UIImageView()
-            userProfileImageView.kf.setImage(with: URL(string: rankingList[i].picturePath))
+            userProfileImageView.kf.setImage(with: rankingList[i].picturePathURL, placeholder: UIImage.defaultThumbnail)
             userProfileImageView.layer.cornerRadius = 20
             userProfileImageView.layer.masksToBounds = true
             userProfileImageView.layer.borderWidth = 2
