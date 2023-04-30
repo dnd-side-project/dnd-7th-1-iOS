@@ -217,7 +217,7 @@ extension TermsConditionsAgreementVC {
                     }
                 }
                 
-                updateStartButtonStatus(isAgree: isAgree)
+                self.updateStartButtonStatus(isAgree: isAgree)
             })
             .disposed(by: bag)
         
