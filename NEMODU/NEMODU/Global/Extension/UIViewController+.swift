@@ -104,6 +104,27 @@ extension UIViewController {
         targetVC.present(alertVC, animated: false, completion: nil)
     }
     
+    /// ToastType에 맞는 ToastView를 띄워주는 메서드
+    func popupToast(toastType: ToastType) {
+        let toastView = ToastView()
+        view.addSubview(toastView)
+        
+        toastView.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(10)
+            $0.trailing.equalToSuperview().offset(-10)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-14)
+            $0.height.equalTo(48)
+        }
+        
+        toastView.configureToastView(of: toastType)
+        
+        UIView.animate(withDuration: 0.2, delay: 1, options: .curveEaseOut, animations: {
+            toastView.alpha = 0
+        }, completion: {(isCompleted) in
+            toastView.removeFromSuperview()
+        })
+    }
+    
     /// 프로필 사진 상세보기 뷰를 띄워주는 함수
     func showProfileImage(with image: UIImage) {
         let profileImageVC = ProfileImageVC()

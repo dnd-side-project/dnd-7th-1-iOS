@@ -539,7 +539,17 @@ extension MapVC: MKMapViewDelegate {
             
             let friendBottomSheet = FriendProfileBottomSheet()
             friendBottomSheet.nickname = annotation.nickname.text
+            friendBottomSheet.delegate = self
             self.present(friendBottomSheet, animated: true)
+        }
+    }
+}
+
+extension MapVC: DeselectAnnotation {
+    /// 선택된 annotation을 모두 deselect 하는 메서드
+    func deselectAnnotation() {
+        mapView.selectedAnnotations.forEach {
+            mapView.deselectAnnotation($0, animated: true)
         }
     }
 }
