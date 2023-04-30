@@ -148,7 +148,7 @@ class FriendProfileBottomSheet: DynamicBottomSheetViewController {
         bindBtn()
         bindProfile()
         bindTableView()
-        bindFriendRequest()
+        bindToastMessage()
     }
 }
 
@@ -352,6 +352,23 @@ extension FriendProfileBottomSheet {
                 ? owner.configureNoneData()
                 : owner.configureChallengeListTV(challengeCnt: item.count)
                 owner.proceedingChallengeTV.reloadData()
+            })
+            .disposed(by: bag)
+    }
+    
+    
+    func bindToastMessage() {
+        viewModel.output.requestStatus
+            .withUnretained(self)
+            .subscribe(onNext: { owner, status in
+                self.popupToast(toastType: status ? .friendAdded : .networkError)
+            })
+            .disposed(by: bag)
+        
+        viewModel.output.deleteStatus
+            .withUnretained(self)
+            .subscribe(onNext: { owner, status in
+                self.popupToast(toastType: status ? .friendDeleted : .networkError)
             })
             .disposed(by: bag)
     }
