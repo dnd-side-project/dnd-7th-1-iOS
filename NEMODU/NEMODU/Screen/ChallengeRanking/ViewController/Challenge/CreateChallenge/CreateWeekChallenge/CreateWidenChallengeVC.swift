@@ -35,7 +35,7 @@ class CreateWidenChallengeVC: CreateWeekChallengeVC {
     }
     
     override func didTapConfirmButton() {
-        requestCreateWeekChallenge(type: "Widen")
+        requestCreateWeekChallenge(type: ChallengeType.widen.description)
     }
     
 }

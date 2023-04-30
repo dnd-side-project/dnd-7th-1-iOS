@@ -39,7 +39,7 @@ class ChallengeDetailTVHV : UITableViewHeaderFooterView {
     let challengeNameImage = UIImageView()
         .then {
             $0.image = UIImage(named: "badge_flag")?.withRenderingMode(.alwaysTemplate)
-            $0.tintColor = ChallengeColorType(rawValue: "Pink")?.primaryColor
+            $0.tintColor = ChallengeColorType.pink.primaryColor
         }
     let challengeNameLabel = UILabel()
         .then {

@@ -15,39 +15,39 @@ class ChallengePeriodVC: CreateChallengeVC {
     
     // MARK: - UI components
     
-    let containerView = UIView()
+    private let containerView = UIView()
         .then {
             $0.backgroundColor = .gray100
         }
     
-    lazy var startChallengeButtonView = ChallengeTermButtonView()
+    private lazy var startChallengeButtonView = ChallengeTermButtonView()
         .then {
             $0.titleLabel.text = "챌린지 시작일"
             $0.actionButton.addTarget(self, action: #selector(didTapStartChallengeButton), for: .touchUpInside)
         }
     
-    let datePickerContainerView = UIView()
+    private let datePickerContainerView = UIView()
         .then {
             $0.clipsToBounds = true
         }
-    lazy var datePicker = UIDatePicker()
+    private lazy var datePicker = UIDatePicker()
         .then {
             $0.preferredDatePickerStyle = .wheels
             $0.datePickerMode = .date
             $0.locale = Locale(identifier: "ko-KR")
-            $0.minimumDate = Date()
+            $0.minimumDate = Calendar.current.date(byAdding: .day, value: 1, to: Date())
             
             $0.backgroundColor = .white
             
             $0.addTarget(self, action: #selector(didDateSelected), for: .valueChanged)
         }
     
-    lazy var endChallengeButtonView = ChallengeTermButtonView()
+    private lazy var endChallengeButtonView = ChallengeTermButtonView()
         .then {
             $0.titleLabel.text = "챌린지 종료일"
         }
     
-    let guideLabel = PaddingLabel()
+    private let guideLabel = PaddingLabel()
         .then {
             $0.text = "모든 챌린지는 시작날짜 00시 00분에 시작하여 \n해당 주 일요일 23시 59분에 종료됩니다."
             $0.numberOfLines = 2
@@ -63,10 +63,10 @@ class ChallengePeriodVC: CreateChallengeVC {
     
     var createWeekChallengeVC: CreateWeekChallengeVC?
     
-    var datePickerContainerHeightConstraint: Constraint?
+    private var datePickerContainerHeightConstraint: Constraint?
     
-    var started, ended: String?
-    var startedDate: Date?
+    private var started, ended: String?
+    private var startedDate: Date?
     
     // MARK: - Life Cycle
     
@@ -81,8 +81,6 @@ class ChallengePeriodVC: CreateChallengeVC {
             didDateSelected()
         }
     }
-    
-    // MARK: - Functions
     
     override func configureView() {
         super.configureView()
@@ -139,8 +137,10 @@ class ChallengePeriodVC: CreateChallengeVC {
         }
     }
     
+    // MARK: - Functions
+    
     @objc
-    func didTapStartChallengeButton() {
+    private func didTapStartChallengeButton() {
         if datePickerContainerHeightConstraint?.layoutConstraints[0].constant == 0 {
             datePickerContainerHeightConstraint?.layoutConstraints[0].constant = 183
             datePicker.isHidden = false
@@ -156,7 +156,7 @@ class ChallengePeriodVC: CreateChallengeVC {
     }
     
     @objc
-    func didDateSelected() {
+    private func didDateSelected() {
         // 날짜 설정
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium

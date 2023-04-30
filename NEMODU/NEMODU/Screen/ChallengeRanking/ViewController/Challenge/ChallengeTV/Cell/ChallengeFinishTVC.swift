@@ -19,12 +19,6 @@ class ChallengeFinishTVC : ChallengeListTVC {
     
     // MARK: - Life Cycle
     
-    override func configureView() {
-        super.configureView()
-        
-        configureContentView()
-    }
-    
     override func layoutView() {
         super.layoutView()
         
@@ -32,47 +26,19 @@ class ChallengeFinishTVC : ChallengeListTVC {
     }
     
     // MARK: - Function
-    
 }
 
 // MARK: - Configure
 
 extension ChallengeFinishTVC {
     
-    private func configureContentView() {
-        _ = currentStateLabel
-            .then {
-                $0.text = "현재 순위: -위"
-            }
-        _ = currentJoinUserLabel
-            .then {
-                $0.text = "-/-"
-            }
-    }
-    
     func configureChallengeFinishTVC(doneChallengeListElement: ProgressAndDoneChallengeListElement) {
-        challengeTypeLabel.text = "주간" // TODO: - 서버 response 값으로 주간, 실시간 표시 필요
+        // 공통 요소 설정
+        configureChallengeListTVC(startDate: doneChallengeListElement.started, endDate: doneChallengeListElement.ended, challengeName: doneChallengeListElement.name, challengeColor: doneChallengeListElement.color, userProfileImagePaths: doneChallengeListElement.picturePaths)
         
-        var startDate = doneChallengeListElement.started.split(separator: "T")
-        startDate = startDate[0].split(separator: "-")
-        var endDate = doneChallengeListElement.ended.split(separator: "T")
-        endDate = endDate[0].split(separator: "-")
-        
-        let format = DateFormatter()
-        format.dateFormat = "yyyy-MM-dd"
-        
-        let dayOfWeekDate = format.date(from: String(doneChallengeListElement.started.split(separator: "T")[0]))
-        let dayOfWeekString = dayOfWeekDate?.getDayOfWeek()
-        
-        challengeTermLabel.text = "\(startDate[1]).\(startDate[2])(\(dayOfWeekString ?? "?")) - \(endDate[1]). \(endDate[2])(일)"
-        
-        challengeNameImage.tintColor = ChallengeColorType(rawValue: doneChallengeListElement.color)?.primaryColor
-        challengeNameLabel.text = doneChallengeListElement.name
-        
+        // 현재 상태 메세지 표시
         currentStateLabel.text = "현재순위"
         currentJoinUserLabel.text = "\(doneChallengeListElement.rank)위"
-        
-        makeUserImageViews(numberOfUsers: doneChallengeListElement.picturePaths.count, usersImageURL: doneChallengeListElement.picturePaths)
     }
     
 }
