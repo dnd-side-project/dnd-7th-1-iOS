@@ -116,6 +116,7 @@
 		238C4DE328A3F0D6000BEE36 /* NemoduTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */; };
 		238C4DE528A4BFE2000BEE36 /* UIScrollView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DE428A4BFE2000BEE36 /* UIScrollView+.swift */; };
 		23A0E7D628B6614300057EE7 /* concentricCircles.json in Resources */ = {isa = PBXBuildFile; fileRef = 23A0E7D528B6614300057EE7 /* concentricCircles.json */; };
+		23A8684929FE33F000B6683E /* FriendRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A8684829FE33F000B6683E /* FriendRequestModel.swift */; };
 		23AB8F3328B5E5FA007E3A2F /* BlocksType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AB8F3228B5E5FA007E3A2F /* BlocksType.swift */; };
 		23B72058289808EB00D3A410 /* MapFilterBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B72057289808EB00D3A410 /* MapFilterBottomSheet.swift */; };
 		23B7205D28A0CBAC00D3A410 /* ChallengeListBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B7205C28A0CBAC00D3A410 /* ChallengeListBottomSheet.swift */; };
@@ -361,6 +362,7 @@
 		238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NemoduTextView.swift; sourceTree = "<group>"; };
 		238C4DE428A4BFE2000BEE36 /* UIScrollView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+.swift"; sourceTree = "<group>"; };
 		23A0E7D528B6614300057EE7 /* concentricCircles.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = concentricCircles.json; sourceTree = "<group>"; };
+		23A8684829FE33F000B6683E /* FriendRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestModel.swift; sourceTree = "<group>"; };
 		23AB8F3228B5E5FA007E3A2F /* BlocksType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlocksType.swift; sourceTree = "<group>"; };
 		23B72057289808EB00D3A410 /* MapFilterBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapFilterBottomSheet.swift; sourceTree = "<group>"; };
 		23B7205C28A0CBAC00D3A410 /* ChallengeListBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeListBottomSheet.swift; sourceTree = "<group>"; };
@@ -558,6 +560,7 @@
 			children = (
 				23412FD728AE245D00B73D62 /* Block.swift */,
 				23412FE928AF795600B73D62 /* RecordDataRequest.swift */,
+				23A8684829FE33F000B6683E /* FriendRequestModel.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -1557,6 +1560,7 @@
 				230CB2CB28ABB7B400B11270 /* CountdownVC.swift in Sources */,
 				23412FE028AE648300B73D62 /* ProfileResponseModel.swift in Sources */,
 				237573D128F5660A006026ED /* EditRecordMemoVM.swift in Sources */,
+				23A8684929FE33F000B6683E /* FriendRequestModel.swift in Sources */,
 				3C05FFF128B794390017F4E1 /* CreateChallengeSuccuessVC.swift in Sources */,
 				3CB9DB9D28A92528007BC1BE /* MenuBarCV.swift in Sources */,
 				237573EF28FA773F006026ED /* EditProfileVC.swift in Sources */,

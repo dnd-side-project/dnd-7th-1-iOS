@@ -148,6 +148,7 @@ class FriendProfileBottomSheet: DynamicBottomSheetViewController {
         bindBtn()
         bindProfile()
         bindTableView()
+        bindFriendRequest()
     }
 }
 
@@ -310,13 +311,16 @@ extension FriendProfileBottomSheet {
         addFriendBtn.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in
-                guard let self = self else { return }
+                guard let self = self,
+                      let friendNickname = self.nicknameLabel.text else { return }
+                let friend = FriendRequestModel(friendNickname: friendNickname)
                 self.addFriendBtn.isSelected.toggle()
+                
                 if self.addFriendBtn.isSelected {
-                    // TODO: - 친구추가 요청
+                    self.viewModel.requestFriend(to: friend)
                     self.addFriendBtn.layer.borderColor = UIColor.gray700.cgColor
                 } else {
-                    // TODO: - 친구추가 철회 요청
+                    self.viewModel.deleteFriend(to: friend)
                     self.addFriendBtn.layer.borderColor = UIColor.main.cgColor
                 }
             })
