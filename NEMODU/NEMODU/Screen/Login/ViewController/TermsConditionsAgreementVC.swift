@@ -221,36 +221,21 @@ extension TermsConditionsAgreementVC {
             })
             .disposed(by: bag)
         
-        let baseURL = "https://nemodu-s3.s3.ap-northeast-2.amazonaws.com/terms/"
-        serviceTermsConditionsDetailButton.rx.tap
-            .asDriver()
-            .drive(onNext: { [weak self] _ in
-                guard let self = self else { return }
-                
-                // 서비스 이용약관 URL
-                self.showTermsConditionsWebPage(url: baseURL + "terms_service.html")
-            })
-            .disposed(by: bag)
+        typealias ButtonType = (button: TermsConditionsDetailButton, webLink: TermsConditionsWebLink)
+        let buttonTypeList: [ButtonType] = [(serviceTermsConditionsDetailButton, TermsConditionsWebLink.service),
+                                            (privacyTermsConditionsDetailButton, TermsConditionsWebLink.privacy),
+                                            (locationTermsConditionsDetailButton, TermsConditionsWebLink.location)]
         
-        privacyTermsConditionsDetailButton.rx.tap
-            .asDriver()
-            .drive(onNext: { [weak self] _ in
-                guard let self = self else { return }
-
-                // 개인 정보 수집 및 이용 동의 URL
-                self.showTermsConditionsWebPage(url: baseURL + "terms_personal_information_collection.html")
-            })
-            .disposed(by: bag)
-        
-        locationTermsConditionsDetailButton.rx.tap
-            .asDriver()
-            .drive(onNext: { [weak self] _ in
-                guard let self = self else { return }
-                
-                // 위치 기반 서비스 약관 동의 URL
-                self.showTermsConditionsWebPage(url: baseURL + "terms_location_service.html")
-            })
-            .disposed(by: bag)
+        buttonTypeList.forEach { buttonType in
+            buttonType.button.rx.tap
+                .asDriver()
+                .drive(onNext: { [weak self] _ in
+                    guard let self = self else { return }
+                    
+                    self.showTermsConditionsWebPage(url: buttonType.webLink.url)
+                })
+                .disposed(by: bag)
+        }
     }
     
 }
