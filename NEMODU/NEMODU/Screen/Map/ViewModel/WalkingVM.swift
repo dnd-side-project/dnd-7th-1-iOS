@@ -83,6 +83,7 @@ extension WalkingVM {
         let path = "user/home?nickname=\(nickname)&latitude=\(latitude)&longitude=\(longitude)&spanDelta=\(spanDelta)"
         let resource = urlResource<MainMapResponseModel>(path: path)
         
+        output.beginLoading()
         apiSession.getRequest(with: resource)
             .withUnretained(self)
             .subscribe(onNext: { owner, result in
@@ -102,6 +103,7 @@ extension WalkingVM {
                         owner.output.challengeFriendBlocks.accept(challengeMatrices)
                     }
                 }
+                owner.output.endLoading()
             })
             .disposed(by: bag)
     }

@@ -101,7 +101,7 @@ class AlertVC: BaseViewController {
 
 extension AlertVC {
     private func configureContentView() {
-        view.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        view.backgroundColor = .backgroundBlack
         view.addSubview(alertBaseView)
         alertBaseView.addSubviews([baseStackView,
                                    btnStackView])

@@ -38,6 +38,7 @@ class BaseViewController: UIViewController {
         bindDependency()
         bindInput()
         bindOutput()
+        bindLoading()
     }
     
     func bindDependency() {}
@@ -45,6 +46,8 @@ class BaseViewController: UIViewController {
     func bindInput() {}
     
     func bindOutput() {}
+    
+    func bindLoading() {}
     
     /// 메인화면을 rootViewControllerf로 변경하는 메서드
     func setTBCtoRootVC() {

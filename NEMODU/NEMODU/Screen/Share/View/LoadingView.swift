@@ -8,19 +8,25 @@
 import SnapKit
 import Then
 import UIKit
+import Lottie
 
 class LoadingView: BaseView {
-    private var indicator = UIActivityIndicatorView(frame: CGRect(x: 0,
-                                                                  y: 0, width: 50,
-                                                                  height: 50))
+    private var indicator = AnimationView(name: "loading")
+        .then {
+            $0.play()
+            $0.loopMode = .loop
+            $0.contentMode = .scaleAspectFill
+        }
 
     override func configureView() {
-        backgroundColor = .black.withAlphaComponent(0.3)
+        backgroundColor = .backgroundBlack
         addSubview(indicator)
     }
     
     override func layoutView() {
-        indicator.center = center
-        indicator.startAnimating()
+        indicator.snp.makeConstraints {
+            $0.width.height.equalTo(150)
+            $0.center.equalToSuperview()
+        }
     }
 }
