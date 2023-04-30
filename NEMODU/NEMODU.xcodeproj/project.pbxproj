@@ -181,6 +181,7 @@
 		3C09AE3728AF6071005DD125 /* ChallengeWaitingTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C09AE3628AF6071005DD125 /* ChallengeWaitingTVC.swift */; };
 		3C09AE3928AF6345005DD125 /* ChallengeDoingTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C09AE3828AF6345005DD125 /* ChallengeDoingTVC.swift */; };
 		3C09AE3B28AF6450005DD125 /* ChallengeFinishTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C09AE3A28AF6450005DD125 /* ChallengeFinishTVC.swift */; };
+		3C14411629E30B2A00FFCF31 /* SetAuthorityVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C14411529E30B2A00FFCF31 /* SetAuthorityVC.swift */; };
 		3C2A263228FF8BE4009E0069 /* AreaRankingListVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C2A263128FF8BE4009E0069 /* AreaRankingListVM.swift */; };
 		3C2A2634290018C0009E0069 /* StepRankingListVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C2A2633290018C0009E0069 /* StepRankingListVM.swift */; };
 		3C2A263629001E5F009E0069 /* AccumulateRankingListVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C2A263529001E5F009E0069 /* AccumulateRankingListVM.swift */; };
@@ -236,6 +237,8 @@
 		3CE87A5529F3AA010080CA39 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3CE87A5429F3AA000080CA39 /* GoogleService-Info.plist */; };
 		3CF039EC29E28C3E001CA475 /* SettingItemTitleLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF039EB29E28C3E001CA475 /* SettingItemTitleLabelView.swift */; };
 		3CF039EE29E290FF001CA475 /* SetNotificationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF039ED29E290FF001CA475 /* SetNotificationVC.swift */; };
+		3CF039F229E2BBF1001CA475 /* TermsConditionsAgreementVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF039F129E2BBF1001CA475 /* TermsConditionsAgreementVC.swift */; };
+		3CF039F429E2E756001CA475 /* TermsConditionsDetailButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF039F329E2E756001CA475 /* TermsConditionsDetailButton.swift */; };
 		3CF1C29C293D962100F7C189 /* ChallengeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF1C29B293D962100F7C189 /* ChallengeType.swift */; };
 		3CF431BA28FE7AE9007EB115 /* AreaRankingListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF431B928FE7AE9007EB115 /* AreaRankingListVC.swift */; };
 		3CF431BC28FE7BAA007EB115 /* StepRankingListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF431BB28FE7BAA007EB115 /* StepRankingListVC.swift */; };
@@ -425,6 +428,7 @@
 		3C09AE3628AF6071005DD125 /* ChallengeWaitingTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeWaitingTVC.swift; sourceTree = "<group>"; };
 		3C09AE3828AF6345005DD125 /* ChallengeDoingTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeDoingTVC.swift; sourceTree = "<group>"; };
 		3C09AE3A28AF6450005DD125 /* ChallengeFinishTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeFinishTVC.swift; sourceTree = "<group>"; };
+		3C14411529E30B2A00FFCF31 /* SetAuthorityVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetAuthorityVC.swift; sourceTree = "<group>"; };
 		3C2A263128FF8BE4009E0069 /* AreaRankingListVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AreaRankingListVM.swift; sourceTree = "<group>"; };
 		3C2A2633290018C0009E0069 /* StepRankingListVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepRankingListVM.swift; sourceTree = "<group>"; };
 		3C2A263529001E5F009E0069 /* AccumulateRankingListVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccumulateRankingListVM.swift; sourceTree = "<group>"; };
@@ -486,6 +490,8 @@
 		3CE87A5429F3AA000080CA39 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3CF039EB29E28C3E001CA475 /* SettingItemTitleLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingItemTitleLabelView.swift; sourceTree = "<group>"; };
 		3CF039ED29E290FF001CA475 /* SetNotificationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetNotificationVC.swift; sourceTree = "<group>"; };
+		3CF039F129E2BBF1001CA475 /* TermsConditionsAgreementVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsConditionsAgreementVC.swift; sourceTree = "<group>"; };
+		3CF039F329E2E756001CA475 /* TermsConditionsDetailButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsConditionsDetailButton.swift; sourceTree = "<group>"; };
 		3CF1C29B293D962100F7C189 /* ChallengeType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeType.swift; sourceTree = "<group>"; };
 		3CF431B928FE7AE9007EB115 /* AreaRankingListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AreaRankingListVC.swift; sourceTree = "<group>"; };
 		3CF431BB28FE7BAA007EB115 /* StepRankingListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepRankingListVC.swift; sourceTree = "<group>"; };
@@ -520,6 +526,7 @@
 			isa = PBXGroup;
 			children = (
 				2304FB9E28F2DC3300DD3A50 /* LoginBtn.swift */,
+				3CF039F329E2E756001CA475 /* TermsConditionsDetailButton.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -599,6 +606,8 @@
 				23255A6B28CF1307005D6D5A /* AddFriendsVC.swift */,
 				2378A4962904106900FB7031 /* LocationSettingVC.swift */,
 				23255A7328CF5325005D6D5A /* EnterVC.swift */,
+				3CF039F129E2BBF1001CA475 /* TermsConditionsAgreementVC.swift */,
+				3C14411529E30B2A00FFCF31 /* SetAuthorityVC.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -1560,6 +1569,7 @@
 				3CB9DB9D28A92528007BC1BE /* MenuBarCV.swift in Sources */,
 				237573EF28FA773F006026ED /* EditProfileVC.swift in Sources */,
 				3CF431BA28FE7AE9007EB115 /* AreaRankingListVC.swift in Sources */,
+				3CF039F429E2E756001CA475 /* TermsConditionsDetailButton.swift in Sources */,
 				2348B3BF2892C675001095BC /* AppDelegate.swift in Sources */,
 				3C72D7C428B51BB6006E2229 /* SelectChallengeCreateVC.swift in Sources */,
 				23ECC09F28D859E000F65692 /* AuthAPI.swift in Sources */,
@@ -1669,6 +1679,7 @@
 				23B72058289808EB00D3A410 /* MapFilterBottomSheet.swift in Sources */,
 				3C08137F28A91C00009F854B /* InvitedChallengeTVC.swift in Sources */,
 				230CB2E428AD478000B11270 /* Matrix.swift in Sources */,
+				3CF039F229E2BBF1001CA475 /* TermsConditionsAgreementVC.swift in Sources */,
 				3CF039EC29E28C3E001CA475 /* SettingItemTitleLabelView.swift in Sources */,
 				3CB9DB9F28A93F19007BC1BE /* ChallengeRankingMenuBarCVC.swift in Sources */,
 				23D8B7E128B3AC9C00F48165 /* MyRecordListTVC.swift in Sources */,
@@ -1712,6 +1723,7 @@
 				3C9776B829767AE500CBBC6B /* ChallengeDetailInfoView.swift in Sources */,
 				3C9CD99D28AB7E9800A7550C /* ChallengeListTVC.swift in Sources */,
 				23255A7428CF5325005D6D5A /* EnterVC.swift in Sources */,
+				3C14411629E30B2A00FFCF31 /* SetAuthorityVC.swift in Sources */,
 				23B7206328A0DCAA00D3A410 /* ProceedingChallengeDataSource.swift in Sources */,
 				238C4DE528A4BFE2000BEE36 /* UIScrollView+.swift in Sources */,
 				2348B4052892D1FA001095BC /* UIButton+.swift in Sources */,

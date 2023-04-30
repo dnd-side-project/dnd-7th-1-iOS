@@ -300,7 +300,7 @@ extension MypageVC {
                 let safariViewController = SFSafariViewController(url: url)
                 safariViewController.preferredControlTintColor = .main
                 
-                present(safariViewController, animated: true, completion: nil)
+                self.present(safariViewController, animated: true, completion: nil)
             })
             .disposed(by: bag)
         
