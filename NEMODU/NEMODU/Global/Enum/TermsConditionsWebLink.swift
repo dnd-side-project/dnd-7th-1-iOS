@@ -8,8 +8,11 @@
 import UIKit
 
 enum TermsConditionsWebLink: String {
+    // 서비스 이용약관
     case service
+    // 개인 정보 수집 및 이용 동의
     case privacy
+    // 위치 기반 서비스 약관 동의
     case location
 }
 
