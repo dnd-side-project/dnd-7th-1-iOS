@@ -72,7 +72,10 @@ class FriendProfileBottomSheet: DynamicBottomSheetViewController {
             $0.sizeToFit()
             $0.semanticContentAttribute = .forceRightToLeft
             $0.layer.cornerRadius = 17
-            $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 8)
+            $0.contentEdgeInsets = UIEdgeInsets(top: 0,
+                                                left: 12,
+                                                bottom: 0,
+                                                right: 8)
             
             $0.setTitle(FriendStatusType.noFriend.title, for: .normal)
             $0.setTitleColor(.white, for: .normal)
@@ -116,23 +119,26 @@ class FriendProfileBottomSheet: DynamicBottomSheetViewController {
         .then {
             $0.isScrollEnabled = false
             $0.separatorStyle = .singleLine
-            $0.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+            $0.separatorInset = UIEdgeInsets(top: 0,
+                                             left: 16,
+                                             bottom: 0,
+                                             right: 16)
             $0.backgroundColor = .white
         }
     
     var nickname: String?
+    weak var delegate: DeselectAnnotation?
     private let viewModel = FriendProfileVM()
     private let bag = DisposeBag()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        presentingViewController?.viewWillDisappear(true)
         getFriendProfile()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        presentingViewController?.viewWillAppear(true)
+        delegate?.deselectAnnotation()
     }
     
     override func configureView() {
@@ -377,4 +383,9 @@ extension FriendProfileBottomSheet: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
+}
+
+// MARK: - DeselectAnnotation Protocol
+protocol DeselectAnnotation: AnyObject {
+    func deselectAnnotation()
 }
