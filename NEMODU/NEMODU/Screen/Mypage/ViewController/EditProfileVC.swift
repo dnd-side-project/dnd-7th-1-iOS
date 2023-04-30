@@ -67,6 +67,7 @@ class EditProfileVC: BaseViewController {
     private let viewModel = UserInfoSettingVM()
     private let bag = DisposeBag()
     private var isBasic = false
+    weak var delegate: ProfileChanged?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -348,8 +349,8 @@ extension EditProfileVC {
             .asDriver(onErrorJustReturn: false)
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                // TODO: - 완료 알람 띄우기
                 self.navigationController?.popViewController(animated: true)
+                self.delegate?.popupToastView()
             })
             .disposed(by: bag)
     }
@@ -371,4 +372,10 @@ extension EditProfileVC : UIImagePickerControllerDelegate, UINavigationControlle
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true)
     }
+}
+
+// MARK: - ProfileChanged Protocol
+
+protocol ProfileChanged: AnyObject {
+    func popupToastView()
 }
