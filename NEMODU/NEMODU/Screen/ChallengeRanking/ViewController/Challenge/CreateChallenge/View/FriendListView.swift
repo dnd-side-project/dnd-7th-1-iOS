@@ -13,8 +13,8 @@ class FriendListView: BaseView {
     
     // MARK: - UI components
     
-    let containerView = UIView()
-    let profileImage = UIImageView()
+    private let containerView = UIView()
+    let profileImageView = UIImageView()
         .then {
             $0.image = .defaultThumbnail
             $0.layer.cornerRadius = 36
@@ -30,7 +30,7 @@ class FriendListView: BaseView {
         }
     let nicknameLabel = PaddingLabel()
         .then {
-            $0.text = "아무개"
+            $0.text = "nickname"
             $0.font = .body4
             $0.textColor = .gray900
         }
@@ -39,30 +39,35 @@ class FriendListView: BaseView {
     
     // MARK: - Life Cycle
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    override func layoutView() {
+        super.layoutView()
+        
+        configureLayout()
     }
     
     // MARK: - Functions
     
-    override func configureView() {
-        super.configureView()
+    func configureFriendsListView(friendInfo: Info) {
+        nicknameLabel.text = friendInfo.nickname
+        profileImageView.kf.setImage(with: friendInfo.picturePathURL, placeholder: UIImage.defaultThumbnail)
     }
     
-    override func layoutView() {
+}
+
+// MARK: - Layout
+
+extension FriendListView {
+    
+    private func configureLayout() {
         addSubview(containerView)
-        containerView.addSubviews([profileImage, cancelButton, nicknameLabel])
+        containerView.addSubviews([profileImageView, cancelButton, nicknameLabel])
         
         
         containerView.snp.makeConstraints {
             $0.edges.equalTo(self)
         }
-        profileImage.snp.makeConstraints {
-            $0.width.height.equalTo(profileImage.layer.cornerRadius * 2)
+        profileImageView.snp.makeConstraints {
+            $0.width.height.equalTo(profileImageView.layer.cornerRadius * 2)
 
             $0.centerX.equalTo(containerView)
             $0.top.equalTo(containerView.snp.top)
@@ -71,12 +76,12 @@ class FriendListView: BaseView {
         cancelButton.snp.makeConstraints {
             $0.width.height.equalTo(cancelButton.layer.cornerRadius * 2)
             
-            $0.top.right.equalTo(profileImage)
+            $0.top.right.equalTo(profileImageView)
         }
         nicknameLabel.snp.makeConstraints {
-            $0.centerX.equalTo(profileImage)
+            $0.centerX.equalTo(profileImageView)
 
-            $0.top.equalTo(profileImage.snp.bottom).offset(8)
+            $0.top.equalTo(profileImageView.snp.bottom).offset(8)
             $0.bottom.equalTo(containerView.snp.bottom)
         }
     }

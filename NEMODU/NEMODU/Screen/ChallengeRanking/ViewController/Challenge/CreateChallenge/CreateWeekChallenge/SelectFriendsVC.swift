@@ -106,7 +106,7 @@ class SelectFriendsVC: CreateChallengeVC {
     private let bag = DisposeBag()
     private var friendsListResponseModel: FriendsListResponseModel?
     
-    private var selectedFriendsList: [String] = []
+    private var selectedFriendsList: [Info] = []
     
     private var friendsListContainerViewHeightConstraint: Constraint?
     
@@ -152,7 +152,7 @@ class SelectFriendsVC: CreateChallengeVC {
     // MARK: - Functions
     
     private func showSelectedFriend(friendInfo: Info) {
-        selectedFriendsList.append(friendInfo.nickname)
+        selectedFriendsList.append(friendInfo)
         
         // 친구목록 컨테이너 창 크기 조절하기
         if selectedFriendsList.count == 1 {
@@ -168,7 +168,6 @@ class SelectFriendsVC: CreateChallengeVC {
                     friendsListContainerView.alpha = 1
                 }
             }
-            
         }
         
         // 선택 친구목록 표시
@@ -184,10 +183,16 @@ class SelectFriendsVC: CreateChallengeVC {
     private func deleteSelectedFriend(friendInfo: Info) {
         var seletedFriendsProfileList: [UIImage] = []
         [friendsListView1, friendsListView2, friendsListView3].forEach {
-            seletedFriendsProfileList.append($0.profileImage.image ?? UIImage(named: "defaultThumbnail")!)
+            seletedFriendsProfileList.append($0.profileImageView.image ?? .defaultThumbnail)
         }
         
-        guard let targetIndex = selectedFriendsList.firstIndex(of: friendInfo.nickname) else { return }
+        var targetIndex = 0
+        for index in 0..<selectedFriendsList.count {
+            if(selectedFriendsList[index].nickname == friendInfo.nickname) {
+                targetIndex = index
+                break
+            }
+        }
         
         selectedFriendsList.remove(at: targetIndex)
         seletedFriendsProfileList.remove(at: targetIndex)
@@ -197,16 +202,16 @@ class SelectFriendsVC: CreateChallengeVC {
         case 2:
             friendsListView3.isHidden = true
             
-            friendsListView2.nicknameLabel.text = selectedFriendsList[1]
-            friendsListView2.profileImage.image = seletedFriendsProfileList[1]
+            friendsListView2.nicknameLabel.text = selectedFriendsList[1].nickname
+            friendsListView2.profileImageView.image = seletedFriendsProfileList[1]
             
-            friendsListView1.nicknameLabel.text = selectedFriendsList[0]
-            friendsListView1.profileImage.image = seletedFriendsProfileList[0]
+            friendsListView1.nicknameLabel.text = selectedFriendsList[0].nickname
+            friendsListView1.profileImageView.image = seletedFriendsProfileList[0]
         case 1:
             friendsListView2.isHidden = true
             
-            friendsListView1.nicknameLabel.text = selectedFriendsList[0]
-            friendsListView1.profileImage.image = seletedFriendsProfileList[0]
+            friendsListView1.nicknameLabel.text = selectedFriendsList[0].nickname
+            friendsListView1.profileImageView.image = seletedFriendsProfileList[0]
         case 0:
             friendsListView1.isHidden = true
             
@@ -227,7 +232,7 @@ class SelectFriendsVC: CreateChallengeVC {
         
         var targetIndex = 3
         for i in 0..<friendsList.infos.count {
-            if friendsList.infos[i].nickname == selectedFriendsList[sender.tag] {
+            if friendsList.infos[i].nickname == selectedFriendsList[sender.tag].nickname {
                 targetIndex = i
                 break
             }
@@ -273,8 +278,7 @@ extension SelectFriendsVC {
     
     private func configureFriendListView(friendListView: FriendListView, friendInfo: Info) {
         friendListView.isHidden = false
-        friendListView.nicknameLabel.text = friendInfo.nickname
-        friendListView.profileImage.kf.setImage(with: URL(string: friendInfo.picturePath))
+        friendListView.configureFriendsListView(friendInfo: friendInfo)
     }
     
     private func configureTableView() {

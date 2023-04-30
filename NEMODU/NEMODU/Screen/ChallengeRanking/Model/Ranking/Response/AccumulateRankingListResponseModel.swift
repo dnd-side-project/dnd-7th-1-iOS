@@ -20,3 +20,10 @@ struct MatrixRanking: Codable {
     let score: Int
     let picturePath: String
 }
+
+extension MatrixRanking {
+    var picturePathURL: URL? {
+        guard let picturePathURL = picturePath.encodeURL() else { return nil }
+        return URL(string: picturePathURL)
+    }
+}
