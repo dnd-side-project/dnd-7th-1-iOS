@@ -77,7 +77,7 @@ extension InvitedChallengeDetailVM {
     
     func requestAcceptChallenge(with param: AcceptRejectChallengeRequestModel) {
         let path = "challenge/accept"
-        let resource = urlResource<AcceptRejectChallengeRequestModel>(path: path)
+        let resource = urlResource<AcceptRejectChallengeResponseModel>(path: path)
         
         apiSession.postRequest(with: resource, param: param.acceptRejectChallenge)
             .withUnretained(self)
@@ -86,8 +86,8 @@ extension InvitedChallengeDetailVM {
                 case .failure(let error):
                     owner.apiError.onNext(error)
                     owner.output.isAcceptChallengeSuccess.accept(false)
-                case .success(_):
-                    owner.output.isAcceptChallengeSuccess.accept(true)
+                case .success(let data):
+                    owner.output.isAcceptChallengeSuccess.accept(data.status != InvitedChallengeAcceptType.reject.description ? true : false)
                 }
             })
             .disposed(by: bag)
@@ -95,7 +95,7 @@ extension InvitedChallengeDetailVM {
     
     func requestRejectChallenge(with param: AcceptRejectChallengeRequestModel) {
         let path = "challenge/reject"
-        let resource = urlResource<AcceptRejectChallengeRequestModel>(path: path)
+        let resource = urlResource<AcceptRejectChallengeResponseModel>(path: path)
         
         apiSession.postRequest(with: resource, param: param.acceptRejectChallenge)
             .withUnretained(self)
@@ -104,8 +104,8 @@ extension InvitedChallengeDetailVM {
                 case .failure(let error):
                     owner.apiError.onNext(error)
                     owner.output.isRejectChallengeSuccess.accept(false)
-                case .success(_):
-                    owner.output.isRejectChallengeSuccess.accept(true)
+                case .success(let data):
+                    owner.output.isRejectChallengeSuccess.accept(data.status == InvitedChallengeAcceptType.reject.description ? true : false)
                 }
             })
             .disposed(by: bag)

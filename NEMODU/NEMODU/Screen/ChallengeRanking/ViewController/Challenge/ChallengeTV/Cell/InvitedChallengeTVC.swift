@@ -123,7 +123,8 @@ extension InvitedChallengeTVC {
         
         challengeNameLabel.text = invitedChallengeListElement.name
         timeAgoLabel.text = "\(invitedChallengeListElement.created.relativeDateTime(.withBlank))"
-        userProfileImageView.kf.setImage(with: URL(string: invitedChallengeListElement.picturePath))
+        userProfileImageView.kf.setImage(with: invitedChallengeListElement.picturePathURL, placeholder: UIImage.defaultThumbnail)
+    
         userNicknameLabel.text = invitedChallengeListElement.inviterNickname
         invitedMessage.text = "초대 메세지: \(invitedChallengeListElement.message)"
     }

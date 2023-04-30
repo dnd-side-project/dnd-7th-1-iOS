@@ -114,11 +114,14 @@ extension CreateChallengeSuccuessVC {
     func configureCreateChallengeResponse(creatChallengeResponseModel: CreatChallengeResponseModel) {
         challengeTitleLabel.text = creatChallengeResponseModel.message
         
-        let startDate = creatChallengeResponseModel.started.split(separator: "-")
-        let endDate = creatChallengeResponseModel.ended.split(separator: "-")
-        challengeDateLabel.text = "\(startDate[1])월 \(startDate[2])일 - \(endDate[1])월 \(endDate[2])일"
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = DateType.withTime.dateFormatter
+        guard let startDate: Date = dateFormatter.date(from: creatChallengeResponseModel.started) else { return }
+        guard let endDate: Date = dateFormatter.date(from: creatChallengeResponseModel.ended) else { return }
         
-        configureJoinUserInfo(joinUsersInfo: creatChallengeResponseModel.users)
+        challengeDateLabel.text = "\(startDate.month.showTwoDigitNumber)월 \(startDate.day.showTwoDigitNumber)일 - \(endDate.month.showTwoDigitNumber)월 \(endDate.day.showTwoDigitNumber)일"
+        
+        configureJoinUserInfo(joinUsersInfo: creatChallengeResponseModel.members)
     }
     
     private func configureNavigationBar() {
@@ -140,15 +143,16 @@ extension CreateChallengeSuccuessVC {
             }
     }
     
-    private func configureJoinUserInfo(joinUsersInfo: [ChallengeUser]) {
+    private func configureJoinUserInfo(joinUsersInfo: [Member]) {
         for joinUserInfo in joinUsersInfo {
             let containerView = UIView()
-            let profileImage = UIImageView()
+            let profileImageView = UIImageView()
                 .then {
-                    $0.kf.setImage(with: URL(string: joinUserInfo.picturePath))
+                    $0.kf.setImage(with: joinUserInfo.picturePathURL, placeholder: UIImage.defaultThumbnail)
                     $0.layer.cornerRadius = 28
                     $0.layer.masksToBounds = true
                 }
+            
             let nicknameLabel = PaddingLabel()
                 .then {
                     $0.text = joinUserInfo.nickname
@@ -156,16 +160,16 @@ extension CreateChallengeSuccuessVC {
                     $0.textColor = .gray900
                 }
             
-            containerView.addSubviews([profileImage, nicknameLabel])
-            profileImage.snp.makeConstraints {
-                $0.width.height.equalTo(profileImage.layer.cornerRadius * 2)
+            containerView.addSubviews([profileImageView, nicknameLabel])
+            profileImageView.snp.makeConstraints {
+                $0.width.height.equalTo(profileImageView.layer.cornerRadius * 2)
                 
                 $0.top.left.right.equalTo(containerView)
             }
             nicknameLabel.snp.makeConstraints {
-                $0.centerX.equalTo(profileImage)
+                $0.centerX.equalTo(profileImageView)
                 
-                $0.top.equalTo(profileImage.snp.bottom).offset(8)
+                $0.top.equalTo(profileImageView.snp.bottom).offset(8)
                 $0.bottom.equalTo(containerView.snp.bottom)
             }
             

@@ -22,3 +22,11 @@ extension ChallengeType {
         }
     }
 }
+
+// MARK: - Custom String Convertible
+
+extension ChallengeType: CustomStringConvertible {
+    var description: String {
+        rawValue.uppercased()
+    }
+}
