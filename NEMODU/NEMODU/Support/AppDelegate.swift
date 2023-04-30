@@ -105,7 +105,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             
             toPushVC = friendsVC
             
-            // 취소된 챌린지 메인화면으로 전환
+            // 취소된 챌린지 알림 시, 메인화면으로 전환
         case NotificationCategoryType.challengeCancelled.identifier:
             toGoTabVC = getTabIndexInstance(targetTabIndex: 1)
             
@@ -129,11 +129,13 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         case NotificationCategoryType.challengeResult.identifier:
             toGoTabVC = getTabIndexInstance(targetTabIndex: 0)
             
+            guard let targetUUID = userInfo["challenge_uuid"] as? String else { return }
+            
             let challengeHistoryDetailVC = ChallengeHistoryDetailVC()
             challengeHistoryDetailVC.hidesBottomBarWhenPushed = true
             challengeHistoryDetailVC.challgeStatus = "Done"
             
-            challengeHistoryDetailVC.getChallengeHistoryDetailInfo(uuid: "11edd54eb4e38b67aac54d3b9a37e33f") // TODO: - 변경된 요청값 반영필요(nickname&uuid로 완료된 챌린지 조회)
+            challengeHistoryDetailVC.getChallengeHistoryDetailInfo(uuid: targetUUID)
             
             toPushVC = challengeHistoryDetailVC
             
