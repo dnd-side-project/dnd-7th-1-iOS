@@ -257,14 +257,16 @@ extension MainVC {
 // MARK: - Output
 
 extension MainVC {
-    /// span 값에 따라 visible 상태가 적용 안되는 경우를 고려하여 scroll시마다 visible 상태 적용
+    /// 지도 제스쳐에 맞춰 현재 보이는 화면의 영역을 받아오는 메서드
     private func bindMapGesture() {
         mapVC.mapView.rx.anyGesture(.pan(), .pinch())
-            .when(.began)
+            .when(.ended)
+            .debounce(.seconds(1), scheduler: MainScheduler.instance)
             .subscribe(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                self.setMyArea(visible: self.viewModel.output.myBlocksVisible.value)
-                self.setFriendsArea(visible: self.viewModel.output.friendVisible.value)
+                self.viewModel.getUpdateBlocks(self.mapVC.mapView.region.center.latitude,
+                                               self.mapVC.mapView.region.center.longitude,
+                                               self.mapVC.mapView.region.span.latitudeDelta)
             })
             .disposed(by: bag)
     }

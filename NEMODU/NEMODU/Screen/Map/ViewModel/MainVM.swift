@@ -104,4 +104,27 @@ extension MainVM {
             })
             .disposed(by: bag)
     }
+    
+    /// 지도 제스쳐 시, 현재 화면에 보이는 영역을 받아오는 메서드
+    func getUpdateBlocks(_ latitude: Double, _ longitude: Double, _ spanDelta: Double = Map.defalutZoomScale) {
+        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
+        let type = MapType.all.rawValue
+        let path = "matrix?nickname=\(nickname)&latitude=\(latitude)&longitude=\(longitude)&spanDelta=\(spanDelta)&type=\(type)"
+        let resource = urlResource<[UserMatrixResponseModel]?>(path: path)
+        
+        output.beginLoading()
+        apiSession.getRequest(with: resource)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, result in
+                switch result {
+                case .failure(let error):
+                    owner.apiError.onNext(error)
+                case .success(let data):
+                    // TODO: - 데이터 연결
+                    dump(data)
+                }
+                owner.output.endLoading()
+            })
+            .disposed(by: bag)
+    }
 }
