@@ -61,12 +61,28 @@ class MapVC: BaseViewController {
     private let bag = DisposeBag()
     
     // Map Overlay
+    // mine
     var userOverlay = Area()
-    var friendsOverlay = Area()
     var myMatrices = Set<Matrix>()
-    var friendsMatrices = Set<Matrix>()
     var myBlocks = [Block]()
-    var friendsBlocks = [Block]()
+    
+    // 일반 친구
+    var grayOverlay = Area()
+    var grayMatrices = Set<Matrix>()
+    var grayBlocks = [Block]()
+    
+    // 챌린지 색깔별 친구
+    var redOverlay = Area()
+    var redMatrices = Set<Matrix>()
+    var redBlocks = [Block]()
+    
+    var pinkOverlay = Area()
+    var pinkMatrices = Set<Matrix>()
+    var pinkBlocks = [Block]()
+    
+    var yellowOverlay = Area()
+    var yellowMatrices = Set<Matrix>()
+    var yellowBlocks = [Block]()
     
     // 사용자 위치 이동
     var isFocusOn = true
@@ -347,41 +363,55 @@ extension MapVC {
     
     /// 영역 배열, 소유자, 색상을 받아 소유자의 영역 Set에 추가하고 기존 overlay를 remove 후 지도에 Area 추가
     func drawBlockArea(matrices: [Matrix], owner: BlocksType, blockColor: UIColor) {
-        if owner == .mine {
+        switch blockColor {
+        case ChallengeColorType.green.blockColor:
+            asdf(matrix: &myMatrices, blocks: &myBlocks, overlay: &userOverlay)
+        case ChallengeColorType.red.blockColor:
+            asdf(matrix: &redMatrices, blocks: &redBlocks, overlay: &redOverlay)
+        case ChallengeColorType.pink.blockColor:
+            asdf(matrix: &pinkMatrices, blocks: &pinkBlocks, overlay: &pinkOverlay)
+        case ChallengeColorType.yellow.blockColor:
+            asdf(matrix: &yellowMatrices, blocks: &yellowBlocks, overlay: &yellowOverlay)
+        default:
+            asdf(matrix: &grayMatrices, blocks: &grayBlocks, overlay: &grayOverlay)
+        }
+        
+        func asdf(matrix: inout Set<Matrix>, blocks: inout [Block], overlay: inout Area) {
             matrices.forEach {
-                if !myMatrices.contains($0) {
-                    myMatrices.insert($0)
-                    myBlocks.append(makeBlocks(matrix: $0,
-                                               owner: owner,
-                                               color: blockColor))
+                if !matrix.contains($0) {
+                    matrix.insert($0)
+                    blocks.append(makeBlocks(matrix: $0,
+                                             owner: owner,
+                                             color: blockColor))
                 }
             }
-            mapView.removeOverlay(userOverlay)
-            userOverlay = Area(myBlocks)
-            userOverlay.color = blockColor
-            mapView.addOverlay(userOverlay)
-        } else {
-            matrices.forEach {
-                if !friendsMatrices.contains($0) {
-                    friendsMatrices.insert($0)
-                    friendsBlocks.append(makeBlocks(matrix: $0,
-                                                    owner: owner,
-                                                    color: blockColor))
-                }
-            }
-            mapView.removeOverlay(friendsOverlay)
-            friendsOverlay = Area(friendsBlocks)
-            friendsOverlay.color = blockColor
-            mapView.addOverlay(friendsOverlay)
+            mapView.removeOverlay(overlay)
+            overlay = Area(blocks)
+            overlay.color = blockColor
+            mapView.addOverlay(overlay)
         }
     }
     
     
     /// 영역의 소유자를 입력받아 visible 상태를 지정하는 함수
     func setOverlayVisible(of owner: BlocksType, visible: Bool) {
-        visible
-        ? mapView.addOverlay(owner == .mine ? userOverlay : friendsOverlay)
-        : mapView.removeOverlay(owner == .mine ? userOverlay : friendsOverlay)
+        if owner == .mine {
+            visible
+            ? mapView.addOverlay(userOverlay)
+            : mapView.removeOverlay(userOverlay)
+        } else {
+            if visible {
+                mapView.addOverlay(redOverlay)
+                mapView.addOverlay(pinkOverlay)
+                mapView.addOverlay(yellowOverlay)
+                mapView.addOverlay(grayOverlay)
+            } else {
+                mapView.removeOverlay(redOverlay)
+                mapView.removeOverlay(pinkOverlay)
+                mapView.removeOverlay(yellowOverlay)
+                mapView.removeOverlay(grayOverlay)
+            }
+        }
     }
     
     /// 내 annotation의 visible 상태를 지정하는 함수
