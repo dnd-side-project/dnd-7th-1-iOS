@@ -358,10 +358,12 @@ extension WalkingVC {
                 guard let self = self else { return }
                 if !self.viewModel.output.friendVisible.value { return }
                 friends.forEach {
-                    guard let profileImageURL = $0.profileImageURL else { return }
+                    guard let latitude = $0.latitude,
+                          let longitude = $0.longitude,
+                          let profileImageURL = $0.profileImageURL else { return }
                     
                     // Annotation
-                    self.mapVC.addFriendAnnotation(coordinate: [$0.latitude, $0.longitude],
+                    self.mapVC.addFriendAnnotation(coordinate: [latitude, longitude],
                                                    profileImageURL: profileImageURL,
                                                    nickname: $0.nickname,
                                                    color: ChallengeColorType(rawValue: $0.challengeColor)?.primaryColor ?? .main,
