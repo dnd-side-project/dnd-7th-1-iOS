@@ -69,8 +69,8 @@ class MainVC: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.getAllBlocks(mapVC.mapView.region.center.latitude,
-                               mapVC.mapView.region.center.longitude)
+        viewModel.getHomeData(mapVC.mapView.region.center.latitude,
+                              mapVC.mapView.region.center.longitude)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -96,8 +96,9 @@ class MainVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
-        bindChallengeCnt()
-        bindMyBlocks()
+        bindHomeData()
+        bindMyAnnotation()
+        bindMyMatrices()
         bindFriendBlocks()
         bindChallengeFriendBlocks()
         bindVisible()
@@ -244,11 +245,10 @@ extension MainVC {
             .asDriver(onErrorJustReturn: .init())
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                self.mapVC.mapView.removeOverlays(self.mapVC.mapView.overlays)
                 self.mapVC.mapView.removeAnnotations(self.mapVC.mapView.annotations)
-                self.viewModel.getAllBlocks(self.mapVC.mapView.region.center.latitude,
-                                            self.mapVC.mapView.region.center.longitude,
-                                            self.mapVC.mapView.region.span.latitudeDelta)
+                self.viewModel.getHomeData(self.mapVC.mapView.region.center.latitude,
+                                           self.mapVC.mapView.region.center.longitude,
+                                           self.mapVC.mapView.region.span.latitudeDelta)
             })
             .disposed(by: bag)
     }
@@ -271,7 +271,18 @@ extension MainVC {
             .disposed(by: bag)
     }
     
-    private func bindChallengeCnt() {
+    /// 홈화면 기본 데이터를 연결하는 메서드. (이번 주 나의 영역, 챌린지 개수)
+    private func bindHomeData() {
+        // 이번 주 나의 영역
+        viewModel.output.matricesNumber
+            .subscribe(onNext: { [weak self] matricesNumber in
+                guard let self = self,
+                      let cnt = matricesNumber else { return }
+                self.refreshBtnView.configureBlocksCnt(cnt)
+            })
+            .disposed(by: bag)
+        
+        // 챌린지 개수
         viewModel.output.challengeCnt
             .subscribe(onNext: { [weak self] cnt in
                 guard let self = self else { return }
@@ -280,27 +291,29 @@ extension MainVC {
             .disposed(by: bag)
     }
     
-    private func bindMyBlocks() {
-        viewModel.output.myBlocks
+    /// 나의 마커를 연결하는 메서드
+    private func bindMyAnnotation() {
+        viewModel.output.myLastLocation
             .subscribe(onNext: { [weak self] user in
-                guard let self = self else { return }
-                self.refreshBtnView.configureBlocksCnt(user.matricesNumber ?? 0)
-                
-                guard let latitude = user.latitude,
+                guard let self = self,
+                      let latitude = user.latitude,
                       let longitude = user.longitude,
                       let profileImageURL = user.profileImageURL else { return }
-                
-                // Annotation
                 self.mapVC.addMyAnnotation(coordinate: [latitude, longitude],
                                            profileImageURL: profileImageURL)
-                
-                // Area
-                self.mapVC.drawBlockArea(matrices: user.matrices ?? [],
+                self.viewModel.input.userTable[user.nickname] = .main40
+            })
+            .disposed(by: bag)
+    }
+    
+    /// 나의 Matrix 배열을 입력받아 지도에 영역을 그리는 메서드
+    private func bindMyMatrices() {
+        viewModel.output.myMatrices
+            .subscribe(onNext: { [weak self] matrices in
+                guard let self = self else { return }
+                self.mapVC.drawBlockArea(matrices: matrices,
                                          owner: .mine,
                                          blockColor: .main40)
-                
-                self.setMyArea(visible: self.viewModel.output.myBlocksVisible.value)
-                self.viewModel.input.userTable[user.nickname] = .main40
             })
             .disposed(by: bag)
     }
