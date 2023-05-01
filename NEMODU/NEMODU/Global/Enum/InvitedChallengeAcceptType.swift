@@ -11,7 +11,7 @@ import UIKit
 enum InvitedChallengeAcceptType: String {
     case master
     case wait
-    case progress
+    case ready
     case reject
 }
 
@@ -22,7 +22,7 @@ extension InvitedChallengeAcceptType {
             return "주최자"
         case .wait:
             return "대기중"
-        case .progress:
+        case .ready:
             return "수락 완료"
         case .reject:
             return "거절"
@@ -31,7 +31,7 @@ extension InvitedChallengeAcceptType {
     
     var statusColor: UIColor {
         switch self {
-        case .progress:
+        case .ready:
             return .main
         default:
             return .gray600
