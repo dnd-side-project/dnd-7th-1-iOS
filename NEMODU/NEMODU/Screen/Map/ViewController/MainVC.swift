@@ -300,6 +300,7 @@ extension MainVC {
                                          blockColor: .main40)
                 
                 self.setMyArea(visible: self.viewModel.output.myBlocksVisible.value)
+                self.viewModel.input.userTable[user.nickname] = .main40
             })
             .disposed(by: bag)
     }
@@ -326,6 +327,9 @@ extension MainVC {
                     self.mapVC.drawBlockArea(matrices: $0.matrices ?? [],
                                              owner: .friends,
                                              blockColor: .gray25)
+                    
+                    // 색상 테이블 추가
+                    self.viewModel.input.userTable[nickname] = .gray25
                 }
                 
                 self.setFriendsArea(visible: self.viewModel.output.friendVisible.value)
@@ -352,6 +356,9 @@ extension MainVC {
                     self.mapVC.drawBlockArea(matrices: $0.matrices ?? [],
                                              owner: .friends,
                                              blockColor: ChallengeColorType(rawValue: $0.challengeColor)?.blockColor ?? .gray25)
+                    
+                    // 색상 테이블 추가
+                    self.viewModel.input.userTable[$0.nickname] = ChallengeColorType(rawValue: $0.challengeColor)?.blockColor ?? .gray25
                 }
                 
                 self.setFriendsArea(visible: self.viewModel.output.friendVisible.value)

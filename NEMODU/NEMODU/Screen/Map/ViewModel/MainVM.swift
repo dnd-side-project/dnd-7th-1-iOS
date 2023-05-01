@@ -27,7 +27,9 @@ final class MainVM: BaseViewModel {
     
     // MARK: - Input
     
-    struct Input {}
+    struct Input {
+        var userTable = [String: UIColor]()
+    }
     
     // MARK: - Output
     
