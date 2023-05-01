@@ -113,6 +113,7 @@
 		2375740928FC50AE006026ED /* RecommendFriendTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2375740828FC50AE006026ED /* RecommendFriendTVC.swift */; };
 		2375740B28FC5808006026ED /* ViewMoreTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2375740A28FC5808006026ED /* ViewMoreTVC.swift */; };
 		2378A4972904106900FB7031 /* LocationSettingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2378A4962904106900FB7031 /* LocationSettingVC.swift */; };
+		2387F1B329FFADDA001B4897 /* UserMatrixResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2387F1B229FFADDA001B4897 /* UserMatrixResponseModel.swift */; };
 		238C4DDF28A3AC18000BEE36 /* RecordResultVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DDE28A3AC18000BEE36 /* RecordResultVC.swift */; };
 		238C4DE328A3F0D6000BEE36 /* NemoduTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */; };
 		238C4DE528A4BFE2000BEE36 /* UIScrollView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DE428A4BFE2000BEE36 /* UIScrollView+.swift */; };
@@ -369,6 +370,7 @@
 		2375740A28FC5808006026ED /* ViewMoreTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreTVC.swift; sourceTree = "<group>"; };
 		2378A4962904106900FB7031 /* LocationSettingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSettingVC.swift; sourceTree = "<group>"; };
 		237CED1629767F3900A8F23C /* NEMODU.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NEMODU.entitlements; sourceTree = "<group>"; };
+		2387F1B229FFADDA001B4897 /* UserMatrixResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMatrixResponseModel.swift; sourceTree = "<group>"; };
 		238C4DDE28A3AC18000BEE36 /* RecordResultVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordResultVC.swift; sourceTree = "<group>"; };
 		238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NemoduTextView.swift; sourceTree = "<group>"; };
 		238C4DE428A4BFE2000BEE36 /* UIScrollView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+.swift"; sourceTree = "<group>"; };
@@ -565,6 +567,7 @@
 				230CB2E028AD474E00B11270 /* ChallengeBlockResponseModel.swift */,
 				23412FDB28AE375D00B73D62 /* ChallengeElementResponseModel.swift */,
 				23412FDF28AE648300B73D62 /* ProfileResponseModel.swift */,
+				2387F1B229FFADDA001B4897 /* UserMatrixResponseModel.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -1719,6 +1722,7 @@
 				230CB2E428AD478000B11270 /* Matrix.swift in Sources */,
 				3CF039F229E2BBF1001CA475 /* TermsConditionsAgreementVC.swift in Sources */,
 				3CF039EC29E28C3E001CA475 /* SettingItemTitleLabelView.swift in Sources */,
+				2387F1B329FFADDA001B4897 /* UserMatrixResponseModel.swift in Sources */,
 				3CB9DB9F28A93F19007BC1BE /* ChallengeRankingMenuBarCVC.swift in Sources */,
 				23D8B7E128B3AC9C00F48165 /* MyRecordListTVC.swift in Sources */,
 				237573FF28FC26DF006026ED /* FriendListVC.swift in Sources */,
