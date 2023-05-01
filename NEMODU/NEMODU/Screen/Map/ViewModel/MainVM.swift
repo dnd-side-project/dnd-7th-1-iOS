@@ -150,7 +150,7 @@ extension MainVM {
                         if data.nickname == nickname {
                             owner.output.myMatrices.accept(data.matrices)
                         } else {
-                            // TODO: - 친구 영역 연결
+                            owner.output.friendsMatrices.accept((data.nickname, data.matrices))
                         }
                     }
                 }
