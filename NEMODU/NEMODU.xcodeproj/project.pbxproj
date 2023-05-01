@@ -114,6 +114,7 @@
 		2375740B28FC5808006026ED /* ViewMoreTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2375740A28FC5808006026ED /* ViewMoreTVC.swift */; };
 		2378A4972904106900FB7031 /* LocationSettingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2378A4962904106900FB7031 /* LocationSettingVC.swift */; };
 		2387F1B329FFADDA001B4897 /* UserMatrixResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2387F1B229FFADDA001B4897 /* UserMatrixResponseModel.swift */; };
+		2387F1B529FFAEA6001B4897 /* MapType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2387F1B429FFAEA6001B4897 /* MapType.swift */; };
 		238C4DDF28A3AC18000BEE36 /* RecordResultVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DDE28A3AC18000BEE36 /* RecordResultVC.swift */; };
 		238C4DE328A3F0D6000BEE36 /* NemoduTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */; };
 		238C4DE528A4BFE2000BEE36 /* UIScrollView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DE428A4BFE2000BEE36 /* UIScrollView+.swift */; };
@@ -371,6 +372,7 @@
 		2378A4962904106900FB7031 /* LocationSettingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSettingVC.swift; sourceTree = "<group>"; };
 		237CED1629767F3900A8F23C /* NEMODU.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NEMODU.entitlements; sourceTree = "<group>"; };
 		2387F1B229FFADDA001B4897 /* UserMatrixResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMatrixResponseModel.swift; sourceTree = "<group>"; };
+		2387F1B429FFAEA6001B4897 /* MapType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapType.swift; sourceTree = "<group>"; };
 		238C4DDE28A3AC18000BEE36 /* RecordResultVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordResultVC.swift; sourceTree = "<group>"; };
 		238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NemoduTextView.swift; sourceTree = "<group>"; };
 		238C4DE428A4BFE2000BEE36 /* UIScrollView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+.swift"; sourceTree = "<group>"; };
@@ -1047,6 +1049,7 @@
 				23C64DD02988D50100509E5B /* LoginType.swift */,
 				3C79AEB329E128B40035EA12 /* NotificationCategoryType.swift */,
 				3C506C1E29FD3A4E006EDAAE /* TermsConditionsWebLink.swift */,
+				2387F1B429FFAEA6001B4897 /* MapType.swift */,
 			);
 			path = Enum;
 			sourceTree = "<group>";
@@ -1645,6 +1648,7 @@
 				23F5717728A92E38005F2E21 /* ProfileRecordView.swift in Sources */,
 				23412FD628AE080000B73D62 /* ChallengeColorType.swift in Sources */,
 				2348B4032892D1D9001095BC /* UITextView+.swift in Sources */,
+				2387F1B529FFAEA6001B4897 /* MapType.swift in Sources */,
 				23062A9828B7F6B00064C978 /* Date+.swift in Sources */,
 				23255A7D28D0DB18005D6D5A /* EnterVM.swift in Sources */,
 				3CF431C228FE93D3007EB115 /* ChallengeVC.swift in Sources */,
