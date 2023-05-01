@@ -15,15 +15,11 @@ final class MainVM: BaseViewModel {
     var input = Input()
     var output = Output()
     
-    /// Annotation 생성을 위한 데이터 타입
-    /// (닉네임, 위도, 경도, 프로필URL)
-    typealias Pin = (nickname: String, latitude: Double?, longitude: Double?, profileImageURL: URL?)
-    
     // MARK: - Input
     
     struct Input {
         /// 유저에 해당하는 영역 색을 저장하는 딕셔너리
-        var userTable = [String: UIColor]()
+        var userTable = [String: ChallengeColorType]()
     }
     
     // MARK: - Output
@@ -42,13 +38,13 @@ final class MainVM: BaseViewModel {
         var challengeCnt = PublishRelay<Int>()
         
         // Annotation
-        var myLastLocation = PublishRelay<Pin>()
+        var myLastLocation = PublishRelay<UserBlockResponseModel>()
+        var friendsLastLocations = PublishRelay<UserBlockResponseModel>()
+        var challengeFriendsLastLocations = PublishRelay<ChallengeBlockResponseModel>()
         
         // Matrices
         var myMatrices = PublishRelay<[Matrix]>()
-        
-        var friendBlocks = PublishRelay<[UserBlockResponseModel]>()
-        var challengeFriendBlocks = PublishRelay<[ChallengeBlockResponseModel]>()
+        var friendsMatrices = PublishRelay<(String, [Matrix])>()
     }
     
     // MARK: - Init
@@ -96,27 +92,38 @@ extension MainVM {
                 case .failure(let error):
                     owner.apiError.onNext(error)
                 case .success(let data):
+                    // 진행중인 챌린지 개수
+                    owner.output.challengeCnt.accept(data.challengesNumber ?? 0)
+                    
+                    // visible status
+                    owner.output.myBlocksVisible.accept(data.isShowMine)
+                    owner.output.friendVisible.accept(data.isShowFriend)
+                    owner.output.myLocationVisible.accept(data.isPublicRecord)
+                    
                     if let user = data.userMatrices {
                         // Annotation
-                        owner.output.myLastLocation.accept((user.nickname, user.latitude, user.longitude, user.profileImageURL))
+                        owner.output.myLastLocation.accept(user)
                         // Matrices
                         owner.output.myMatrices.accept(user.matrices ?? [])
                         // UserMatricesNumber
                         owner.output.matricesNumber.accept(user.matricesNumber)
                     }
                     if let friendMatrices = data.friendMatrices {
-                        owner.output.friendBlocks.accept(friendMatrices)
+                        for friend in friendMatrices {
+                            // Annotation
+                            owner.output.friendsLastLocations.accept(friend)
+                            // Matrices
+                            owner.output.friendsMatrices.accept((friend.nickname, friend.matrices ?? []))
+                        }
                     }
                     if let challengeMatrices = data.challengeMatrices {
-                        owner.output.challengeFriendBlocks.accept(challengeMatrices)
+                        for friend in challengeMatrices {
+                            // Annotation
+                            owner.output.challengeFriendsLastLocations.accept(friend)
+                            // Matrices
+                            owner.output.friendsMatrices.accept((friend.nickname, friend.matrices ?? []))
+                        }
                     }
-                    // visible status
-                    owner.output.myBlocksVisible.accept(data.isShowMine)
-                    owner.output.friendVisible.accept(data.isShowFriend)
-                    owner.output.myLocationVisible.accept(data.isPublicRecord)
-                    
-                    // 진행중인 챌린지 개수
-                    owner.output.challengeCnt.accept(data.challengesNumber ?? 0)
                 }
                 owner.output.endLoading()
             })
