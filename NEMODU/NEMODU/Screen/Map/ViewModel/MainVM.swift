@@ -138,8 +138,14 @@ extension MainVM {
                 case .failure(let error):
                     owner.apiError.onNext(error)
                 case .success(let data):
-                    // TODO: - 데이터 연결
-                    dump(data)
+                    guard let data = data else { return }
+                    for data in data {
+                        if data.nickname == nickname {
+                            owner.output.myMatrices.accept(data.matrices)
+                        } else {
+                            // TODO: - 친구 영역 연결
+                        }
+                    }
                 }
                 owner.output.endLoading()
             })
