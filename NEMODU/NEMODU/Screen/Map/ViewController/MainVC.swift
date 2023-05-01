@@ -101,8 +101,7 @@ class MainVC: BaseViewController {
         bindMyAnnotation()
         bindFriendAnnotation()
         bindChallengeFriendAnnotation()
-        bindMyMatrices()
-        bindFriendMatrices()
+        bindMatrices()
         bindVisible()
     }
     
@@ -353,27 +352,15 @@ extension MainVC {
             .disposed(by: bag)
     }
     
-    /// 나의 Matrix 배열을 입력받아 지도에 영역을 그리는 메서드
-    private func bindMyMatrices() {
-        viewModel.output.myMatrices
-            .subscribe(onNext: { [weak self] matrices in
-                guard let self = self else { return }
-                self.mapVC.drawBlockArea(matrices: matrices,
-                                         owner: .mine,
-                                         blockColor: .main40)
-            })
-            .disposed(by: bag)
-    }
-    
-    /// 친구의 Matrix 배열을 입력받아 지도에 영역을 그리는 메서드
-    private func bindFriendMatrices() {
-        viewModel.output.friendsMatrices
+    /// Matrix 배열을 입력받아 지도에 영역을 그리는 메서드
+    private func bindMatrices() {
+        viewModel.output.matrices
             .subscribe(onNext: { [weak self] nickname, matrices in
                 guard let self = self,
                       let blockColor = self.viewModel.input.userTable[nickname] else { return }
-                
+                let owner: BlocksType = (nickname == UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname)) ? .mine : .friends
                 self.mapVC.drawBlockArea(matrices: matrices,
-                                         owner: .friends,
+                                         owner: owner,
                                          blockColor: blockColor.blockColor)
             })
             .disposed(by: bag)

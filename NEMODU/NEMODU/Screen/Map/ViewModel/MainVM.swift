@@ -43,8 +43,7 @@ final class MainVM: BaseViewModel {
         var challengeFriendsLastLocations = PublishRelay<ChallengeBlockResponseModel>()
         
         // Matrices
-        var myMatrices = PublishRelay<[Matrix]>()
-        var friendsMatrices = PublishRelay<(String, [Matrix])>()
+        var matrices = PublishRelay<(String, [Matrix])>()
     }
     
     // MARK: - Init
@@ -104,7 +103,7 @@ extension MainVM {
                         // Annotation
                         owner.output.myLastLocation.accept(user)
                         // Matrices
-                        owner.output.myMatrices.accept(user.matrices ?? [])
+                        owner.output.matrices.accept((user.nickname, user.matrices ?? []))
                         // UserMatricesNumber
                         owner.output.matricesNumber.accept(user.matricesNumber)
                     }
@@ -113,7 +112,7 @@ extension MainVM {
                             // Annotation
                             owner.output.friendsLastLocations.accept(friend)
                             // Matrices
-                            owner.output.friendsMatrices.accept((friend.nickname, friend.matrices ?? []))
+                            owner.output.matrices.accept((friend.nickname, friend.matrices ?? []))
                         }
                     }
                     if let challengeMatrices = data.challengeMatrices {
@@ -121,7 +120,7 @@ extension MainVM {
                             // Annotation
                             owner.output.challengeFriendsLastLocations.accept(friend)
                             // Matrices
-                            owner.output.friendsMatrices.accept((friend.nickname, friend.matrices ?? []))
+                            owner.output.matrices.accept((friend.nickname, friend.matrices ?? []))
                         }
                     }
                 }
@@ -147,11 +146,7 @@ extension MainVM {
                 case .success(let data):
                     guard let data = data else { return }
                     for data in data {
-                        if data.nickname == nickname {
-                            owner.output.myMatrices.accept(data.matrices)
-                        } else {
-                            owner.output.friendsMatrices.accept((data.nickname, data.matrices))
-                        }
+                        owner.output.matrices.accept((data.nickname, data.matrices))
                     }
                 }
                 owner.output.endLoading()
