@@ -103,7 +103,7 @@ class InvitedChallengeDetailTVHV : ChallengeDetailTVHV {
         for info in infos {
             if info.nickname == myUserNickname {
                 switch info.status {
-                case InvitedChallengeAcceptType.progress.description:
+                case InvitedChallengeAcceptType.ready.description:
                     rejectButton.isHidden = true
                     acceptButton.isHidden = true
                     
