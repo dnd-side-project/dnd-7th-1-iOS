@@ -82,14 +82,29 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         Messaging.messaging().apnsToken = deviceToken
     }
     
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        guard let action = userInfo[NotificationCategoryType.actionIdentifier] as? String else { return }
+        
+        if(action == NotificationCategoryType.fcmTokenReissue.identifier) {
+            // TODO: FCM Token 갱신 서버코드 호출
+            if let uuid: String = makeNotifiacatonUUID(userInfo: userInfo) {
+                print("Notification UUID: ", uuid)
+                // TODO: 알림 UUID 생성 후 수신 유무처리 서버에게 전송
+            } else {
+                print("failed to create Notification UUID!")
+            }
+        }
+        
+        completionHandler(.newData)
+    }
+    
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler([.banner, .sound, .badge])
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
         let userInfo = response.notification.request.content.userInfo
-        
-        guard let action = userInfo["action"] as? String else { return }
+        guard let action = userInfo[NotificationCategoryType.actionIdentifier] as? String else { return }
         
         var toGoTabVC = UIViewController()
         var toPushVC = UIViewController()
@@ -183,6 +198,19 @@ extension AppDelegate {
             }
     }
     
+    /// 서버에게 보낼 알림 고유 식별 ID(UUID) 반환
+    private func makeNotifiacatonUUID(userInfo: [AnyHashable : Any]) -> String? {
+        if let messageID = userInfo["gcm.message_id"] as? String {
+            if let random = userInfo["random"] as? String {
+                return messageID + random
+            } else {
+                return nil
+            }
+        }
+        
+        return nil
+    }
+    
     private func getTabIndexInstance(targetTabIndex: Int) -> UIViewController {
         let nemoduTBC = window?.rootViewController as? NEMODUTBC
         nemoduTBC?.selectedIndex = targetTabIndex
@@ -214,7 +242,11 @@ extension AppDelegate {
 extension AppDelegate: MessagingDelegate {
     
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-        UserDefaults.standard.set(fcmToken, forKey: UserDefaults.Keys.fcmToken)
+        let curFCMToken = UserDefaults.standard.string(forKey: UserDefaults.Keys.fcmToken) ?? ""
+        if(curFCMToken != fcmToken) {
+            // TODO: FCM Token 갱신 서버코드 호출
+            UserDefaults.standard.set(fcmToken, forKey: UserDefaults.Keys.fcmToken)
+        }
     }
     
 }
