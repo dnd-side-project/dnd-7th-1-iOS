@@ -8,6 +8,8 @@
 import Foundation
 
 enum NotificationCategoryType {
+    static let actionIdentifier: String = "action"
+    
     // 공통
     case challengeWeekStart // 주차 시작 알림
     case challengeWeekEnd // 주차 종료 알림
@@ -20,6 +22,8 @@ enum NotificationCategoryType {
     case challengeStart // 챌린지 진행 알림
     case challengeCancelled // 챌린지 취소 알림
     case challengeResult // 챌린지 결과 안내
+    // FCM 토큰 갱신
+    case fcmTokenReissue
 }
 
 extension NotificationCategoryType {
@@ -46,6 +50,9 @@ extension NotificationCategoryType {
             return "CHALLENGE_CANCELED"
         case .challengeResult:
             return "CHALLENGE_RESULT"
+        // FCM 토큰 갱신
+        case .fcmTokenReissue:
+            return "COMMON_REISSUE_FCM_TOKEN"
         }
     }
 }
