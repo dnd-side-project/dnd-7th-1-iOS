@@ -148,7 +148,7 @@ extension MapVC {
         // 현재 위치로 이동
         _ = goLocation(latitudeValue: locationManager.location?.coordinate.latitude ?? 0,
                        longitudeValue: locationManager.location?.coordinate.longitude ?? 0,
-                       delta: Map.defalutZoomScale)
+                       delta: Map.defaultZoomScale)
     }
     
     private func registerMapAnnotationViews() {
@@ -215,7 +215,7 @@ extension MapVC {
                       let coordinate = self.locationManager.location?.coordinate else { return }
                 _ = self.goLocation(latitudeValue: coordinate.latitude,
                                     longitudeValue: coordinate.longitude,
-                                    delta: Map.defalutZoomScale)
+                                    delta: Map.defaultZoomScale)
                 
                 // 사용자 추적 On
                 self.isFocusOn = true
@@ -475,7 +475,7 @@ extension MapVC: CLLocationManagerDelegate {
         if isFocusOn {
             _ = goLocation(latitudeValue: latitude,
                            longitudeValue: longitude,
-                           delta: Map.defalutZoomScale)
+                           delta: Map.defaultZoomScale)
         }
         
         // 기록 중이고

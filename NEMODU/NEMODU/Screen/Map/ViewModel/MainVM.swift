@@ -78,7 +78,7 @@ extension MainVM: Output {
 
 extension MainVM {
     /// 홈화면 전체 데이터(나의 이번주 영역 수, 챌린지 수, 나와 친구의 마커, 영역)를 받아오는 메서드
-    func getHomeData(_ latitude: Double, _ longitude: Double, _ spanDelta: Double = Map.defalutZoomScale) {
+    func getHomeData(_ latitude: Double, _ longitude: Double, _ spanDelta: Double = Map.defaultZoomScale) {
         guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
         let path = "user/home?nickname=\(nickname)&latitude=\(latitude)&longitude=\(longitude)&spanDelta=\(spanDelta)"
         let resource = urlResource<MainMapResponseModel>(path: path)
@@ -130,7 +130,7 @@ extension MainVM {
     }
     
     /// 지도 제스쳐 시, 현재 화면에 보이는 영역을 받아오는 메서드
-    func getUpdateBlocks(_ latitude: Double, _ longitude: Double, _ spanDelta: Double = Map.defalutZoomScale) {
+    func getUpdateBlocks(_ latitude: Double, _ longitude: Double, _ spanDelta: Double = Map.defaultZoomScale) {
         guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
         let type = MapType.all.rawValue
         let path = "matrix?nickname=\(nickname)&latitude=\(latitude)&longitude=\(longitude)&spanDelta=\(spanDelta)&type=\(type)"
