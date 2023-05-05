@@ -66,6 +66,10 @@ extension MainVM {}
 
 extension MainVM: Input {
     func bindInput() { }
+    
+    func register(challengeColorType: ChallengeColorType?, of nickname: String) {
+        input.userTable[nickname] = challengeColorType
+    }
 }
 
 // MARK: - Output
@@ -100,6 +104,8 @@ extension MainVM {
                     owner.output.myLocationVisible.accept(data.isPublicRecord)
                     
                     if let user = data.userMatrices {
+                        // register
+                        owner.register(challengeColorType: ChallengeColorType.green, of: user.nickname)
                         // Annotation
                         owner.output.myLastLocation.accept(user)
                         // Matrices
@@ -109,6 +115,8 @@ extension MainVM {
                     }
                     if let friendMatrices = data.friendMatrices {
                         for friend in friendMatrices {
+                            // register
+                            owner.register(challengeColorType: ChallengeColorType.gray, of: friend.nickname)
                             // Annotation
                             owner.output.friendsLastLocations.accept(friend)
                             // Matrices
@@ -117,6 +125,8 @@ extension MainVM {
                     }
                     if let challengeMatrices = data.challengeMatrices {
                         for friend in challengeMatrices {
+                            // register
+                            owner.register(challengeColorType: ChallengeColorType(rawValue: friend.challengeColor), of: friend.nickname)
                             // Annotation
                             owner.output.challengeFriendsLastLocations.accept(friend)
                             // Matrices

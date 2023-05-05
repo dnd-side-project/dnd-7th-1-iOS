@@ -339,9 +339,6 @@ extension WalkingVC {
                                                color: .main,
                                                isHidden: !self.viewModel.output.friendVisible.value,
                                                isEnabled: true)
-                
-                // 색상 테이블 추가
-                self.viewModel.input.userTable[friend.nickname] = ChallengeColorType.gray
             })
             .disposed(by: bag)
     }
@@ -362,9 +359,6 @@ extension WalkingVC {
                                                challengeCnt: friend.challengeNumber,
                                                isHidden: !self.viewModel.output.friendVisible.value,
                                                isEnabled: true)
-                
-                // 색상 테이블 추가
-                self.viewModel.input.userTable[friend.nickname] = ChallengeColorType(rawValue: friend.challengeColor)
             })
             .disposed(by: bag)
     }
