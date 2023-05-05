@@ -361,22 +361,34 @@ extension MapVC {
                                       color: .main80))
     }
     
-    /// 영역 배열, 소유자, 색상을 받아 소유자의 영역 Set에 추가하고 기존 overlay를 remove 후 지도에 Area 추가
+    /// 영역 배열, 소유자, 색상을 받아 소유자의 영역 Set에 추가하고 기존 overlay를 remove 후 지도에 Area 추가.
+    /// 블록 색상에 따른 overlay에 Area 추가.
     func drawBlockArea(matrices: [Matrix], owner: BlocksType, blockColor: UIColor) {
         switch blockColor {
         case ChallengeColorType.green.blockColor:
-            asdf(matrix: &myMatrices, blocks: &myBlocks, overlay: &userOverlay)
+            update(matrix: &myMatrices,
+                   blocks: &myBlocks,
+                   overlay: &userOverlay)
         case ChallengeColorType.red.blockColor:
-            asdf(matrix: &redMatrices, blocks: &redBlocks, overlay: &redOverlay)
+            update(matrix: &redMatrices,
+                   blocks: &redBlocks,
+                   overlay: &redOverlay)
         case ChallengeColorType.pink.blockColor:
-            asdf(matrix: &pinkMatrices, blocks: &pinkBlocks, overlay: &pinkOverlay)
+            update(matrix: &pinkMatrices,
+                   blocks: &pinkBlocks,
+                   overlay: &pinkOverlay)
         case ChallengeColorType.yellow.blockColor:
-            asdf(matrix: &yellowMatrices, blocks: &yellowBlocks, overlay: &yellowOverlay)
+            update(matrix: &yellowMatrices,
+                   blocks: &yellowBlocks,
+                   overlay: &yellowOverlay)
         default:
-            asdf(matrix: &grayMatrices, blocks: &grayBlocks, overlay: &grayOverlay)
+            update(matrix: &grayMatrices,
+                   blocks: &grayBlocks,
+                   overlay: &grayOverlay)
         }
         
-        func asdf(matrix: inout Set<Matrix>, blocks: inout [Block], overlay: inout Area) {
+        /// Set<matrix>, [block], overlay를 갱신시키고 overlay(Area)를 remove & add하는 메서드
+        func update(matrix: inout Set<Matrix>, blocks: inout [Block], overlay: inout Area) {
             matrices.forEach {
                 if !matrix.contains($0) {
                     matrix.insert($0)
