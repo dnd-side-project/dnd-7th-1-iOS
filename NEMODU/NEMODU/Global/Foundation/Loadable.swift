@@ -18,6 +18,7 @@ extension Lodable {
     }
     
     func beginLoading() {
+        if loading.value { return }
         loading.accept(true)
     }
     
