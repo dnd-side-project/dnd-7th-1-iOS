@@ -112,6 +112,7 @@
 		2375740728FC4DF4006026ED /* RecommendListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2375740628FC4DF4006026ED /* RecommendListVC.swift */; };
 		2375740928FC50AE006026ED /* RecommendFriendTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2375740828FC50AE006026ED /* RecommendFriendTVC.swift */; };
 		2375740B28FC5808006026ED /* ViewMoreTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2375740A28FC5808006026ED /* ViewMoreTVC.swift */; };
+		2376B9072A05422600528DA6 /* UIApplication+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2376B9062A05422600528DA6 /* UIApplication+.swift */; };
 		2378A4972904106900FB7031 /* LocationSettingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2378A4962904106900FB7031 /* LocationSettingVC.swift */; };
 		2387F1B329FFADDA001B4897 /* UserMatrixResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2387F1B229FFADDA001B4897 /* UserMatrixResponseModel.swift */; };
 		2387F1B529FFAEA6001B4897 /* MapType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2387F1B429FFAEA6001B4897 /* MapType.swift */; };
@@ -369,6 +370,7 @@
 		2375740628FC4DF4006026ED /* RecommendListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendListVC.swift; sourceTree = "<group>"; };
 		2375740828FC50AE006026ED /* RecommendFriendTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendFriendTVC.swift; sourceTree = "<group>"; };
 		2375740A28FC5808006026ED /* ViewMoreTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreTVC.swift; sourceTree = "<group>"; };
+		2376B9062A05422600528DA6 /* UIApplication+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+.swift"; sourceTree = "<group>"; };
 		2378A4962904106900FB7031 /* LocationSettingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSettingVC.swift; sourceTree = "<group>"; };
 		237CED1629767F3900A8F23C /* NEMODU.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NEMODU.entitlements; sourceTree = "<group>"; };
 		2387F1B229FFADDA001B4897 /* UserMatrixResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMatrixResponseModel.swift; sourceTree = "<group>"; };
@@ -886,6 +888,7 @@
 				23C4CD0628B7A87D00D2F469 /* Int+.swift */,
 				23062A9728B7F6B00064C978 /* Date+.swift */,
 				2354239028BBA54000865E51 /* UserDefaults+.swift */,
+				2376B9062A05422600528DA6 /* UIApplication+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1747,6 +1750,7 @@
 				23412FEA28AF795600B73D62 /* RecordDataRequest.swift in Sources */,
 				3C2A263228FF8BE4009E0069 /* AreaRankingListVM.swift in Sources */,
 				23B86D2128A26F0F00B1630E /* NavigationBar.swift in Sources */,
+				2376B9072A05422600528DA6 /* UIApplication+.swift in Sources */,
 				2348B3EC2892D0DF001095BC /* APIError.swift in Sources */,
 				23F5716D28A6A61E005F2E21 /* MiniMapVC.swift in Sources */,
 				23255A6A28CF12DB005D6D5A /* NicknameVC.swift in Sources */,
