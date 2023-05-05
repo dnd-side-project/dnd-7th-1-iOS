@@ -8,7 +8,7 @@
 import RxCocoa
 import RxSwift
 
-final class MainVM: BaseViewModel {
+class MainVM: BaseViewModel {
     var apiSession: APIService = APISession()
     let apiError = PublishSubject<APIError>()
     var bag = DisposeBag()
