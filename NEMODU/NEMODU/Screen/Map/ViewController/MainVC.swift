@@ -362,9 +362,15 @@ extension MainVC {
                 guard let self = self,
                       let blockColor = self.viewModel.input.userTable[nickname] else { return }
                 let owner: BlocksType = (nickname == UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname)) ? .mine : .friends
-                self.mapVC.drawBlockArea(matrices: matrices,
-                                         owner: owner,
-                                         blockColor: blockColor.blockColor)
+                if owner == .mine && self.viewModel.output.myBlocksVisible.value {
+                    self.mapVC.drawBlockArea(matrices: matrices,
+                                             owner: owner,
+                                             blockColor: blockColor.blockColor)
+                } else if owner == .friends && self.viewModel.output.friendVisible.value {
+                    self.mapVC.drawBlockArea(matrices: matrices,
+                                             owner: owner,
+                                             blockColor: blockColor.blockColor)
+                }
             })
             .disposed(by: bag)
     }
@@ -375,7 +381,12 @@ extension MainVC {
             .asDriver()
             .drive(onNext: { [weak self] status in
                 guard let self = self else { return }
-                self.setMyArea(visible: status)
+                self.mapVC.setMyAnnotation(visible: status)
+                status
+                ? self.viewModel.getUpdateBlocks(self.mapVC.mapView.region.center.latitude,
+                                                 self.mapVC.mapView.region.center.longitude,
+                                                 self.mapVC.mapView.region.span.latitudeDelta)
+                : self.mapVC.setOverlayVisible(of: .mine, visible: status)
             })
             .disposed(by: bag)
         
@@ -383,7 +394,12 @@ extension MainVC {
             .asDriver()
             .drive(onNext: { [weak self] status in
                 guard let self = self else { return }
-                self.setFriendsArea(visible: status)
+                self.mapVC.setFriendsAnnotation(visible: status)
+                status
+                ? self.viewModel.getUpdateBlocks(self.mapVC.mapView.region.center.latitude,
+                                                 self.mapVC.mapView.region.center.longitude,
+                                                 self.mapVC.mapView.region.span.latitudeDelta)
+                : self.mapVC.setOverlayVisible(of: .friends, visible: status)
             })
             .disposed(by: bag)
         

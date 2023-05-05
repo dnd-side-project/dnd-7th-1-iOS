@@ -131,6 +131,9 @@ extension MainVM {
     
     /// 지도 제스쳐 시, 현재 화면에 보이는 영역을 받아오는 메서드
     func getUpdateBlocks(_ latitude: Double, _ longitude: Double, _ spanDelta: Double = Map.defaultZoomScale * 1.5) {
+        // 필터가 모두 꺼져있으면 통신 진행 X
+        if !output.myBlocksVisible.value && !output.friendVisible.value { return }
+        
         guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
         let type = MapType.all.rawValue
         let path = "matrix?nickname=\(nickname)&latitude=\(latitude)&longitude=\(longitude)&spanDelta=\(spanDelta)&type=\(type)"
