@@ -35,7 +35,7 @@ class MyAnnotationView: MKAnnotationView {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        profileImage.image = nil
+        profileImage.image = .defaultThumbnail
     }
     
     override func prepareForDisplay() {
@@ -58,13 +58,15 @@ class MyAnnotationView: MKAnnotationView {
 
 extension MyAnnotationView {
     private func addViews() {
-        addSubviews([profileImage, pinImageView])
+        addSubviews([profileImage,
+                     pinImageView])
     }
     
     private func configureContent() {
-        if let annotation = annotation as? MyAnnotation,
-           let image = annotation.profileImage {
-            profileImage.image = image
+        if let annotation = annotation as? MyAnnotation {
+            profileImage.image = annotation.profileImage ?? .defaultThumbnail
+            isHidden = annotation.isHidden ?? false
+            alpha = isHidden ? 0 : 1
         }
     }
 }

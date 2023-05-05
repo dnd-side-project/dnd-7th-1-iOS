@@ -59,7 +59,7 @@ class FriendAnnotationView: MKAnnotationView {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        profileImage.image = nil
+        profileImage.image = .defaultThumbnail
         nickname.text = nil
         challengeCntImageView.image = nil
         challengeCntImageView.isHidden = true
@@ -95,11 +95,13 @@ extension FriendAnnotationView {
         [nickname, pinImageView].forEach {
             stackView.addArrangedSubview($0)
         }
-        pinImageView.addSubviews([profileImage, challengeCntImageView])
+        pinImageView.addSubviews([profileImage,
+                                  challengeCntImageView])
     }
     
     private func configureContent() {
         if let annotation = annotation as? FriendAnnotation {
+            profileImage.image = annotation.profileImage ?? .defaultThumbnail
             nickname.text = annotation.title
             color = annotation.color
             isEnabled = annotation.isEnabled ?? false
@@ -110,12 +112,10 @@ extension FriendAnnotationView {
             ? nil
             : UIImage(named: "challengeCnt\(annotation.challengeCnt!)")?
                 .withTintColor(annotation.color!, renderingMode: .alwaysOriginal)
-            
             challengeCntImageView.isHidden = annotation.challengeCnt == 0
             
-            if let image = annotation.profileImage {
-                profileImage.image = image
-            }
+            isHidden = annotation.isHidden ?? false
+            alpha = isHidden ? 0 : 1
         }
     }
 }

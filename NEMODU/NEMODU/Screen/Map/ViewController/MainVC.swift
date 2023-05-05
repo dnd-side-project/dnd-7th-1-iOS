@@ -301,7 +301,8 @@ extension MainVC {
                       let profileImageURL = user.profileImageURL else { return }
                 // 마커 추가
                 self.mapVC.addMyAnnotation(coordinate: [latitude, longitude],
-                                           profileImageURL: profileImageURL)
+                                           profileImageURL: profileImageURL,
+                                           isHidden: !self.viewModel.output.myBlocksVisible.value)
                 
                 // 색상 테이블 추가
                 self.viewModel.input.userTable[user.nickname] = ChallengeColorType.green
@@ -322,6 +323,7 @@ extension MainVC {
                                                profileImageURL: profileImageURL,
                                                nickname: friend.nickname,
                                                color: .main,
+                                               isHidden: !self.viewModel.output.friendVisible.value,
                                                isEnabled: true)
                 
                 // 색상 테이블 추가
@@ -344,6 +346,7 @@ extension MainVC {
                                                nickname: friend.nickname,
                                                color: ChallengeColorType(rawValue: friend.challengeColor)?.primaryColor ?? .main,
                                                challengeCnt: friend.challengeNumber,
+                                               isHidden: !self.viewModel.output.friendVisible.value,
                                                isEnabled: true)
                 
                 // 색상 테이블 추가
