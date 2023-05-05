@@ -69,8 +69,8 @@ class MainVC: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.getHomeData(mapVC.mapView.region.center.latitude,
-                              mapVC.mapView.region.center.longitude)
+        viewModel.getHomeData(mapVC.locationManager.location?.coordinate.latitude ?? 0,
+                              mapVC.locationManager.location?.coordinate.longitude ?? 0)
     }
     
     override func viewWillAppear(_ animated: Bool) {
