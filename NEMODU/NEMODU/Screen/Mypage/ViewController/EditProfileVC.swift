@@ -93,6 +93,7 @@ class EditProfileVC: BaseViewController {
         bindProfileImageBtn()
         checkNicknameValidation()
         bindSaveBtn()
+        bindBackBtn()
     }
     
     override func bindOutput() {
@@ -254,12 +255,14 @@ extension EditProfileVC {
                 let library =  UIAlertAction(title: "앨범에서 사진 선택",
                                              style: .default) {
                     (action) in self.checkGalleryAuthorization()
+                    self.viewModel.input.isProfileImageChanged.accept(true)
                 }
                 
                 let setDefaultImage =  UIAlertAction(title: "기본 이미지로 변경",
                                                      style: .default) { (action) in
                     self.setDefaultProfile()
                     self.isBasic = true
+                    self.viewModel.input.isProfileImageChanged.accept(true)
                 }
                 
                 let cancel = UIAlertAction(title: "취소",
@@ -308,6 +311,33 @@ extension EditProfileVC {
             })
             .disposed(by: bag)
     }
+    
+    private func bindBackBtn() {
+        // 기존 뒤로가기 pop 액션 remove
+        naviBar.backBtn.removeTarget(self,
+                                     action: #selector(self.popVC),
+                                     for: .touchUpInside)
+        // 값 상태에 따라 binding
+        naviBar.backBtn.rx.tap
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self,
+                      let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname)
+                else { return }
+                let isProfileImageChanged = self.viewModel.input.isProfileImageChanged.value
+                let isNicknameChanged = nickname != self.nicknameCheckView.nicknameTextField.text
+                let isProfileMessageChanged = self.viewModel.input.isProfileMessageChanged.value
+                
+                if isProfileImageChanged || isNicknameChanged || isProfileMessageChanged {
+                    self.popUpAlert(alertType: .profileEdited,
+                                    targetVC: self,
+                                    highlightBtnAction: #selector(self.dismissAlertAndPopVC),
+                                    normalBtnAction: #selector(self.dismissAlert))
+                } else {
+                    self.popVC()
+                }
+            })
+            .disposed(by: bag)
+    }
 }
 
 // MARK: - Output
@@ -339,6 +369,7 @@ extension EditProfileVC {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.baseScrollView.scrollToBottom(animated: true)
+                self.viewModel.input.isProfileMessageChanged.accept(true)
             })
             .disposed(by: bag)
     }
