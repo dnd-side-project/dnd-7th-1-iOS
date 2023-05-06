@@ -241,6 +241,16 @@ extension MypageVC {
 
 extension MypageVC {
     private func bindBtn() {
+        naviBar.rightBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                let notificationBoxVC = NotificationBoxVC()
+                notificationBoxVC.hidesBottomBarWhenPushed = true
+                self.navigationController?.pushViewController(notificationBoxVC, animated: true)
+            })
+            .disposed(by: bag)
+        
         myRecordBtn.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in
