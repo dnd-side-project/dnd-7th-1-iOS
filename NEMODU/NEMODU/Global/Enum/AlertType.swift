@@ -16,6 +16,7 @@ enum AlertType {
     case realTimeChallenge
     case createWeekChallenge
     case sendMailError
+    case profileEdited
 }
 
 extension AlertType {
@@ -37,6 +38,8 @@ extension AlertType {
             return "주간 챌린지 생성 실패"
         case .sendMailError:
             return "메일(Mail) 앱을 열 수 없습니다"
+        case .profileEdited:
+            return "프로필 편집 나가기"
         }
     }
     
@@ -58,6 +61,8 @@ extension AlertType {
             return "생성에 오류가 발생하였습니다"
         case .sendMailError:
             return "아래 주소를 통해 문의하실 수 있습니다\n📨 nemodu.official@gmail.com"
+        case .profileEdited:
+            return "화면을 나가면 변경사항은 저장되지 않습니다. 나가시겠습니까?"
         }
     }
     
@@ -67,7 +72,7 @@ extension AlertType {
             return "시스템 설정 가기"
         case .recordNetworkError:
             return "다시 저장하기"
-        case .defaultNetworkError, .realTimeChallenge, .createWeekChallenge, .sendMailError:
+        case .defaultNetworkError, .realTimeChallenge, .createWeekChallenge, .sendMailError, .profileEdited:
             return "확인"
         case .minimumBlocks, .speedWarning:
             return "계속 하기"
@@ -84,6 +89,8 @@ extension AlertType {
             return nil
         case .minimumBlocks, .speedWarning:
             return "기록 끝내기"
+        case .profileEdited:
+            return "취소"
         }
     }
 }
