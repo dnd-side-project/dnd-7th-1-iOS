@@ -116,7 +116,7 @@ extension EditProfileVC {
         naviBar.configureBackBtn(targetVC: self)
         naviBar.configureRightBarBtn(targetVC: self,
                                      title: "저장",
-                                     titleColor: .main)
+                                     titleColor: .gray300)
     }
     
     private func configureContentView() {
@@ -128,6 +128,8 @@ extension EditProfileVC {
                                  profileMessageTitleLabel,
                                  profileMessageTextView])
         profileImageBtn.addSubview(cameraIconImageView)
+        
+        setRightBarBtnActive(viewModel.output.isNextBtnActive.value)
         
         imagePicker.delegate = self
     }
@@ -200,6 +202,11 @@ extension EditProfileVC {
 // MARK: - Custom Methods
 
 extension EditProfileVC {
+    private func setRightBarBtnActive(_ isActive: Bool) {
+        naviBar.rightBtn.isUserInteractionEnabled = isActive
+        naviBar.rightBtn.setTitleColor(isActive ? .main : .gray300, for: .normal)
+    }
+    
     private func setDefaultProfile() {
         profileImageBtn.setImage(.defaultThumbnail,
                                  for: .normal)
@@ -295,8 +302,9 @@ extension EditProfileVC {
             .disposed(by: bag)
     }
     
-    /// 변경된 프로필을 서버에 전송하는 메서드
+    /// 저장 버튼 status & post 바인딩
     private func bindSaveBtn() {
+        // 변경된 프로필을 서버에 전송
         naviBar.rightBtn.rx.tap
             .subscribe(onNext: { [weak self] _ in
                 guard let self = self,
@@ -308,6 +316,27 @@ extension EditProfileVC {
                                             editNickname: newNickname,
                                             intro: self.profileMessageTextView.tv.text,
                                             isBasic: self.isBasic))
+            })
+            .disposed(by: bag)
+        
+        // 닉네임 확인 상태에 따른 저장 버튼 활성화 상태 및 색상 연결
+        viewModel.output.isNextBtnActive
+            .asDriver()
+            .drive(onNext: { [weak self] isNicknameChecked in
+                guard let self = self else { return }
+                self.setRightBarBtnActive(isNicknameChecked)
+            })
+            .disposed(by: bag)
+        
+        // 닉네임 변경 시, 버튼 비활성화
+        nicknameCheckView.nicknameTextField.rx.text
+            .distinctUntilChanged()
+            .asDriver(onErrorJustReturn: nil)
+            .drive(onNext: { [weak self] _ in
+                guard let self = self,
+                      self.viewModel.output.isNextBtnActive.value
+                else { return }
+                self.viewModel.output.isNextBtnActive.accept(false)
             })
             .disposed(by: bag)
     }
