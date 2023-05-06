@@ -71,11 +71,17 @@ class EditProfileVC: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setInteractivePopGesture(false)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.getMyProfile()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        setInteractivePopGesture(true)
     }
     
     override func configureView() {
@@ -118,6 +124,11 @@ extension EditProfileVC {
         naviBar.configureRightBarBtn(targetVC: self,
                                      title: "저장",
                                      titleColor: .main)
+    }
+    
+    /// 제스쳐로 뒤로가기 인터랙션 Enabled 상태를 지정하는 메서드
+    private func setInteractivePopGesture(_ isEnabled: Bool) {
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = isEnabled
     }
     
     private func configureContentView() {
