@@ -116,7 +116,7 @@ extension EditProfileVC {
         naviBar.configureBackBtn(targetVC: self)
         naviBar.configureRightBarBtn(targetVC: self,
                                      title: "저장",
-                                     titleColor: .gray300)
+                                     titleColor: .main)
     }
     
     private func configureContentView() {
@@ -128,8 +128,6 @@ extension EditProfileVC {
                                  profileMessageTitleLabel,
                                  profileMessageTextView])
         profileImageBtn.addSubview(cameraIconImageView)
-        
-        setRightBarBtnActive(viewModel.output.isNextBtnActive.value)
         
         imagePicker.delegate = self
     }
@@ -332,11 +330,11 @@ extension EditProfileVC {
         nicknameCheckView.nicknameTextField.rx.text
             .distinctUntilChanged()
             .asDriver(onErrorJustReturn: nil)
-            .drive(onNext: { [weak self] _ in
+            .drive(onNext: { [weak self] newNickname in
                 guard let self = self,
-                      self.viewModel.output.isNextBtnActive.value
+                      let defaultNickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname)
                 else { return }
-                self.viewModel.output.isNextBtnActive.accept(false)
+                self.viewModel.output.isNextBtnActive.accept(defaultNickname == newNickname)
             })
             .disposed(by: bag)
     }
