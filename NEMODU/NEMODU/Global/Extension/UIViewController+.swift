@@ -49,6 +49,12 @@ extension UIViewController {
         dismiss(animated: false)
     }
     
+    /// 알람창을 닫고 viewController를 pop시키는 메서드
+    @objc func dismissAlertAndPopVC() {
+        dismissAlert()
+        popVC()
+    }
+    
     /// 기기 스크린 hight에 맞춰 비율을 계산해 height를 리턴하는 함수
     func calculateHeightbyScreenHeight(originalHeight: CGFloat) -> CGFloat {
         let screenHeight = UIScreen.main.bounds.height
