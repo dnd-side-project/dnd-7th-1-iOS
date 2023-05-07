@@ -99,7 +99,7 @@ class OnboardingVC: BaseViewController {
     
     override func bindInput() {
         super.bindInput()
-        bindScrollView()
+        bindScrollWithPage()
     }
     
     override func bindOutput() {
@@ -132,7 +132,8 @@ extension OnboardingVC {
         progressStackView.arrangedSubviews[0].backgroundColor = .gray900
     }
     
-    private func setPage(_ page: Int) {
+    /// 페이지에 따라 progressStackView의 상태를 변경하는 메서드
+    private func setPageControlSelectedPage(_ page: Int) {
         for i in 0..<pageCnt {
             progressStackView.arrangedSubviews[i].backgroundColor
             = page == i
@@ -140,7 +141,8 @@ extension OnboardingVC {
         }
     }
     
-    private func setBtnActive(_ active: Bool) {
+    /// 시작하기 버튼의 활성 상태를 변경하는 메서드
+    private func setStartBtnActive(_ active: Bool) {
         startBtn.isUserInteractionEnabled = active
         startBtn.backgroundColor = active ? .main : .gray100
         startBtn.tintColor = active ? .white : .gray400
@@ -231,15 +233,15 @@ extension OnboardingVC {
 // MARK: - Input
 
 extension OnboardingVC {
-    private func bindScrollView() {
-        baseScrollView.rx.panGesture()
-            .when(.ended)
+    /// scrollView의 스크롤에 따라 페이지를 연결하는 메서드
+    private func bindScrollWithPage() {
+        baseScrollView.rx.didEndDecelerating
             .subscribe(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 let page = round(self.baseScrollView.contentOffset.x / self.screenWidth)
                 if page.isNaN || page.isInfinite { return }
-                self.setBtnActive(page == 2)
-                self.setPage(Int(page))
+                self.setStartBtnActive(page == 2)
+                self.setPageControlSelectedPage(Int(page))
             })
             .disposed(by: bag)
     }
