@@ -49,6 +49,7 @@ final class MyRecordDataVM: BaseViewModel {
                 }
         }
         var calendarReload = PublishSubject<Bool>()
+        var isRecordEmpty = PublishRelay<Bool>()
     }
     
     // MARK: - Init
@@ -199,6 +200,7 @@ extension MyRecordDataVM {
                 case .failure(let error):
                     owner.apiError.onNext(error)
                 case .success(let data):
+                    owner.output.isRecordEmpty.accept(data.activityRecords.count == 0)
                     owner.output.myRecordList.accept(data.activityRecords)
                 }
             })

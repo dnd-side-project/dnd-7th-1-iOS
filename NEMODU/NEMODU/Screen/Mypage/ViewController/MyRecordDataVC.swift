@@ -127,6 +127,7 @@ class MyRecordDataVC: BaseViewController {
         super.bindOutput()
         bindTableView()
         bindCalendarReload()
+        bindNoneDataMessage()
     }
     
 }
@@ -368,6 +369,16 @@ extension MyRecordDataVC {
 // MARK: - Output
 
 extension MyRecordDataVC {
+    private func bindNoneDataMessage() {
+        viewModel.output.isRecordEmpty
+            .asDriver(onErrorJustReturn: true)
+            .drive(onNext: { [weak self] isEmpty in
+                guard let self = self else { return }
+                self.noneMessage.isHidden = !isEmpty
+            })
+            .disposed(by: bag)
+    }
+    
     private func bindTableView() {
         viewModel.output.dataSource
             .bind(to: recordTableView.rx.items(dataSource: tableViewDataSource()))
