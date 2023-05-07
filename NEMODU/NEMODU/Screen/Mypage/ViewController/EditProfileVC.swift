@@ -67,14 +67,21 @@ class EditProfileVC: BaseViewController {
     private let viewModel = UserInfoSettingVM()
     private let bag = DisposeBag()
     private var isBasic = false
+    weak var delegate: ProfileChanged?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setInteractivePopGesture(false)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.getMyProfile()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        setInteractivePopGesture(true)
     }
     
     override func configureView() {
@@ -93,6 +100,7 @@ class EditProfileVC: BaseViewController {
         bindProfileImageBtn()
         checkNicknameValidation()
         bindSaveBtn()
+        bindBackBtn()
     }
     
     override func bindOutput() {
@@ -116,6 +124,11 @@ extension EditProfileVC {
         naviBar.configureRightBarBtn(targetVC: self,
                                      title: "저장",
                                      titleColor: .main)
+    }
+    
+    /// 제스쳐로 뒤로가기 인터랙션 Enabled 상태를 지정하는 메서드
+    private func setInteractivePopGesture(_ isEnabled: Bool) {
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = isEnabled
     }
     
     private func configureContentView() {
@@ -199,6 +212,11 @@ extension EditProfileVC {
 // MARK: - Custom Methods
 
 extension EditProfileVC {
+    private func setRightBarBtnActive(_ isActive: Bool) {
+        naviBar.rightBtn.isUserInteractionEnabled = isActive
+        naviBar.rightBtn.setTitleColor(isActive ? .main : .gray300, for: .normal)
+    }
+    
     private func setDefaultProfile() {
         profileImageBtn.setImage(.defaultThumbnail,
                                  for: .normal)
@@ -254,12 +272,14 @@ extension EditProfileVC {
                 let library =  UIAlertAction(title: "앨범에서 사진 선택",
                                              style: .default) {
                     (action) in self.checkGalleryAuthorization()
+                    self.viewModel.input.isProfileImageChanged.accept(true)
                 }
                 
                 let setDefaultImage =  UIAlertAction(title: "기본 이미지로 변경",
                                                      style: .default) { (action) in
                     self.setDefaultProfile()
                     self.isBasic = true
+                    self.viewModel.input.isProfileImageChanged.accept(true)
                 }
                 
                 let cancel = UIAlertAction(title: "취소",
@@ -292,8 +312,9 @@ extension EditProfileVC {
             .disposed(by: bag)
     }
     
-    /// 변경된 프로필을 서버에 전송하는 메서드
+    /// 저장 버튼 status & post 바인딩
     private func bindSaveBtn() {
+        // 변경된 프로필을 서버에 전송
         naviBar.rightBtn.rx.tap
             .subscribe(onNext: { [weak self] _ in
                 guard let self = self,
@@ -305,6 +326,54 @@ extension EditProfileVC {
                                             editNickname: newNickname,
                                             intro: self.profileMessageTextView.tv.text,
                                             isBasic: self.isBasic))
+            })
+            .disposed(by: bag)
+        
+        // 닉네임 확인 상태에 따른 저장 버튼 활성화 상태 및 색상 연결
+        viewModel.output.isNextBtnActive
+            .asDriver()
+            .drive(onNext: { [weak self] isNicknameChecked in
+                guard let self = self else { return }
+                self.setRightBarBtnActive(isNicknameChecked)
+            })
+            .disposed(by: bag)
+        
+        // 닉네임 변경 시, 버튼 비활성화
+        nicknameCheckView.nicknameTextField.rx.text
+            .distinctUntilChanged()
+            .asDriver(onErrorJustReturn: nil)
+            .drive(onNext: { [weak self] newNickname in
+                guard let self = self,
+                      let defaultNickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname)
+                else { return }
+                self.viewModel.output.isNextBtnActive.accept(defaultNickname == newNickname)
+            })
+            .disposed(by: bag)
+    }
+    
+    private func bindBackBtn() {
+        // 기존 뒤로가기 pop 액션 remove
+        naviBar.backBtn.removeTarget(self,
+                                     action: #selector(self.popVC),
+                                     for: .touchUpInside)
+        // 값 상태에 따라 binding
+        naviBar.backBtn.rx.tap
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self,
+                      let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname)
+                else { return }
+                let isProfileImageChanged = self.viewModel.input.isProfileImageChanged.value
+                let isNicknameChanged = nickname != self.nicknameCheckView.nicknameTextField.text
+                let isProfileMessageChanged = self.viewModel.input.isProfileMessageChanged.value
+                
+                if isProfileImageChanged || isNicknameChanged || isProfileMessageChanged {
+                    self.popUpAlert(alertType: .profileEdited,
+                                    targetVC: self,
+                                    highlightBtnAction: #selector(self.dismissAlertAndPopVC),
+                                    normalBtnAction: #selector(self.dismissAlert))
+                } else {
+                    self.popVC()
+                }
             })
             .disposed(by: bag)
     }
@@ -339,6 +408,7 @@ extension EditProfileVC {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.baseScrollView.scrollToBottom(animated: true)
+                self.viewModel.input.isProfileMessageChanged.accept(true)
             })
             .disposed(by: bag)
     }
@@ -348,8 +418,8 @@ extension EditProfileVC {
             .asDriver(onErrorJustReturn: false)
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                // TODO: - 완료 알람 띄우기
                 self.navigationController?.popViewController(animated: true)
+                self.delegate?.popupToastView()
             })
             .disposed(by: bag)
     }
@@ -371,4 +441,10 @@ extension EditProfileVC : UIImagePickerControllerDelegate, UINavigationControlle
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true)
     }
+}
+
+// MARK: - ProfileChanged Protocol
+
+protocol ProfileChanged: AnyObject {
+    func popupToastView()
 }

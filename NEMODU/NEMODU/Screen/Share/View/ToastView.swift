@@ -59,7 +59,7 @@ extension ToastView {
                 baseStackView.addArrangedSubview($0)
             }
             setImageSize()
-        case .friendAdded, .friendDeleted, .nicknameChanged:
+        case .friendAdded, .friendDeleted, .profileChanged:
             baseStackView.addArrangedSubview(toastMessage)
         }
     }
