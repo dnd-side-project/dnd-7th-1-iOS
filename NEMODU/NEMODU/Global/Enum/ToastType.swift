@@ -11,7 +11,7 @@ enum ToastType {
     case friendProfileError
     case friendAdded
     case friendDeleted
-    case nicknameChanged
+    case profileChanged
     case networkError
 }
 
@@ -24,8 +24,8 @@ extension ToastType {
             return "친구 요청을 보냈습니다."
         case .friendDeleted:
             return "친구 요청이 취소되었습니다."
-        case .nicknameChanged:
-            return "닉네임이 변경 되었습니다."
+        case .profileChanged:
+            return "프로필이 변경 되었습니다."
         case .networkError:
             return "연결이 좋지 않습니다. 네트워크 연결을 확인해주세요."
         }

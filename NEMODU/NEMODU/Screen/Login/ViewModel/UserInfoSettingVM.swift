@@ -18,7 +18,10 @@ final class UserInfoSettingVM: BaseViewModel {
     
     // MARK: - Input
     
-    struct Input {}
+    struct Input {
+        var isProfileImageChanged = BehaviorRelay<Bool>(value: false)
+        var isProfileMessageChanged = BehaviorRelay<Bool>(value: false)
+    }
     
     // MARK: - Output
     
