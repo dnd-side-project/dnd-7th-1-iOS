@@ -56,6 +56,10 @@ class ChallengeListBottomSheet: DynamicBottomSheetViewController {
     private let viewModel = ChallengeListVM()
     private let bag = DisposeBag()
     
+    // constants
+    private let cellHeight = 69
+    private let emptyViewHeight = 304
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.getProceedingChallengeList()
@@ -75,11 +79,6 @@ extension ChallengeListBottomSheet {
         contentView.addSubviews([viewBar,
                                  sheetTitle])
         
-        // bottomSheet height
-        contentView.snp.makeConstraints {
-            $0.height.equalTo(304)
-        }
-        
         viewBar.snp.makeConstraints {
             $0.width.equalTo(32)
             $0.height.equalTo(4)
@@ -93,12 +92,18 @@ extension ChallengeListBottomSheet {
         }
     }
     
-    private func configureChallengeListTV() {
+    /// 챌린지 개수에 따라 화면 구현
+    private func configureChallengeListTV(_ challengeCnt: Int) {
         contentView.addSubview(proceedingChallengeTV)
         
         proceedingChallengeTV.register(ProceedingChallengeTVC.self,
                                        forCellReuseIdentifier: ProceedingChallengeTVC.className)
         proceedingChallengeTV.delegate = self
+        
+        // Layout
+        contentView.snp.makeConstraints {
+            $0.height.equalTo(challengeCnt * cellHeight + 55 + Int(UIApplication.shared.window?.safeAreaInsets.bottom ?? 0))
+        }
         
         proceedingChallengeTV.snp.makeConstraints {
             $0.top.equalTo(sheetTitle.snp.bottom).offset(12)
@@ -107,9 +112,14 @@ extension ChallengeListBottomSheet {
         }
     }
     
+    /// 챌린지가 존재하지 않을 때의 화면
     private func configureNoneData() {
         contentView.addSubviews([noneMessage,
                                  makeChallengeBtn])
+        
+        contentView.snp.makeConstraints {
+            $0.height.equalTo(emptyViewHeight)
+        }
         
         noneMessage.snp.makeConstraints {
             $0.centerX.equalToSuperview()
@@ -137,7 +147,7 @@ extension ChallengeListBottomSheet {
             .subscribe(onNext: { owner, item in
                 item.count == 0
                 ? owner.configureNoneData()
-                : owner.configureChallengeListTV()
+                : owner.configureChallengeListTV(item.count)
                 owner.proceedingChallengeTV.reloadData()
             })
             .disposed(by: bag)
@@ -167,7 +177,7 @@ extension ChallengeListBottomSheet {
 
 extension ChallengeListBottomSheet: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        69.0
+        CGFloat(cellHeight)
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
