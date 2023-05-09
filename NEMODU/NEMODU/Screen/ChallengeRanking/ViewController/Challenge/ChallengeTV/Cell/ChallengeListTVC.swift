@@ -101,19 +101,19 @@ class ChallengeListTVC : BaseTableViewCell {
         challengeTypeLabel.text = "주간" // TODO: - 서버 response 값으로 주간, 실시간 표시 필요
         
         // 날짜
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = DateType.withTime.dateFormatter
-        guard let startDates: Date = dateFormatter.date(from: startDate) else { return }
-        guard let endDates: Date = dateFormatter.date(from: endDate) else { return }
+        let startDates: Date? = startDate.toDate(.withTime)
+        let endDates: Date? = endDate.toDate(.withTime)
         
         let format = DateFormatter()
         format.timeZone = TimeZone(identifier: "KST")
         format.dateFormat = DateType.hyphen.dateFormatter
         
-        let dayOfWeekDate = format.date(from: String(startDate.split(separator: "T")[0]))
-        let dayOfWeekString = dayOfWeekDate?.getDayOfWeek()
+        let dayOfWeekDate: Date? = format.date(from: String(startDate.split(separator: "T")[0]))
+        let dayOfWeekString: String? = dayOfWeekDate?.getDayOfWeek()
         
-        challengeTermLabel.text = "\(startDates.month.showTwoDigitNumber).\(startDates.day.showTwoDigitNumber)(\(dayOfWeekString ?? "?")) - \(endDates.month.showTwoDigitNumber).\(endDates.day.showTwoDigitNumber)(일)"
+        if let startDates, let endDates, let dayOfWeekString {
+            challengeTermLabel.text = "\(startDates.month.showTwoDigitNumber).\(startDates.day.showTwoDigitNumber)(\(dayOfWeekString)) - \(endDates.month.showTwoDigitNumber).\(endDates.day.showTwoDigitNumber)(일)"
+        }
         
         // 챌린지 아이콘 색상 설정
         challengeNameImageView.tintColor = ChallengeColorType(rawValue: challengeColor)?.primaryColor
