@@ -14,6 +14,8 @@ class MyAnnotation: NSObject, MKAnnotation {
     
     var profileImage: UIImage?
     
+    var isHidden: Bool?
+    
     init(coordinate: CLLocationCoordinate2D) {
         self.coordinate = coordinate
         super.init()

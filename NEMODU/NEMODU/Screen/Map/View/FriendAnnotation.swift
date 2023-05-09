@@ -20,6 +20,8 @@ class FriendAnnotation: NSObject, MKAnnotation {
     
     var challengeCnt: Int?
     
+    var isHidden: Bool?
+    
     var isEnabled: Bool?
     
     var isBorderOn: Bool?

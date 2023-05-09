@@ -207,6 +207,7 @@ extension MyProfileVC {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 let editProfileVC = EditProfileVC()
+                editProfileVC.delegate = self
                 self.navigationController?.pushViewController(editProfileVC, animated: true)
             })
             .disposed(by: bag)
@@ -223,5 +224,13 @@ extension MyProfileVC {
                 self.configureProfileData(data)
             })
             .disposed(by: bag)
+    }
+}
+
+// MARK: - ProfileChanged
+
+extension MyProfileVC: ProfileChanged {
+    func popupToastView() {
+        popupToast(toastType: .profileChanged)
     }
 }
