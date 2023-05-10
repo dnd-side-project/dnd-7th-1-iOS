@@ -211,8 +211,14 @@ extension MapVC {
         currentLocationBtn.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in
-                guard let self = self,
-                      let coordinate = self.locationManager.location?.coordinate else { return }
+                guard let self = self else { return }
+                guard let coordinate = self.locationManager.location?.coordinate else {
+                    self.popUpAlert(alertType: .requestLocationAuthority,
+                                    targetVC: self,
+                                    highlightBtnAction: #selector(self.openSystem),
+                                    normalBtnAction: #selector(self.dismissAlert))
+                    return
+                }
                 _ = self.goLocation(latitudeValue: coordinate.latitude,
                                     longitudeValue: coordinate.longitude,
                                     delta: Map.defaultZoomScale)
@@ -468,11 +474,11 @@ extension MapVC: CLLocationManagerDelegate {
             DispatchQueue.main.async {
                 self.locationManager.requestWhenInUseAuthorization()
             }
-        case .denied:
-            print("GPS 권한 요청 거부됨")
-            // TODO: - 알람창 띄우기
         default:
-            print("GPS: Default")
+            self.popUpAlert(alertType: .requestLocationAuthority,
+                            targetVC: self,
+                            highlightBtnAction: #selector(openSystem),
+                            normalBtnAction: #selector(dismissAlert))
         }
     }
     
@@ -526,6 +532,8 @@ extension MapVC: CLLocationManagerDelegate {
         self.previousCoordinate = location.coordinate
     }
 }
+
+// MARK: - MKMapViewDelegate
 
 extension MapVC: MKMapViewDelegate {
     /// 사용자 땅을 칠하는 함수 /
@@ -590,6 +598,8 @@ extension MapVC: MKMapViewDelegate {
         }
     }
 }
+
+// MARK: - DeselectAnnotation
 
 extension MapVC: DeselectAnnotation {
     /// 선택된 annotation을 모두 deselect 하는 메서드

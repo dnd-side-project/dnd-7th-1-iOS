@@ -8,7 +8,7 @@
 import Foundation
 
 enum AlertType {
-    case requestAuthority
+    case requestLocationAuthority
     case recordNetworkError
     case defaultNetworkError
     case minimumBlocks
@@ -22,7 +22,7 @@ enum AlertType {
 extension AlertType {
     var alertTitle: String {
         switch self {
-        case .requestAuthority:
+        case .requestLocationAuthority:
             return "위치 정보 접근을 허용해주세요!"
         case .recordNetworkError:
             return "네트워크 오류로 인해\n기록이 저장되지 않았습니다.\n\n다시 시도해볼까요?"
@@ -45,7 +45,7 @@ extension AlertType {
     
     var alertMessage: String? {
         switch self {
-        case .requestAuthority:
+        case .requestLocationAuthority:
             return "회원님의 위치 정보는\n활동 기록 및 측정에 사용됩니다.\n\n정보는 친구들에게만 보여지며\n설정에서 언제든 공유를 중지할 수 있습니다."
         case .recordNetworkError:
             return nil
@@ -68,7 +68,7 @@ extension AlertType {
     
     var highlightBtnTitle: String {
         switch self {
-        case .requestAuthority:
+        case .requestLocationAuthority:
             return "시스템 설정 가기"
         case .recordNetworkError:
             return "다시 저장하기"
@@ -81,7 +81,7 @@ extension AlertType {
     
     var normalBtnTitle: String? {
         switch self {
-        case .requestAuthority:
+        case .requestLocationAuthority:
             return "다음에"
         case .recordNetworkError:
             return "그냥 나가기"
