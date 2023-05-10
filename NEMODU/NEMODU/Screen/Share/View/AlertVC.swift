@@ -105,7 +105,8 @@ extension AlertVC {
         view.addSubview(alertBaseView)
         alertBaseView.addSubviews([baseStackView,
                                    btnStackView])
-        [alertImage, alertTitle, alertMessage].forEach {
+        var alertBase = [alertImage, alertTitle] + ((alertMessage.text != nil) ? [alertMessage] : [])
+        alertBase.forEach {
             baseStackView.addArrangedSubview($0)
         }
     }
@@ -132,7 +133,7 @@ extension AlertVC {
                 btnStackView.addArrangedSubview($0)
             }
         // 버튼 가로 두 개
-        case .recordNetworkError, .minimumBlocks, .speedWarning, .profileEdited:
+        case .recordNetworkError, .minimumBlocks, .speedWarning, .discardChanges:
             btnStackView.axis = .horizontal
             [normalBtn, highlightBtn].forEach {
                 btnStackView.addArrangedSubview($0)

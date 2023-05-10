@@ -367,7 +367,7 @@ extension EditProfileVC {
                 let isProfileMessageChanged = self.viewModel.input.isProfileMessageChanged.value
                 
                 if isProfileImageChanged || isNicknameChanged || isProfileMessageChanged {
-                    self.popUpAlert(alertType: .profileEdited,
+                    self.popUpAlert(alertType: .discardChanges,
                                     targetVC: self,
                                     highlightBtnAction: #selector(self.dismissAlertAndPopVC),
                                     normalBtnAction: #selector(self.dismissAlert))
