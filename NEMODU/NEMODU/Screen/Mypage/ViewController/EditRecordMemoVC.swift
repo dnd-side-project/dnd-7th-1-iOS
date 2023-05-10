@@ -29,6 +29,12 @@ class EditRecordMemoVC: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setInteractivePopGesture(false)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        setInteractivePopGesture(true)
     }
     
     override func configureView() {
@@ -44,6 +50,7 @@ class EditRecordMemoVC: BaseViewController {
     
     override func bindInput() {
         super.bindInput()
+        bindBackBtn()
         bindSaveBtn()
     }
     
@@ -102,6 +109,27 @@ extension EditRecordMemoVC {
                 } else {
                     self.viewModel.postEditedData(with: EditMemoRequestModel(message: self.memoTextView.tv.text,
                                                                              recordId: self.recordId))
+                }
+            })
+            .disposed(by: bag)
+    }
+    
+    private func bindBackBtn() {
+        // 기존 뒤로가기 pop 액션 remove
+        naviBar.backBtn.removeTarget(self,
+                                     action: #selector(self.popVC),
+                                     for: .touchUpInside)
+        // 값 상태에 따라 binding
+        naviBar.backBtn.rx.tap
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                if self.memoTextView.tv.text != self.memo {
+                    self.popUpAlert(alertType: .discardChanges,
+                                    targetVC: self,
+                                    highlightBtnAction: #selector(self.dismissAlertAndPopVC),
+                                    normalBtnAction: #selector(self.dismissAlert))
+                } else {
+                    self.popVC()
                 }
             })
             .disposed(by: bag)

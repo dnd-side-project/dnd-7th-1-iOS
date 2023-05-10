@@ -60,4 +60,9 @@ class BaseViewController: UIViewController {
         guard let ad = UIApplication.shared.delegate as? AppDelegate else { return }
         ad.window?.rootViewController = LoginNC()
     }
+    
+    /// 제스쳐로 뒤로가기 인터랙션 Enabled 상태를 지정하는 메서드
+    func setInteractivePopGesture(_ isEnabled: Bool) {
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = isEnabled
+    }
 }
