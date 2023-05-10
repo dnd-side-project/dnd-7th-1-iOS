@@ -125,6 +125,12 @@ extension AlertVC {
         // 버튼 한 개
         case .defaultNetworkError, .requestLocationAuthority, .realTimeChallenge, .createWeekChallenge, .sendMailError:
             btnStackView.addArrangedSubview(highlightBtn)
+        // 버튼 세로 두 개
+        case .requestMotionAuthority:
+            btnStackView.axis = .vertical
+            [highlightBtn, normalBtn].forEach {
+                btnStackView.addArrangedSubview($0)
+            }
         // 버튼 가로 두 개
         case .recordNetworkError, .minimumBlocks, .speedWarning, .profileEdited:
             btnStackView.axis = .horizontal

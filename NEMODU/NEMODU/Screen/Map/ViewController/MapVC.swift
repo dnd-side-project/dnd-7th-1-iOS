@@ -304,6 +304,26 @@ extension MapVC {
         }
     }
     
+    /// 디바이스의 건강 데이터를 요청하는 메서드
+    func requestMotionAuthorization() -> Bool {
+        let status = CMMotionActivityManager.authorizationStatus()
+        switch status {
+        case .notDetermined:
+            let today = Date()
+            var status = false
+            self.activityManager.queryActivityStarting(from: today, to: today, to: OperationQueue.main) { _, error in
+                status = error != nil
+            }
+            return status
+        case .restricted, .denied:
+            return false
+        case .authorized:
+            return true
+        @unknown default:
+            fatalError()
+        }
+    }
+    
     /// 사용자 activity를 추적하여 운동 상태와 걸음 수를 측정하는 함수
     func updateStep() {
         // TODO: - 자동차 or 자전거 사용 시 알람 정책 정한 후 수정

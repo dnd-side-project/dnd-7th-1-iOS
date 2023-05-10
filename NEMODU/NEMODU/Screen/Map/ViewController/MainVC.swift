@@ -237,9 +237,16 @@ extension MainVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                let countdownVC = CountdownVC()
-                countdownVC.modalPresentationStyle = .fullScreen
-                self.present(countdownVC, animated: true)
+                if self.mapVC.requestMotionAuthorization() {
+                    let countdownVC = CountdownVC()
+                    countdownVC.modalPresentationStyle = .fullScreen
+                    self.present(countdownVC, animated: true)
+                } else {
+                    self.popUpAlert(alertType: .requestMotionAuthority,
+                                    targetVC: self,
+                                    highlightBtnAction: #selector(self.openSystem),
+                                    normalBtnAction: #selector(self.dismissAlert))
+                }
             })
             .disposed(by: bag)
         
