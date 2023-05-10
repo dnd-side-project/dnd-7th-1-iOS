@@ -23,6 +23,7 @@ class EditRecordMemoVC: BaseViewController {
     
     private let viewModel = EditRecordMemoVM()
     private let bag = DisposeBag()
+    weak var delegate: RecordMemoChanged?
     
     private var memo = ""
     private var recordId = -1
@@ -145,9 +146,16 @@ extension EditRecordMemoVC {
             .drive(onNext: { [weak self] validation in
                 guard let self = self else { return }
                 if validation {
-                    self.popVC()                    
+                    self.popVC()
+                    self.delegate?.popupToastView()
                 }
             })
             .disposed(by: bag)
     }
+}
+
+// MARK: - RecordMemoChanged Protocol
+
+protocol RecordMemoChanged: AnyObject {
+    func popupToastView()
 }

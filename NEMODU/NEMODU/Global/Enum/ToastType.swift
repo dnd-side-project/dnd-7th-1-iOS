@@ -13,6 +13,7 @@ enum ToastType {
     case friendDeleted
     case profileChanged
     case networkError
+    case saveCompleted
 }
 
 extension ToastType {
@@ -28,6 +29,8 @@ extension ToastType {
             return "프로필이 변경 되었습니다."
         case .networkError:
             return "연결이 좋지 않습니다. 네트워크 연결을 확인해주세요."
+        case .saveCompleted:
+            return "저장이 완료되었습니다."
         }
     }
 }

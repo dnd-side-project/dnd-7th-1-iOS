@@ -350,6 +350,7 @@ extension MyRecordDetailVC {
                 guard let self = self,
                       let recordId = self.recordID else { return }
                 let editRecordMomoVC = EditRecordMemoVC()
+                editRecordMomoVC.delegate = self
                 editRecordMomoVC.getRecordData(recordId: recordId,
                                                memo: self.memoTextView.tv.text)
                 self.navigationController?.pushViewController(editRecordMomoVC, animated: true)
@@ -426,5 +427,13 @@ extension MyRecordDetailVC: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+}
+
+// MARK: - RecordMemoChanged Protocol
+
+extension MyRecordDetailVC: RecordMemoChanged {
+    func popupToastView() {
+        popupToast(toastType: .saveCompleted)
     }
 }
