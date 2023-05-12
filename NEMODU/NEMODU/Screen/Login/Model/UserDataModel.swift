@@ -27,6 +27,7 @@ extension UserDataModel {
         }
         
         var parameter: Parameters = [
+            "deviceType": UIDevice.current.model.contains("iPhone") ? "PHONE" : "PAD",
             "nickname": nickname,
             "email": email,
             "friends": friends,
