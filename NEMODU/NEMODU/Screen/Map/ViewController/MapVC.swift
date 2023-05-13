@@ -619,13 +619,21 @@ extension MapVC: MKMapViewDelegate {
     }
 }
 
-// MARK: - DeselectAnnotation
+// MARK: - FriendProfileProtocol
 
-extension MapVC: DeselectAnnotation {
+extension MapVC: FriendProfileProtocol {
     /// 선택된 annotation을 모두 deselect 하는 메서드
     func deselectAnnotation() {
         mapView.selectedAnnotations.forEach {
             mapView.deselectAnnotation($0, animated: true)
         }
+    }
+    
+    /// 진행중인 챌린지 상세 화면을 push하는 메서드
+    func pushChallengeDetail(_ uuid: String) {
+        let challengeDetailVC = ChallengeHistoryDetailVC()
+        challengeDetailVC.getChallengeHistoryDetailInfo(uuid: uuid)
+        challengeDetailVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(challengeDetailVC, animated: true)
     }
 }

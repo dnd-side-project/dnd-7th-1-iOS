@@ -127,7 +127,7 @@ class FriendProfileBottomSheet: DynamicBottomSheetViewController {
         }
     
     var nickname: String?
-    weak var delegate: DeselectAnnotation?
+    weak var delegate: FriendProfileProtocol?
     private let viewModel = FriendProfileVM()
     private let bag = DisposeBag()
     
@@ -403,10 +403,20 @@ extension FriendProfileBottomSheet: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        guard let cell = tableView.cellForRow(at: indexPath) as? ProceedingChallengeTVC,
+              let uuid = cell.challengeUUID
+        else { return }
+        
+        dismiss(animated: true) {
+            self.delegate?.pushChallengeDetail(uuid)
+        }
     }
 }
 
 // MARK: - DeselectAnnotation Protocol
-protocol DeselectAnnotation: AnyObject {
+protocol FriendProfileProtocol: AnyObject {
     func deselectAnnotation()
+    
+    func pushChallengeDetail(_ uuid: String)
 }
