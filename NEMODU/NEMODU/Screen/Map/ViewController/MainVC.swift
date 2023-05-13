@@ -408,16 +408,10 @@ extension MainVC {
 
 // MARK: - Protocol
 
-extension MainVC: PushCreateChallengeVC {
-    func switchTabToChallengeAndPushCreateChallengeVC() {
-        tabBarController?.selectedIndex = 0
-        
-        guard let challengeNC = tabBarController?.selectedViewController,
-              let challengeVC = challengeNC.children.first as? ChallengeRankingVC
-        else { return }
-
+extension MainVC: PushChallengeVC {
+    func pushCreateChallengeVC() {
         let selectChallengeCreateVC = SelectChallengeCreateVC()
         selectChallengeCreateVC.hidesBottomBarWhenPushed = true
-        challengeVC.navigationController?.pushViewController(selectChallengeCreateVC, animated: true)
+        navigationController?.pushViewController(selectChallengeCreateVC, animated: true)
     }
 }
