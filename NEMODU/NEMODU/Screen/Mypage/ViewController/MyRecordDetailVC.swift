@@ -399,9 +399,16 @@ extension MyRecordDetailVC {
         proceedingChallengeTV.rx.itemSelected
             .asDriver()
             .drive(onNext: { [weak self] indexPath in
-                guard let self = self else { return }
+                guard let self = self,
+                      let cell = self.proceedingChallengeTV.cellForRow(at: indexPath) as? ProceedingChallengeTVC,
+                      let uuid = cell.challengeUUID
+                else { return }
                 self.proceedingChallengeTV.deselectRow(at: indexPath, animated: true)
-                // TODO: - 챌린지 연결
+                
+                let challengeDetailVC = ChallengeHistoryDetailVC()
+                challengeDetailVC.getChallengeHistoryDetailInfo(uuid: uuid)
+                challengeDetailVC.hidesBottomBarWhenPushed = true
+                self.navigationController?.pushViewController(challengeDetailVC, animated: true)
             })
             .disposed(by: bag)
     }
