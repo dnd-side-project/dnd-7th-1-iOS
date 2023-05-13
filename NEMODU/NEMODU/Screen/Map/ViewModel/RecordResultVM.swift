@@ -66,6 +66,7 @@ extension RecordResultVM {
         let path = "record/end"
         let resource = urlResource<Bool>(path: path)
         
+        output.beginLoading()
         apiSession.postRequest(with: resource,
                                param: record.recordParam)
         .withUnretained(self)
@@ -76,6 +77,7 @@ extension RecordResultVM {
             case .success(let data):
                 owner.output.isValidPost.onNext(data)
             }
+            owner.output.endLoading()
         })
         .disposed(by: bag)
     }
