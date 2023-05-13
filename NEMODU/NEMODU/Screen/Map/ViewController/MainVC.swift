@@ -256,6 +256,7 @@ extension MainVC {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 let challengeBottomSheet = ChallengeListBottomSheet()
+                challengeBottomSheet.delegate = self
                 self.present(challengeBottomSheet, animated: true)
             })
             .disposed(by: bag)
@@ -402,5 +403,21 @@ extension MainVC {
             .disposed(by: bag)
         
         // TODO: - myLocationVisible MVP2 부터 개발!!
+    }
+}
+
+// MARK: - Protocol
+
+extension MainVC: PushCreateChallengeVC {
+    func switchTabToChallengeAndPushCreateChallengeVC() {
+        tabBarController?.selectedIndex = 0
+        
+        guard let challengeNC = tabBarController?.selectedViewController,
+              let challengeVC = challengeNC.children.first as? ChallengeRankingVC
+        else { return }
+
+        let selectChallengeCreateVC = SelectChallengeCreateVC()
+        selectChallengeCreateVC.hidesBottomBarWhenPushed = true
+        challengeVC.navigationController?.pushViewController(selectChallengeCreateVC, animated: true)
     }
 }

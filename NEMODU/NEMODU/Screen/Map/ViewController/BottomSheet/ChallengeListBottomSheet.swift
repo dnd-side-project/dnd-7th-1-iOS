@@ -55,6 +55,7 @@ class ChallengeListBottomSheet: DynamicBottomSheetViewController {
     
     private let viewModel = ChallengeListVM()
     private let bag = DisposeBag()
+    weak var delegate: PushCreateChallengeVC?
     
     // constants
     private let cellHeight = 69
@@ -69,6 +70,7 @@ class ChallengeListBottomSheet: DynamicBottomSheetViewController {
         super.configureView()
         configureBottomSheet()
         bindTableView()
+        bindMakeChallengeBtn()
     }
 }
 
@@ -135,6 +137,21 @@ extension ChallengeListBottomSheet {
     }
 }
 
+// MARK: - Input
+extension ChallengeListBottomSheet {
+    func bindMakeChallengeBtn() {
+        makeChallengeBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.dismiss(animated: true) {
+                    self.delegate?.switchTabToChallengeAndPushCreateChallengeVC()
+                }
+            })
+            .disposed(by: bag)
+    }
+}
+
 // MARK: - Output
 extension ChallengeListBottomSheet {
     func bindTableView() {
@@ -183,4 +200,10 @@ extension ChallengeListBottomSheet: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
+}
+
+// MARK: - Protocol
+
+protocol PushCreateChallengeVC: AnyObject {
+    func switchTabToChallengeAndPushCreateChallengeVC()
 }
