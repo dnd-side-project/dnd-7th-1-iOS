@@ -124,12 +124,14 @@ class FriendProfileBottomSheet: DynamicBottomSheetViewController {
                                              bottom: 0,
                                              right: 16)
             $0.backgroundColor = .white
+            $0.rowHeight = CGFloat(FriendProfileBottomSheet.cellHeight)
         }
     
     var nickname: String?
-    weak var delegate: DeselectAnnotation?
+    weak var delegate: FriendProfileProtocol?
     private let viewModel = FriendProfileVM()
     private let bag = DisposeBag()
+    static let cellHeight = 69
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -193,13 +195,12 @@ extension FriendProfileBottomSheet {
         
         proceedingChallengeTV.register(ProceedingChallengeTVC.self,
                                        forCellReuseIdentifier: ProceedingChallengeTVC.className)
-        proceedingChallengeTV.delegate = self
         
         proceedingChallengeTV.snp.makeConstraints {
             $0.top.equalTo(listTitle.snp.bottom)
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(view.safeAreaLayoutGuide)
-            $0.height.equalTo(69 * challengeCnt)
+            $0.height.equalTo(FriendProfileBottomSheet.cellHeight * challengeCnt)
         }
     }
     
@@ -354,6 +355,20 @@ extension FriendProfileBottomSheet {
                 owner.proceedingChallengeTV.reloadData()
             })
             .disposed(by: bag)
+        
+        proceedingChallengeTV.rx.itemSelected
+            .asDriver()
+            .drive(onNext: { [weak self] indexPath in
+                guard let self = self,
+                      let cell = self.proceedingChallengeTV.cellForRow(at: indexPath) as? ProceedingChallengeTVC,
+                      let uuid = cell.challengeUUID
+                else { return }
+                self.proceedingChallengeTV.deselectRow(at: indexPath, animated: true)
+                self.dismiss(animated: true) {
+                    self.delegate?.pushChallengeDetail(uuid)
+                }
+            })
+            .disposed(by: bag)
     }
     
     
@@ -361,14 +376,14 @@ extension FriendProfileBottomSheet {
         viewModel.output.requestStatus
             .withUnretained(self)
             .subscribe(onNext: { owner, status in
-                self.popupToast(toastType: status ? .friendAdded : .networkError)
+                owner.popupToast(toastType: status ? .friendAdded : .networkError)
             })
             .disposed(by: bag)
         
         viewModel.output.deleteStatus
             .withUnretained(self)
             .subscribe(onNext: { owner, status in
-                self.popupToast(toastType: status ? .friendDeleted : .networkError)
+                owner.popupToast(toastType: status ? .friendDeleted : .networkError)
             })
             .disposed(by: bag)
     }
@@ -394,19 +409,9 @@ extension FriendProfileBottomSheet {
     }
 }
 
-// MARK: - UITableViewDelegate
-
-extension FriendProfileBottomSheet: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        69.0
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-}
-
 // MARK: - DeselectAnnotation Protocol
-protocol DeselectAnnotation: AnyObject {
+protocol FriendProfileProtocol: AnyObject {
     func deselectAnnotation()
+    
+    func pushChallengeDetail(_ uuid: String)
 }

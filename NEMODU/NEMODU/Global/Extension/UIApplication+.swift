@@ -8,8 +8,13 @@
 import UIKit
 
 extension UIApplication {
+    /// deprecated keyWindow를 대체
+    var window: UIWindow? {
+        UIApplication.shared.connectedScenes.map({ $0 as? UIWindowScene }).compactMap({ $0 }).first?.keyWindow
+    }
+    
     /// 최상위 viewController를 반환
-    class func topViewController(base: UIViewController? = UIApplication.shared.connectedScenes.map({ $0 as? UIWindowScene }).compactMap({ $0 }).first?.windows.first?.rootViewController) -> UIViewController? {
+    class func topViewController(base: UIViewController? = UIApplication.shared.window?.rootViewController) -> UIViewController? {
         if let nav = base as? UINavigationController {
             return topViewController(base: nav.visibleViewController)
         }

@@ -10,8 +10,8 @@ import UIKit
 enum FriendStatusType: String {
     case accept = "ACCEPT" // 친구중
     case requesting = "REQUESTING" // 친구 요청중
-    case responseWait = "RESPONSEWAIT" // 수락 대기중
-    case noFriend = "NOFRIEND" // 친구 아님
+    case responseWait = "RESPONSE_WAIT" // 수락 대기중
+    case noFriend = "NO_FRIEND" // 친구 아님
 }
 
 extension FriendStatusType {

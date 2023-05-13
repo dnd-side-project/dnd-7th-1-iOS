@@ -123,9 +123,10 @@ class MyRecordDetailVC: BaseViewController {
             $0.separatorStyle = .singleLine
             $0.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
             $0.backgroundColor = .white
+            $0.rowHeight = CGFloat(MyRecordDetailVC.challengeListCellHeight)
         }
 
-    private let challengeListCellHeight = 69
+    static let challengeListCellHeight = 69
     private let subTitleLabelHeight = 52
     private let separatorHeight = 2
     
@@ -207,7 +208,6 @@ extension MyRecordDetailVC {
     private func configureChallengeListTV() {
         proceedingChallengeTV.register(ProceedingChallengeTVC.self,
                                        forCellReuseIdentifier: ProceedingChallengeTVC.className)
-        proceedingChallengeTV.delegate = self
     }
     
     private func configureRecordValue(recordData: DetailRecordDataResponseModel) {
@@ -335,7 +335,7 @@ extension MyRecordDetailVC {
         let titleHeight = cnt == 0 ? 0 : subTitleLabelHeight + separatorHeight
         
         challengeListView.snp.makeConstraints {
-            $0.height.equalTo(titleHeight + cnt * challengeListCellHeight)
+            $0.height.equalTo(titleHeight + cnt * MyRecordDetailVC.challengeListCellHeight)
         }
     }
 }
@@ -350,6 +350,7 @@ extension MyRecordDetailVC {
                 guard let self = self,
                       let recordId = self.recordID else { return }
                 let editRecordMomoVC = EditRecordMemoVC()
+                editRecordMomoVC.delegate = self
                 editRecordMomoVC.getRecordData(recordId: recordId,
                                                memo: self.memoTextView.tv.text)
                 self.navigationController?.pushViewController(editRecordMomoVC, animated: true)
@@ -394,6 +395,22 @@ extension MyRecordDetailVC {
                 owner.setChallengeListViewHeight(cnt: item.count)
             })
             .disposed(by: bag)
+        
+        proceedingChallengeTV.rx.itemSelected
+            .asDriver()
+            .drive(onNext: { [weak self] indexPath in
+                guard let self = self,
+                      let cell = self.proceedingChallengeTV.cellForRow(at: indexPath) as? ProceedingChallengeTVC,
+                      let uuid = cell.challengeUUID
+                else { return }
+                self.proceedingChallengeTV.deselectRow(at: indexPath, animated: true)
+                
+                let challengeDetailVC = ChallengeHistoryDetailVC()
+                challengeDetailVC.getChallengeHistoryDetailInfo(uuid: uuid)
+                challengeDetailVC.hidesBottomBarWhenPushed = true
+                self.navigationController?.pushViewController(challengeDetailVC, animated: true)
+            })
+            .disposed(by: bag)
     }
 }
 
@@ -417,14 +434,10 @@ extension MyRecordDetailVC {
     }
 }
 
-// MARK: - UITableViewDelegate
+// MARK: - RecordMemoChanged Protocol
 
-extension MyRecordDetailVC: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        CGFloat(challengeListCellHeight)
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
+extension MyRecordDetailVC: RecordMemoChanged {
+    func popupToastView() {
+        popupToast(toastType: .saveCompleted)
     }
 }

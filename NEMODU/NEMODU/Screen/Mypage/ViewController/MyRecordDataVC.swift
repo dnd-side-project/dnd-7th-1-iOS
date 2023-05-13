@@ -80,6 +80,7 @@ class MyRecordDataVC: BaseViewController {
         .then {
             $0.backgroundColor = .clear
             $0.separatorStyle = .none
+            $0.rowHeight = 76 + 12
         }
     
     private let naviBar = NavigationBar()
@@ -127,6 +128,7 @@ class MyRecordDataVC: BaseViewController {
         super.bindOutput()
         bindTableView()
         bindCalendarReload()
+        bindNoneDataMessage()
     }
     
 }
@@ -159,7 +161,6 @@ extension MyRecordDataVC {
         calendarCV.register(DayCVC.self, forCellWithReuseIdentifier: DayCVC.className)
         
         recordTableView.register(MyRecordListTVC.self, forCellReuseIdentifier: MyRecordListTVC.className)
-        recordTableView.delegate = self
     }
     
     private func configureCalendarCV() {
@@ -368,6 +369,16 @@ extension MyRecordDataVC {
 // MARK: - Output
 
 extension MyRecordDataVC {
+    private func bindNoneDataMessage() {
+        viewModel.output.isRecordEmpty
+            .asDriver(onErrorJustReturn: true)
+            .drive(onNext: { [weak self] isEmpty in
+                guard let self = self else { return }
+                self.noneMessage.isHidden = !isEmpty
+            })
+            .disposed(by: bag)
+    }
+    
     private func bindTableView() {
         viewModel.output.dataSource
             .bind(to: recordTableView.rx.items(dataSource: tableViewDataSource()))
@@ -416,17 +427,9 @@ extension MyRecordDataVC {
     }
 }
 
-// MARK: - UITableViewDelegate
+// MARK: - UICollectionViewDelegate
 
-extension MyRecordDataVC: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        76.0 + 12.0
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
+extension MyRecordDataVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         // 미래 선택 불가능
         guard let cell = collectionView.cellForItem(at: indexPath) as? DayCVC,
@@ -435,7 +438,7 @@ extension MyRecordDataVC: UITableViewDelegate {
     }
 }
 
-// MARK: - UICollectionViewDelegate
+// MARK: - UICollectionViewDelegateFlowLayout
 
 extension MyRecordDataVC: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

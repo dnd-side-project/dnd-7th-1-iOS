@@ -49,6 +49,12 @@ extension UIViewController {
         dismiss(animated: false)
     }
     
+    /// 설정 앱 열기
+    @objc func openSystem() {
+        dismissAlert()
+        UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+    }
+    
     /// 알람창을 닫고 viewController를 pop시키는 메서드
     @objc func dismissAlertAndPopVC() {
         dismissAlert()
