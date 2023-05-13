@@ -204,9 +204,20 @@ extension OnboardingVC {
             $0.trailing.equalTo(firstView.title.snp.trailing)
         }
         
+        /// 이미지 비율 기준값
+        /// 첫번째
+        ///  - 가로 길이: 화면의 0.65배
+        /// 두번째
+        ///  - leading, trailing 값 비율로 가로 길이 결정
+        /// 세번째
+        ///  - 가로 길이: 화면의 0.65배
+        
+        let firstImageRatio = (firstView.baseImageView.image?.size.height ?? 1) / (firstView.baseImageView.image?.size.width ?? 1)
         firstView.baseImageView.snp.makeConstraints {
             $0.trailing.equalToSuperview().offset(10)
             $0.bottom.equalTo(startBtn.snp.top).offset(-38)
+            $0.width.equalToSuperview().multipliedBy(0.65)
+            $0.height.equalTo(firstView.baseImageView.snp.width).multipliedBy(firstImageRatio)
         }
         
         secondView.emphasis.snp.makeConstraints {
@@ -214,18 +225,24 @@ extension OnboardingVC {
             $0.width.equalTo(71)
         }
         
+        let secondImageRatio = (secondView.baseImageView.image?.size.height ?? 1) / (secondView.baseImageView.image?.size.width ?? 1)
         secondView.baseImageView.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(screenWidth/15)
             $0.trailing.equalToSuperview()
             $0.bottom.equalTo(startBtn.snp.top).offset(-63)
+            $0.height.equalTo(secondView.baseImageView.snp.width).multipliedBy(secondImageRatio)
         }
         
         thirdView.emphasis.snp.makeConstraints {
             $0.trailing.equalTo(thirdView.title.snp.trailing).offset(4)
         }
         
+        let thirdImageRatio = (thirdView.baseImageView.image?.size.height ?? 1) / (thirdView.baseImageView.image?.size.width ?? 1)
         thirdView.baseImageView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.bottom.equalTo(startBtn.snp.top).offset(-78)
+            $0.width.equalToSuperview().multipliedBy(0.65)
+            $0.height.equalTo(thirdView.baseImageView.snp.width).multipliedBy(thirdImageRatio)
         }
     }
 }
