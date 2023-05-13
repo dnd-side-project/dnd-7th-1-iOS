@@ -35,6 +35,8 @@ class ProceedingChallengeTVC: UITableViewCell {
             $0.tintColor = .gray300
         }
     
+    var challengeUUID: String?
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configureView()
@@ -52,6 +54,7 @@ class ProceedingChallengeTVC: UITableViewCell {
         challengeIcon.image = nil
         challengeTitle.text = nil
         challengeSubtitle.text = nil
+        challengeUUID = nil
     }
 }
 
@@ -90,6 +93,7 @@ extension ProceedingChallengeTVC {
     func configureCell(with element: ChallengeElementResponseModel, isMyList: Bool = false) {
         challengeIcon.tintColor = ChallengeColorType(rawValue: element.color)?.primaryColor ?? .gray500
         challengeTitle.text = element.name
+        challengeUUID = element.uuid
         
         if let rank = element.rank {
             challengeSubtitle.text = isMyList

@@ -199,6 +199,14 @@ extension ChallengeListBottomSheet: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        guard let cell = tableView.cellForRow(at: indexPath) as? ProceedingChallengeTVC,
+              let uuid = cell.challengeUUID
+        else { return }
+        
+        dismiss(animated: true) {
+            self.delegate?.pushChallengeDetail(uuid)
+        }
     }
 }
 
@@ -206,4 +214,6 @@ extension ChallengeListBottomSheet: UITableViewDelegate {
 
 protocol PushChallengeVC: AnyObject {
     func pushCreateChallengeVC()
+    
+    func pushChallengeDetail(_ uuid: String)
 }

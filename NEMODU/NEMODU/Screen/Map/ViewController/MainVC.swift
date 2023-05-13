@@ -409,6 +409,15 @@ extension MainVC {
 // MARK: - Protocol
 
 extension MainVC: PushChallengeVC {
+    /// 진행중인 챌린지 상세 화면을 push하는 메서드
+    func pushChallengeDetail(_ uuid: String) {
+        let challengeDetailVC = ChallengeHistoryDetailVC()
+        challengeDetailVC.getChallengeHistoryDetailInfo(uuid: uuid)
+        challengeDetailVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(challengeDetailVC, animated: true)
+    }
+    
+    /// 챌린지 생성 화면을 push 하는 메서드
     func pushCreateChallengeVC() {
         let selectChallengeCreateVC = SelectChallengeCreateVC()
         selectChallengeCreateVC.hidesBottomBarWhenPushed = true
