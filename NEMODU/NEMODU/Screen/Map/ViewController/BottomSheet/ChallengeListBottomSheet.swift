@@ -103,7 +103,7 @@ extension ChallengeListBottomSheet {
         proceedingChallengeTV.delegate = self
         
         // Layout
-        contentView.snp.makeConstraints {
+        contentView.snp.updateConstraints {
             $0.height.equalTo(challengeCnt * cellHeight + 55 + Int(UIApplication.shared.window?.safeAreaInsets.bottom ?? 0))
         }
         
