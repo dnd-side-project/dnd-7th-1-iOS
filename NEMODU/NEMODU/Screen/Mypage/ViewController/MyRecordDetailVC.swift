@@ -117,7 +117,7 @@ class MyRecordDetailVC: BaseViewController {
             $0.backgroundColor = .gray50
         }
     
-    private let proceedingChallengeTV = UITableView(frame: .zero)
+    private let proceedingChallengeTV = ContentSizedTableView(frame: .zero)
         .then {
             $0.isScrollEnabled = false
             $0.separatorStyle = .singleLine
@@ -329,15 +329,6 @@ extension MyRecordDetailVC {
             $0.bottom.equalToSuperview()
         }
     }
-    
-    private func setChallengeListViewHeight(cnt: Int) {
-        challengeListView.isHidden = cnt == 0
-        let titleHeight = cnt == 0 ? 0 : subTitleLabelHeight + separatorHeight
-        
-        challengeListView.snp.makeConstraints {
-            $0.height.equalTo(titleHeight + cnt * MyRecordDetailVC.challengeListCellHeight)
-        }
-    }
 }
 
 // MARK: - Input
@@ -390,9 +381,7 @@ extension MyRecordDetailVC {
         viewModel.output.challengeList
             .withUnretained(self)
             .subscribe(onNext: { owner, item in
-                if item.count == 0 { return }
                 owner.proceedingChallengeTV.reloadData()
-                owner.setChallengeListViewHeight(cnt: item.count)
             })
             .disposed(by: bag)
         
