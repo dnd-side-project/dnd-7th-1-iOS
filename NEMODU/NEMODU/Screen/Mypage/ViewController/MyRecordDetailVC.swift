@@ -123,9 +123,10 @@ class MyRecordDetailVC: BaseViewController {
             $0.separatorStyle = .singleLine
             $0.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
             $0.backgroundColor = .white
+            $0.rowHeight = CGFloat(MyRecordDetailVC.challengeListCellHeight)
         }
 
-    private let challengeListCellHeight = 69
+    static let challengeListCellHeight = 69
     private let subTitleLabelHeight = 52
     private let separatorHeight = 2
     
@@ -207,7 +208,6 @@ extension MyRecordDetailVC {
     private func configureChallengeListTV() {
         proceedingChallengeTV.register(ProceedingChallengeTVC.self,
                                        forCellReuseIdentifier: ProceedingChallengeTVC.className)
-        proceedingChallengeTV.delegate = self
     }
     
     private func configureRecordValue(recordData: DetailRecordDataResponseModel) {
@@ -335,7 +335,7 @@ extension MyRecordDetailVC {
         let titleHeight = cnt == 0 ? 0 : subTitleLabelHeight + separatorHeight
         
         challengeListView.snp.makeConstraints {
-            $0.height.equalTo(titleHeight + cnt * challengeListCellHeight)
+            $0.height.equalTo(titleHeight + cnt * MyRecordDetailVC.challengeListCellHeight)
         }
     }
 }
@@ -395,6 +395,15 @@ extension MyRecordDetailVC {
                 owner.setChallengeListViewHeight(cnt: item.count)
             })
             .disposed(by: bag)
+        
+        proceedingChallengeTV.rx.itemSelected
+            .asDriver()
+            .drive(onNext: { [weak self] indexPath in
+                guard let self = self else { return }
+                self.proceedingChallengeTV.deselectRow(at: indexPath, animated: true)
+                // TODO: - 챌린지 연결
+            })
+            .disposed(by: bag)
     }
 }
 
@@ -415,18 +424,6 @@ extension MyRecordDetailVC {
                 
                 return cell
             })
-    }
-}
-
-// MARK: - UITableViewDelegate
-
-extension MyRecordDetailVC: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        CGFloat(challengeListCellHeight)
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 

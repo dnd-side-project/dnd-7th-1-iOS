@@ -38,6 +38,7 @@ class FriendListVC: BaseViewController {
             $0.separatorStyle = .none
             $0.isScrollEnabled = false
             $0.backgroundColor = .clear
+            $0.rowHeight = 64
         }
     
     private let friendListView = UIView()
@@ -77,6 +78,8 @@ class FriendListVC: BaseViewController {
     private let friendListTV = UITableView()
         .then {
             $0.separatorStyle = .none
+            $0.backgroundColor = .clear
+            $0.rowHeight = 64
         }
     
     private var isFriendListEditing = false
@@ -125,11 +128,9 @@ extension FriendListVC {
         
         requestTV.register(FriendRequestTVC.self, forCellReuseIdentifier: FriendRequestTVC.className)
         requestTV.dataSource = self
-        requestTV.delegate = self
         
         friendListTV.register(FriendListTVC.self, forCellReuseIdentifier: FriendListTVC.className)
         friendListTV.dataSource = self
-        friendListTV.delegate = self
     }
 }
 
@@ -241,13 +242,5 @@ extension FriendListVC: UITableViewDataSource {
             friendListCell.configureCell(isEdit: isFriendListEditing)
             return friendListCell
         }
-    }
-}
-
-// MARK: - UITableViewDelegate
-
-extension FriendListVC: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        64
     }
 }

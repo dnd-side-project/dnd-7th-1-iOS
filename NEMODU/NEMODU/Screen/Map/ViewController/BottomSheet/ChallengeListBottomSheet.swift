@@ -51,6 +51,7 @@ class ChallengeListBottomSheet: DynamicBottomSheetViewController {
             $0.separatorStyle = .singleLine
             $0.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
             $0.backgroundColor = .white
+            $0.rowHeight = CGFloat(ChallengeListBottomSheet.cellHeight)
         }
     
     private let viewModel = ChallengeListVM()
@@ -58,7 +59,7 @@ class ChallengeListBottomSheet: DynamicBottomSheetViewController {
     weak var delegate: PushChallengeVC?
     
     // constants
-    private let cellHeight = 69
+    static let cellHeight = 69
     private let emptyViewHeight = 304
     
     override func viewWillAppear(_ animated: Bool) {
@@ -100,11 +101,10 @@ extension ChallengeListBottomSheet {
         
         proceedingChallengeTV.register(ProceedingChallengeTVC.self,
                                        forCellReuseIdentifier: ProceedingChallengeTVC.className)
-        proceedingChallengeTV.delegate = self
         
         // Layout
         contentView.snp.updateConstraints {
-            $0.height.equalTo(challengeCnt * cellHeight + 55 + Int(UIApplication.shared.window?.safeAreaInsets.bottom ?? 0))
+            $0.height.equalTo(challengeCnt * ChallengeListBottomSheet.cellHeight + 55 + Int(UIApplication.shared.window?.safeAreaInsets.bottom ?? 0))
         }
         
         proceedingChallengeTV.snp.makeConstraints {
@@ -168,6 +168,20 @@ extension ChallengeListBottomSheet {
                 owner.proceedingChallengeTV.reloadData()
             })
             .disposed(by: bag)
+        
+        proceedingChallengeTV.rx.itemSelected
+            .asDriver()
+            .drive(onNext: {[weak self] indexPath in
+                guard let self = self,
+                      let cell = self.proceedingChallengeTV.cellForRow(at: indexPath) as? ProceedingChallengeTVC,
+                      let uuid = cell.challengeUUID
+                else { return }
+                self.proceedingChallengeTV.deselectRow(at: indexPath, animated: true)
+                self.dismiss(animated: true) {
+                    self.delegate?.pushChallengeDetail(uuid)
+                }
+            })
+            .disposed(by: bag)
     }
 }
 
@@ -187,26 +201,6 @@ extension ChallengeListBottomSheet {
                 
                 return cell
             })
-    }
-}
-
-// MARK: - UITableViewDelegate
-
-extension ChallengeListBottomSheet: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        CGFloat(cellHeight)
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        
-        guard let cell = tableView.cellForRow(at: indexPath) as? ProceedingChallengeTVC,
-              let uuid = cell.challengeUUID
-        else { return }
-        
-        dismiss(animated: true) {
-            self.delegate?.pushChallengeDetail(uuid)
-        }
     }
 }
 
