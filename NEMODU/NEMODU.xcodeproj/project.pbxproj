@@ -85,6 +85,7 @@
 		2348B4122892D901001095BC /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348B4112892D901001095BC /* LoadingView.swift */; };
 		2348B41E2892DF0D001095BC /* MypageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348B41D2892DF0D001095BC /* MypageVC.swift */; };
 		2348B4252892E007001095BC /* NEMODUTBC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2348B4242892E007001095BC /* NEMODUTBC.swift */; };
+		2352A29C2A0FAAD600CA072B /* MainNC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2352A29B2A0FAAD600CA072B /* MainNC.swift */; };
 		2354239128BBA54000865E51 /* UserDefaults+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2354239028BBA54000865E51 /* UserDefaults+.swift */; };
 		2354239428BC8BCD00865E51 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2354239328BC8BCD00865E51 /* LoginVC.swift */; };
 		2359B08C28EC724000930EF0 /* DateType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2359B08B28EC724000930EF0 /* DateType.swift */; };
@@ -346,6 +347,7 @@
 		2348B4182892DEED001095BC /* ChallengeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeVC.swift; sourceTree = "<group>"; };
 		2348B41D2892DF0D001095BC /* MypageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MypageVC.swift; sourceTree = "<group>"; };
 		2348B4242892E007001095BC /* NEMODUTBC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NEMODUTBC.swift; sourceTree = "<group>"; };
+		2352A29B2A0FAAD600CA072B /* MainNC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNC.swift; sourceTree = "<group>"; };
 		2354239028BBA54000865E51 /* UserDefaults+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+.swift"; sourceTree = "<group>"; };
 		2354239328BC8BCD00865E51 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		2359B08B28EC724000930EF0 /* DateType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateType.swift; sourceTree = "<group>"; };
@@ -803,6 +805,7 @@
 			isa = PBXGroup;
 			children = (
 				2348B3DC2892CF92001095BC /* MapVC.swift */,
+				2352A29B2A0FAAD600CA072B /* MainNC.swift */,
 				23B7206A28A12BCD00D3A410 /* MainVC.swift */,
 				23B7206C28A12BE800D3A410 /* WalkingVC.swift */,
 				23412FEF28AFB74800B73D62 /* RecordResultNC.swift */,
@@ -1674,6 +1677,7 @@
 				3CC1EC7528D06917007C87F6 /* CreateAccumulateChallengeVC.swift in Sources */,
 				23412FDC28AE375D00B73D62 /* ChallengeElementResponseModel.swift in Sources */,
 				3C2327B92A0387EA00251316 /* NotificationListTVC.swift in Sources */,
+				2352A29C2A0FAAD600CA072B /* MainNC.swift in Sources */,
 				3C6F03152910B471002829D7 /* InvitedFriendsTVC.swift in Sources */,
 				23412FF028AFB74800B73D62 /* RecordResultNC.swift in Sources */,
 				2375740128FC3824006026ED /* NicknameSearchBar.swift in Sources */,
