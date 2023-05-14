@@ -252,7 +252,7 @@
 		3CF039EC29E28C3E001CA475 /* SettingItemTitleLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF039EB29E28C3E001CA475 /* SettingItemTitleLabelView.swift */; };
 		3CF039EE29E290FF001CA475 /* SetNotificationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF039ED29E290FF001CA475 /* SetNotificationVC.swift */; };
 		3CF039F229E2BBF1001CA475 /* TermsConditionsAgreementVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF039F129E2BBF1001CA475 /* TermsConditionsAgreementVC.swift */; };
-		3CF039F429E2E756001CA475 /* TermsConditionsDetailButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF039F329E2E756001CA475 /* TermsConditionsDetailButton.swift */; };
+		3CF039F429E2E756001CA475 /* TermsConditionsAgreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF039F329E2E756001CA475 /* TermsConditionsAgreeView.swift */; };
 		3CF1C29C293D962100F7C189 /* ChallengeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF1C29B293D962100F7C189 /* ChallengeType.swift */; };
 		3CF431BA28FE7AE9007EB115 /* AreaRankingListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF431B928FE7AE9007EB115 /* AreaRankingListVC.swift */; };
 		3CF431BC28FE7BAA007EB115 /* StepRankingListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF431BB28FE7BAA007EB115 /* StepRankingListVC.swift */; };
@@ -519,7 +519,7 @@
 		3CF039EB29E28C3E001CA475 /* SettingItemTitleLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingItemTitleLabelView.swift; sourceTree = "<group>"; };
 		3CF039ED29E290FF001CA475 /* SetNotificationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetNotificationVC.swift; sourceTree = "<group>"; };
 		3CF039F129E2BBF1001CA475 /* TermsConditionsAgreementVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsConditionsAgreementVC.swift; sourceTree = "<group>"; };
-		3CF039F329E2E756001CA475 /* TermsConditionsDetailButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsConditionsDetailButton.swift; sourceTree = "<group>"; };
+		3CF039F329E2E756001CA475 /* TermsConditionsAgreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsConditionsAgreeView.swift; sourceTree = "<group>"; };
 		3CF1C29B293D962100F7C189 /* ChallengeType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeType.swift; sourceTree = "<group>"; };
 		3CF431B928FE7AE9007EB115 /* AreaRankingListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AreaRankingListVC.swift; sourceTree = "<group>"; };
 		3CF431BB28FE7BAA007EB115 /* StepRankingListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepRankingListVC.swift; sourceTree = "<group>"; };
@@ -554,7 +554,7 @@
 			isa = PBXGroup;
 			children = (
 				2304FB9E28F2DC3300DD3A50 /* LoginBtn.swift */,
-				3CF039F329E2E756001CA475 /* TermsConditionsDetailButton.swift */,
+				3CF039F329E2E756001CA475 /* TermsConditionsAgreeView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1625,7 +1625,7 @@
 				3CB9DB9D28A92528007BC1BE /* MenuBarCV.swift in Sources */,
 				237573EF28FA773F006026ED /* EditProfileVC.swift in Sources */,
 				3CF431BA28FE7AE9007EB115 /* AreaRankingListVC.swift in Sources */,
-				3CF039F429E2E756001CA475 /* TermsConditionsDetailButton.swift in Sources */,
+				3CF039F429E2E756001CA475 /* TermsConditionsAgreeView.swift in Sources */,
 				2348B3BF2892C675001095BC /* AppDelegate.swift in Sources */,
 				3C72D7C428B51BB6006E2229 /* SelectChallengeCreateVC.swift in Sources */,
 				23ECC09F28D859E000F65692 /* AuthAPI.swift in Sources */,
