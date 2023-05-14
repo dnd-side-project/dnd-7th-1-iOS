@@ -239,7 +239,7 @@ extension FriendListVC: UITableViewDataSource {
             requestCell.configureCell()
             return requestCell
         } else {
-            friendListCell.configureCell(isEdit: isFriendListEditing)
+//            friendListCell.configureCell(<#T##friendInfo: FriendsInfo##FriendsInfo#>, isEditing: isFriendListEditing)
             return friendListCell
         }
     }

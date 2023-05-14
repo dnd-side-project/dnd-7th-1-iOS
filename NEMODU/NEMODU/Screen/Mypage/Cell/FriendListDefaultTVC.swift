@@ -10,21 +10,9 @@ import Then
 import SnapKit
 
 class FriendListDefaultTVC: BaseTableViewCell {
-    private let profileImageView = UIImageView()
-        .then {
-            $0.image = .defaultThumbnail
-            $0.layer.cornerRadius = 20
-            $0.clipsToBounds = true
-        }
+    private let friendProfileView = FriendCellProfileView()
     
-    private let nicknameLabel = UILabel()
-        .then {
-            $0.text = "-"
-            $0.font = .body3
-            $0.textColor = .gray900
-        }
-    
-    private let deleteBtn = UIButton()
+    private let deleteFriendBtn = UIButton()
         .then {
             $0.setImage(UIImage(named: "dismiss")?.withTintColor(.gray500),
                         for: .normal)
@@ -33,58 +21,39 @@ class FriendListDefaultTVC: BaseTableViewCell {
     
     override func configureView() {
         super.configureView()
-        configureContentView()
+        
+        addSubviews([friendProfileView,
+                     deleteFriendBtn])
     }
     
     override func layoutView() {
         super.layoutView()
-        configureLayout()
+        
+        friendProfileView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(12)
+            $0.bottom.equalToSuperview().offset(-12)
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalTo(deleteFriendBtn.snp.leading).offset(-16)
+        }
+        
+        deleteFriendBtn.snp.makeConstraints {
+            $0.trailing.equalToSuperview().offset(-16)
+            $0.centerY.equalToSuperview()
+            $0.width.height.equalTo(24)
+        }
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        profileImageView.image = .defaultThumbnail
-        nicknameLabel.text = nil
+        friendProfileView.prepareForReuse()
     }
 }
 
 // MARK: - Configure
 
 extension FriendListDefaultTVC {
-    private func configureContentView() {
-        backgroundColor = .systemBackground
-        selectionStyle = .none
-        addSubviews([profileImageView,
-                     nicknameLabel,
-                     deleteBtn])
-    }
-    
-    func configureCell(isEdit: Bool) {
-        // TODO: - 서버 구현 후 연결
-        nicknameLabel.text = "nickname"
-        deleteBtn.isHidden = !isEdit
-    }
-}
-
-// MARK: - Layout
-
-extension FriendListDefaultTVC {
-    private func configureLayout() {
-        profileImageView.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(16)
-            $0.centerY.equalToSuperview()
-            $0.width.height.equalTo(40)
-        }
-        
-        nicknameLabel.snp.makeConstraints {
-            $0.leading.equalTo(profileImageView.snp.trailing).offset(16)
-            $0.centerY.equalToSuperview()
-        }
-        
-        deleteBtn.snp.makeConstraints {
-            $0.trailing.equalToSuperview().offset(-16)
-            $0.centerY.equalToSuperview()
-            $0.width.height.equalTo(24)
-        }
+    func configureCell(_ friendInfo: FriendsInfo, isEditing: Bool) {
+        friendProfileView.setProfile(friendInfo)
+        deleteFriendBtn.isHidden = !isEditing
     }
 }
