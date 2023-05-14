@@ -14,7 +14,10 @@ import RxCocoa
 class AddFriendTVC: BaseTableViewCell {
     private let profileImageView = UIImageView()
         .then {
+            $0.image = .defaultThumbnail
             $0.contentMode = .scaleAspectFill
+            $0.layer.cornerRadius = 20
+            $0.clipsToBounds = true
         }
     
     private let nameStackView = UIStackView()
@@ -81,7 +84,7 @@ class AddFriendTVC: BaseTableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        profileImageView.image = nil
+        profileImageView.image = .defaultThumbnail
         nickname.text = nil
         name.text = nil
         addFriendBtn.isSelected = false
