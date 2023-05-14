@@ -13,3 +13,10 @@ struct FriendsInfo: Codable {
     let kakaoName: String?
     let status: String?
 }
+
+extension FriendsInfo {
+    var profileImageURL: URL? {
+        guard let profileImageURL = picturePath.encodeURL() else { return nil }
+        return URL(string: profileImageURL)
+    }
+}
