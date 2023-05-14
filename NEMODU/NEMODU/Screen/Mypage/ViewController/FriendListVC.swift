@@ -126,7 +126,7 @@ extension FriendListVC {
                                     searchBar,
                                     friendListTV])
         
-        requestTV.register(FriendRequestTVC.self, forCellReuseIdentifier: FriendRequestTVC.className)
+        requestTV.register(FriendRequestHandlingTVC.self, forCellReuseIdentifier: FriendRequestHandlingTVC.className)
         requestTV.dataSource = self
         
         friendListTV.register(FriendListDefaultTVC.self, forCellReuseIdentifier: FriendListDefaultTVC.className)
@@ -231,7 +231,7 @@ extension FriendListVC: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let requestCell = requestTV.dequeueReusableCell(withIdentifier: FriendRequestTVC.className) as? FriendRequestTVC,
+        guard let requestCell = requestTV.dequeueReusableCell(withIdentifier: FriendRequestHandlingTVC.className) as? FriendRequestHandlingTVC,
               let friendListCell = friendListTV.dequeueReusableCell(withIdentifier: FriendListDefaultTVC.className) as? FriendListDefaultTVC
         else { return UITableViewCell() }
         
