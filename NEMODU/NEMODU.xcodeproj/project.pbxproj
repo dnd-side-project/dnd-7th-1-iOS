@@ -122,6 +122,7 @@
 		238C4DDF28A3AC18000BEE36 /* RecordResultVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DDE28A3AC18000BEE36 /* RecordResultVC.swift */; };
 		238C4DE328A3F0D6000BEE36 /* NemoduTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */; };
 		238C4DE528A4BFE2000BEE36 /* UIScrollView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DE428A4BFE2000BEE36 /* UIScrollView+.swift */; };
+		23A0BE4C2A112D2800AF10BE /* FriendListVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A0BE4B2A112D2800AF10BE /* FriendListVM.swift */; };
 		23A0E7D628B6614300057EE7 /* concentricCircles.json in Resources */ = {isa = PBXBuildFile; fileRef = 23A0E7D528B6614300057EE7 /* concentricCircles.json */; };
 		23A8684929FE33F000B6683E /* FriendRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A8684829FE33F000B6683E /* FriendRequestModel.swift */; };
 		23A8684B29FE543B00B6683E /* loading.json in Resources */ = {isa = PBXBuildFile; fileRef = 23A8684A29FE543B00B6683E /* loading.json */; };
@@ -389,6 +390,7 @@
 		238C4DDE28A3AC18000BEE36 /* RecordResultVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordResultVC.swift; sourceTree = "<group>"; };
 		238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NemoduTextView.swift; sourceTree = "<group>"; };
 		238C4DE428A4BFE2000BEE36 /* UIScrollView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+.swift"; sourceTree = "<group>"; };
+		23A0BE4B2A112D2800AF10BE /* FriendListVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendListVM.swift; sourceTree = "<group>"; };
 		23A0E7D528B6614300057EE7 /* concentricCircles.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = concentricCircles.json; sourceTree = "<group>"; };
 		23A8684829FE33F000B6683E /* FriendRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestModel.swift; sourceTree = "<group>"; };
 		23A8684A29FE543B00B6683E /* loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loading.json; sourceTree = "<group>"; };
@@ -973,6 +975,7 @@
 				2315258E28B4F2A000B80E03 /* MyRecordDetailVM.swift */,
 				237573D028F5660A006026ED /* EditRecordMemoVM.swift */,
 				3CCEDB5C29EFDA440047CF6E /* SetNotificationVM.swift */,
+				23A0BE4B2A112D2800AF10BE /* FriendListVM.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1681,6 +1684,7 @@
 				23255A7228CF457E005D6D5A /* FriendAddTVC.swift in Sources */,
 				2312519428B6943B00DF1C69 /* ToastType.swift in Sources */,
 				3C064BC2290FCA1400522274 /* InvitedChallengeDetailVC.swift in Sources */,
+				23A0BE4C2A112D2800AF10BE /* FriendListVM.swift in Sources */,
 				3C992F1528AE61FC00D96E21 /* ListTypeMenuBarCV.swift in Sources */,
 				3C44DEE4294896D00039681A /* InvitedChallengeDetailResponseModel.swift in Sources */,
 				3C86821828FD3FE700F37C06 /* RankingListVC.swift in Sources */,

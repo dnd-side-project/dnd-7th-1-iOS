@@ -11,6 +11,7 @@ import RxGesture
 import RxSwift
 import SnapKit
 import Then
+import RxDataSources
 
 class FriendListVC: BaseViewController {
     private let requestView = UIView()
@@ -83,6 +84,7 @@ class FriendListVC: BaseViewController {
     
     static let friendCellHeight = 64.0
     private var isFriendListEditing = false
+    private let viewModel = FriendListVM()
     private let bag = DisposeBag()
     
     override func viewDidLoad() {
@@ -106,6 +108,7 @@ class FriendListVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        bindFriendListTableView()
     }
 }
 
@@ -131,7 +134,6 @@ extension FriendListVC {
         
         friendListTV.register(FriendListDefaultTVC.self,
                               forCellReuseIdentifier: FriendListDefaultTVC.className)
-        friendListTV.dataSource = self
     }
 }
 
@@ -217,31 +219,51 @@ extension FriendListVC {
 // MARK: - Output
 
 extension FriendListVC {
-    
+    /// 내 친구 목록 tableView 바인딩
+    private func bindFriendListTableView() {
+        viewModel.output.myFriendsList.dataSource
+            .bind(to: friendListTV.rx.items(dataSource: friendListTableViewDataSource()))
+            .disposed(by: bag)
+        
+        viewModel.output.myFriendsList.friendsInfo
+            .withUnretained(self)
+            .subscribe(onNext: { owner, item in
+                owner.friendListTV.reloadData()
+            })
+            .disposed(by: bag)
+    }
+}
+
+// MARK: - DataSource
+
+extension FriendListVC {
+    /// 내 친구 목록 tableView DataSource
+    func friendListTableViewDataSource() -> RxTableViewSectionedReloadDataSource<FriendListDataSource> {
+        RxTableViewSectionedReloadDataSource<FriendListDataSource>(
+            configureCell: {[weak self] dataSource, tableView, indexPath, item in
+                guard let self = self,
+                      let cell = tableView.dequeueReusableCell(
+                    withIdentifier: FriendListDefaultTVC.className,
+                    for: indexPath
+                ) as? FriendListDefaultTVC else {
+                    fatalError()
+                }
+                cell.configureCell(item, isEditing: self.isFriendListEditing)
+                return cell
+            })
+    }
 }
 
 // MARK: - UITableViewDataSource
 
 extension FriendListVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if tableView == requestHandlingTV {
-            return 2
-        } else {
-            return 10
-        }
+        return 2
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let requestHandlingCell = requestHandlingTV.dequeueReusableCell(withIdentifier: FriendRequestHandlingTVC.className) as? FriendRequestHandlingTVC,
-              let friendDefaultCell = friendListTV.dequeueReusableCell(withIdentifier: FriendListDefaultTVC.className) as? FriendListDefaultTVC
-        else { return UITableViewCell() }
-        
-        if tableView == requestHandlingTV {
+        guard let requestHandlingCell = requestHandlingTV.dequeueReusableCell(withIdentifier: FriendRequestHandlingTVC.className) as? FriendRequestHandlingTVC else { return UITableViewCell() }
 //            requestHandlingCell.configureCell(<#T##friendInfo: FriendsInfo##FriendsInfo#>)
-            return requestHandlingCell
-        } else {
-//            friendDefaultCell.configureCell(<#T##friendInfo: FriendsInfo##FriendsInfo#>, isEditing: isFriendListEditing)
-            return friendDefaultCell
-        }
+        return requestHandlingCell
     }
 }
