@@ -9,7 +9,7 @@ import UIKit
 import Then
 import SnapKit
 
-class FriendListTVC: BaseTableViewCell {
+class FriendListDefaultTVC: BaseTableViewCell {
     private let profileImageView = UIImageView()
         .then {
             $0.image = .defaultThumbnail
@@ -50,7 +50,7 @@ class FriendListTVC: BaseTableViewCell {
 
 // MARK: - Configure
 
-extension FriendListTVC {
+extension FriendListDefaultTVC {
     private func configureContentView() {
         backgroundColor = .systemBackground
         selectionStyle = .none
@@ -68,7 +68,7 @@ extension FriendListTVC {
 
 // MARK: - Layout
 
-extension FriendListTVC {
+extension FriendListDefaultTVC {
     private func configureLayout() {
         profileImageView.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(16)

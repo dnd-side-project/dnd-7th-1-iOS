@@ -129,7 +129,7 @@ extension FriendListVC {
         requestTV.register(FriendRequestTVC.self, forCellReuseIdentifier: FriendRequestTVC.className)
         requestTV.dataSource = self
         
-        friendListTV.register(FriendListTVC.self, forCellReuseIdentifier: FriendListTVC.className)
+        friendListTV.register(FriendListDefaultTVC.self, forCellReuseIdentifier: FriendListDefaultTVC.className)
         friendListTV.dataSource = self
     }
 }
@@ -232,7 +232,7 @@ extension FriendListVC: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let requestCell = requestTV.dequeueReusableCell(withIdentifier: FriendRequestTVC.className) as? FriendRequestTVC,
-              let friendListCell = friendListTV.dequeueReusableCell(withIdentifier: FriendListTVC.className) as? FriendListTVC
+              let friendListCell = friendListTV.dequeueReusableCell(withIdentifier: FriendListDefaultTVC.className) as? FriendListDefaultTVC
         else { return UITableViewCell() }
         
         if tableView == requestTV {

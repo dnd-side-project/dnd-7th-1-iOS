@@ -111,7 +111,7 @@
 		237573FF28FC26DF006026ED /* FriendListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573FE28FC26DF006026ED /* FriendListVC.swift */; };
 		2375740128FC3824006026ED /* NicknameSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2375740028FC3824006026ED /* NicknameSearchBar.swift */; };
 		2375740328FC43C0006026ED /* FriendRequestTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2375740228FC43C0006026ED /* FriendRequestTVC.swift */; };
-		2375740528FC4856006026ED /* FriendListTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2375740428FC4856006026ED /* FriendListTVC.swift */; };
+		2375740528FC4856006026ED /* FriendListDefaultTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2375740428FC4856006026ED /* FriendListDefaultTVC.swift */; };
 		2375740728FC4DF4006026ED /* RecommendListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2375740628FC4DF4006026ED /* RecommendListVC.swift */; };
 		2375740B28FC5808006026ED /* ViewMoreTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2375740A28FC5808006026ED /* ViewMoreTVC.swift */; };
 		2376B9072A05422600528DA6 /* UIApplication+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2376B9062A05422600528DA6 /* UIApplication+.swift */; };
@@ -376,7 +376,7 @@
 		237573FE28FC26DF006026ED /* FriendListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendListVC.swift; sourceTree = "<group>"; };
 		2375740028FC3824006026ED /* NicknameSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameSearchBar.swift; sourceTree = "<group>"; };
 		2375740228FC43C0006026ED /* FriendRequestTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestTVC.swift; sourceTree = "<group>"; };
-		2375740428FC4856006026ED /* FriendListTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendListTVC.swift; sourceTree = "<group>"; };
+		2375740428FC4856006026ED /* FriendListDefaultTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendListDefaultTVC.swift; sourceTree = "<group>"; };
 		2375740628FC4DF4006026ED /* RecommendListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendListVC.swift; sourceTree = "<group>"; };
 		2375740A28FC5808006026ED /* ViewMoreTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreTVC.swift; sourceTree = "<group>"; };
 		2376B9062A05422600528DA6 /* UIApplication+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+.swift"; sourceTree = "<group>"; };
@@ -1110,7 +1110,7 @@
 				23255A7728D058C1005D6D5A /* Calendar */,
 				23D8B7E028B3AC9C00F48165 /* MyRecordListTVC.swift */,
 				2375740228FC43C0006026ED /* FriendRequestTVC.swift */,
-				2375740428FC4856006026ED /* FriendListTVC.swift */,
+				2375740428FC4856006026ED /* FriendListDefaultTVC.swift */,
 				2375740A28FC5808006026ED /* ViewMoreTVC.swift */,
 				3C2327B82A0387EA00251316 /* NotificationListTVC.swift */,
 			);
@@ -1782,7 +1782,7 @@
 				23412FEC28AF81F700B73D62 /* RecordResultVM.swift in Sources */,
 				3C9FD39D28B68D19006FA812 /* ChallengePeriodVC.swift in Sources */,
 				2348B3FD2892D16C001095BC /* Loadable.swift in Sources */,
-				2375740528FC4856006026ED /* FriendListTVC.swift in Sources */,
+				2375740528FC4856006026ED /* FriendListDefaultTVC.swift in Sources */,
 				3C4E855A298CDB05001E8766 /* ChallengeDetailMapResponseModel.swift in Sources */,
 				3C064BBD290F95B500522274 /* ProgressAndDoneChallengeListResponseModel.swift in Sources */,
 				2348B4012892D1A6001095BC /* UITextField+.swift in Sources */,
