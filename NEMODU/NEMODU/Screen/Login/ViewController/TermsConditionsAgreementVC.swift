@@ -55,15 +55,15 @@ class TermsConditionsAgreementVC: BaseViewController {
             $0.axis = .vertical
             $0.distribution = .fill
         }
-    private let serviceTermsConditionsDetailButton = TermsConditionsDetailButton()
+    private let serviceTermsConditionsAgreeView = TermsConditionsAgreeView()
         .then {
             $0.setTitle(title: "(필수) 서비스 이용 약관")
         }
-    private let privacyTermsConditionsDetailButton = TermsConditionsDetailButton()
+    private let privacyTermsConditionsAgreeView = TermsConditionsAgreeView()
         .then {
             $0.setTitle(title: "(필수) 개인 정보 수집 및 이용 동의")
         }
-    private let locationTermsConditionsDetailButton = TermsConditionsDetailButton()
+    private let locationTermsConditionsAgreeView = TermsConditionsAgreeView()
         .then {
             $0.setTitle(title: "(필수) 위치 기반 서비스 약관 동의")
         }
@@ -120,10 +120,13 @@ class TermsConditionsAgreementVC: BaseViewController {
         present(safariViewController, animated: true, completion: nil)
     }
     
-    private func updateStartButtonStatus(isAgree: Bool) {
-        startButton.setTitleColor(isAgree ? .secondary : .gray400, for: .normal)
-        startButton.backgroundColor = isAgree ? .main: .gray100
-        startButton.isEnabled = isAgree
+    private func toggleAgreeAllStatus(agreedAll: Bool) {
+        agreeAllButton.isSelected = agreedAll
+        agreeAllImageView.tintColor = agreedAll ? .main : .gray300
+        
+        startButton.setTitleColor(agreedAll ? .secondary : .gray400, for: .normal)
+        startButton.backgroundColor = agreedAll ? .main: .gray100
+        startButton.isEnabled = agreedAll
     }
     
 }
@@ -139,12 +142,12 @@ extension TermsConditionsAgreementVC {
                           lineView,
                           agreeListStackView,
                           startButton])
-        
+
         agreeAllButton.addSubviews([agreeAllImageView, agreeAllLabel])
         
-        [serviceTermsConditionsDetailButton,
-         privacyTermsConditionsDetailButton,
-         locationTermsConditionsDetailButton].forEach {
+        [serviceTermsConditionsAgreeView,
+         privacyTermsConditionsAgreeView,
+         locationTermsConditionsAgreeView].forEach {
             agreeListStackView.addArrangedSubview($0)
         }
         
@@ -181,7 +184,7 @@ extension TermsConditionsAgreementVC {
         }
         
         agreeListStackView.snp.makeConstraints {
-            $0.left.equalTo(startButton.snp.left).offset(16.0)
+            $0.left.equalTo(startButton.snp.left).offset(8.0)
             $0.right.equalTo(startButton.snp.right)
             $0.bottom.equalTo(startButton.snp.top).offset(-60.0)
         }
@@ -201,30 +204,51 @@ extension TermsConditionsAgreementVC {
 extension TermsConditionsAgreementVC {
     
     private func bindButton() {
+        let agreeViewList = [serviceTermsConditionsAgreeView,
+                             privacyTermsConditionsAgreeView,
+                             locationTermsConditionsAgreeView]
+        
         agreeAllButton.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 
                 self.agreeAllButton.isSelected.toggle()
-                
-                let isAgree = self.agreeAllButton.isSelected
-                self.agreeAllImageView.tintColor = isAgree ? .main : .gray300
-                
-                for subview in self.agreeListStackView.subviews {
-                    if let detailButton = subview as? TermsConditionsDetailButton {
-                        detailButton.isAgreeDetailButton(isAgree: isAgree)
-                    }
+                let isAgreeAllButtonSelected = self.agreeAllButton.isSelected
+                self.toggleAgreeAllStatus(isAgree: isAgreeAllButtonSelected)
+                for agreeView in agreeViewList {
+                    agreeView.isAgreeDetailTermsConditions(isAgree: isAgreeAllButtonSelected)
                 }
-                
-                self.updateStartButtonStatus(isAgree: isAgree)
             })
             .disposed(by: bag)
         
-        typealias ButtonType = (button: TermsConditionsDetailButton, webLink: TermsConditionsWebLink)
-        let buttonTypeList: [ButtonType] = [(serviceTermsConditionsDetailButton, TermsConditionsWebLink.service),
-                                            (privacyTermsConditionsDetailButton, TermsConditionsWebLink.privacy),
-                                            (locationTermsConditionsDetailButton, TermsConditionsWebLink.location)]
+        agreeViewList.forEach { agreeView in
+            agreeView.checkStatusButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                
+                // 개별 이용약관 체크버튼 토글
+                agreeView.isAgreeDetailTermsConditions(isAgree: !agreeView.checkStatusButton.isSelected)
+                
+                // 전체 이용약관 체크버튼 활성화 유무 확인
+                var isAgreedAll = true
+                for agreeView in agreeViewList {
+                    if agreeView.checkStatusButton.isSelected == false {
+                        isAgreedAll = false
+                        break
+                    }
+                }
+                self.toggleAgreeAllStatus(agreedAll: isAgreedAll)
+            })
+            .disposed(by: bag)
+            
+        }
+        
+        typealias ButtonType = (button: UIButton, webLink: TermsConditionsWebLink)
+        let buttonTypeList: [ButtonType] = [(serviceTermsConditionsAgreeView.seeDetailTermsConditionsButton, TermsConditionsWebLink.service),
+                                            (privacyTermsConditionsAgreeView.seeDetailTermsConditionsButton, TermsConditionsWebLink.privacy),
+                                            (locationTermsConditionsAgreeView.seeDetailTermsConditionsButton, TermsConditionsWebLink.location)]
         
         buttonTypeList.forEach { buttonType in
             buttonType.button.rx.tap
@@ -236,6 +260,15 @@ extension TermsConditionsAgreementVC {
                 })
                 .disposed(by: bag)
         }
+        
+        startButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                // TODO: - 네모두 시작하기 버튼 바인딩
+                print("startButton - 네모두 시작하기 pressed")
+            })
+            .disposed(by: bag)
     }
     
 }
