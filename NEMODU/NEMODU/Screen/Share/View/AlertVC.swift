@@ -133,7 +133,7 @@ extension AlertVC {
                 btnStackView.addArrangedSubview($0)
             }
         // 버튼 가로 두 개
-        case .recordNetworkError, .minimumBlocks, .speedWarning, .discardChanges:
+        case .recordNetworkError, .minimumBlocks, .speedWarning, .discardChanges, .deleteFriend:
             btnStackView.axis = .horizontal
             [normalBtn, highlightBtn].forEach {
                 btnStackView.addArrangedSubview($0)

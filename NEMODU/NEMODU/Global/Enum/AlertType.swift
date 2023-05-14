@@ -18,6 +18,7 @@ enum AlertType {
     case createWeekChallenge
     case sendMailError
     case discardChanges
+    case deleteFriend(nickname: String)
 }
 
 extension AlertType {
@@ -43,6 +44,8 @@ extension AlertType {
             return "메일(Mail) 앱을 열 수 없습니다"
         case .discardChanges:
             return "지금 나가시겠습니까?\n변경사항이 저장되지 않습니다."
+        case .deleteFriend(nickname: let nickname):
+            return "‘\(nickname)’님을 친구 목록에서\n 정말 삭제하시겠습니까?"
         }
     }
     
@@ -52,7 +55,7 @@ extension AlertType {
             return "회원님의 위치 정보는\n활동 기록 및 측정에 사용됩니다.\n\n정보는 친구들에게만 보여지며\n설정에서 언제든 공유를 중지할 수 있습니다."
         case .requestMotionAuthority:
             return "회원님의 피트니스 정보는\n걸음수 기록 및 측정에 사용됩니다.\n\n해당 정보는 보다 정확한\n기록 측정을 위해 사용됩니다.\n설정에서 언제든 공유를 중지할 수 있습니다."
-        case .recordNetworkError, .discardChanges:
+        case .recordNetworkError, .discardChanges, .deleteFriend:
             return nil
         case .defaultNetworkError:
             return "네트워크가 원활하지 않아 접속이 지연되고\n있습니다. 잠시 후에 다시 시도해 주세요."
@@ -81,6 +84,8 @@ extension AlertType {
             return "계속 하기"
         case .discardChanges:
             return "나가기"
+        case .deleteFriend:
+            return "삭제"
         }
     }
     
@@ -96,6 +101,8 @@ extension AlertType {
             return "기록 끝내기"
         case .discardChanges:
             return "계속 작성하기"
+        case .deleteFriend:
+            return "취소"
         }
     }
 }
