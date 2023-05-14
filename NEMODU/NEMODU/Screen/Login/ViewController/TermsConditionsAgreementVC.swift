@@ -215,7 +215,7 @@ extension TermsConditionsAgreementVC {
                 
                 self.agreeAllButton.isSelected.toggle()
                 let isAgreeAllButtonSelected = self.agreeAllButton.isSelected
-                self.toggleAgreeAllStatus(isAgree: isAgreeAllButtonSelected)
+                self.toggleAgreeAllStatus(agreedAll: isAgreeAllButtonSelected)
                 for agreeView in agreeViewList {
                     agreeView.isAgreeDetailTermsConditions(isAgree: isAgreeAllButtonSelected)
                 }
