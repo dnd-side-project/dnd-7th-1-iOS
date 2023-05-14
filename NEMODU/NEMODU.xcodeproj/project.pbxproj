@@ -89,6 +89,7 @@
 		2354239128BBA54000865E51 /* UserDefaults+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2354239028BBA54000865E51 /* UserDefaults+.swift */; };
 		2354239428BC8BCD00865E51 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2354239328BC8BCD00865E51 /* LoginVC.swift */; };
 		23566E642A11034A00EBA458 /* FriendListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23566E632A11034A00EBA458 /* FriendListDataSource.swift */; };
+		23566E6A2A11095C00EBA458 /* FriendListOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23566E692A11095C00EBA458 /* FriendListOutput.swift */; };
 		2359B08C28EC724000930EF0 /* DateType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2359B08B28EC724000930EF0 /* DateType.swift */; };
 		235CD76B28B0F8C5000EBAD9 /* OnboardingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235CD76A28B0F8C5000EBAD9 /* OnboardingVC.swift */; };
 		235CD76D28B0FA14000EBAD9 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235CD76C28B0FA14000EBAD9 /* OnboardingView.swift */; };
@@ -354,6 +355,7 @@
 		2354239028BBA54000865E51 /* UserDefaults+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+.swift"; sourceTree = "<group>"; };
 		2354239328BC8BCD00865E51 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		23566E632A11034A00EBA458 /* FriendListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendListDataSource.swift; sourceTree = "<group>"; };
+		23566E692A11095C00EBA458 /* FriendListOutput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendListOutput.swift; sourceTree = "<group>"; };
 		2359B08B28EC724000930EF0 /* DateType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateType.swift; sourceTree = "<group>"; };
 		235CD76A28B0F8C5000EBAD9 /* OnboardingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingVC.swift; sourceTree = "<group>"; };
 		235CD76C28B0FA14000EBAD9 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
@@ -923,6 +925,7 @@
 		2348B4102892D8F8001095BC /* Share */ = {
 			isa = PBXGroup;
 			children = (
+				23566E682A11094200EBA458 /* Protocol */,
 				23EE335A2A11030200EC50E7 /* DataSource */,
 				23412FDA28AE2A9B00B73D62 /* Model */,
 				23412FD928AE2A9200B73D62 /* View */,
@@ -991,6 +994,14 @@
 				23255A7028CF455D005D6D5A /* Cell */,
 			);
 			path = Login;
+			sourceTree = "<group>";
+		};
+		23566E682A11094200EBA458 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				23566E692A11095C00EBA458 /* FriendListOutput.swift */,
+			);
+			path = Protocol;
 			sourceTree = "<group>";
 		};
 		235CD76928B0EFC3000EBAD9 /* Onboarding */ = {
@@ -1696,6 +1707,7 @@
 				23412FDC28AE375D00B73D62 /* ChallengeElementResponseModel.swift in Sources */,
 				3C2327B92A0387EA00251316 /* NotificationListTVC.swift in Sources */,
 				23EE33592A10EC7900EC50E7 /* FriendsInfo.swift in Sources */,
+				23566E6A2A11095C00EBA458 /* FriendListOutput.swift in Sources */,
 				2352A29C2A0FAAD600CA072B /* MainNC.swift in Sources */,
 				3C6F03152910B471002829D7 /* InvitedFriendsTVC.swift in Sources */,
 				23412FF028AFB74800B73D62 /* RecordResultNC.swift in Sources */,
