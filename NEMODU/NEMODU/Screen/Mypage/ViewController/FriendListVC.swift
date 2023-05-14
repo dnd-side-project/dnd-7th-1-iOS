@@ -231,16 +231,16 @@ extension FriendListVC: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let requestCell = requestTV.dequeueReusableCell(withIdentifier: FriendRequestHandlingTVC.className) as? FriendRequestHandlingTVC,
-              let friendListCell = friendListTV.dequeueReusableCell(withIdentifier: FriendListDefaultTVC.className) as? FriendListDefaultTVC
+        guard let requestHandlingCell = requestTV.dequeueReusableCell(withIdentifier: FriendRequestHandlingTVC.className) as? FriendRequestHandlingTVC,
+              let friendDefaultCell = friendListTV.dequeueReusableCell(withIdentifier: FriendListDefaultTVC.className) as? FriendListDefaultTVC
         else { return UITableViewCell() }
         
         if tableView == requestTV {
-            requestCell.configureCell()
-            return requestCell
+//            requestHandlingCell.configureCell(<#T##friendInfo: FriendsInfo##FriendsInfo#>)
+            return requestHandlingCell
         } else {
-//            friendListCell.configureCell(<#T##friendInfo: FriendsInfo##FriendsInfo#>, isEditing: isFriendListEditing)
-            return friendListCell
+//            friendDefaultCell.configureCell(<#T##friendInfo: FriendsInfo##FriendsInfo#>, isEditing: isFriendListEditing)
+            return friendDefaultCell
         }
     }
 }

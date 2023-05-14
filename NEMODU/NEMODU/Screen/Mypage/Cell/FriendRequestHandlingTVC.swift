@@ -10,21 +10,9 @@ import Then
 import SnapKit
 
 class FriendRequestHandlingTVC: BaseTableViewCell {
-    private let profileImageView = UIImageView()
-        .then {
-            $0.image = .defaultThumbnail
-            $0.layer.cornerRadius = 20
-            $0.clipsToBounds = true
-        }
+    private let friendProfileView = FriendCellProfileView()
     
-    private let nicknameLabel = UILabel()
-        .then {
-            $0.text = "-"
-            $0.font = .body3
-            $0.textColor = .gray900
-        }
-    
-    private let acceptBtn = UIButton()
+    private let acceptFriendBtn = UIButton()
         .then {
             $0.titleLabel?.font = .body2
             $0.setTitle("수락", for: .normal)
@@ -33,7 +21,7 @@ class FriendRequestHandlingTVC: BaseTableViewCell {
             $0.layer.cornerRadius = 8
         }
     
-    private let refuseBtn = UIButton()
+    private let refuseFriendBtn = UIButton()
         .then {
             $0.titleLabel?.font = .body2
             $0.setTitle("거절", for: .normal)
@@ -44,66 +32,48 @@ class FriendRequestHandlingTVC: BaseTableViewCell {
     
     override func configureView() {
         super.configureView()
-        configureContentView()
+        
+        selectionStyle = .none
+        addSubviews([friendProfileView,
+                     acceptFriendBtn,
+                     refuseFriendBtn])
     }
     
     override func layoutView() {
         super.layoutView()
-        configureLayout()
+        
+        friendProfileView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(12)
+            $0.bottom.equalToSuperview().offset(-12)
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalTo(refuseFriendBtn.snp.leading).offset(-16)
+        }
+        
+        refuseFriendBtn.snp.makeConstraints {
+            $0.trailing.equalTo(acceptFriendBtn.snp.leading).offset(-8)
+            $0.centerY.equalToSuperview()
+            $0.width.equalTo(60)
+            $0.height.equalTo(35)
+        }
+
+        acceptFriendBtn.snp.makeConstraints {
+            $0.trailing.equalToSuperview().offset(-16)
+            $0.centerY.equalToSuperview()
+            $0.width.equalTo(60)
+            $0.height.equalTo(35)
+        }
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        profileImageView.image = .defaultThumbnail
-        nicknameLabel.text = nil
+        friendProfileView.prepareForReuse()
     }
 }
 
 // MARK: - Configure
 
 extension FriendRequestHandlingTVC {
-    private func configureContentView() {
-        backgroundColor = .systemBackground
-        selectionStyle = .none
-        addSubviews([profileImageView,
-                     nicknameLabel,
-                     acceptBtn,
-                     refuseBtn])
-    }
-    
-    func configureCell() {
-        // TODO: - 서버 구현 후 연결
-        nicknameLabel.text = "nickname"
-    }
-}
-
-// MARK: - Layout
-
-extension FriendRequestHandlingTVC {
-    private func configureLayout() {
-        profileImageView.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(16)
-            $0.centerY.equalToSuperview()
-            $0.width.height.equalTo(40)
-        }
-        
-        nicknameLabel.snp.makeConstraints {
-            $0.leading.equalTo(profileImageView.snp.trailing).offset(16)
-            $0.centerY.equalToSuperview()
-        }
-        
-        acceptBtn.snp.makeConstraints {
-            $0.trailing.equalToSuperview().offset(-16)
-            $0.centerY.equalToSuperview()
-            $0.width.equalTo(60)
-            $0.height.equalTo(35)
-        }
-        
-        refuseBtn.snp.makeConstraints {
-            $0.trailing.equalTo(acceptBtn.snp.leading).offset(-8)
-            $0.centerY.equalToSuperview()
-            $0.width.equalTo(60)
-            $0.height.equalTo(35)
-        }
+    func configureCell(_ friendInfo: FriendsInfo) {
+        friendProfileView.setProfile(friendInfo)
     }
 }
