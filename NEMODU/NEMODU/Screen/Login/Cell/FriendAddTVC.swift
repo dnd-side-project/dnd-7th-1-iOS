@@ -12,34 +12,9 @@ import RxSwift
 import RxCocoa
 
 class FriendAddTVC: BaseTableViewCell {
-    private let profileImageView = UIImageView()
-        .then {
-            $0.image = .defaultThumbnail
-            $0.contentMode = .scaleAspectFill
-            $0.layer.cornerRadius = 20
-            $0.clipsToBounds = true
-        }
+    private let friendProfileView = FriendCellProfileView()
     
-    private let nameStackView = UIStackView()
-        .then {
-            $0.axis = .vertical
-            $0.alignment = .leading
-            $0.spacing = 2
-        }
-    
-    private let nickname = UILabel()
-        .then {
-            $0.font = .body3
-            $0.textColor = .gray900
-        }
-    
-    private let name = UILabel()
-        .then {
-            $0.font = .caption1
-            $0.textColor = .gray500
-        }
-    
-    let addFriendBtn = UIButton()
+    private let addFriendBtn = UIButton()
         .then {
             $0.layer.cornerRadius = 8
             $0.setBackgroundColor(.main, for: .normal)
@@ -49,33 +24,25 @@ class FriendAddTVC: BaseTableViewCell {
         }
     
     override func configureView() {
+        super.configureView()
+        
         selectionStyle = .none
-        
-        addSubviews([profileImageView,
-                     nameStackView,
+        addSubviews([friendProfileView,
                      addFriendBtn])
-        
-        [nickname, name].forEach {
-            nameStackView.addArrangedSubview($0)
-        }
     }
     
     override func layoutSubviews() {
-        profileImageView.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.width.height.equalTo(40)
-            $0.leading.equalToSuperview().offset(16)
-        }
+        super.layoutSubviews()
         
-        nameStackView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(15)
-            $0.leading.equalTo(profileImageView.snp.trailing).offset(16)
-            $0.bottom.equalToSuperview().offset(-15)
+        friendProfileView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(12)
+            $0.bottom.equalToSuperview().offset(-12)
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalTo(addFriendBtn.snp.leading).offset(-16)
         }
         
         addFriendBtn.snp.makeConstraints {
-            $0.centerY.equalTo(profileImageView.snp.centerY)
-            $0.leading.equalTo(nameStackView.snp.trailing).offset(16)
+            $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().offset(-16)
             $0.width.equalTo(56)
             $0.height.equalTo(40)
@@ -84,9 +51,7 @@ class FriendAddTVC: BaseTableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        profileImageView.image = .defaultThumbnail
-        nickname.text = nil
-        name.text = nil
+        friendProfileView.prepareForReuse()
         addFriendBtn.isSelected = false
     }
 }
@@ -95,11 +60,7 @@ class FriendAddTVC: BaseTableViewCell {
 
 extension FriendAddTVC {
     func configureCell(_ friendInfo: FriendsInfo) {
-        if let profileImageURL = friendInfo.profileImageURL {
-            profileImageView.kf.setImage(with: profileImageURL)
-        }
-        nickname.text = friendInfo.nickname
-        name.text = friendInfo.kakaoName
+        friendProfileView.setProfile(friendInfo)
         addFriendBtn.isSelected = FriendStatusType(rawValue: friendInfo.status ?? "NO_FRIEND")?.isSelected ?? true
     }
 }
