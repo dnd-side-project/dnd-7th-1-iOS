@@ -33,10 +33,9 @@ class FriendListVC: BaseViewController {
             $0.textColor = .gray500
         }
     
-    private let requestTV = UITableView()
+    private let requestHandlingTV = ContentSizedTableView(frame: .zero)
         .then {
             $0.separatorStyle = .none
-            $0.isScrollEnabled = false
             $0.backgroundColor = .clear
             $0.rowHeight = 64
         }
@@ -79,11 +78,11 @@ class FriendListVC: BaseViewController {
         .then {
             $0.separatorStyle = .none
             $0.backgroundColor = .clear
-            $0.rowHeight = 64
+            $0.rowHeight = FriendListVC.friendCellHeight
         }
     
+    static let friendCellHeight = 64.0
     private var isFriendListEditing = false
-    
     private let bag = DisposeBag()
     
     override func viewDidLoad() {
@@ -119,17 +118,19 @@ extension FriendListVC {
                           friendListView])
         requestView.addSubviews([requestTitleLabel,
                                  requestNoneMessageLabel,
-                                 requestTV])
+                                 requestHandlingTV])
         friendListView.addSubviews([friendListTitleLabel,
                                     editFriendListBtn,
                                     separatorView,
                                     searchBar,
                                     friendListTV])
         
-        requestTV.register(FriendRequestHandlingTVC.self, forCellReuseIdentifier: FriendRequestHandlingTVC.className)
-        requestTV.dataSource = self
+        requestHandlingTV.register(FriendRequestHandlingTVC.self,
+                                   forCellReuseIdentifier: FriendRequestHandlingTVC.className)
+        requestHandlingTV.dataSource = self
         
-        friendListTV.register(FriendListDefaultTVC.self, forCellReuseIdentifier: FriendListDefaultTVC.className)
+        friendListTV.register(FriendListDefaultTVC.self,
+                              forCellReuseIdentifier: FriendListDefaultTVC.className)
         friendListTV.dataSource = self
     }
 }
@@ -140,8 +141,6 @@ extension FriendListVC {
     private func configureLayout() {
         requestView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
-            // TODO: - 임시 높이
-            $0.height.equalTo(184)
         }
         
         requestTitleLabel.snp.makeConstraints {
@@ -155,9 +154,11 @@ extension FriendListVC {
             $0.top.equalTo(requestTitleLabel.snp.bottom).offset(28)
         }
         
-        requestTV.snp.makeConstraints {
+        requestHandlingTV.snp.makeConstraints {
             $0.top.equalTo(requestTitleLabel.snp.bottom)
             $0.leading.trailing.bottom.equalToSuperview()
+            $0.height.greaterThanOrEqualTo(64).priority(.high)
+            $0.height.lessThanOrEqualTo(FriendListVC.friendCellHeight * 3).priority(.high)
         }
         
         friendListView.snp.makeConstraints {
@@ -223,7 +224,7 @@ extension FriendListVC {
 
 extension FriendListVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if tableView == requestTV {
+        if tableView == requestHandlingTV {
             return 2
         } else {
             return 10
@@ -231,11 +232,11 @@ extension FriendListVC: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let requestHandlingCell = requestTV.dequeueReusableCell(withIdentifier: FriendRequestHandlingTVC.className) as? FriendRequestHandlingTVC,
+        guard let requestHandlingCell = requestHandlingTV.dequeueReusableCell(withIdentifier: FriendRequestHandlingTVC.className) as? FriendRequestHandlingTVC,
               let friendDefaultCell = friendListTV.dequeueReusableCell(withIdentifier: FriendListDefaultTVC.className) as? FriendListDefaultTVC
         else { return UITableViewCell() }
         
-        if tableView == requestTV {
+        if tableView == requestHandlingTV {
 //            requestHandlingCell.configureCell(<#T##friendInfo: FriendsInfo##FriendsInfo#>)
             return requestHandlingCell
         } else {
