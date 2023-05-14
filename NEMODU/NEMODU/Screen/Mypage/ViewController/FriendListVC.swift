@@ -75,6 +75,15 @@ class FriendListVC: BaseViewController {
             $0.backgroundColor = .gray200
         }
     
+    private let friendNoneMessageLabel = UILabel()
+        .then {
+            $0.setLineBreakMode()
+            $0.text = "아직 친구가 없습니다.\n추천 친구에서 추가해보세요!"
+            $0.textAlignment = .center
+            $0.font = .caption1
+            $0.textColor = .gray500
+        }
+    
     private let friendListTV = UITableView()
         .then {
             $0.separatorStyle = .none
@@ -127,6 +136,7 @@ extension FriendListVC {
                                     editFriendListBtn,
                                     separatorView,
                                     searchBar,
+                                    friendNoneMessageLabel,
                                     friendListTV])
         
         requestHandlingTV.register(FriendRequestHandlingTVC.self,
@@ -193,6 +203,11 @@ extension FriendListVC {
             $0.height.equalTo(42)
         }
         
+        friendNoneMessageLabel.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(searchBar.snp.bottom).offset(36)
+        }
+        
         friendListTV.snp.makeConstraints {
             $0.top.equalTo(searchBar.snp.bottom).offset(8)
             $0.leading.trailing.bottom.equalToSuperview()
@@ -228,6 +243,7 @@ extension FriendListVC {
         viewModel.output.friendRequestList.friendsInfo
             .withUnretained(self)
             .subscribe(onNext: { owner, item in
+                owner.requestNoneMessageLabel.isHidden = item.count != 0
                 owner.requestHandlingTV.reloadData()
             })
             .disposed(by: bag)
@@ -242,6 +258,7 @@ extension FriendListVC {
         viewModel.output.myFriendsList.friendsInfo
             .withUnretained(self)
             .subscribe(onNext: { owner, item in
+                owner.friendNoneMessageLabel.isHidden = item.count != 0
                 owner.friendListTV.reloadData()
             })
             .disposed(by: bag)
