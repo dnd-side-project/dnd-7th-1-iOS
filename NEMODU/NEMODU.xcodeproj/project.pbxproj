@@ -90,6 +90,7 @@
 		2354239428BC8BCD00865E51 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2354239328BC8BCD00865E51 /* LoginVC.swift */; };
 		23566E642A11034A00EBA458 /* FriendListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23566E632A11034A00EBA458 /* FriendListDataSource.swift */; };
 		23566E6A2A11095C00EBA458 /* FriendListOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23566E692A11095C00EBA458 /* FriendListOutput.swift */; };
+		23566E6C2A11186E00EBA458 /* FriendCellProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23566E6B2A11186E00EBA458 /* FriendCellProfileView.swift */; };
 		2359B08C28EC724000930EF0 /* DateType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2359B08B28EC724000930EF0 /* DateType.swift */; };
 		235CD76B28B0F8C5000EBAD9 /* OnboardingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235CD76A28B0F8C5000EBAD9 /* OnboardingVC.swift */; };
 		235CD76D28B0FA14000EBAD9 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235CD76C28B0FA14000EBAD9 /* OnboardingView.swift */; };
@@ -355,6 +356,7 @@
 		2354239328BC8BCD00865E51 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		23566E632A11034A00EBA458 /* FriendListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendListDataSource.swift; sourceTree = "<group>"; };
 		23566E692A11095C00EBA458 /* FriendListOutput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendListOutput.swift; sourceTree = "<group>"; };
+		23566E6B2A11186E00EBA458 /* FriendCellProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendCellProfileView.swift; sourceTree = "<group>"; };
 		2359B08B28EC724000930EF0 /* DateType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateType.swift; sourceTree = "<group>"; };
 		235CD76A28B0F8C5000EBAD9 /* OnboardingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingVC.swift; sourceTree = "<group>"; };
 		235CD76C28B0FA14000EBAD9 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
@@ -715,6 +717,7 @@
 				2312519528B6944B00DF1C69 /* ToastView.swift */,
 				237573EA28FA5A00006026ED /* ProfileImageVC.swift */,
 				23EE33562A0FF4CD00EC50E7 /* ContentSizedTableView.swift */,
+				23566E6B2A11186E00EBA458 /* FriendCellProfileView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1806,6 +1809,7 @@
 				230CB2E128AD474E00B11270 /* ChallengeBlockResponseModel.swift in Sources */,
 				3CB766BB290E73B700EAE812 /* ChallengeVM.swift in Sources */,
 				237573F928FC0113006026ED /* TabView.swift in Sources */,
+				23566E6C2A11186E00EBA458 /* FriendCellProfileView.swift in Sources */,
 				2354239428BC8BCD00865E51 /* LoginVC.swift in Sources */,
 				3C9FD39B28B64363006FA812 /* CreateChallengeListButtonView.swift in Sources */,
 				3C4FB96328AA92C800A429B8 /* InvitedChallengeTVHV.swift in Sources */,
