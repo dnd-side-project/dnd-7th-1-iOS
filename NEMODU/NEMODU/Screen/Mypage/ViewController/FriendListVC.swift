@@ -282,13 +282,13 @@ extension FriendListVC {
     /// 친구 요청 목록 tableView DataSource
     func friendRequestTableViewDataSource() -> RxTableViewSectionedReloadDataSource<FriendListDataSource> {
         RxTableViewSectionedReloadDataSource<FriendListDataSource>(
-            configureCell: { dataSource, tableView, indexPath, item in
+            configureCell: { [weak self] dataSource, tableView, indexPath, item in
                 guard let cell = tableView.dequeueReusableCell(
                     withIdentifier: FriendRequestHandlingTVC.className,
                     for: indexPath
                 ) as? FriendRequestHandlingTVC else {
-                    // TODO: - 에러 처리
-                    fatalError()
+                    self?.dataSourceError(tableView)
+                    return UITableViewCell()
                 }
                 cell.configureCell(item)
                 return cell
@@ -305,8 +305,8 @@ extension FriendListVC {
                     withIdentifier: FriendListDefaultTVC.className,
                     for: indexPath
                 ) as? FriendListDefaultTVC else {
-                    // TODO: - 에러 처리
-                    fatalError()
+                    self?.dataSourceError(tableView)
+                    return UITableViewCell()
                 }
                 
                 cell.configureCell(item,
@@ -315,6 +315,14 @@ extension FriendListVC {
                                    indexPath: indexPath)
                 return cell
             })
+    }
+    
+    /// tableView dataSource error 처리. Empty 화면 출력
+    private func dataSourceError(_ tableView: UITableView) {
+        popupToast(toastType: .friendProfileError)
+        tableView.isHidden = true
+        if tableView == requestHandlingTV { requestNoneMessageLabel.isHidden = false }
+        else if tableView == friendListTV { friendNoneMessageLabel.isHidden = false }
     }
 }
 
