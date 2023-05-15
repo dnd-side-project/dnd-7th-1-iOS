@@ -232,9 +232,9 @@ extension FriendListVC {
                 self.editFriendListBtn.isSelected.toggle()
                 self.isFriendListEditing = self.editFriendListBtn.isSelected
                 self.friendListTV.reloadData()
-                if !self.editFriendListBtn.isSelected {
+                if !self.editFriendListBtn.isSelected && !self.removedFriendsList.isEmpty {
                     // TODO: - 친구 삭제 post
-                    // TODO: - 삭제 완료 토스트 메세지 추가
+                    self.popupToast(toastType: .saveCompleted)
                     self.removedFriendsList.removeAll()
                 }
             })
@@ -283,14 +283,17 @@ extension FriendListVC {
     func friendRequestTableViewDataSource() -> RxTableViewSectionedReloadDataSource<FriendListDataSource> {
         RxTableViewSectionedReloadDataSource<FriendListDataSource>(
             configureCell: { [weak self] dataSource, tableView, indexPath, item in
-                guard let cell = tableView.dequeueReusableCell(
+                guard let self = self,
+                      let cell = tableView.dequeueReusableCell(
                     withIdentifier: FriendRequestHandlingTVC.className,
                     for: indexPath
                 ) as? FriendRequestHandlingTVC else {
                     self?.dataSourceError(tableView)
                     return UITableViewCell()
                 }
-                cell.configureCell(item)
+                cell.configureCell(item,
+                                   indexPath: indexPath,
+                                   delegate: self)
                 return cell
             })
     }
@@ -356,5 +359,28 @@ extension FriendListVC: DeleteFriendDelegate {
     @objc func cancelDelete() {
         removedFriendsList.removeLast()
         dismissAlert()
+    }
+}
+
+// MARK: - FriendRequestHandlingDelegate
+
+extension FriendListVC: FriendRequestHandlingDelegate {
+    func acceptFriendRequest(nickname: String, indexPath: IndexPath) {
+        removeRequestHandlingTVRow(indexPath)
+        // TODO: - /friend/response 연결
+        popupToast(toastType: .acceptFriendRequest(nickname: nickname))
+    }
+    
+    func refuseFriendRequest(nickname: String, indexPath: IndexPath) {
+        removeRequestHandlingTVRow(indexPath)
+        // TODO: - /friend/response 연결
+        popupToast(toastType: .refuseFriendRequest(nickname: nickname))
+    }
+    
+    /// 친구 요청 거절/수락 후 requestHandlingTV에서 해당 row를 제거하는 메서드
+    func removeRequestHandlingTVRow(_ indexPath: IndexPath) {
+        var items = viewModel.output.friendRequestList.friendsInfo.value
+        items.remove(at: indexPath.row)
+        viewModel.output.friendRequestList.friendsInfo.accept(items)
     }
 }

@@ -8,6 +8,8 @@
 import UIKit
 import Then
 import SnapKit
+import RxSwift
+import RxCocoa
 
 class FriendRequestHandlingTVC: BaseTableViewCell {
     private let friendProfileView = FriendCellProfileView()
@@ -30,13 +32,19 @@ class FriendRequestHandlingTVC: BaseTableViewCell {
             $0.layer.cornerRadius = 8
         }
     
+    weak var delegate: FriendRequestHandlingDelegate?
+    private var indexPath: IndexPath?
+    private let bag = DisposeBag()
+    
     override func configureView() {
         super.configureView()
         
         selectionStyle = .none
-        addSubviews([friendProfileView,
-                     acceptFriendBtn,
-                     refuseFriendBtn])
+        contentView.addSubviews([friendProfileView,
+                                 acceptFriendBtn,
+                                 refuseFriendBtn])
+        
+        bindRequestHandlingBtn()
     }
     
     override func layoutView() {
@@ -73,7 +81,47 @@ class FriendRequestHandlingTVC: BaseTableViewCell {
 // MARK: - Configure
 
 extension FriendRequestHandlingTVC {
-    func configureCell(_ friendInfo: FriendsInfo) {
+    func configureCell(_ friendInfo: FriendsInfo,
+                       indexPath: IndexPath,
+                       delegate: FriendRequestHandlingDelegate) {
         friendProfileView.setProfile(friendInfo)
+        self.indexPath = indexPath
+        self.delegate = delegate
     }
+}
+
+// MARK: - Input
+
+extension FriendRequestHandlingTVC {
+    func bindRequestHandlingBtn() {
+        acceptFriendBtn.rx.tap
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self,
+                      let nickname = self.friendProfileView.getNickname(),
+                      let indexPath = self.indexPath
+                else { return }
+                self.delegate?.acceptFriendRequest(nickname: nickname,
+                                                   indexPath: indexPath)
+            })
+            .disposed(by: bag)
+        
+        refuseFriendBtn.rx.tap
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self,
+                      let nickname = self.friendProfileView.getNickname(),
+                      let indexPath = self.indexPath
+                else { return }
+                self.delegate?.refuseFriendRequest(nickname: nickname,
+                                                   indexPath: indexPath)
+            })
+            .disposed(by: bag)
+    }
+}
+
+protocol FriendRequestHandlingDelegate: AnyObject {
+    func acceptFriendRequest(nickname: String,
+                             indexPath: IndexPath)
+    
+    func refuseFriendRequest(nickname: String,
+                             indexPath: IndexPath)
 }
