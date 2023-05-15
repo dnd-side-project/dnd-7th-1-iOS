@@ -25,6 +25,7 @@ final class FriendListVM: BaseViewModel {
     struct Output {
         var friendRequestList = FriendRequestList()
         var myFriendsList = MyFriends()
+        var requestHandlingStatus = PublishRelay<FriendRequestHandlingModel>()
     }
     
     // 친구 요청 목록
@@ -58,3 +59,26 @@ extension FriendListVM: Input {
 extension FriendListVM: Output {
     func bindOutput() {}
 }
+
+// MARK: - Network
+
+extension FriendListVM {
+    /// 친구 요청을 거절/수락하는 메서드
+    func postRequestHandling(_ requestHandlingRequestModel: FriendRequestHandlingModel) {
+        let path = "friend/response"
+        let resource = urlResource<FriendRequestHandlingModel>(path: path)
+        
+        apiSession.postRequest(with: resource, param: requestHandlingRequestModel.param)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, result in
+                switch result {
+                case .failure(let error):
+                    owner.apiError.onNext(error)
+                case .success(let data):
+                    owner.output.requestHandlingStatus.accept(data)
+                }
+            })
+            .disposed(by: bag)
+    }
+}
+

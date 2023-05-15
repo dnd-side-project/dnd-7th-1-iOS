@@ -106,6 +106,18 @@ class FriendListVC: BaseViewController {
         super.viewDidLoad()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.output.friendRequestList.friendsInfo.accept([FriendsInfo(nickname: "ASDF1",
+                                                                           picturePath: "",
+                                                                           kakaoName: "asdf",
+                                                                           status: "ASDF"),
+                                                               FriendsInfo(nickname: "ASDF2",
+                                                                           picturePath: "",
+                                                                           kakaoName: "asdf",
+                                                                           status: "ASDF")])
+    }
+    
     override func configureView() {
         super.configureView()
         configureContentView()
@@ -125,6 +137,7 @@ class FriendListVC: BaseViewController {
         super.bindOutput()
         bindFriendRequestTableView()
         bindFriendListTableView()
+        bindFriendRequestHandlingStatus()
     }
 }
 
@@ -274,6 +287,17 @@ extension FriendListVC {
             })
             .disposed(by: bag)
     }
+    
+    private func bindFriendRequestHandlingStatus() {
+        viewModel.output.requestHandlingStatus
+            .subscribe(onNext: { [weak self] data in
+                guard let self = self else { return }
+                data.status == FriendStatusType.accept.rawValue
+                ? self.popupToast(toastType: .acceptFriendRequest(nickname: data.friendNickname))
+                : self.popupToast(toastType: .refuseFriendRequest(nickname: data.friendNickname))
+            })
+            .disposed(by: bag)
+    }
 }
 
 // MARK: - DataSource
@@ -367,14 +391,14 @@ extension FriendListVC: DeleteFriendDelegate {
 extension FriendListVC: FriendRequestHandlingDelegate {
     func acceptFriendRequest(nickname: String, indexPath: IndexPath) {
         removeRequestHandlingTVRow(indexPath)
-        // TODO: - /friend/response 연결
-        popupToast(toastType: .acceptFriendRequest(nickname: nickname))
+        viewModel.postRequestHandling(FriendRequestHandlingModel(friendNickname: nickname,
+                                                                 status: FriendStatusType.accept.rawValue))
     }
     
     func refuseFriendRequest(nickname: String, indexPath: IndexPath) {
         removeRequestHandlingTVRow(indexPath)
-        // TODO: - /friend/response 연결
-        popupToast(toastType: .refuseFriendRequest(nickname: nickname))
+        viewModel.postRequestHandling(FriendRequestHandlingModel(friendNickname: nickname,
+                                                                 status: FriendStatusType.reject.rawValue))
     }
     
     /// 친구 요청 거절/수락 후 requestHandlingTV에서 해당 row를 제거하는 메서드
