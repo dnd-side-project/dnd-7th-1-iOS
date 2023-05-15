@@ -319,7 +319,7 @@ extension FriendListVC {
     
     /// tableView dataSource error 처리. Empty 화면 출력
     private func dataSourceError(_ tableView: UITableView) {
-        popupToast(toastType: .friendProfileError)
+        popupToast(toastType: .informationError)
         tableView.isHidden = true
         if tableView == requestHandlingTV { requestNoneMessageLabel.isHidden = false }
         else if tableView == friendListTV { friendNoneMessageLabel.isHidden = false }

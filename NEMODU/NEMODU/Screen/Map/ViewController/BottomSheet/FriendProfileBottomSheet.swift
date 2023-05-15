@@ -376,14 +376,14 @@ extension FriendProfileBottomSheet {
         viewModel.output.requestStatus
             .withUnretained(self)
             .subscribe(onNext: { owner, status in
-                owner.popupToast(toastType: status ? .friendAdded : .networkError)
+                owner.popupToast(toastType: status ? .postFriendRequest : .networkError)
             })
             .disposed(by: bag)
         
         viewModel.output.deleteStatus
             .withUnretained(self)
             .subscribe(onNext: { owner, status in
-                owner.popupToast(toastType: status ? .friendDeleted : .networkError)
+                owner.popupToast(toastType: status ? .cancelFriendRequest : .networkError)
             })
             .disposed(by: bag)
     }
