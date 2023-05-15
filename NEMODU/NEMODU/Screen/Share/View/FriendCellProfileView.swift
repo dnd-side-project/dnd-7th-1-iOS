@@ -78,6 +78,11 @@ extension FriendCellProfileView {
         nicknameLabel.text = friendInfo.nickname
         nameLabel.text = friendInfo.kakaoName
     }
+    
+    /// 닉네임을 반환하는 메서드
+    func getNickname() -> String? {
+        return nicknameLabel.text
+    }
 }
 
 // MARK: - Layout

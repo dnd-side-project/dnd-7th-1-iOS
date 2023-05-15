@@ -8,6 +8,8 @@
 import UIKit
 import Then
 import SnapKit
+import RxSwift
+import RxCocoa
 
 class FriendListDefaultTVC: BaseTableViewCell {
     private let friendProfileView = FriendCellProfileView()
@@ -19,11 +21,17 @@ class FriendListDefaultTVC: BaseTableViewCell {
             $0.isHidden = true
         }
     
+    weak var delegate: DeleteFriendDelegate?
+    private var indexPath: IndexPath?
+    private let bag = DisposeBag()
+    
     override func configureView() {
         super.configureView()
         
-        addSubviews([friendProfileView,
-                     deleteFriendBtn])
+        contentView.addSubviews([friendProfileView,
+                                 deleteFriendBtn])
+        
+        bindDeleteFriendBtn()
     }
     
     override func layoutView() {
@@ -52,8 +60,34 @@ class FriendListDefaultTVC: BaseTableViewCell {
 // MARK: - Configure
 
 extension FriendListDefaultTVC {
-    func configureCell(_ friendInfo: FriendsInfo, isEditing: Bool) {
+    func configureCell(_ friendInfo: FriendsInfo, isEditing: Bool, deleteDelegate: DeleteFriendDelegate, indexPath: IndexPath) {
         friendProfileView.setProfile(friendInfo)
         deleteFriendBtn.isHidden = !isEditing
+        selectionStyle = isEditing ? .none : .default
+        self.delegate = deleteDelegate
+        self.indexPath = indexPath
     }
+}
+
+// MARK: - Input
+
+extension FriendListDefaultTVC {
+    /// 삭제 목록에 추가하고 tableView에서 cell을 지우는 삭제 확인 알람창을 띄우는 메서드
+    private func bindDeleteFriendBtn() {
+        deleteFriendBtn.rx.tap
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self,
+                      let nickname = self.friendProfileView.getNickname(),
+                      let indexPath = self.indexPath
+                else { return }
+                self.delegate?.popupDeleteAlert(nickname: nickname, indexPath: indexPath)
+            })
+            .disposed(by: bag)
+    }
+}
+
+// MARK: - Delete Friend Delegate
+
+protocol DeleteFriendDelegate: AnyObject {
+    func popupDeleteAlert(nickname: String, indexPath: IndexPath)
 }

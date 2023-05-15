@@ -91,8 +91,14 @@ class FriendListVC: BaseViewController {
             $0.rowHeight = FriendListVC.friendCellHeight
         }
     
-    static let friendCellHeight = 64.0
+    // 삭제 요청된 친구 배열
+    typealias DeletedFriend = (nickname: String, indexPath: IndexPath)
+    private var removedFriendsList = [DeletedFriend]()
+    
+    // 친구 목록 편집 상태
     private var isFriendListEditing = false
+    
+    static let friendCellHeight = 64.0
     private let viewModel = FriendListVM()
     private let bag = DisposeBag()
     
@@ -226,6 +232,11 @@ extension FriendListVC {
                 self.editFriendListBtn.isSelected.toggle()
                 self.isFriendListEditing = self.editFriendListBtn.isSelected
                 self.friendListTV.reloadData()
+                if !self.editFriendListBtn.isSelected {
+                    // TODO: - 친구 삭제 post
+                    // TODO: - 삭제 완료 토스트 메세지 추가
+                    self.removedFriendsList.removeAll()
+                }
             })
             .disposed(by: bag)
     }
@@ -276,6 +287,7 @@ extension FriendListVC {
                     withIdentifier: FriendRequestHandlingTVC.className,
                     for: indexPath
                 ) as? FriendRequestHandlingTVC else {
+                    // TODO: - 에러 처리
                     fatalError()
                 }
                 cell.configureCell(item)
@@ -293,10 +305,48 @@ extension FriendListVC {
                     withIdentifier: FriendListDefaultTVC.className,
                     for: indexPath
                 ) as? FriendListDefaultTVC else {
+                    // TODO: - 에러 처리
                     fatalError()
                 }
-                cell.configureCell(item, isEditing: self.isFriendListEditing)
+                
+                cell.configureCell(item,
+                                   isEditing: self.isFriendListEditing,
+                                   deleteDelegate: self,
+                                   indexPath: indexPath)
                 return cell
             })
+    }
+}
+
+// MARK: - DeleteFriendDelegate
+
+extension FriendListVC: DeleteFriendDelegate {
+    func popupDeleteAlert(nickname: String, indexPath: IndexPath) {
+        // 편집 완료 버튼에서 모든 삭제가 진행되기 위해
+        // 삭제 요청이 들어오면 일단 삭제 목록에 추가
+        removedFriendsList += [(nickname, indexPath)]
+        
+        popUpAlert(alertType: .deleteFriend(nickname: nickname),
+                   targetVC: self,
+                   highlightBtnAction: #selector(deleteConfirm),
+                   normalBtnAction: #selector(cancelDelete))
+    }
+    
+    /// 삭제 확인 알람창 삭제 버튼 메서드.
+    /// 친구 목록의 해당 row를 삭제하고 알람창 닫기
+    @objc func deleteConfirm() {
+        if !removedFriendsList.isEmpty {
+            var items = viewModel.output.myFriendsList.friendsInfo.value
+            items.remove(at: removedFriendsList.last!.indexPath.row)
+            viewModel.output.myFriendsList.friendsInfo.accept(items)
+        }
+        dismissAlert()
+    }
+    
+    /// 삭제 확인 알람창 취소 버튼 메서드.
+    /// 삭제된 친구 목록의 마지막 친구를 삭제 (삭제 취소)
+    @objc func cancelDelete() {
+        removedFriendsList.removeLast()
+        dismissAlert()
     }
 }
