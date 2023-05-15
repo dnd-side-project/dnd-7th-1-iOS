@@ -128,6 +128,7 @@
 		23A8684929FE33F000B6683E /* FriendRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A8684829FE33F000B6683E /* FriendRequestModel.swift */; };
 		23A8684B29FE543B00B6683E /* loading.json in Resources */ = {isa = PBXBuildFile; fileRef = 23A8684A29FE543B00B6683E /* loading.json */; };
 		23AB8F3328B5E5FA007E3A2F /* BlocksType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AB8F3228B5E5FA007E3A2F /* BlocksType.swift */; };
+		23B0AD062A1287690099E9FC /* FriendDefaultInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B0AD052A1287690099E9FC /* FriendDefaultInfo.swift */; };
 		23B72058289808EB00D3A410 /* MapFilterBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B72057289808EB00D3A410 /* MapFilterBottomSheet.swift */; };
 		23B7205D28A0CBAC00D3A410 /* ChallengeListBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B7205C28A0CBAC00D3A410 /* ChallengeListBottomSheet.swift */; };
 		23B7206128A0D53200D3A410 /* ProceedingChallengeTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B7206028A0D53200D3A410 /* ProceedingChallengeTVC.swift */; };
@@ -397,6 +398,7 @@
 		23A8684829FE33F000B6683E /* FriendRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestModel.swift; sourceTree = "<group>"; };
 		23A8684A29FE543B00B6683E /* loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loading.json; sourceTree = "<group>"; };
 		23AB8F3228B5E5FA007E3A2F /* BlocksType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlocksType.swift; sourceTree = "<group>"; };
+		23B0AD052A1287690099E9FC /* FriendDefaultInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendDefaultInfo.swift; sourceTree = "<group>"; };
 		23B72057289808EB00D3A410 /* MapFilterBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapFilterBottomSheet.swift; sourceTree = "<group>"; };
 		23B7205C28A0CBAC00D3A410 /* ChallengeListBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeListBottomSheet.swift; sourceTree = "<group>"; };
 		23B7206028A0D53200D3A410 /* ProceedingChallengeTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProceedingChallengeTVC.swift; sourceTree = "<group>"; };
@@ -732,6 +734,8 @@
 				230CB2E328AD478000B11270 /* Matrix.swift */,
 				23255A7E28D0DC30005D6D5A /* NicknameModel.swift */,
 				23EE33582A10EC7900EC50E7 /* FriendsInfo.swift */,
+				3C6F031C29111E84002829D7 /* FriendsListResponseModel.swift */,
+				23B0AD052A1287690099E9FC /* FriendDefaultInfo.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1350,7 +1354,6 @@
 			isa = PBXGroup;
 			children = (
 				3C0029F229011378001BB6AE /* CreatChallengeResponseModel.swift */,
-				3C6F031C29111E84002829D7 /* FriendsListResponseModel.swift */,
 				3CB766BC290E773600EAE812 /* WaitChallengeListResponseModel.swift */,
 				3C064BBC290F95B500522274 /* ProgressAndDoneChallengeListResponseModel.swift */,
 				3C064BBE290FAEAB00522274 /* InvitedChallengeListResponseModel.swift */,
@@ -1840,6 +1843,7 @@
 				237573F728FBF88E006026ED /* FriendsVC.swift in Sources */,
 				2359B08C28EC724000930EF0 /* DateType.swift in Sources */,
 				3C05FFEB28B71F4F0017F4E1 /* PaddingLabel.swift in Sources */,
+				23B0AD062A1287690099E9FC /* FriendDefaultInfo.swift in Sources */,
 				3C72D7BE28B508B2006E2229 /* SelectChallengeTypeVC.swift in Sources */,
 				3CC1EC7328D06811007C87F6 /* CreateWidenChallengeVC.swift in Sources */,
 				3C064BC4290FE45600522274 /* InvitedChallengeDetailTVHV.swift in Sources */,
