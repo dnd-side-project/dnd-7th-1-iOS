@@ -108,7 +108,8 @@ class FriendListVC: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.getFriendRequestList(size: 10)
+        viewModel.getFriendRequestList(size: 6)
+        viewModel.getFriendList(size: 12)
     }
     
     override func configureView() {

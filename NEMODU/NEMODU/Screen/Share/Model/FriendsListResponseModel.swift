@@ -12,4 +12,5 @@ struct FriendsListResponseModel: Codable {
     let infos: [FriendDefaultInfo]
     let isLast: Bool
     let size: Int
+    let offset: Int?
 }

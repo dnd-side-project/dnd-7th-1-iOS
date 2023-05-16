@@ -81,6 +81,32 @@ extension FriendListVM {
                     owner.apiError.onNext(error)
                 case .success(let data):
                     owner.output.friendRequestList.friendsInfo.accept(data.infos)
+                    owner.output.friendRequestList.nextOffset.accept(data.offset)
+                    owner.output.friendRequestList.isLast.accept(data.isLast)
+                }
+            })
+            .disposed(by: bag)
+    }
+    
+    /// 친구 요청 목록 조회 메서드
+    func getFriendList(size: Int) {
+        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
+        var path = "friend/list?nickname=\(nickname)&size=\(size)"
+        if let offset = output.myFriendsList.nextOffset.value {
+            path += "&offset=\(offset)"
+        }
+        let resource = urlResource<FriendsListResponseModel>(path: path)
+        
+        apiSession.getRequest(with: resource)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, result in
+                switch result {
+                case .failure(let error):
+                    owner.apiError.onNext(error)
+                case .success(let data):
+                    owner.output.myFriendsList.friendsInfo.accept(data.infos)
+                    owner.output.myFriendsList.nextOffset.accept(data.offset)
+                    owner.output.myFriendsList.isLast.accept(data.isLast)
                 }
             })
             .disposed(by: bag)
