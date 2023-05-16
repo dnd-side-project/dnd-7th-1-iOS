@@ -14,7 +14,7 @@ struct FriendListDataSource {
 }
 
 extension FriendListDataSource: SectionModelType {
-    typealias Item = FriendsInfo
+    typealias Item = FriendDefaultInfo
     init(original: FriendListDataSource, items: [Item]) {
         self = original
         self.items = items

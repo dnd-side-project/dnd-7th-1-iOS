@@ -33,7 +33,7 @@ final class FriendListVM: BaseViewModel {
         var dataSource: Observable<[FriendListDataSource]> {
             friendsInfo.map { [FriendListDataSource(section: .zero, items: $0)]}
         }
-        var friendsInfo = BehaviorRelay<[FriendsInfo]>(value: [])
+        var friendsInfo = BehaviorRelay<[FriendDefaultInfo]>(value: [])
     }
     
     // 친구 목록
@@ -41,7 +41,7 @@ final class FriendListVM: BaseViewModel {
         var dataSource: Observable<[FriendListDataSource]> {
             friendsInfo.map { [FriendListDataSource(section: .zero, items: $0)] }
         }
-        var friendsInfo = BehaviorRelay<[FriendsInfo]>(value: [])
+        var friendsInfo = BehaviorRelay<[FriendDefaultInfo]>(value: [])
         var size = BehaviorRelay<Int>(value: 0)
         var isLast = BehaviorRelay<Bool>(value: true)
         var nextOffset = PublishRelay<Int>()

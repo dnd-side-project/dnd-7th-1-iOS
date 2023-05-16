@@ -108,14 +108,6 @@ class FriendListVC: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.output.friendRequestList.friendsInfo.accept([FriendsInfo(nickname: "ASDF1",
-                                                                           picturePath: "",
-                                                                           kakaoName: "asdf",
-                                                                           status: "ASDF"),
-                                                               FriendsInfo(nickname: "ASDF2",
-                                                                           picturePath: "",
-                                                                           kakaoName: "asdf",
-                                                                           status: "ASDF")])
     }
     
     override func configureView() {

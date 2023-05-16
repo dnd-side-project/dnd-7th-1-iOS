@@ -159,7 +159,6 @@
 		23D8B7E728B4E44700F48165 /* MyRecordDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7E628B4E44700F48165 /* MyRecordDetailVC.swift */; };
 		23ECC09F28D859E000F65692 /* AuthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23ECC09E28D859E000F65692 /* AuthAPI.swift */; };
 		23EE33572A0FF4CD00EC50E7 /* ContentSizedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EE33562A0FF4CD00EC50E7 /* ContentSizedTableView.swift */; };
-		23EE33592A10EC7900EC50E7 /* FriendsInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EE33582A10EC7900EC50E7 /* FriendsInfo.swift */; };
 		23EFB81C29113A00009A2D01 /* RefreshBtnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EFB81B29113A00009A2D01 /* RefreshBtnView.swift */; };
 		23EFB829291A0D9E009A2D01 /* EditProfileResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EFB828291A0D9E009A2D01 /* EditProfileResponseModel.swift */; };
 		23F5716928A6802C005F2E21 /* UIStackView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5716828A6802C005F2E21 /* UIStackView+.swift */; };
@@ -429,7 +428,6 @@
 		23D8B7E628B4E44700F48165 /* MyRecordDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordDetailVC.swift; sourceTree = "<group>"; };
 		23ECC09E28D859E000F65692 /* AuthAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthAPI.swift; sourceTree = "<group>"; };
 		23EE33562A0FF4CD00EC50E7 /* ContentSizedTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentSizedTableView.swift; sourceTree = "<group>"; };
-		23EE33582A10EC7900EC50E7 /* FriendsInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsInfo.swift; sourceTree = "<group>"; };
 		23EFB81B29113A00009A2D01 /* RefreshBtnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshBtnView.swift; sourceTree = "<group>"; };
 		23EFB828291A0D9E009A2D01 /* EditProfileResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileResponseModel.swift; sourceTree = "<group>"; };
 		23F5716828A6802C005F2E21 /* UIStackView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+.swift"; sourceTree = "<group>"; };
@@ -733,7 +731,6 @@
 			children = (
 				230CB2E328AD478000B11270 /* Matrix.swift */,
 				23255A7E28D0DC30005D6D5A /* NicknameModel.swift */,
-				23EE33582A10EC7900EC50E7 /* FriendsInfo.swift */,
 				3C6F031C29111E84002829D7 /* FriendsListResponseModel.swift */,
 				23B0AD052A1287690099E9FC /* FriendDefaultInfo.swift */,
 			);
@@ -1717,7 +1714,6 @@
 				3CC1EC7528D06917007C87F6 /* CreateAccumulateChallengeVC.swift in Sources */,
 				23412FDC28AE375D00B73D62 /* ChallengeElementResponseModel.swift in Sources */,
 				3C2327B92A0387EA00251316 /* NotificationListTVC.swift in Sources */,
-				23EE33592A10EC7900EC50E7 /* FriendsInfo.swift in Sources */,
 				23566E6A2A11095C00EBA458 /* FriendListOutput.swift in Sources */,
 				2352A29C2A0FAAD600CA072B /* MainNC.swift in Sources */,
 				3C6F03152910B471002829D7 /* InvitedFriendsTVC.swift in Sources */,

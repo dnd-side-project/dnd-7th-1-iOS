@@ -59,8 +59,8 @@ class FriendAddTVC: BaseTableViewCell {
 // MARK: - Configure
 
 extension FriendAddTVC {
-    func configureCell(_ friendInfo: FriendsInfo) {
+    func configureCell(_ friendInfo: FriendDefaultInfo) {
         friendProfileView.setProfile(friendInfo)
-        addFriendBtn.isSelected = FriendStatusType(rawValue: friendInfo.status ?? "NO_FRIEND")?.isSelected ?? true
+        addFriendBtn.isSelected = FriendStatusType.noFriend.isSelected ?? false
     }
 }

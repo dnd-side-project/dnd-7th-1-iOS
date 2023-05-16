@@ -60,7 +60,7 @@ class FriendListDefaultTVC: BaseTableViewCell {
 // MARK: - Configure
 
 extension FriendListDefaultTVC {
-    func configureCell(_ friendInfo: FriendsInfo, isEditing: Bool, deleteDelegate: DeleteFriendDelegate, indexPath: IndexPath) {
+    func configureCell(_ friendInfo: FriendDefaultInfo, isEditing: Bool, deleteDelegate: DeleteFriendDelegate, indexPath: IndexPath) {
         friendProfileView.setProfile(friendInfo)
         deleteFriendBtn.isHidden = !isEditing
         selectionStyle = isEditing ? .none : .default

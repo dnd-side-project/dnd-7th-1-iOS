@@ -81,7 +81,7 @@ class FriendRequestHandlingTVC: BaseTableViewCell {
 // MARK: - Configure
 
 extension FriendRequestHandlingTVC {
-    func configureCell(_ friendInfo: FriendsInfo,
+    func configureCell(_ friendInfo: FriendDefaultInfo,
                        indexPath: IndexPath,
                        delegate: FriendRequestHandlingDelegate) {
         friendProfileView.setProfile(friendInfo)

@@ -10,7 +10,7 @@ import RxSwift
 
 protocol FriendListOutput {
     var dataSource: Observable<[FriendListDataSource]> { get }
-    var friendsInfo: BehaviorRelay<[FriendsInfo]> { get }
+    var friendsInfo: BehaviorRelay<[FriendDefaultInfo]> { get }
     var size: BehaviorRelay<Int> { get } // 이전 페이지의 친구 개수 (몇명인지)
     var isLast: BehaviorRelay<Bool> { get }   // 마지막 페이지인지 bool값
     var nextOffset: PublishRelay<Int> { get }    // 다음 친구 목록 요청에 필요한 offset
