@@ -9,9 +9,13 @@ import RxCocoa
 import RxSwift
 
 protocol FriendListOutput {
-    var dataSource: Observable<[FriendListDataSource]> { get }
-    var friendsInfo: BehaviorRelay<[FriendDefaultInfo]> { get }
-    var size: BehaviorRelay<Int> { get } // 이전 페이지의 친구 개수 (몇명인지)
-    var isLast: BehaviorRelay<Bool> { get }   // 마지막 페이지인지 bool값
-    var nextOffset: PublishRelay<Int> { get }    // 다음 친구 목록 요청에 필요한 offset
+    associatedtype T
+    var dataSource: Observable<[FriendListDataSource<T>]> { get }
+    var friendsInfo: BehaviorRelay<[T]> { get }
+    /// 몇명 씩 페이징을 요청할 지 크기
+    var size: BehaviorRelay<Int> { get }
+    /// 마지막 페이지인지 bool 값
+    var isLast: BehaviorRelay<Bool> { get }
+    /// 다음 친구 목록 요청에 필요한 값. 초기값 반드시 null. not 0
+    var nextOffset: BehaviorRelay<Int?> { get }
 }

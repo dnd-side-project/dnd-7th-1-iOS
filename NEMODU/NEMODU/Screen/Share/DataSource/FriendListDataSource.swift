@@ -8,14 +8,13 @@
 import Foundation
 import RxDataSources
 
-struct FriendListDataSource {
+struct FriendListDataSource<T> {
     var section: Int
-    var items: [Item]
+    var items: [T]
 }
 
 extension FriendListDataSource: SectionModelType {
-    typealias Item = FriendDefaultInfo
-    init(original: FriendListDataSource, items: [Item]) {
+    init(original: FriendListDataSource, items: [T]) {
         self = original
         self.items = items
     }

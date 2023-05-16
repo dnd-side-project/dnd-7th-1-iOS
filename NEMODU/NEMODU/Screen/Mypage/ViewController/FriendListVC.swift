@@ -296,8 +296,8 @@ extension FriendListVC {
 
 extension FriendListVC {
     /// 친구 요청 목록 tableView DataSource
-    func friendRequestTableViewDataSource() -> RxTableViewSectionedReloadDataSource<FriendListDataSource> {
-        RxTableViewSectionedReloadDataSource<FriendListDataSource>(
+    func friendRequestTableViewDataSource() -> RxTableViewSectionedReloadDataSource<FriendListDataSource<FriendDefaultInfo>> {
+        RxTableViewSectionedReloadDataSource<FriendListDataSource<FriendDefaultInfo>>(
             configureCell: { [weak self] dataSource, tableView, indexPath, item in
                 guard let self = self,
                       let cell = tableView.dequeueReusableCell(
@@ -316,8 +316,8 @@ extension FriendListVC {
     
     
     /// 내 친구 목록 tableView DataSource
-    func friendListTableViewDataSource() -> RxTableViewSectionedReloadDataSource<FriendListDataSource> {
-        RxTableViewSectionedReloadDataSource<FriendListDataSource>(
+    func friendListTableViewDataSource() -> RxTableViewSectionedReloadDataSource<FriendListDataSource<FriendDefaultInfo>> {
+        RxTableViewSectionedReloadDataSource<FriendListDataSource<FriendDefaultInfo>>(
             configureCell: { [weak self] dataSource, tableView, indexPath, item in
                 guard let self = self,
                       let cell = tableView.dequeueReusableCell(

@@ -29,22 +29,25 @@ final class FriendListVM: BaseViewModel {
     }
     
     // 친구 요청 목록
-    struct FriendRequestList {
-        var dataSource: Observable<[FriendListDataSource]> {
+    struct FriendRequestList: FriendListOutput {
+        var dataSource: Observable<[FriendListDataSource<FriendDefaultInfo>]> {
             friendsInfo.map { [FriendListDataSource(section: .zero, items: $0)]}
         }
         var friendsInfo = BehaviorRelay<[FriendDefaultInfo]>(value: [])
+        var size = BehaviorRelay<Int>(value: 0)
+        var isLast = BehaviorRelay<Bool>(value: true)
+        var nextOffset = BehaviorRelay<Int?>(value: nil)
     }
     
     // 친구 목록
     struct MyFriends: FriendListOutput {
-        var dataSource: Observable<[FriendListDataSource]> {
+        var dataSource: Observable<[FriendListDataSource<FriendDefaultInfo>]> {
             friendsInfo.map { [FriendListDataSource(section: .zero, items: $0)] }
         }
         var friendsInfo = BehaviorRelay<[FriendDefaultInfo]>(value: [])
         var size = BehaviorRelay<Int>(value: 0)
         var isLast = BehaviorRelay<Bool>(value: true)
-        var nextOffset = PublishRelay<Int>()
+        var nextOffset = BehaviorRelay<Int?>(value: nil)
     }
 }
 
