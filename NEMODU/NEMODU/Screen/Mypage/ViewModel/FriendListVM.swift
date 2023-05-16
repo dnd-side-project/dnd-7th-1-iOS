@@ -26,6 +26,7 @@ final class FriendListVM: BaseViewModel {
         var friendRequestList = FriendRequestList()
         var myFriendsList = MyFriends()
         var requestHandlingStatus = PublishRelay<FriendRequestHandlingModel>()
+        var isDeleteCompleted = PublishRelay<Bool>()
     }
     
     // 친구 요청 목록
@@ -125,6 +126,24 @@ extension FriendListVM {
                     owner.apiError.onNext(error)
                 case .success(let data):
                     owner.output.requestHandlingStatus.accept(data)
+                }
+            })
+            .disposed(by: bag)
+    }
+    
+    func postDeleteFriendRequest(_ friendsNickname: [String]) {
+        let path = "friend/delete"
+        let resource = urlResource<Bool>(path: path)
+        let param = FriendDeleteRequestModel(friendNickname: friendsNickname).param
+        
+        apiSession.postRequest(with: resource, param: param)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, result in
+                switch result {
+                case .failure(let error):
+                    owner.apiError.onNext(error)
+                case .success(let data):
+                    owner.output.isDeleteCompleted.accept(data)
                 }
             })
             .disposed(by: bag)

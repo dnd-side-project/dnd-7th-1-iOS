@@ -132,6 +132,7 @@ class FriendListVC: BaseViewController {
         bindFriendRequestTableView()
         bindFriendListTableView()
         bindFriendRequestHandlingStatus()
+        bindToastView()
     }
 }
 
@@ -240,9 +241,7 @@ extension FriendListVC {
                 self.isFriendListEditing = self.editFriendListBtn.isSelected
                 self.friendListTV.reloadData()
                 if !self.editFriendListBtn.isSelected && !self.removedFriendsList.isEmpty {
-                    // TODO: - 친구 삭제 post
-                    self.popupToast(toastType: .saveCompleted)
-                    self.removedFriendsList.removeAll()
+                    self.viewModel.postDeleteFriendRequest(self.removedFriendsList.map { $0.nickname })
                 }
             })
             .disposed(by: bag)
@@ -286,9 +285,25 @@ extension FriendListVC {
         viewModel.output.requestHandlingStatus
             .subscribe(onNext: { [weak self] data in
                 guard let self = self else { return }
-                data.status == FriendStatusType.accept.rawValue
-                ? self.popupToast(toastType: .acceptFriendRequest(nickname: data.friendNickname))
-                : self.popupToast(toastType: .refuseFriendRequest(nickname: data.friendNickname))
+                if data.status == FriendStatusType.accept.rawValue {
+                    self.popupToast(toastType: .acceptFriendRequest(nickname: data.friendNickname))
+                    self.viewModel.getFriendList(size: 12)
+                } else {
+                    self.popupToast(toastType: .refuseFriendRequest(nickname: data.friendNickname))
+                }
+            })
+            .disposed(by: bag)
+    }
+    
+    private func bindToastView() {
+        viewModel.output.isDeleteCompleted
+            .subscribe(onNext: { [weak self] status in
+                guard let self = self else { return }
+                if status {
+                    self.popupToast(toastType: .saveCompleted)
+                    self.removedFriendsList.removeAll()
+                }
+                // 서버에서 status가 false인 경우인 존재하지 않음
             })
             .disposed(by: bag)
     }
