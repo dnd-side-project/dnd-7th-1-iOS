@@ -34,7 +34,6 @@ final class FriendListVM: BaseViewModel {
             friendsInfo.map { [FriendListDataSource(section: .zero, items: $0)]}
         }
         var friendsInfo = BehaviorRelay<[FriendDefaultInfo]>(value: [])
-        var size = BehaviorRelay<Int>(value: 0)
         var isLast = BehaviorRelay<Bool>(value: true)
         var nextOffset = BehaviorRelay<Int?>(value: nil)
     }
@@ -45,7 +44,6 @@ final class FriendListVM: BaseViewModel {
             friendsInfo.map { [FriendListDataSource(section: .zero, items: $0)] }
         }
         var friendsInfo = BehaviorRelay<[FriendDefaultInfo]>(value: [])
-        var size = BehaviorRelay<Int>(value: 0)
         var isLast = BehaviorRelay<Bool>(value: true)
         var nextOffset = BehaviorRelay<Int?>(value: nil)
     }
@@ -66,6 +64,28 @@ extension FriendListVM: Output {
 // MARK: - Network
 
 extension FriendListVM {
+    /// 친구 요청 목록 조회 메서드
+    func getFriendRequestList(size: Int) {
+        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
+        var path = "friend/receive?nickname=\(nickname)&size=\(size)"
+        if let offset = output.friendRequestList.nextOffset.value {
+            path += "&offset=\(offset)"
+        }
+        let resource = urlResource<FriendsListResponseModel>(path: path)
+        
+        apiSession.getRequest(with: resource)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, result in
+                switch result {
+                case .failure(let error):
+                    owner.apiError.onNext(error)
+                case .success(let data):
+                    owner.output.friendRequestList.friendsInfo.accept(data.infos)
+                }
+            })
+            .disposed(by: bag)
+    }
+    
     /// 친구 요청을 거절/수락하는 메서드
     func postRequestHandling(_ requestHandlingRequestModel: FriendRequestHandlingModel) {
         let path = "friend/response"
