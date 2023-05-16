@@ -136,7 +136,7 @@ extension MyProfileVC {
     
     private func configureProfileData(_ data: MyProfileResponseModel) {
         // TODO: - options 수정
-        profileImageBtn.kf.setImage(with: data.profileImageURL,
+        profileImageBtn.kf.setImage(with: data.picturePathURL,
                                     for: .normal,
                                     placeholder: .defaultThumbnail,
                                     options: [.forceRefresh])

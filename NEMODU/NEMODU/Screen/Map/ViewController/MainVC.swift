@@ -306,7 +306,7 @@ extension MainVC {
                 guard let self = self,
                       let latitude = user.latitude,
                       let longitude = user.longitude,
-                      let profileImageURL = user.profileImageURL else { return }
+                      let profileImageURL = user.picturePathURL else { return }
                 // 마커 추가
                 self.mapVC.addMyAnnotation(coordinate: [latitude, longitude],
                                            profileImageURL: profileImageURL,
@@ -322,7 +322,7 @@ extension MainVC {
                 guard let self = self,
                       let latitude = friend.latitude,
                       let longitude = friend.longitude,
-                      let profileImageURL = friend.profileImageURL else { return }
+                      let profileImageURL = friend.picturePathURL else { return }
                 // 마커 추가
                 self.mapVC.addFriendAnnotation(coordinate: [latitude, longitude],
                                                profileImageURL: profileImageURL,
@@ -341,7 +341,7 @@ extension MainVC {
                 guard let self = self,
                       let latitude = friend.latitude,
                       let longitude = friend.longitude,
-                      let profileImageURL = friend.profileImageURL else { return }
+                      let profileImageURL = friend.picturePathURL else { return }
                 // 마커 추가
                 self.mapVC.addFriendAnnotation(coordinate: [latitude, longitude],
                                                profileImageURL: profileImageURL,

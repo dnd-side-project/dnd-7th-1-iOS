@@ -152,7 +152,7 @@ extension MypageVC {
     }
     
     private func configureUserData(_ userData: MypageUserDataResponseModel) {
-        profileView.profileImage.kf.setImage(with: userData.profileImageURL,
+        profileView.profileImage.kf.setImage(with: userData.picturePathURL,
                                              placeholder: UIImage.defaultThumbnail)
         profileView.nickname.text = userData.nickname
         if let intro = userData.intro { profileView.profileMessage.text = intro }

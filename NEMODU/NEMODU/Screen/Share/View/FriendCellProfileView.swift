@@ -72,8 +72,8 @@ extension FriendCellProfileView {
     
     /// 뷰의 데이터를 초기화하는 메서드
     func setProfile(_ friendInfo: FriendsInfo) {
-        if let profileImageURL = friendInfo.profileImageURL {
-            profileImageView.kf.setImage(with: profileImageURL)
+        if let picturePathURL = friendInfo.picturePathURL {
+            profileImageView.kf.setImage(with: picturePathURL)
         }
         nicknameLabel.text = friendInfo.nickname
         nameLabel.text = friendInfo.kakaoName
