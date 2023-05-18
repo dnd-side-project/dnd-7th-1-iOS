@@ -93,14 +93,16 @@ class FriendListVC: BaseViewController {
     
     // 삭제 요청된 친구 배열
     typealias DeletedFriend = (nickname: String, indexPath: IndexPath)
-    private var removedFriendsList = [DeletedFriend]()
+    var removedFriendsList = [DeletedFriend]()
     
-    // 친구 목록 편집 상태
+    /// 친구 목록 편집 상태
     private var isFriendListEditing = false
     
     static let friendCellHeight = 64.0
     private let viewModel = FriendListVM()
     private let bag = DisposeBag()
+    
+    weak var delegate: NavigationBarBackBtnDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -124,7 +126,7 @@ class FriendListVC: BaseViewController {
     
     override func bindInput() {
         super.bindInput()
-        bindBtn()
+        bindEditFriendListBtn()
     }
     
     override func bindOutput() {
@@ -232,7 +234,8 @@ extension FriendListVC {
 // MARK: - Input
 
 extension FriendListVC {
-    private func bindBtn() {
+    /// 친구 목록 편집 버튼 tap binding
+    private func bindEditFriendListBtn() {
         editFriendListBtn.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in
@@ -281,6 +284,7 @@ extension FriendListVC {
             .disposed(by: bag)
     }
     
+    /// 친구 요청을 수락/거절했을때 이벤트를 처리하는 메서드
     private func bindFriendRequestHandlingStatus() {
         viewModel.output.requestHandlingStatus
             .subscribe(onNext: { [weak self] data in
@@ -302,6 +306,7 @@ extension FriendListVC {
                 if status {
                     self.popupToast(toastType: .saveCompleted)
                     self.removedFriendsList.removeAll()
+                    self.delegate?.changeFriendListEditingStatus(false)
                 }
                 // 서버에서 status가 false인 경우인 존재하지 않음
             })
@@ -368,6 +373,7 @@ extension FriendListVC: DeleteFriendDelegate {
     func popupDeleteAlert(nickname: String, indexPath: IndexPath) {
         // 편집 완료 버튼에서 모든 삭제가 진행되기 위해
         // 삭제 요청이 들어오면 일단 삭제 목록에 추가
+        // 편집 상태 true로 변경 (뒤로가기 버튼 알람 연결)
         removedFriendsList += [(nickname, indexPath)]
         
         popUpAlert(alertType: .deleteFriend(nickname: nickname),
@@ -379,11 +385,14 @@ extension FriendListVC: DeleteFriendDelegate {
     /// 삭제 확인 알람창 삭제 버튼 메서드.
     /// 친구 목록의 해당 row를 삭제하고 알람창 닫기
     @objc func deleteConfirm() {
+        delegate?.changeFriendListEditingStatus(true)
+
         if !removedFriendsList.isEmpty {
             var items = viewModel.output.myFriendsList.friendsInfo.value
             items.remove(at: removedFriendsList.last!.indexPath.row)
             viewModel.output.myFriendsList.friendsInfo.accept(items)
         }
+        
         dismissAlert()
     }
     
@@ -416,4 +425,10 @@ extension FriendListVC: FriendRequestHandlingDelegate {
         items.remove(at: indexPath.row)
         viewModel.output.friendRequestList.friendsInfo.accept(items)
     }
+}
+
+// MARK: - NavigationBarBackBtnDelegate
+
+protocol NavigationBarBackBtnDelegate: AnyObject {
+    func changeFriendListEditingStatus(_ status: Bool)
 }
