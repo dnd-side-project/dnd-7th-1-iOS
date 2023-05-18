@@ -52,7 +52,7 @@ class ProceedingChallengeTVC: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        challengeIcon.image = nil
+        challengeIcon.tintColor = .clear
         challengeTitle.text = nil
         challengeSubtitle.text = nil
         challengeUUID = nil
