@@ -9,15 +9,15 @@ import Foundation
 import Alamofire
 
 struct FriendDeleteRequestModel {
-    let friendNickname: [String]
+    let friends: [String]
 }
 
 extension FriendDeleteRequestModel {
     var param: Parameters {
         guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
         return [
-            "friendNickname": friendNickname,
-            "userNickname": nickname
+            "friends": friends,
+            "nickname": nickname
         ]
     }
 }

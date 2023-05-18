@@ -132,9 +132,9 @@ extension FriendListVM {
     }
     
     func postDeleteFriendRequest(_ friendsNickname: [String]) {
-        let path = "friend/delete"
+        let path = "friend/delete/bulk"
         let resource = urlResource<Bool>(path: path)
-        let param = FriendDeleteRequestModel(friendNickname: friendsNickname).param
+        let param = FriendDeleteRequestModel(friends: friendsNickname).param
         
         apiSession.postRequest(with: resource, param: param)
             .withUnretained(self)
