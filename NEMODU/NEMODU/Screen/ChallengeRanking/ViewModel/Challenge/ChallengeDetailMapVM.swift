@@ -20,13 +20,17 @@ final class ChallengeDetailMapVM: BaseViewModel {
     
     // MARK: - Input
     
-    struct Input {}
+    struct Input {
+        /// 유저에 해당하는 영역 색을 저장하는 딕셔너리
+        var userTable = [String: MatrixList]()
+    }
     
     // MARK: - Output
     
     struct Output: Lodable {
         var loading = BehaviorRelay<Bool>(value: false)
-        var challengeDetailMap = PublishRelay<ChallengeDetailMapResponseModel>()
+        var userMatrixData = PublishRelay<[MatrixList]>()
+        var usersRankData = BehaviorRelay<[RankingList]>(value: [])
     }
     
     // MARK: - Init
@@ -68,7 +72,13 @@ extension ChallengeDetailMapVM {
                 case .failure(let error):
                     owner.apiError.onError(error)
                 case .success(let data):
-                    owner.output.challengeDetailMap.accept(data)
+                    // userTable 생성
+                    for i in 0..<data.matrixList.count {
+                        owner.input.userTable[data.rankingList[i].nickname] = data.matrixList[i]
+                    }
+                    // data binding
+                    owner.output.userMatrixData.accept(data.matrixList)
+                    owner.output.usersRankData.accept(data.rankingList)
                 }
                 owner.output.endLoading()
             })
