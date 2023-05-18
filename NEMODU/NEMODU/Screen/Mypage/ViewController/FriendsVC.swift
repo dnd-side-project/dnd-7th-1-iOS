@@ -168,6 +168,14 @@ extension FriendsVC {
                 : self.popVC()
             })
             .disposed(by: bag)
+        
+        // 편집 상태에 따라 뒤로가기 제스쳐 가능 상태 변경
+        isFriendListEditing
+            .subscribe(onNext: { [weak self] status in
+                guard let self = self else { return }
+                self.navigationController?.interactivePopGestureRecognizer?.isEnabled = !status
+            })
+            .disposed(by: bag)
     }
 }
 

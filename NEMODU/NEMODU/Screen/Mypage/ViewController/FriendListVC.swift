@@ -242,6 +242,7 @@ extension FriendListVC {
                 guard let self = self else { return }
                 self.editFriendListBtn.isSelected.toggle()
                 self.isFriendListEditing = self.editFriendListBtn.isSelected
+                self.delegate?.changeFriendListEditingStatus(self.isFriendListEditing)
                 self.friendListTV.reloadData()
                 if !self.editFriendListBtn.isSelected && !self.removedFriendsList.isEmpty {
                     self.viewModel.postDeleteFriendRequest(self.removedFriendsList.map { $0.nickname })
@@ -306,7 +307,6 @@ extension FriendListVC {
                 if status {
                     self.popupToast(toastType: .saveCompleted)
                     self.removedFriendsList.removeAll()
-                    self.delegate?.changeFriendListEditingStatus(false)
                 }
                 // 서버에서 status가 false인 경우인 존재하지 않음
             })
@@ -385,8 +385,6 @@ extension FriendListVC: DeleteFriendDelegate {
     /// 삭제 확인 알람창 삭제 버튼 메서드.
     /// 친구 목록의 해당 row를 삭제하고 알람창 닫기
     @objc func deleteConfirm() {
-        delegate?.changeFriendListEditingStatus(true)
-
         if !removedFriendsList.isEmpty {
             var items = viewModel.output.myFriendsList.friendsInfo.value
             items.remove(at: removedFriendsList.last!.indexPath.row)
