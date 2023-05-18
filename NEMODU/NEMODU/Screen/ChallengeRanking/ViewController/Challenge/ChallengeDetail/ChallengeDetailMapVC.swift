@@ -51,11 +51,13 @@ class ChallengeDetailMapVC: BaseViewController {
     
     override func bindInput() {
         super.bindInput()
+        bindSelectUserRankingListTV()
     }
     
     override func bindOutput() {
         super.bindOutput()
-        bindUserData()
+        bindUserMatrices()
+        bindUserRank()
     }
     
     override func bindLoading() {
@@ -113,18 +115,44 @@ extension ChallengeDetailMapVC {
     }
 }
 
+// MARK: - Input
+
+extension ChallengeDetailMapVC {
+    /// 유저 선택 시 해당 유저의 마지막 위치로 이동하는 메서드
+    private func bindSelectUserRankingListTV() {
+        userRankingListTV.rx.itemSelected
+            .subscribe(onNext: { [weak self] indexPath in
+                guard let self = self,
+                      let cell = self.userRankingListTV.cellForRow(at: indexPath) as? ChallengeDetailMapRankingTVC,
+                      let location = cell.getLocation(),
+                      let latitude = location.latitude,
+                      let longitude = location.longitude
+                else {
+                    // TODO: - 영역 기록을 안한 유저 처리
+                    return
+                }
+                _ = self.mapVC.goLocation(latitudeValue: latitude,
+                                          longitudeValue: longitude,
+                                          delta: Map.defaultZoomScale)
+            })
+            .disposed(by: bag)
+    }
+}
+
 // MARK: - Output
 
 extension ChallengeDetailMapVC {
     
-    private func bindUserData() {
+    private func bindUserMatrices() {
         viewModel.output.userMatrixData
             .subscribe(onNext: { [weak self] data in
                 guard let self = self else { return }
                 
             })
             .disposed(by: bag)
-        
+    }
+    
+    private func bindUserRank() {
         viewModel.output.usersRankData
             .subscribe(onNext: { [weak self] _ in
                 guard let self = self else { return }
@@ -132,7 +160,6 @@ extension ChallengeDetailMapVC {
             })
             .disposed(by: bag)
     }
-    
 }
 
 // MARK: - UITableViewDataSource
