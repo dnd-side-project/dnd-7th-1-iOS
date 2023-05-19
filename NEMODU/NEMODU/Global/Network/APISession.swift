@@ -12,7 +12,7 @@ import Foundation
 struct APISession: APIService {
     
     /// [GET]
-    func getRequest<T>(with urlResource: urlResource<T>) -> Observable<Result<T, APIError>> where T : Decodable {
+    func getRequest<T: Decodable>(with urlResource: urlResource<T>) -> Observable<Result<T, APIError>> where T : Decodable {
         
         Observable<Result<T, APIError>>.create { observer in
             let headers: HTTPHeaders = [
@@ -26,8 +26,10 @@ struct APISession: APIService {
                 .validate(statusCode: 200...399)
                 .responseDecodable(of: T.self) { response in
                     switch response.result {
-                    case .failure:
-                        observer.onNext(urlResource.judgeError(statusCode: response.response?.statusCode ?? -1))
+                    case .failure(let error):
+                        dump(error)
+                        guard let error = response.data else { return }
+                        observer.onNext(urlResource.judgeError(data: error))
                         
                     case .success(let data):
                         observer.onNext(.success(data))
@@ -57,9 +59,10 @@ struct APISession: APIService {
                 .validate(statusCode: 200...399)
                 .responseDecodable(of: T.self) { response in
                     switch response.result {
-                    case .failure:
-                        observer.onNext(urlResource.judgeError(statusCode: response.response?.statusCode ?? -1))
-                        
+                    case .failure(let error):
+                        dump(error)
+                        guard let error = response.data else { return }
+                        observer.onNext(urlResource.judgeError(data: error))
                     case .success(let data):
                         observer.onNext(.success(data))
                     }
@@ -72,7 +75,7 @@ struct APISession: APIService {
     }
     
     /// [POST] - multipartForm
-    func postRequestWithImage<T: Decodable>(with urlResource: urlResource<T>, param: Parameters, image: UIImage) -> Observable<Result<T, APIError>> {
+    func postRequestWithImage<T: Decodable>(with urlResource: urlResource<T>, param: Parameters, image: UIImage, method: HTTPMethod) -> Observable<Result<T, APIError>> {
         Observable<Result<T, APIError>>.create { observer in
             let headers: HTTPHeaders = [
                 "Content-Type": "application/json"
@@ -92,8 +95,10 @@ struct APISession: APIService {
                 .validate(statusCode: 200...399)
                 .responseDecodable(of: T.self) { response in
                     switch response.result {
-                    case .failure:
-                        observer.onNext(urlResource.judgeError(statusCode: response.response?.statusCode ?? -1))
+                    case .failure(let error):
+                        dump(error)
+                        guard let error = response.data else { return }
+                        observer.onNext(urlResource.judgeError(data: error))
                         
                     case .success(let data):
                         observer.onNext(.success(data))

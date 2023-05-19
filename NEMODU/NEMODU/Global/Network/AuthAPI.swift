@@ -40,8 +40,10 @@ extension AuthAPI {
                 .validate(statusCode: 200...399)
                 .responseDecodable(of: T.self) { response in
                     switch response.result {
-                    case .failure:
-                        observer.onNext(urlResource.judgeError(statusCode: response.response?.statusCode ?? -1))
+                    case .failure(let error):
+                        dump(error)
+                        guard let error = response.data else { return }
+                        observer.onNext(urlResource.judgeError(data: error))
                         
                     case .success(let data):
                         setUserDefaultsToken(headers: response.response?.headers)
@@ -70,8 +72,10 @@ extension AuthAPI {
                 .validate(statusCode: 200...399)
                 .responseDecodable(of: T.self) { response in
                     switch response.result {
-                    case .failure:
-                        observer.onNext(urlResource.judgeError(statusCode: response.response?.statusCode ?? -1))
+                    case .failure(let error):
+                        dump(error)
+                        guard let error = response.data else { return }
+                        observer.onNext(urlResource.judgeError(data: error))
                         
                     case .success(let data):
                         observer.onNext(.success(data))
@@ -100,8 +104,10 @@ extension AuthAPI {
                 .validate(statusCode: 200...399)
                 .responseDecodable(of: T.self) { response in
                     switch response.result {
-                    case .failure:
-                        observer.onNext(urlResource.judgeError(statusCode: response.response?.statusCode ?? -1))
+                    case .failure(let error):
+                        dump(error)
+                        guard let error = response.data else { return }
+                        observer.onNext(urlResource.judgeError(data: error))
                         
                     case .success(let data):
                         // 자체 토큰 저장
@@ -143,8 +149,10 @@ extension AuthAPI {
                 .validate(statusCode: 200...399)
                 .responseDecodable(of: RenewalTokenModel.self) { response in
                     switch response.result {
-                    case .failure:
-                        observer.onNext(urlResource.judgeError(statusCode: response.response?.statusCode ?? -1))
+                    case .failure(let error):
+                        dump(error)
+                        guard let error = response.data else { return }
+                        observer.onNext(urlResource.judgeError(data: error))
                         
                     case .success:
                         setUserDefaultsToken(headers: response.response?.headers)
@@ -173,8 +181,10 @@ extension AuthAPI {
                 .validate(statusCode: 200...399)
                 .responseDecodable(of: T.self) { response in
                     switch response.result {
-                    case .failure:
-                        observer.onNext(urlResource.judgeError(statusCode: response.response?.statusCode ?? -1))
+                    case .failure(let error):
+                        dump(error)
+                        guard let error = response.data else { return }
+                        observer.onNext(urlResource.judgeError(data: error))
                         
                     case .success(let data):
                         observer.onNext(.success(data))
@@ -209,8 +219,10 @@ extension AuthAPI {
                 .validate(statusCode: 200...399)
                 .responseDecodable(of: T.self) { response in
                     switch response.result {
-                    case .failure:
-                        observer.onNext(urlResource.judgeError(statusCode: response.response?.statusCode ?? -1))
+                    case .failure(let error):
+                        dump(error)
+                        guard let error = response.data else { return }
+                        observer.onNext(urlResource.judgeError(data: error))
                         
                     case .success(let data):
                         setUserDefaultsToken(headers: response.response?.headers)

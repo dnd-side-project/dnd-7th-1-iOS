@@ -8,20 +8,17 @@
 import Foundation
 
 enum APIError: Error {
-    case decode
-    case http(status: Int)
-    case unknown(status: Int)
+    case badGateway
+    case error(_ errorModel: ErrorResponseModel)
 }
 
-extension APIError: CustomStringConvertible {
-    var description: String {
+extension APIError {
+    var message: String? {
         switch self {
-        case .decode:
-            return "Decode Error"
-        case let .http(status):
-            return "HTTP Error: \(status)"
-        case let .unknown(status):
-            return "Unknown Error: \(status)"
+        case .badGateway:
+            return "NEMODU 서버에 연결할 수 없습니다."
+        case .error(error: let error):
+            return error.message
         }
     }
 }
