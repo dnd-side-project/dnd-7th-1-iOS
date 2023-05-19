@@ -392,9 +392,15 @@ extension MyRecordDetailVC {
                       let cell = self.proceedingChallengeTV.cellForRow(at: indexPath) as? ProceedingChallengeTVC,
                       let uuid = cell.challengeUUID
                 else { return }
+                // deselect
                 self.proceedingChallengeTV.deselectRow(at: indexPath, animated: true)
                 
+                // 챌린지 종료 확인
+                let isChallengeOver = (cell.endDate != nil) ? (cell.endDate?.compare(.now) == ComparisonResult.orderedAscending) : true
+                
+                // 챌린지 상세 화면 연결
                 let challengeDetailVC = ChallengeHistoryDetailVC()
+                if isChallengeOver { challengeDetailVC.configureChallengeDoneLayout() }
                 challengeDetailVC.getChallengeHistoryDetailInfo(uuid: uuid)
                 challengeDetailVC.hidesBottomBarWhenPushed = true
                 self.navigationController?.pushViewController(challengeDetailVC, animated: true)
