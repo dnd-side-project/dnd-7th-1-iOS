@@ -80,19 +80,6 @@ extension UIViewController {
         self.present(alertViewController, animated: true, completion: completion)
     }
     
-    /// 에러 Alert 메서드
-    func showErrorAlert(_ message: String?) {
-        let alertController = UIAlertController(title: "Error",
-                                                message: message,
-                                                preferredStyle: .alert)
-        let action = UIAlertAction(title: "Confirm",
-                                   style: .default)
-        
-        alertController.addAction(action)
-        
-        present(alertController, animated: true)
-    }
-    
     /// topViewController에 로딩을 보여주는 메서드
     func loading(loading: Bool) {
         guard let topViewController = UIApplication.topViewController() else { return }
@@ -116,6 +103,29 @@ extension UIViewController {
                                normalBtnAction: normalBtnAction)
         alertVC.modalPresentationStyle = .overFullScreen
         targetVC.present(alertVC, animated: false, completion: nil)
+    }
+    
+    /// 에러 알림창을 띄우는 메서드
+    func popUpErrorAlert(targetVC: UIViewController, title: String, confirmEvent: Selector = #selector(dismissAlert)) {
+        let alertVC = AlertVC()
+        alertVC.configureErrorAlert(targetVC: targetVC,
+                                    title: title,
+                                    confirmEvent: confirmEvent)
+        alertVC.modalPresentationStyle = .overFullScreen
+        targetVC.present(alertVC, animated: false, completion: nil)
+    }
+    
+    /// 시스템 에러 Alert 메서드
+    func systemErrorAlert(_ message: String?) {
+        let alertController = UIAlertController(title: "Error",
+                                                message: message,
+                                                preferredStyle: .alert)
+        let action = UIAlertAction(title: "Confirm",
+                                   style: .default)
+        
+        alertController.addAction(action)
+        
+        present(alertController, animated: true)
     }
     
     /// ToastType에 맞는 ToastView를 띄워주는 메서드
