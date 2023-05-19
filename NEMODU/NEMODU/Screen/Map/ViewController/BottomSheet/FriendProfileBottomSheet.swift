@@ -206,7 +206,7 @@ extension FriendProfileBottomSheet {
     
     private func setProfile(_ profile: ProfileResponseModel) {
         guard let friendType = FriendStatusType(rawValue: profile.isFriend) else { return }
-        profileImageBtn.kf.setImage(with: profile.profileImageURL,
+        profileImageBtn.kf.setImage(with: profile.picturePathURL,
                                     for: .normal,
                                     placeholder: .defaultThumbnail)
         nicknameLabel.text = profile.nickname
@@ -376,14 +376,14 @@ extension FriendProfileBottomSheet {
         viewModel.output.requestStatus
             .withUnretained(self)
             .subscribe(onNext: { owner, status in
-                owner.popupToast(toastType: status ? .friendAdded : .networkError)
+                owner.popupToast(toastType: status ? .postFriendRequest : .networkError)
             })
             .disposed(by: bag)
         
         viewModel.output.deleteStatus
             .withUnretained(self)
             .subscribe(onNext: { owner, status in
-                owner.popupToast(toastType: status ? .friendDeleted : .networkError)
+                owner.popupToast(toastType: status ? .cancelFriendRequest : .networkError)
             })
             .disposed(by: bag)
     }

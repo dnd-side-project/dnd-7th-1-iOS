@@ -140,7 +140,7 @@ extension EditProfileVC {
     }
     
     private func configureProfileData(_ data: MyProfileResponseModel) {
-        profileImageBtn.kf.setImage(with: data.profileImageURL,
+        profileImageBtn.kf.setImage(with: data.picturePathURL,
                                     for: .normal,
                                     placeholder: .defaultThumbnail)
         profileMessageTextView.tv.text = data.intro

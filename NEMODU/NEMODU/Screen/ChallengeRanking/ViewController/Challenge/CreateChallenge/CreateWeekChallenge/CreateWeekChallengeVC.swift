@@ -119,7 +119,7 @@ class CreateWeekChallengeVC: CreateChallengeVC {
     private let bag = DisposeBag()
     private var creatChallengeResponseModel: CreatChallengeResponseModel?
     
-    var friends: [Info] = []
+    var friends: [FriendDefaultInfo] = []
     var message, name, nickname, started, ended: String?
     var startedDate: Date?
     

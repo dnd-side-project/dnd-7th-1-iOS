@@ -16,7 +16,7 @@ struct UserBlockResponseModel: Codable {
 }
 
 extension UserBlockResponseModel {
-    var profileImageURL: URL? {
+    var picturePathURL: URL? {
         guard let picturePath = picturePath,
               let profileImageURL = picturePath.encodeURL() else { return nil }
         return URL(string: profileImageURL)
