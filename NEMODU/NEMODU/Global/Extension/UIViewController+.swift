@@ -95,7 +95,10 @@ extension UIViewController {
     }
     
     /// 알람창을 띄우는 메서드
-    func popUpAlert(alertType: AlertType, targetVC: UIViewController, highlightBtnAction: Selector, normalBtnAction: Selector?) {
+    func popUpAlert(alertType: AlertType,
+                    targetVC: UIViewController,
+                    highlightBtnAction: Selector,
+                    normalBtnAction: Selector?) {
         let alertVC = AlertVC()
         alertVC.configureAlert(of: alertType,
                                targetVC: targetVC,
@@ -106,10 +109,14 @@ extension UIViewController {
     }
     
     /// 에러 알림창을 띄우는 메서드
-    func popUpErrorAlert(targetVC: UIViewController, title: String, confirmEvent: Selector = #selector(dismissAlert)) {
+    func popUpErrorAlert(targetVC: UIViewController,
+                         title: String,
+                         errorCode: String,
+                         confirmEvent: Selector) {
         let alertVC = AlertVC()
         alertVC.configureErrorAlert(targetVC: targetVC,
                                     title: title,
+                                    errorCode: errorCode,
                                     confirmEvent: confirmEvent)
         alertVC.modalPresentationStyle = .overFullScreen
         targetVC.present(alertVC, animated: false, completion: nil)

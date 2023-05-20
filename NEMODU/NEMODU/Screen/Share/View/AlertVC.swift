@@ -162,8 +162,10 @@ extension AlertVC {
     /// Error Alert 구현
     func configureErrorAlert(targetVC: UIViewController,
                              title: String,
+                             errorCode: String?,
                              confirmEvent: Selector) {
         alertTitle.text = title
+        if let errorCode = errorCode { alertMessage.text = errorCode }
         highlightBtn.setTitle("확인", for: .normal)
         highlightBtn.addTarget(targetVC,
                                action: confirmEvent,

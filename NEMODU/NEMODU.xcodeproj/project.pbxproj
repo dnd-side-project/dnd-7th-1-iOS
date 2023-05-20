@@ -120,6 +120,7 @@
 		23766CE42A13E90A00522420 /* FriendDeleteRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23766CE32A13E90A00522420 /* FriendDeleteRequestModel.swift */; };
 		2376B9072A05422600528DA6 /* UIApplication+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2376B9062A05422600528DA6 /* UIApplication+.swift */; };
 		2378A4972904106900FB7031 /* LocationSettingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2378A4962904106900FB7031 /* LocationSettingVC.swift */; };
+		23842E0A2A1902F7006DFCA4 /* ErrorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23842E092A1902F7006DFCA4 /* ErrorType.swift */; };
 		2387F1B329FFADDA001B4897 /* UserMatrixResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2387F1B229FFADDA001B4897 /* UserMatrixResponseModel.swift */; };
 		2387F1B529FFAEA6001B4897 /* MapType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2387F1B429FFAEA6001B4897 /* MapType.swift */; };
 		238C4DDF28A3AC18000BEE36 /* RecordResultVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DDE28A3AC18000BEE36 /* RecordResultVC.swift */; };
@@ -391,6 +392,7 @@
 		2376B9062A05422600528DA6 /* UIApplication+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+.swift"; sourceTree = "<group>"; };
 		2378A4962904106900FB7031 /* LocationSettingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSettingVC.swift; sourceTree = "<group>"; };
 		237CED1629767F3900A8F23C /* NEMODU.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NEMODU.entitlements; sourceTree = "<group>"; };
+		23842E092A1902F7006DFCA4 /* ErrorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorType.swift; sourceTree = "<group>"; };
 		2387F1B229FFADDA001B4897 /* UserMatrixResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMatrixResponseModel.swift; sourceTree = "<group>"; };
 		2387F1B429FFAEA6001B4897 /* MapType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapType.swift; sourceTree = "<group>"; };
 		238C4DDE28A3AC18000BEE36 /* RecordResultVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordResultVC.swift; sourceTree = "<group>"; };
@@ -1104,6 +1106,7 @@
 				3C506C1E29FD3A4E006EDAAE /* TermsConditionsWebLink.swift */,
 				2387F1B429FFAEA6001B4897 /* MapType.swift */,
 				3C2327BA2A03E42200251316 /* NotificationListIcon.swift */,
+				23842E092A1902F7006DFCA4 /* ErrorType.swift */,
 			);
 			path = Enum;
 			sourceTree = "<group>";
@@ -1621,6 +1624,7 @@
 				3CF68388293CD5CA00A52521 /* ChallengeHistoryDetailResponseModel.swift in Sources */,
 				3CD1FFFB29DEC19F00CE4367 /* AcceptRejectChallengeResponseModel.swift in Sources */,
 				231A2B8D28B20B3E00FF884B /* ProfileView.swift in Sources */,
+				23842E0A2A1902F7006DFCA4 /* ErrorType.swift in Sources */,
 				23F5718228AA6038005F2E21 /* UIImage+.swift in Sources */,
 				237573D328F56A7B006026ED /* EditMemoRequestModel.swift in Sources */,
 				2378A4972904106900FB7031 /* LocationSettingVC.swift in Sources */,

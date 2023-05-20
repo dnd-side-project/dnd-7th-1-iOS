@@ -13,12 +13,21 @@ enum APIError: Error {
 }
 
 extension APIError {
-    var message: String? {
+    var title: String? {
         switch self {
         case .badGateway:
             return "NEMODU 서버에 연결할 수 없습니다."
-        case .error(error: let error):
+        case .error(let error):
             return error.message
+        }
+    }
+    
+    var code: String? {
+        switch self {
+        case .badGateway:
+            return nil
+        case .error(let error):
+            return error.code
         }
     }
 }
