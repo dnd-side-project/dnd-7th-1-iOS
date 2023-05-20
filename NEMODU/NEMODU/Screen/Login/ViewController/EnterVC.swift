@@ -68,6 +68,7 @@ class EnterVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        bindAPIErrorAlert(viewModel)
         changeRootVC()
     }
     

@@ -64,6 +64,7 @@ class LoginVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        bindAPIErrorAlert(viewModel)
         bindLoginResult()
     }
     

@@ -53,6 +53,7 @@ class NicknameVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        bindAPIErrorAlert(viewModel)
         bindNextBtn()
         bindValidationView()
         bindNextBtnActive()

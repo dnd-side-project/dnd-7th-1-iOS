@@ -41,8 +41,6 @@ class UserInfoSettingVC: BaseViewController {
     private var page: Float = 1
     private let pageCnt: Float = 3
     
-    private let viewModel = UserInfoSettingVM()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -102,7 +100,7 @@ extension UserInfoSettingVC {
         
         progressView.progress = page / pageCnt
         
-        setRightBarBtnActive(viewModel.output.isNextBtnActive.value)
+        setRightBarBtnActive(false)
     }
 }
 
