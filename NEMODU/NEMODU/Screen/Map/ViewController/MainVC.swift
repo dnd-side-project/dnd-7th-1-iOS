@@ -96,6 +96,7 @@ class MainVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        bindAPIErrorAlert(viewModel)
         bindHomeData()
         bindMyAnnotation()
         bindFriendAnnotation()

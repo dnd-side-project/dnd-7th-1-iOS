@@ -108,15 +108,17 @@ extension UIViewController {
         targetVC.present(alertVC, animated: false, completion: nil)
     }
     
-    /// 에러 알림창을 띄우는 메서드
+    /// 에러 알림창을 띄우는 메서드.
+    /// local Error일 경우에만 직접 호출.
+    /// 네트워크 에러의 경우 bindAPIErrorAlert 사용해주세요.
     func popUpErrorAlert(targetVC: UIViewController,
                          title: String,
-                         errorCode: String,
+                         message: String?,
                          confirmEvent: Selector) {
         let alertVC = AlertVC()
         alertVC.configureErrorAlert(targetVC: targetVC,
                                     title: title,
-                                    errorCode: errorCode,
+                                    message: message,
                                     confirmEvent: confirmEvent)
         alertVC.modalPresentationStyle = .overFullScreen
         targetVC.present(alertVC, animated: false, completion: nil)

@@ -73,7 +73,9 @@ extension MypageVM {
             .subscribe(onNext: { owner, result in
                 switch result {
                 case .failure(let error):
-                    owner.apiError.onNext(error)
+                    owner.apiError.onNext(.error(ErrorResponseModel(code: error.code,
+                                                                    message: "영역을 조회할 수 없습니다 😢",
+                                                                    trace: nil)))
                 case .success(let data):
                     owner.output.userData.accept(data)
                 }

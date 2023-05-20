@@ -95,8 +95,9 @@ class RecordResultVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        bindAPIErrorAlert(viewModel)
         bindKeyboardScroll()
-        bindDismiss()
+        bindPostResult()
     }
     
     override func bindLoading() {
@@ -116,8 +117,8 @@ class RecordResultVC: BaseViewController {
 extension RecordResultVC {
     private func configureNaviBar() {
         view.addSubview(naviBar)
-        let month = Calendar.current.component(.month, from: Date.now)
-        let day = Calendar.current.component(.day, from: Date.now)
+        let month = Date.now.month
+        let day = Date.now.day
         naviBar.naviType = .present
         naviBar.configureNaviBar(targetVC: self,
                                  title: "\(month)월 \(day)일의 기록")
@@ -256,15 +257,15 @@ extension RecordResultVC {
             .disposed(by: disposeBag)
     }
     
-    private func bindDismiss() {
-        // dismiss to rootViewController
-        // TODO: - error alert 추가
+    private func bindPostResult() {
         viewModel.output.isValidPost
             .subscribe(onNext: { [weak self] validation in
                 guard let self = self else { return }
                 validation
                 ? self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
-                : print("네트워크 연결 상태가 좋지 않습니다.")
+                : self.viewModel.apiError.onNext(.error(ErrorResponseModel(code: "200 False",
+                                                                           message: "잠시후 다시 시도해주세요 😢",
+                                                                           trace: nil)))
             })
             .disposed(by: disposeBag)
     }

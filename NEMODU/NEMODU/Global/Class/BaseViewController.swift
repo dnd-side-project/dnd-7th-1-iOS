@@ -93,7 +93,7 @@ extension BaseViewController {
                 let confirmEvent = self.errorAlertConfirmAction(error.code)
                 self.popUpErrorAlert(targetVC: self,
                                      title: errorTitle,
-                                     errorCode: errorCode,
+                                     message: errorCode,
                                      confirmEvent: confirmEvent)
             })
             .disposed(by: disposeBag)
