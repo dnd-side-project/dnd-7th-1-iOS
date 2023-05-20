@@ -29,7 +29,8 @@ class NicknameVC: BaseViewController {
         }
     
     private let nicknameCheckView = NicknameCheckView()
-    var viewModel: UserInfoSettingVM?
+    private let viewModel = UserInfoSettingVM()
+    weak var delegate: NavigationBarNextBtnDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,6 +55,7 @@ class NicknameVC: BaseViewController {
         super.bindOutput()
         bindNextBtn()
         bindValidationView()
+        bindNextBtnActive()
     }
     
 }
@@ -102,12 +104,11 @@ extension NicknameVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self,
-                      let viewModel = self.viewModel,
                       let nickname = self.nicknameCheckView.nicknameTextField.text
                 else { return }
                 nickname.count < 2 || nickname.count > 6
                 ? self.nicknameCheckView.setValidationView(.countError)
-                : viewModel.getNicknameValidation(nickname: nickname)
+                : self.viewModel.getNicknameValidation(nickname: nickname)
             })
             .disposed(by: disposeBag)
     }
@@ -123,18 +124,14 @@ extension NicknameVC {
             .distinctUntilChanged()
             .asDriver(onErrorJustReturn: "")
             .drive(onNext: { [weak self] _ in
-                guard let self = self,
-                      let viewModel = self.viewModel
-                else { return }
-                viewModel.output.isNextBtnActive.accept(false)
+                guard let self = self else { return }
+                self.delegate?.changeNaviBarNextBtnActiveStatus(false)
             })
             .disposed(by: disposeBag)
     }
     
     /// 사용 가능한 닉네임인지 판단 후 상태에 따라 view를 구성하는 메서드
     private func bindValidationView() {
-        guard let viewModel = viewModel else { return }
-
         viewModel.output.isValidNickname
             .asDriver(onErrorJustReturn: false)
             .drive(onNext: { [weak self] isValid in
@@ -148,4 +145,22 @@ extension NicknameVC {
             })
             .disposed(by: disposeBag)
     }
+    
+    /// navigationBar의 rightBarBtn의 상태를 binding
+    private func bindNextBtnActive() {
+        viewModel.output.isNextBtnActive
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: { [weak self] isValid in
+                guard let self = self else { return }
+                self.delegate?.changeNaviBarNextBtnActiveStatus(isValid)
+            })
+            .disposed(by: disposeBag)
+    }
+}
+
+// MARK: - NavigationBarNextBtnDelegate
+
+protocol NavigationBarNextBtnDelegate: AnyObject {
+    /// navigationBar의 rightBtn의 활성 상태를 변경하는 메서드
+    func changeNaviBarNextBtnActiveStatus(_ status: Bool)
 }

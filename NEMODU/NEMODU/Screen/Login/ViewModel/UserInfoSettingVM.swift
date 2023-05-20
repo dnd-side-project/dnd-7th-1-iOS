@@ -63,6 +63,7 @@ extension UserInfoSettingVM: Output {
 // MARK: - Networking
 
 extension UserInfoSettingVM {
+    /// 마이페이지 프로필 데이터를 받아오는 메서드
     func getMyProfile() {
         guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { return }
         let path = "user/info/profile?nickname=\(nickname)"
@@ -81,6 +82,7 @@ extension UserInfoSettingVM {
             .disposed(by: bag)
     }
     
+    /// 닉네임 유효성 검사를 진행하는 메서드
     func getNicknameValidation(nickname: String) {
         let path = "auth/check/nickname?nickname=\(nickname)"
         let resource = urlResource<Bool>(path: path)
@@ -99,6 +101,7 @@ extension UserInfoSettingVM {
             .disposed(by: bag)
     }
     
+    /// 프로필 수정을 요청하는 메서드
     func postEditProfile(_ profile: EditProfileRequestModel) {
         let path = "user/info/profile/edit"
         let resource = urlResource<EditProfileResponseModel>(path: path)

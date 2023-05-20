@@ -63,11 +63,6 @@ class UserInfoSettingVC: BaseViewController {
         bindNaviBtn()
     }
     
-    override func bindOutput() {
-        super.bindOutput()
-        bindNextBtnActive()
-    }
-    
 }
 
 // MARK: - Configure
@@ -97,11 +92,13 @@ extension UserInfoSettingVC {
         addChild(nicknameVC)
         addChild(addfriendsVC)
         addChild(locationSettingVC)
-        nicknameVC.viewModel = viewModel
+        
         baseScrollView.addSubview(baseStackView)
         [nicknameVC.view, addfriendsVC.view, locationSettingVC.view].forEach {
             baseStackView.addArrangedSubview($0)
         }
+        
+        nicknameVC.delegate = self
         
         progressView.progress = page / pageCnt
         
@@ -179,25 +176,18 @@ extension UserInfoSettingVC {
             .disposed(by: disposeBag)
     }
 }
-
-// MARK: - Output
-
-extension UserInfoSettingVC {
-    private func bindNextBtnActive() {
-        viewModel.output.isNextBtnActive
-            .asDriver(onErrorJustReturn: false)
-            .drive(onNext: { [weak self] isValid in
-                guard let self = self else { return }
-                self.setRightBarBtnActive(isValid)
-            })
-            .disposed(by: disposeBag)
-    }
-}
-
 // MARK: - Custom Methods
 
 extension UserInfoSettingVC {
     private func setPage(_ page: Float) {
         baseScrollView.scrollToHorizontalOffset(offset: screenWidth * CGFloat(page - 1))
+    }
+}
+
+// MARK: - NavigationBarNextBtnDelegate
+
+extension UserInfoSettingVC: NavigationBarNextBtnDelegate {
+    func changeNaviBarNextBtnActiveStatus(_ status: Bool) {
+        setRightBarBtnActive(status)
     }
 }
