@@ -66,10 +66,6 @@ class SetAuthorityVC: BaseViewController {
             $0.addShadow()
         }
     
-    // MARK: - Variables and Properties
-    
-    private let bag = DisposeBag()
-    
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
@@ -219,7 +215,7 @@ extension SetAuthorityVC {
                 // TODO: - 앱 권한 설정안내 확인버튼 바인딩
                 print("confirmButton pressed")
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
 }

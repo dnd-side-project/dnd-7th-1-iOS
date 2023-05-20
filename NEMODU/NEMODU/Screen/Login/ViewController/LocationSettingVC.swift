@@ -47,8 +47,6 @@ class LocationSettingVC: BaseViewController {
             $0.image = UIImage(named: "locationPublic")
         }
     
-    private let bag = DisposeBag()
-    
     private var isPublicRecord = true
     
     override func viewDidLoad() {
@@ -151,7 +149,7 @@ extension LocationSettingVC {
                     : UIImage(named: "locationPrivate")
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 

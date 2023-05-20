@@ -153,6 +153,6 @@ extension AccumulateRankingListVC {
                 self.configureRankingUserTVC()
                 self.rankingTableView.reloadData()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }

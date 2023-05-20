@@ -90,7 +90,6 @@ class SetNotificationVC: BaseViewController {
     
     // MARK: - Variables and Properties
     
-    private let bag = DisposeBag()
     private let viewModel = SetNotificationVM()
     
     // MARK: - Life Cycle
@@ -270,7 +269,7 @@ extension SetNotificationVC {
                 .subscribe(onNext: { owner, status in
                     owner.viewModel.updateNotificationSetting(notificationType: target.notificationType)
                 })
-                .disposed(by: bag)
+                .disposed(by: disposeBag)
         }
     }
     
@@ -286,7 +285,7 @@ extension SetNotificationVC {
                 guard let self = self else { return }
                 self.setUserNotificaionSettings(userSettings: data)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
 }

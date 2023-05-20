@@ -44,7 +44,6 @@ class EnterVC: BaseViewController {
         }
     
     private let viewModel = EnterVM()
-    private let bag = DisposeBag()
     
     var userDataModel: UserDataModel?
     
@@ -80,7 +79,7 @@ class EnterVC: BaseViewController {
                 guard let self = self else { return }
                 self.loading(loading: isLoading)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 
@@ -136,7 +135,7 @@ extension EnterVC {
                       let userDataModel = self.userDataModel else { return }
                 self.viewModel.requestSignup(userDataModel)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 
@@ -150,6 +149,6 @@ extension EnterVC {
                 guard let self = self else { return }
                 self.setTBCtoRootVC()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }

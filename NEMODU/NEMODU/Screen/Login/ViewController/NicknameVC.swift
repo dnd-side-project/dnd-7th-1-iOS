@@ -29,7 +29,6 @@ class NicknameVC: BaseViewController {
         }
     
     private let nicknameCheckView = NicknameCheckView()
-    private let bag = DisposeBag()
     var viewModel: UserInfoSettingVM?
     
     override func viewDidLoad() {
@@ -110,7 +109,7 @@ extension NicknameVC {
                 ? self.nicknameCheckView.setValidationView(.countError)
                 : viewModel.getNicknameValidation(nickname: nickname)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 
@@ -129,7 +128,7 @@ extension NicknameVC {
                 else { return }
                 viewModel.output.isNextBtnActive.accept(false)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     /// 사용 가능한 닉네임인지 판단 후 상태에 따라 view를 구성하는 메서드
@@ -147,6 +146,6 @@ extension NicknameVC {
                     UserDefaults.standard.set(nickname, forKey: UserDefaults.Keys.nickname)
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }

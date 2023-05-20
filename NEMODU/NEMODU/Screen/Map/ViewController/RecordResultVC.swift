@@ -70,7 +70,6 @@ class RecordResultVC: BaseViewController {
     
     private let naviBar = NavigationBar()
     private let viewModel = RecordResultVM()
-    private let bag = DisposeBag()
     private var recordData: RecordDataRequest?
     
     override func viewDidLoad() {
@@ -108,7 +107,7 @@ class RecordResultVC: BaseViewController {
                 guard let self = self else { return }
                 self.loading(loading: isLoading)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 
@@ -228,7 +227,7 @@ extension RecordResultVC {
                 recordData.message = self.memoTextView.tv.text
                 self.viewModel.postRecordData(with: recordData)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     private func bindMyDetailMap() {
@@ -241,7 +240,7 @@ extension RecordResultVC {
                 detailMapVC.matrices = recordData.matrices
                 self.navigationController?.pushViewController(detailMapVC, animated: true)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 
@@ -254,7 +253,7 @@ extension RecordResultVC {
                 guard let self = self else { return }
                 self.baseScrollView.scrollToBottom(animated: true)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     private func bindDismiss() {
@@ -267,6 +266,6 @@ extension RecordResultVC {
                 ? self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
                 : print("네트워크 연결 상태가 좋지 않습니다.")
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }

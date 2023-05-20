@@ -46,7 +46,6 @@ class ChallengeVC : BaseViewController {
     var doneChallengeListResponseModel: ProgressAndDoneChallengeListResponseModel?
     
     private let viewModel = ChallengeVM()
-    private let bag = DisposeBag()
     
     // MARK: - Life Cycle
     
@@ -412,7 +411,7 @@ extension ChallengeVC {
                 let rootViewController = self?.view.superview?.findViewController()
                 rootViewController?.navigationController?.pushViewController(selectChallengeCreateVC, animated: true)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 
@@ -427,7 +426,7 @@ extension ChallengeVC {
                 self.invitedChallengeListResponseModel = data
                 self.challengeTableView.reloadSections(IndexSet(0...0), with: .none)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     private func bindChallengeList() {
@@ -438,7 +437,7 @@ extension ChallengeVC {
                 self.waitChallengeListResponseModel = data
                 self.reloadChallengeTableView(toMoveIndex: 0)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         viewModel.output.progressChallengeList
             .subscribe(onNext: { [weak self] data in
@@ -447,7 +446,7 @@ extension ChallengeVC {
                 self.progressChallengeListResponseModel = data
                 self.reloadChallengeTableView(toMoveIndex: 1)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         viewModel.output.doneChallengeList
             .subscribe(onNext: { [weak self] data in
@@ -456,6 +455,6 @@ extension ChallengeVC {
                 self.doneChallengeListResponseModel = data
                 self.reloadChallengeTableView(toMoveIndex: 2)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }

@@ -43,7 +43,6 @@ class ChallengeDetailMapVC: BaseViewController {
     var challengeTitle: String?
     
     private let viewModel = ChallengeDetailMapVM()
-    private let bag = DisposeBag()
     
     // MARK: - Life Cycle
     
@@ -81,7 +80,7 @@ class ChallengeDetailMapVC: BaseViewController {
                 guard let self = self else { return }
                 self.loading(loading: isLoading)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     // MARK: - Functions
@@ -260,7 +259,7 @@ extension ChallengeDetailMapVC {
                 self.configureUserRankigListStackView(matrixList: data.matrixList,
                                                       rankingList: data.rankingList)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
 }

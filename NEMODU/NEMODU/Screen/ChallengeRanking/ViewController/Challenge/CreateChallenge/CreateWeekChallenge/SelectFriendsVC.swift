@@ -103,7 +103,6 @@ class SelectFriendsVC: CreateChallengeVC {
     var createWeekChallengeVC: CreateWeekChallengeVC?
     
     private let viewModel = SelectFriendsVM()
-    private let bag = DisposeBag()
     private var friendsListResponseModel: FriendsListResponseModel?
     
     private var selectedFriendsList: [FriendDefaultInfo] = []
@@ -466,7 +465,7 @@ extension SelectFriendsVC {
                 
                 searchNickname.count == 0 ? (self.deleteAllTextButton.isHidden = true) : (self.deleteAllTextButton.isHidden = false)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     private func bindButtons() {
@@ -479,7 +478,7 @@ extension SelectFriendsVC {
                 self.deleteAllTextButton.isHidden = true
                 self.searchTextField.becomeFirstResponder()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
 }
@@ -496,7 +495,7 @@ extension SelectFriendsVC {
                 self.friendsListResponseModel = data
                 self.friendsListTableView.reloadData()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
 }

@@ -83,10 +83,6 @@ class TermsConditionsAgreementVC: BaseViewController {
             $0.isEnabled = false
         }
     
-    // MARK: - Variables and Properties
-    
-    private let bag = DisposeBag()
-    
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
@@ -219,7 +215,7 @@ extension TermsConditionsAgreementVC {
                 
                 self.updateStartButtonStatus(isAgree: isAgree)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         typealias ButtonType = (button: TermsConditionsDetailButton, webLink: TermsConditionsWebLink)
         let buttonTypeList: [ButtonType] = [(serviceTermsConditionsDetailButton, TermsConditionsWebLink.service),
@@ -234,7 +230,7 @@ extension TermsConditionsAgreementVC {
                     
                     self.showTermsConditionsWebPage(url: buttonType.webLink.url)
                 })
-                .disposed(by: bag)
+                .disposed(by: disposeBag)
         }
     }
     

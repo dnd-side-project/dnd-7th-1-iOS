@@ -18,7 +18,6 @@ class InvitedChallengeDetailVC: ChallengeDetailVC {
     // MARK: - Variables and Properties
     
     private let viewModel = InvitedChallengeDetailVM()
-    private let bag = DisposeBag()
     
     var uuid: String = ""
     var invitedChallengeDetailResponseModel: InvitedChallengeDetailResponseModel?
@@ -143,7 +142,7 @@ extension InvitedChallengeDetailVC {
                 self.invitedChallengeDetailResponseModel = data
                 self.challengeDetailTableView.reloadData()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     private func responseAcceptChallengeSuccess() {
@@ -156,7 +155,7 @@ extension InvitedChallengeDetailVC {
                     self.getInvitedChallengeDetailInfo()
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     private func responseRejectChallengeSuccess() {
@@ -169,7 +168,7 @@ extension InvitedChallengeDetailVC {
                     self.popVC()
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
 }

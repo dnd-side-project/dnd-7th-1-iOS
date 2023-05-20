@@ -79,7 +79,6 @@ class MypageVC: BaseViewController {
     private let naviBar = NavigationBar()
     
     private let viewModel = MypageVM()
-    private let bag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -249,7 +248,7 @@ extension MypageVC {
                 notificationBoxVC.hidesBottomBarWhenPushed = true
                 self.navigationController?.pushViewController(notificationBoxVC, animated: true)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         myRecordBtn.rx.tap
             .asDriver()
@@ -259,7 +258,7 @@ extension MypageVC {
                 myRecordDataView.hidesBottomBarWhenPushed = true
                 self.navigationController?.pushViewController(myRecordDataView, animated: true)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         friendBtn.rx.tap
             .asDriver()
@@ -269,7 +268,7 @@ extension MypageVC {
                 friendsVC.hidesBottomBarWhenPushed = true
                 self.navigationController?.pushViewController(friendsVC, animated: true)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         setPrivacyBtn.rx.tap
             .asDriver()
@@ -279,7 +278,7 @@ extension MypageVC {
                 setPrivacyVC.hidesBottomBarWhenPushed = true
                 self.navigationController?.pushViewController(setPrivacyVC, animated: true)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         setAlarmBtn.rx.tap
             .asDriver()
@@ -289,7 +288,7 @@ extension MypageVC {
                 setNotificationVC.hidesBottomBarWhenPushed = true
                 self.navigationController?.pushViewController(setNotificationVC, animated: true)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         setLocationBtn.rx.tap
             .asDriver()
@@ -299,7 +298,7 @@ extension MypageVC {
                     UIApplication.shared.open(url)
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         termsBtn.rx.tap
             .asDriver()
@@ -309,7 +308,7 @@ extension MypageVC {
                 termsConditionsVC.hidesBottomBarWhenPushed = true
                 self.navigationController?.pushViewController(termsConditionsVC, animated: true)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         inquiryBtn.rx.tap
             .asDriver()
@@ -342,7 +341,7 @@ extension MypageVC {
                         self.popUpAlert(alertType: .sendMailError, targetVC: self, highlightBtnAction: #selector(self.dismissAlert), normalBtnAction: nil)
                     }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     private func bindProfileTap() {
@@ -354,7 +353,7 @@ extension MypageVC {
                 myProfileVC.hidesBottomBarWhenPushed = true
                 self.navigationController?.pushViewController(myProfileVC, animated: true)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 
@@ -367,7 +366,7 @@ extension MypageVC {
                 guard let self = self else { return }
                 self.configureUserData(data)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 

@@ -21,7 +21,6 @@ class MyDetailMapVC: BaseViewController {
         }
     
     private let viewModel = MypageVM()
-    private let bag = DisposeBag()
     
     var matrices: [Matrix]?
     
@@ -62,7 +61,7 @@ class MyDetailMapVC: BaseViewController {
                 guard let self = self else { return }
                 self.loading(loading: isLoading)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 
@@ -117,6 +116,6 @@ extension MyDetailMapVC {
                                            profileImageURL: profileImageURL)
                 self.mapVC.drawMyMapAtOnce(matrices: matrices)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }

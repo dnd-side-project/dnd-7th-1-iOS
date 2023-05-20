@@ -42,7 +42,6 @@ class UserInfoSettingVC: BaseViewController {
     private let pageCnt: Float = 3
     
     private let viewModel = UserInfoSettingVM()
-    private let bag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -147,7 +146,7 @@ extension UserInfoSettingVC {
                 ? self.setPage(self.page)
                 : self.popVC()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         naviBar.rightBtn.rx.tap
             .asDriver()
@@ -168,7 +167,7 @@ extension UserInfoSettingVC {
                 
                 if self.page == 3 { self.naviBar.rightBtn.setTitle("완료", for: .normal) }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         baseScrollView.rx.didScroll
             .asDriver()
@@ -177,7 +176,7 @@ extension UserInfoSettingVC {
                 let progress = (self.baseScrollView.contentOffset.x + self.screenWidth) / self.screenWidth
                 self.progressView.progress = Float(progress) / self.pageCnt
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 
@@ -191,7 +190,7 @@ extension UserInfoSettingVC {
                 guard let self = self else { return }
                 self.setRightBarBtnActive(isValid)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 

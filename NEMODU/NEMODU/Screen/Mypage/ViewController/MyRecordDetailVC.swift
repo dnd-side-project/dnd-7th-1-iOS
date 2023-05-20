@@ -132,7 +132,6 @@ class MyRecordDetailVC: BaseViewController {
     
     private let naviBar = NavigationBar()
     private let viewModel = MyRecordDetailVM()
-    private let bag = DisposeBag()
     var recordID: Int?
     var matrices: [Matrix]?
 
@@ -346,7 +345,7 @@ extension MyRecordDetailVC {
                                                memo: self.memoTextView.tv.text)
                 self.navigationController?.pushViewController(editRecordMomoVC, animated: true)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     
         miniMap.magnificationBtn.rx.tap
             .asDriver()
@@ -357,7 +356,7 @@ extension MyRecordDetailVC {
                 detailMapVC.matrices = matrices
                 self.navigationController?.pushViewController(detailMapVC, animated: true)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 
@@ -370,20 +369,20 @@ extension MyRecordDetailVC {
                 guard let self = self else { return }
                 self.configureRecordValue(recordData: data)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     private func bindTableView() {
         viewModel.output.dataSource
             .bind(to: proceedingChallengeTV.rx.items(dataSource: tableViewDataSource()))
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         viewModel.output.challengeList
             .withUnretained(self)
             .subscribe(onNext: { owner, item in
                 owner.proceedingChallengeTV.reloadData()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         proceedingChallengeTV.rx.itemSelected
             .asDriver()
@@ -405,7 +404,7 @@ extension MyRecordDetailVC {
                 challengeDetailVC.hidesBottomBarWhenPushed = true
                 self.navigationController?.pushViewController(challengeDetailVC, animated: true)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 

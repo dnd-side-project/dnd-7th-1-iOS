@@ -65,7 +65,6 @@ class MainVC: BaseViewController {
         }
     
     private let viewModel = MainVM()
-    private let bag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -113,7 +112,7 @@ class MainVC: BaseViewController {
                 guard let self = self else { return }
                 self.loading(loading: isLoading)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 
@@ -214,7 +213,7 @@ extension MainVC {
                                                self.mapVC.mapView.region.center.longitude,
                                                self.mapVC.mapView.region.span.latitudeDelta)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     private func bindBtn() {
@@ -230,7 +229,7 @@ extension MainVC {
                                                      myLocation: self.viewModel.output.myLocationVisible.value)
                 self.present(filterBottomSheet, animated: true)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         // 기록 시작 버튼
         startWalkBtn.rx.tap
@@ -248,7 +247,7 @@ extension MainVC {
                                     normalBtnAction: #selector(self.dismissAlert))
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         // 챌린지 목록 버튼
         challengeListBtn.rx.tap
@@ -259,7 +258,7 @@ extension MainVC {
                 challengeBottomSheet.delegate = self
                 self.present(challengeBottomSheet, animated: true)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         // 새로고침 영역
         refreshBtnView.rx.tapGesture()
@@ -272,7 +271,7 @@ extension MainVC {
                                            self.mapVC.mapView.region.center.longitude,
                                            self.mapVC.mapView.region.span.latitudeDelta)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 
@@ -288,7 +287,7 @@ extension MainVC {
                       let cnt = matricesNumber else { return }
                 self.refreshBtnView.configureBlocksCnt(cnt)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         // 챌린지 개수
         viewModel.output.challengeCnt
@@ -296,7 +295,7 @@ extension MainVC {
                 guard let self = self else { return }
                 self.configureChallengeListBtn(cnt: cnt)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     /// 나의 마커를 연결하는 메서드
@@ -312,7 +311,7 @@ extension MainVC {
                                            profileImageURL: profileImageURL,
                                            isHidden: !self.viewModel.output.myBlocksVisible.value)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     /// 일반 친구의 마커를 연결하는 메서드
@@ -331,7 +330,7 @@ extension MainVC {
                                                isHidden: !self.viewModel.output.friendVisible.value,
                                                isEnabled: true)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     /// 챌린지를 함께하는 친구의 마커를 연결하는 메서드
@@ -351,7 +350,7 @@ extension MainVC {
                                                isHidden: !self.viewModel.output.friendVisible.value,
                                                isEnabled: true)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     /// Matrix 배열을 입력받아 지도에 영역을 그리는 메서드
@@ -371,7 +370,7 @@ extension MainVC {
                                              blockColor: blockColor.blockColor)
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     /// 필터 변경에 따라 visible 상태를 변경하는 메서드
@@ -387,7 +386,7 @@ extension MainVC {
                                                  self.mapVC.mapView.region.span.latitudeDelta)
                 : self.mapVC.setOverlayVisible(of: .mine, visible: status)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         viewModel.output.friendVisible
             .asDriver()
@@ -400,7 +399,7 @@ extension MainVC {
                                                  self.mapVC.mapView.region.span.latitudeDelta)
                 : self.mapVC.setOverlayVisible(of: .friends, visible: status)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         // TODO: - myLocationVisible MVP2 부터 개발!!
     }
