@@ -66,47 +66,8 @@ extension BaseViewController {
     func setInteractivePopGesture(_ isEnabled: Bool) {
         navigationController?.interactivePopGestureRecognizer?.isEnabled = isEnabled
     }
-    
-    // MARK: - objc
-    /// 로그인 화면을 rootViewControllerf로 변경하는 메서드
-    @objc func setLoginToRootVC() {
-        guard let ad = UIApplication.shared.delegate as? AppDelegate else { return }
-        ad.window?.rootViewController = LoginNC()
-    }
 }
 
-// MARK: - API Error Handling
+// MARK: - APIErrorHandling
 
-extension BaseViewController {
-    /// APIError에 따른 알람창 연결
-    func bindAPIErrorAlert(_ viewModel: any BaseViewModel) {
-        // TODO: - 테플용 error code 노출
-        viewModel.apiError
-            .subscribe(onNext: { [weak self] error in
-                guard let self = self else { return }
-                // loading 종료
-                if let output = viewModel.output as? Lodable { output.endLoading() }
-                
-                // Error Alert
-                let errorTitle = error.title ?? "서비스에 오류가 발생했습니다 😢"
-                let errorCode = "Error Code: \(error.code ?? "unknown error")"
-                let confirmEvent = self.errorAlertConfirmAction(error.code)
-                self.popUpErrorAlert(targetVC: self,
-                                     title: errorTitle,
-                                     message: errorCode,
-                                     confirmEvent: confirmEvent)
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    /// Error Alert의 확인 버튼과 연결된 메서드
-    func errorAlertConfirmAction(_ errorCode: String?) -> Selector {
-        let errorCode = errorCode != nil ? ErrorType(rawValue: errorCode!) : .unknownError
-        switch errorCode {
-        case .unknownUser:
-            return #selector(setLoginToRootVC)
-        default:
-            return #selector(dismissAlert)
-        }
-    }
-}
+extension BaseViewController: APIErrorHandling {}

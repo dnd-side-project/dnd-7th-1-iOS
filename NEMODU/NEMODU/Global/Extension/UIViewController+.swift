@@ -61,6 +61,12 @@ extension UIViewController {
         popVC()
     }
     
+    /// 로그인 화면을 rootViewControllerf로 변경하는 메서드
+    @objc func setLoginToRootVC() {
+        guard let ad = UIApplication.shared.delegate as? AppDelegate else { return }
+        ad.window?.rootViewController = LoginNC()
+    }
+    
     /// 기기 스크린 hight에 맞춰 비율을 계산해 height를 리턴하는 함수
     func calculateHeightbyScreenHeight(originalHeight: CGFloat) -> CGFloat {
         let screenHeight = UIScreen.main.bounds.height
