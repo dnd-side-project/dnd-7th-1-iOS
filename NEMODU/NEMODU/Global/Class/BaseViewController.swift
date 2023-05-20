@@ -20,6 +20,8 @@ class BaseViewController: UIViewController {
     let keyboardWillShow = NotificationCenter.default.rx.notification(UIResponder.keyboardWillShowNotification)
     let keyboardWillHide = NotificationCenter.default.rx.notification(UIResponder.keyboardWillHideNotification)
     
+    let disposeBag = DisposeBag()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
@@ -48,6 +50,19 @@ class BaseViewController: UIViewController {
     func bindOutput() {}
     
     func bindLoading() {}
+    
+    /// APIError에 따른 알람창 연결
+    func bindAPIErrorAlert(_ viewModel: any BaseViewModel) {
+        viewModel.apiError
+            .subscribe(onNext: { [weak self] error in
+                guard let self = self,
+                      let errorMessage = error.message
+                else { return }
+                self.popUpErrorAlert(targetVC: self,
+                                     title: errorMessage)
+            })
+            .disposed(by: disposeBag)
+    }
     
     /// 메인화면을 rootViewControllerf로 변경하는 메서드
     func setTBCtoRootVC() {
