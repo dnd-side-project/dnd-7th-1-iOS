@@ -84,6 +84,10 @@ extension BaseViewController {
         viewModel.apiError
             .subscribe(onNext: { [weak self] error in
                 guard let self = self else { return }
+                // loading 종료
+                if let output = viewModel.output as? Lodable { output.endLoading() }
+                
+                // Error Alert
                 let errorTitle = error.title ?? "서비스에 오류가 발생했습니다 😢"
                 let errorCode = "Error Code: \(error.code ?? "unknown error")"
                 let confirmEvent = self.errorAlertConfirmAction(error.code)
