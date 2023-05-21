@@ -88,7 +88,19 @@ extension MyRecordListTVC {
     
     func configureCell(with element: ActivityRecord) {
         recordID = element.recordID
-        dateLabel.text = element.started
-        recordDataLabel.text = "\(element.matrixNumber.insertComma)칸 / \(element.stepCount.insertComma)보 / \(element.distance.toKilometer) / \(element.exerciseTime)"
+        
+        let date = element.started.toDate(.withTime)
+        dateLabel.text = "\(date.month)월 \(date.day)일 \(date.getDayOfWeek())요일 \(date.hour.showTwoDigitNumber):\(date.minute.showTwoDigitNumber)"
+        
+        let h = element.exerciseSecond / 3600
+        let m = (element.exerciseSecond % 3600) / 60
+        let s = (element.exerciseSecond % 3600) % 60
+        let time = (hour: h == 0 ? "" : "\(h)시간 ",
+                    minute: m == 0 ? "" : "\(m)분 ",
+                    second: "\(s)초")
+        
+        let exerciseTime = "\(time.hour)\(time.minute)\(time.second)"
+        
+        recordDataLabel.text = "\(element.matrixNumber.insertComma)칸 / \(element.stepCount.insertComma)보 / \(element.distance.toKilometer) / \(exerciseTime)"
     }
 }

@@ -12,11 +12,16 @@ struct MyRecordListResponseModel: Codable {
 }
 
 struct ActivityRecord: Codable {
-    let recordID, matrixNumber, stepCount, distance: Int
-    let exerciseTime, started: String
+    let recordID: Int
+    let matrixNumber: Int
+    let stepCount: Int
+    let distance: Int
+    let exerciseSecond: Int
+    let started: String
 
     enum CodingKeys: String, CodingKey {
         case recordID = "recordId"
-        case matrixNumber, stepCount, distance, exerciseTime, started
+        case exerciseSecond = "exerciseTime"
+        case matrixNumber, stepCount, distance, started
     }
 }
