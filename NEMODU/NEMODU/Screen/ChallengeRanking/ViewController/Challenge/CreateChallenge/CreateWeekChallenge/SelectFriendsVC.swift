@@ -145,6 +145,7 @@ class SelectFriendsVC: CreateChallengeVC {
     override func bindOutput() {
         super.bindOutput()
         
+        bindAPIErrorAlert(viewModel)
         responseFriendsList()
     }
     

@@ -46,6 +46,12 @@ class AccumulateRankingListVC : RankingListVC {
         bindAccumulateRankingList()
     }
     
+    override func bindOutput() {
+        super.bindOutput()
+        
+        bindAPIErrorAlert(viewModel)
+    }
+    
     // MARK: - Functions
     
     func configureRankingUserTVC() {

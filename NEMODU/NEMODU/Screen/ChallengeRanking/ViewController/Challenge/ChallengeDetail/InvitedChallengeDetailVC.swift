@@ -41,6 +41,7 @@ class InvitedChallengeDetailVC: ChallengeDetailVC {
     override func bindOutput() {
         super.bindOutput()
         
+        bindAPIErrorAlert(viewModel)
         bindInvitedChallengeDetail()
         responseAcceptChallengeSuccess()
         responseRejectChallengeSuccess()

@@ -166,6 +166,7 @@ class ChallengeHistoryDetailVC: ChallengeDetailVC {
     override func bindOutput() {
         super.bindOutput()
         
+        bindAPIErrorAlert(viewModel)
         bindChallengeHistoryDetail()
     }
     

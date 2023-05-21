@@ -82,6 +82,7 @@ class ChallengeVC : BaseViewController {
     override func bindOutput() {
         super.bindOutput()
         
+        bindAPIErrorAlert(viewModel)
         bindInvitedList()
         bindChallengeList()
     }

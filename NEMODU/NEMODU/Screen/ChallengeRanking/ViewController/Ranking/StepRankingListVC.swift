@@ -32,6 +32,12 @@ class StepRankingListVC : RankingListVC {
         bindStepRankingList()
     }
     
+    override func bindOutput() {
+        super.bindOutput()
+        
+        bindAPIErrorAlert(viewModel)
+    }
+    
     // MARK: - Functions
     
     func configureRankingUserTVC() {
