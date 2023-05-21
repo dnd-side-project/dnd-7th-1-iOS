@@ -19,7 +19,7 @@ struct urlResource<T: Decodable> {
     func judgeError(data: Data) -> Result<T, APIError> {
         let decoder = JSONDecoder()
         guard let decodeData = try? decoder.decode(ErrorResponseModel.self, from: data) else {
-            return .failure(.badGateway)
+            return .failure(.unknownError(-1))
         }
         
         return .failure(.error(decodeData))

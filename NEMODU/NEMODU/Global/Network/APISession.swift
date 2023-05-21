@@ -28,7 +28,10 @@ struct APISession: APIService {
                     switch response.result {
                     case .failure(let error):
                         dump(error)
-                        guard let error = response.data else { return }
+                        guard let error = response.data else {
+                            observer.onNext(.failure(.endOfOperation(response.response?.statusCode ?? -1)))
+                            return
+                        }
                         observer.onNext(urlResource.judgeError(data: error))
                         
                     case .success(let data):
@@ -61,7 +64,10 @@ struct APISession: APIService {
                     switch response.result {
                     case .failure(let error):
                         dump(error)
-                        guard let error = response.data else { return }
+                        guard let error = response.data else {
+                            observer.onNext(.failure(.endOfOperation(response.response?.statusCode ?? -1)))
+                            return
+                        }
                         observer.onNext(urlResource.judgeError(data: error))
                     case .success(let data):
                         observer.onNext(.success(data))
@@ -97,7 +103,10 @@ struct APISession: APIService {
                     switch response.result {
                     case .failure(let error):
                         dump(error)
-                        guard let error = response.data else { return }
+                        guard let error = response.data else {
+                            observer.onNext(.failure(.endOfOperation(response.response?.statusCode ?? -1)))
+                            return
+                        }
                         observer.onNext(urlResource.judgeError(data: error))
                         
                     case .success(let data):

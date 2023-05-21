@@ -16,7 +16,6 @@ protocol APIErrorHandling: UIViewController {
 extension APIErrorHandling {
     /// APIError에 따른 알람창 연결
     func bindAPIErrorAlert(_ viewModel: any BaseViewModel) {
-        // TODO: - 테플용 error code 노출
         viewModel.apiError
             .subscribe(onNext: { [weak self] error in
                 guard let self = self else { return }
@@ -24,22 +23,33 @@ extension APIErrorHandling {
                 if let output = viewModel.output as? Lodable { output.endLoading() }
                 
                 // Error Alert
-                let errorTitle = error.title ?? "서비스에 오류가 발생했습니다 😢"
-                let errorCode = "Error Code: \(error.code ?? "unknown error")"
-                let confirmEvent = self.errorAlertConfirmAction(error.code)
+                let errorTitle = error.title
+                let errorMessage = error.message
+                let confirmEvent = self.errorAlertConfirmAction(error)
                 self.popUpErrorAlert(targetVC: self,
                                      title: errorTitle,
-                                     message: errorCode,
+                                     message: errorMessage,
                                      confirmEvent: confirmEvent)
             })
             .disposed(by: disposeBag)
     }
     
     /// Error Alert의 확인 버튼과 연결된 메서드
-    func errorAlertConfirmAction(_ errorCode: String?) -> Selector {
-        let errorCode = errorCode != nil ? ErrorType(rawValue: errorCode!) : .unknownError
+    func errorAlertConfirmAction(_ error: APIError) -> Selector {
+        switch error {
+        case .endOfOperation:
+            // TODO: - 로그아웃 구현 후 수정
+            return #selector(setLoginToRootVC)
+        case .unknownError:
+            return #selector(dismissAlert)
+        case .error: break
+        }
+        
+        // case .error(ErrorResponseModel)
+        let errorCode = ErrorType(rawValue: error.code)
         switch errorCode {
         case .unknownUser:
+            // TODO: - 로그아웃 구현 후 수정
             return #selector(setLoginToRootVC)
         default:
             return #selector(dismissAlert)
