@@ -90,17 +90,9 @@ extension MyRecordListTVC {
         recordID = element.recordID
         
         let date = element.started.toDate(.withTime)
-        dateLabel.text = "\(date.month)월 \(date.day)일 \(date.getDayOfWeek())요일 \(date.hour.showTwoDigitNumber):\(date.minute.showTwoDigitNumber)"
+        dateLabel.text = "\(date.month)월 \(date.day)일 \(date.getDayOfWeek())요일 \(date.toTime(.hourClock24))"
         
-        let h = element.exerciseSecond / 3600
-        let m = (element.exerciseSecond % 3600) / 60
-        let s = (element.exerciseSecond % 3600) % 60
-        let time = (hour: h == 0 ? "" : "\(h)시간 ",
-                    minute: m == 0 ? "" : "\(m)분 ",
-                    second: "\(s)초")
-        
-        let exerciseTime = "\(time.hour)\(time.minute)\(time.second)"
-        
+        let exerciseTime = element.exerciseSecond / 60 > 0 ? "\(element.exerciseSecond / 60)분" : "\(element.exerciseSecond)초"
         recordDataLabel.text = "\(element.matrixNumber.insertComma)칸 / \(element.stepCount.insertComma)보 / \(element.distance.toKilometer) / \(exerciseTime)"
     }
 }
