@@ -25,6 +25,7 @@ struct APISession: APIService {
                                   interceptor: AuthInterceptor())
                 .validate(statusCode: 200...399)
                 .responseDecodable(of: T.self) { response in
+                    dump(response)
                     switch response.result {
                     case .failure(let error):
                         dump(error)

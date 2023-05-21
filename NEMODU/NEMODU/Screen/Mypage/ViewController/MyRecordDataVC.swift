@@ -125,6 +125,7 @@ class MyRecordDataVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        bindAPIErrorAlert(viewModel)
         bindTableView()
         bindCalendarReload()
         bindNoneDataMessage()

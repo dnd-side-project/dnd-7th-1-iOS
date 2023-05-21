@@ -167,6 +167,7 @@ class MyRecordDetailVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        bindAPIErrorAlert(viewModel)
         bindRecordData()
         bindTableView()
     }

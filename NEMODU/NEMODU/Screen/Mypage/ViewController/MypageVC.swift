@@ -109,6 +109,7 @@ class MypageVC: BaseViewController {
     override func bindOutput() {
         super.bindOutput()
         bindUserData()
+        bindAPIErrorAlert(viewModel)
     }
     
 }

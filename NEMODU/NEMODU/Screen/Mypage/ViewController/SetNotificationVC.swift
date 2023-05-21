@@ -117,6 +117,7 @@ class SetNotificationVC: BaseViewController {
     override func bindOutput() {
         super.bindOutput()
         
+        bindAPIErrorAlert(viewModel)
         fetchUserNotificationSettings()
     }
     

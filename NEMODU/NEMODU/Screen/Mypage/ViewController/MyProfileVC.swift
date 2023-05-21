@@ -103,6 +103,7 @@ class MyProfileVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        bindAPIErrorAlert(viewModel)
         bindProfileData()
     }
     

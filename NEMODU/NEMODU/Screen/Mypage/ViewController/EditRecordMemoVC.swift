@@ -56,6 +56,7 @@ class EditRecordMemoVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        bindAPIErrorAlert(viewModel)
         bindDismiss()
     }
     
