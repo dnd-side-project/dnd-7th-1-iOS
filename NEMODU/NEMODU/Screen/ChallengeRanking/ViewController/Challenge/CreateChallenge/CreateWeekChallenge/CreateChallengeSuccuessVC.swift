@@ -41,7 +41,7 @@ class CreateChallengeSuccuessVC: CreateChallengeVC {
     
     private let challengeTitleLabel = PaddingLabel()
         .then {
-            $0.text = "가즈아!"
+            $0.text = "----"
             $0.font = .body1
             $0.textColor = .gray900
             
@@ -49,7 +49,7 @@ class CreateChallengeSuccuessVC: CreateChallengeVC {
         }
     private let challengeDateLabel = PaddingLabel()
         .then {
-            $0.text = "8월 22일 - 8월 29일" // TODO: - 추후 기본 표시값 수정
+            $0.text = "-월 --일 - -월 --일"
             $0.font = .body4
             $0.textColor = .gray600
             
@@ -114,12 +114,11 @@ extension CreateChallengeSuccuessVC {
     func configureCreateChallengeResponse(creatChallengeResponseModel: CreatChallengeResponseModel) {
         challengeTitleLabel.text = creatChallengeResponseModel.message
         
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = DateType.withTime.dateFormatter
-        guard let startDate: Date = dateFormatter.date(from: creatChallengeResponseModel.started) else { return }
-        guard let endDate: Date = dateFormatter.date(from: creatChallengeResponseModel.ended) else { return }
-        
-        challengeDateLabel.text = "\(startDate.month.showTwoDigitNumber)월 \(startDate.day.showTwoDigitNumber)일 - \(endDate.month.showTwoDigitNumber)월 \(endDate.day.showTwoDigitNumber)일"
+        let startDate: Date? = String(creatChallengeResponseModel.started.split(separator: "T")[0]).toDate(.hyphen)
+        let endDate: Date? = String(creatChallengeResponseModel.ended.split(separator: "T")[0]).toDate(.hyphen)
+        if let startDate, let endDate {
+            challengeDateLabel.text = "\(startDate.month.showTwoDigitNumber)월 \(startDate.day.showTwoDigitNumber)일 - \(endDate.month.showTwoDigitNumber)월 \(endDate.day.showTwoDigitNumber)일"
+        }
         
         configureJoinUserInfo(joinUsersInfo: creatChallengeResponseModel.members)
     }

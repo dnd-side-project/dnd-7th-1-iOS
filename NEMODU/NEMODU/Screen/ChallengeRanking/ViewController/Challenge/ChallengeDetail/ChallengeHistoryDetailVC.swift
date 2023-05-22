@@ -183,24 +183,25 @@ class ChallengeHistoryDetailVC: ChallengeDetailVC {
 
 extension ChallengeHistoryDetailVC {
     
-    private func configureChallengeHistoryDetailVC(challengeHistoryDetailInfo: ChallengeHistoryDetailResponseModel) {   
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = DateType.withTime.dateFormatter
-        guard let startDate: Date = dateFormatter.date(from: challengeHistoryDetailInfo.started) else { return }
-        guard let endDate: Date = dateFormatter.date(from: challengeHistoryDetailInfo.ended) else { return }
-        
-        var calendar = Calendar(identifier: .gregorian)
-        calendar.firstWeekday = 2
-        let weekOfMonth = calendar.component(.weekOfMonth, from: challengeHistoryDetailInfo.started.toDate(.hyphen))
-        
+    private func configureChallengeHistoryDetailVC(challengeHistoryDetailInfo: ChallengeHistoryDetailResponseModel) {
         challengeDetailInfoView.weekChallengeTypeLabel.text = ChallengeType(rawValue: challengeHistoryDetailInfo.type)?.title
         challengeDetailInfoView.challengeNameImageView.tintColor = ChallengeColorType(rawValue: challengeHistoryDetailInfo.color)?.primaryColor
         challengeDetailInfoView.challengeNameLabel.text = challengeHistoryDetailInfo.name
-        challengeDetailInfoView.currentStateLabel.text = "\(startDate.year) \(startDate.month.showTwoDigitNumber)월 \(weekOfMonth)주차 (\(startDate.month.showTwoDigitNumber).\(startDate.day.showTwoDigitNumber)~\(endDate.month.showTwoDigitNumber).\(endDate.day.showTwoDigitNumber))"
-        setDDayStatus()
         
-        startLabel.text = "\(startDate.month.showTwoDigitNumber).\(startDate.day.showTwoDigitNumber) 부터"
-        endLabel.text = "\(endDate.month.showTwoDigitNumber).\(endDate.day.showTwoDigitNumber) 까지"
+        let startDate: Date? = challengeHistoryDetailInfo.started.toDate(.withTime)
+        let endDate: Date? = challengeHistoryDetailInfo.ended.toDate(.withTime)
+        
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.firstWeekday = 2
+        let weekOfMonth = calendar.component(.weekOfMonth, from: challengeHistoryDetailInfo.started.toDate(.withTime))
+
+        if let startDate, let endDate {
+            challengeDetailInfoView.currentStateLabel.text = "\(startDate.year) \(startDate.month.showTwoDigitNumber)월 \(weekOfMonth)주차 (\(startDate.month.showTwoDigitNumber).\(startDate.day.showTwoDigitNumber)~\(endDate.month.showTwoDigitNumber).\(endDate.day.showTwoDigitNumber))"
+            setDDayStatus()
+            
+            startLabel.text = "\(startDate.month.showTwoDigitNumber).\(startDate.day.showTwoDigitNumber) 부터"
+            endLabel.text = "\(endDate.month.showTwoDigitNumber).\(endDate.day.showTwoDigitNumber) 까지"
+        }
         
         updateChallengeTableViewHeight(rankingsCnt: challengeHistoryDetailInfo.rankings.count)
         
