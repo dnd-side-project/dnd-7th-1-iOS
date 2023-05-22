@@ -334,7 +334,7 @@ extension WalkingVC {
                 // 마커 추가
                 self.mapVC.addFriendAnnotation(coordinate: Matrix(latitude: latitude,
                                                                   longitude: longitude),
-                                               profileImageURL: friend.profileImageURL,
+                                               profileImageURL: friend.picturePathURL,
                                                nickname: friend.nickname,
                                                color: .main,
                                                isHidden: !self.viewModel.output.friendVisible.value,
@@ -354,7 +354,7 @@ extension WalkingVC {
                 // 마커 추가
                 self.mapVC.addFriendAnnotation(coordinate: Matrix(latitude: latitude,
                                                                   longitude: longitude),
-                                               profileImageURL: friend.profileImageURL,
+                                               profileImageURL: friend.picturePathURL,
                                                nickname: friend.nickname,
                                                color: ChallengeColorType(rawValue: friend.challengeColor)?.primaryColor ?? .main,
                                                challengeCnt: friend.challengeNumber,

@@ -114,7 +114,7 @@ extension MyDetailMapVC {
                       let lastBlock = matrices.last else { return }
                 self.mapVC.addMyAnnotation(coordinate: Matrix(latitude: lastBlock.latitude,
                                                               longitude: lastBlock.longitude),
-                                           profileImageURL: data.profileImageURL)
+                                           profileImageURL: data.picturePathURL)
                 self.mapVC.drawMyMapAtOnce(matrices: matrices)
             })
             .disposed(by: disposeBag)

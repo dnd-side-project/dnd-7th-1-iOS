@@ -152,7 +152,7 @@ extension ChallengeDetailMapVC {
                                                self.mapVC.mapView.region.center.longitude,
                                                self.mapVC.mapView.region.span.latitudeDelta)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     /// 유저 선택 시 해당 유저의 마지막 위치로 이동하는 메서드
@@ -179,7 +179,7 @@ extension ChallengeDetailMapVC {
                                           longitudeValue: longitude,
                                           delta: Map.defaultZoomScale)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 
@@ -209,7 +209,7 @@ extension ChallengeDetailMapVC {
                     }
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     private func bindMatrices() {
@@ -223,7 +223,7 @@ extension ChallengeDetailMapVC {
                                          owner: owner,
                                          blockColor: ChallengeColorType(rawValue: blockColor.color)?.blockColor ?? .clear)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     private func bindRank() {
