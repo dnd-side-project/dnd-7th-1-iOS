@@ -63,7 +63,7 @@ extension SelectFriendsView {
     }
     
     /// SelectFriendsView 내부 컴포넌트 표시 값 초기화 함수
-    func configureSelectFriendsView(friendInfo: Info) {
+    func configureSelectFriendsView(friendInfo: FriendDefaultInfo) {
         userNicknameLabel.text = friendInfo.nickname
         userProfileImageView.kf.setImage(with: URL(string: friendInfo.picturePath))
         if userProfileImageView.image == nil {

@@ -54,12 +54,9 @@ extension SelectFriendsTVC {
         selectionStyle = .none
     }
     
+    /// SelectFriendsTVC 내부 컴포넌트 표시 값 초기화 함수
     func configureSelectFriendsTVC(friendInfo: FriendDefaultInfo) {
-        userNicknameLabel.text = friendInfo.nickname
-        userProfileImageView.kf.setImage(with: URL(string: friendInfo.picturePath))
-        if userProfileImageView.image == nil {
-            userProfileImageView.image = .defaultThumbnail
-        }
+        selectFriendsView.configureSelectFriendsView(friendInfo: friendInfo)
     }
     
 }
