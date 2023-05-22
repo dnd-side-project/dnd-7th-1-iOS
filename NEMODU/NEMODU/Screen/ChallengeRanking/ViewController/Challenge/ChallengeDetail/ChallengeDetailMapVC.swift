@@ -183,7 +183,8 @@ extension ChallengeDetailMapVC {
                                                                             longitude: longitude),
                                                          profileImageURL: user.picturePathURL,
                                                          nickname: user.nickname,
-                                                         color: ChallengeColorType(rawValue: user.color)?.primaryColor ?? .main)
+                                                         color: ChallengeColorType(rawValue: user.color)?.primaryColor ?? .main,
+                                                         isBorderOn: true)
                     }
                 }
             })

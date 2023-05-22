@@ -76,9 +76,8 @@ class FriendAnnotationView: MKAnnotationView {
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
-        pinImageView.image = selected
-        ? pinImageView.image?.drawOutlie(color: color)
-        : UIImage(named: "friend_none")
+        pinImageView.image = UIImage(named: "friend_none")
+        if selected { pinImageView.image = pinImageView.image?.stroked(with: color)}
     }
     
     override var intrinsicContentSize: CGSize {
