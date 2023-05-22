@@ -20,7 +20,7 @@ class MyDetailMapVC: BaseViewController {
             $0.hideMagnificationBtn()
         }
     
-    private let viewModel = MypageVM()
+    private let viewModel = MyDetailMapVM()
     
     var matrices: [Matrix]?
     
@@ -107,11 +107,11 @@ extension MyDetailMapVC {
 
 extension MyDetailMapVC {
     private func bindUserData() {
-        viewModel.output.userData
-            .subscribe(onNext: { [weak self] data in
+        viewModel.output.profileImageURL
+            .subscribe(onNext: { [weak self] picturePath in
                 guard let self = self,
                       let matrices = self.matrices,
-                      let profileImageURL = URL(string: data.picturePath),
+                      let profileImageURL = URL(string: picturePath),
                       let lastBlock = matrices.last else { return }
                 self.mapVC.addMyAnnotation(coordinate: [lastBlock.latitude, lastBlock.longitude],
                                            profileImageURL: profileImageURL)
