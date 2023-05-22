@@ -330,11 +330,12 @@ extension WalkingVC {
             .subscribe(onNext: { [weak self] friend in
                 guard let self = self,
                       let latitude = friend.latitude,
-                      let longitude = friend.longitude,
-                      let profileImageURL = friend.profileImageURL else { return }
+                      let longitude = friend.longitude
+                else { return }
                 // 마커 추가
-                self.mapVC.addFriendAnnotation(coordinate: [latitude, longitude],
-                                               profileImageURL: profileImageURL,
+                self.mapVC.addFriendAnnotation(coordinate: Matrix(latitude: latitude,
+                                                                  longitude: longitude),
+                                               profileImageURL: friend.profileImageURL,
                                                nickname: friend.nickname,
                                                color: .main,
                                                isHidden: !self.viewModel.output.friendVisible.value,
@@ -349,11 +350,12 @@ extension WalkingVC {
             .subscribe(onNext: { [weak self] friend in
                 guard let self = self,
                       let latitude = friend.latitude,
-                      let longitude = friend.longitude,
-                      let profileImageURL = friend.profileImageURL else { return }
+                      let longitude = friend.longitude
+                else { return }
                 // 마커 추가
-                self.mapVC.addFriendAnnotation(coordinate: [latitude, longitude],
-                                               profileImageURL: profileImageURL,
+                self.mapVC.addFriendAnnotation(coordinate: Matrix(latitude: latitude,
+                                                                  longitude: longitude),
+                                               profileImageURL: friend.profileImageURL,
                                                nickname: friend.nickname,
                                                color: ChallengeColorType(rawValue: friend.challengeColor)?.primaryColor ?? .main,
                                                challengeCnt: friend.challengeNumber,

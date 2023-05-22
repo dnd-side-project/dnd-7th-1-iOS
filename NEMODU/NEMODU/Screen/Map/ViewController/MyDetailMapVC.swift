@@ -111,10 +111,10 @@ extension MyDetailMapVC {
             .subscribe(onNext: { [weak self] data in
                 guard let self = self,
                       let matrices = self.matrices,
-                      let profileImageURL = URL(string: data.picturePath),
                       let lastBlock = matrices.last else { return }
-                self.mapVC.addMyAnnotation(coordinate: [lastBlock.latitude, lastBlock.longitude],
-                                           profileImageURL: profileImageURL)
+                self.mapVC.addMyAnnotation(coordinate: Matrix(latitude: lastBlock.latitude,
+                                                              longitude: lastBlock.longitude),
+                                           profileImageURL: data.profileImageURL)
                 self.mapVC.drawMyMapAtOnce(matrices: matrices)
             })
             .disposed(by: bag)
