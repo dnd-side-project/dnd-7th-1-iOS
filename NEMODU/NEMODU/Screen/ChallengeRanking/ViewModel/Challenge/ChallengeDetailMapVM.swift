@@ -34,7 +34,7 @@ final class ChallengeDetailMapVM: BaseViewModel {
         var usersRankData = BehaviorRelay<[RankingList]>(value: [])
         
         // Matrices
-        var userMatrixData = PublishRelay<[MatrixList]>()
+        var userLastLocation = PublishRelay<[MatrixList]>()
         var matrices = PublishRelay<(nickname: String, matrices: [Matrix])>()
     }
     
@@ -82,9 +82,16 @@ extension ChallengeDetailMapVM {
                     for i in 0..<data.matrixList.count {
                         owner.input.userTable[data.matrixList[i].nickname] = data.matrixList[i]
                     }
-                    // data binding
-                    owner.output.userMatrixData.accept(data.matrixList)
+                    // Anntations
+                    owner.output.userLastLocation.accept(data.matrixList)
+                    
+                    // Rank
                     owner.output.usersRankData.accept(data.rankingList)
+                    
+                    // Matrices
+                    for data in data.matrixList {
+                        owner.output.matrices.accept((data.nickname, data.matrices))
+                    }
                 }
                 owner.output.endLoading()
             })

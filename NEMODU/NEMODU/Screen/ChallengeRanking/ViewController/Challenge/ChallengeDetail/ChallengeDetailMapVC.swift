@@ -58,8 +58,9 @@ class ChallengeDetailMapVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
-        bindUserMatrices()
-        bindUserRank()
+        bindAnnotations()
+        bindMatrices()
+        bindRank()
     }
     
     override func bindLoading() {
@@ -164,17 +165,46 @@ extension ChallengeDetailMapVC {
 // MARK: - Output
 
 extension ChallengeDetailMapVC {
-    
-    private func bindUserMatrices() {
-        viewModel.output.userMatrixData
+    private func bindAnnotations() {
+        viewModel.output.userLastLocation
             .subscribe(onNext: { [weak self] data in
-                guard let self = self else { return }
-                
+                guard let self = self,
+                      let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname)
+                else { return }
+                for user in data {
+                    if let latitude = user.latitude,
+                       let longitude = user.longitude {
+                        
+                        user.nickname == nickname
+                        ? self.mapVC.addMyAnnotation(coordinate: Matrix(latitude: latitude,
+                                                                        longitude: longitude),
+                                                     profileImageURL: user.picturePathURL)
+                        : self.mapVC.addFriendAnnotation(coordinate: Matrix(latitude: latitude,
+                                                                            longitude: longitude),
+                                                         profileImageURL: user.picturePathURL,
+                                                         nickname: user.nickname,
+                                                         color: ChallengeColorType(rawValue: user.color)?.primaryColor ?? .main)
+                    }
+                }
             })
             .disposed(by: bag)
     }
     
-    private func bindUserRank() {
+    private func bindMatrices() {
+        viewModel.output.matrices
+            .subscribe(onNext: { [weak self] nickname, matrices in
+                guard let self = self,
+                      let myNickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname),
+                      let blockColor = self.viewModel.input.userTable[nickname] else { return }
+                let owner: BlocksType = nickname == myNickname ? .mine : .friends
+                self.mapVC.drawBlockArea(matrices: matrices,
+                                         owner: owner,
+                                         blockColor: ChallengeColorType(rawValue: blockColor.color)?.blockColor ?? .clear)
+            })
+            .disposed(by: bag)
+    }
+    
+    private func bindRank() {
         viewModel.output.usersRankData
             .subscribe(onNext: { [weak self] _ in
                 guard let self = self else { return }
