@@ -211,12 +211,17 @@ extension MyRecordDetailVC {
     }
     
     private func configureRecordValue(recordData: DetailRecordDataResponseModel) {
-        recordDate.text = recordData.date
-        recordTime.text = recordData.started + "-" + recordData.ended
+        let date = recordData.date.toDate(.withTime)
+        recordDate.text = "\(date.month)월 \(date.day)일 \(date.getDayOfWeek())요일"
+        
+        let started = recordData.started.toDate(.withTime).toTime(.hourClock24)
+        let ended = recordData.ended.toDate(.withTime).toTime(.hourClock24)
+        recordTime.text = "\(started) - \(ended)"
+        
         blocksCntView.recordValue.text = "\(recordData.matrixNumber)"
         miniMap.drawMyMapAtOnce(matrices: recordData.matrices)
         recordStackView.firstView.recordValue.text = "\(recordData.distance.toKilometer)"
-        recordStackView.secondView.recordValue.text = recordData.exerciseTime
+        recordStackView.secondView.recordValue.text = recordData.exerciseTime.toExerciseTime
         recordStackView.thirdView.recordValue.text = "\(recordData.stepCount)".insertComma
         memoTextView.isHidden = recordData.message == ""
         memoTextView.tv.text = recordData.message

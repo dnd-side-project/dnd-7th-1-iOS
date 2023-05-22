@@ -70,7 +70,7 @@ class WalkingVC: BaseViewController {
     
     private let timeView = RecordView()
         .then {
-            $0.recordValue.text = "0:00"
+            $0.recordValue.text = "00:00"
             $0.recordTitle.text = "시간"
             $0.recordSubtitle.text = " "
         }
@@ -297,8 +297,7 @@ extension WalkingVC {
                 if self.mapVC.isWalking ?? false {
                     self.secondTimeValue += second
                     self.timeView.recordValue.text
-                    = "\(self.secondTimeValue / 60):"
-                    + String(format: "%02d", self.secondTimeValue % 60)
+                    = self.secondTimeValue.toExerciseTime
                 }
             })
             .disposed(by: bag)
