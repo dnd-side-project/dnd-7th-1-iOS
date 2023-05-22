@@ -14,7 +14,7 @@ import RxDataSources
 import DynamicBottomSheet
 import Kingfisher
 
-class FriendProfileBottomSheet: DynamicBottomSheetViewController {
+class FriendProfileBottomSheet: DynamicBottomSheetViewController, APIErrorHandling {
     private let baseView = UIView()
         .then {
             $0.backgroundColor = .gray50
@@ -80,7 +80,7 @@ class FriendProfileBottomSheet: DynamicBottomSheetViewController {
             $0.setTitle(FriendStatusType.noFriend.title, for: .normal)
             $0.setTitleColor(.white, for: .normal)
             $0.setBackgroundColor(.main, for: .normal)
-
+            
             $0.setTitle(FriendStatusType.requesting.title, for: .selected)
             $0.setTitleColor(.gray700, for: .selected)
             $0.setBackgroundColor(.white, for: .selected)
@@ -130,7 +130,7 @@ class FriendProfileBottomSheet: DynamicBottomSheetViewController {
     var nickname: String?
     weak var delegate: FriendProfileProtocol?
     private let viewModel = FriendProfileVM()
-    private let bag = DisposeBag()
+    let disposeBag = DisposeBag()
     static let cellHeight = 69
     
     override func viewWillAppear(_ animated: Bool) {
@@ -151,6 +151,7 @@ class FriendProfileBottomSheet: DynamicBottomSheetViewController {
         bindProfile()
         bindTableView()
         bindToastMessage()
+        bindAPIErrorAlert(viewModel)
     }
 }
 
@@ -307,7 +308,7 @@ extension FriendProfileBottomSheet {
                 guard let self = self else { return }
                 self.showProfileImage(with: self.profileImageBtn.currentImage!)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         addFriendBtn.rx.tap
             .asDriver()
@@ -325,7 +326,7 @@ extension FriendProfileBottomSheet {
                     self.addFriendBtn.layer.borderColor = UIColor.main.cgColor
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 
@@ -338,13 +339,13 @@ extension FriendProfileBottomSheet {
             .subscribe(onNext: { owner, item in
                 owner.setProfile(item)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     func bindTableView() {
         viewModel.output.dataSource
             .bind(to: proceedingChallengeTV.rx.items(dataSource: tableViewDataSource()))
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         viewModel.output.challengeList
             .withUnretained(self)
@@ -354,7 +355,7 @@ extension FriendProfileBottomSheet {
                 : owner.configureChallengeListTV(challengeCnt: item.count)
                 owner.proceedingChallengeTV.reloadData()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         proceedingChallengeTV.rx.itemSelected
             .asDriver()
@@ -368,7 +369,7 @@ extension FriendProfileBottomSheet {
                     self.delegate?.pushChallengeDetail(uuid)
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     
@@ -378,14 +379,14 @@ extension FriendProfileBottomSheet {
             .subscribe(onNext: { owner, status in
                 owner.popupToast(toastType: status ? .postFriendRequest : .networkError)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         viewModel.output.deleteStatus
             .withUnretained(self)
             .subscribe(onNext: { owner, status in
                 owner.popupToast(toastType: status ? .cancelFriendRequest : .networkError)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 

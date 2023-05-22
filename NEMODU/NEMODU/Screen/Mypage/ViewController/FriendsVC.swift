@@ -38,8 +38,6 @@ class FriendsVC: BaseViewController {
     
     private let recommendListVC = RecommendListVC()
     
-    private let bag = DisposeBag()
-    
     /// 친구 목록 편집 상태
     private var isFriendListEditing = BehaviorRelay<Bool>(value: false)
     
@@ -138,7 +136,7 @@ extension FriendsVC {
                 let offset = CGFloat(indexPath.row) * self.screenWidth
                 self.baseScrollView.scrollToHorizontalOffset(offset: offset)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         baseScrollView.rx.contentOffset
             .asDriver()
@@ -148,7 +146,7 @@ extension FriendsVC {
                 if page.isNaN || page.isInfinite { return }
                 self.menuBar.selectTab(Int(page))
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     private func bindBackBtn() {
@@ -167,7 +165,7 @@ extension FriendsVC {
                                   normalBtnAction: #selector(self.dismissAlert))
                 : self.popVC()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         // 편집 상태에 따라 뒤로가기 제스쳐 가능 상태 변경
         isFriendListEditing
@@ -175,7 +173,7 @@ extension FriendsVC {
                 guard let self = self else { return }
                 self.navigationController?.interactivePopGestureRecognizer?.isEnabled = !status
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 

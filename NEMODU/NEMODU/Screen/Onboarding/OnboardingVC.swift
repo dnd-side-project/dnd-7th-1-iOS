@@ -80,7 +80,6 @@ class OnboardingVC: BaseViewController {
         }
     
     private let pageCnt = 3
-    private let bag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -260,7 +259,7 @@ extension OnboardingVC {
                 self.setStartBtnActive(page == 2)
                 self.setPageControlSelectedPage(Int(page))
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 
@@ -274,7 +273,7 @@ extension OnboardingVC {
                 guard let self = self else { return }
                 self.presentLoginVC()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         skipBtn.rx.tap
             .asDriver()
@@ -282,7 +281,7 @@ extension OnboardingVC {
                 guard let self = self else { return }
                 self.presentLoginVC()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 

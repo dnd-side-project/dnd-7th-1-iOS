@@ -13,7 +13,7 @@ import RxCocoa
 import RxDataSources
 import DynamicBottomSheet
 
-class ChallengeListBottomSheet: DynamicBottomSheetViewController {
+class ChallengeListBottomSheet: DynamicBottomSheetViewController, APIErrorHandling {
     private let viewBar = UIView()
         .then {
             $0.backgroundColor = UIColor.systemGray4
@@ -55,7 +55,7 @@ class ChallengeListBottomSheet: DynamicBottomSheetViewController {
         }
     
     private let viewModel = ChallengeListVM()
-    private let bag = DisposeBag()
+    let disposeBag = DisposeBag()
     weak var delegate: PushChallengeVC?
     
     // constants
@@ -72,6 +72,7 @@ class ChallengeListBottomSheet: DynamicBottomSheetViewController {
         configureBottomSheet()
         bindTableView()
         bindMakeChallengeBtn()
+        bindAPIErrorAlert(viewModel)
     }
 }
 
@@ -148,7 +149,7 @@ extension ChallengeListBottomSheet {
                     self.delegate?.pushCreateChallengeVC()
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 
@@ -157,7 +158,7 @@ extension ChallengeListBottomSheet {
     func bindTableView() {
         viewModel.output.dataSource
             .bind(to: proceedingChallengeTV.rx.items(dataSource: tableViewDataSource()))
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         viewModel.output.challengeList
             .withUnretained(self)
@@ -167,7 +168,7 @@ extension ChallengeListBottomSheet {
                 : owner.configureChallengeListTV(item.count)
                 owner.proceedingChallengeTV.reloadData()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         proceedingChallengeTV.rx.itemSelected
             .asDriver()
@@ -181,7 +182,7 @@ extension ChallengeListBottomSheet {
                     self.delegate?.pushChallengeDetail(uuid)
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 

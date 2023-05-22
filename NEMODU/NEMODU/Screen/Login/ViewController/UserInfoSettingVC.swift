@@ -41,9 +41,6 @@ class UserInfoSettingVC: BaseViewController {
     private var page: Float = 1
     private let pageCnt: Float = 3
     
-    private let viewModel = UserInfoSettingVM()
-    private let bag = DisposeBag()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -62,11 +59,6 @@ class UserInfoSettingVC: BaseViewController {
     override func bindInput() {
         super.bindInput()
         bindNaviBtn()
-    }
-    
-    override func bindOutput() {
-        super.bindOutput()
-        bindNextBtnActive()
     }
     
 }
@@ -98,15 +90,17 @@ extension UserInfoSettingVC {
         addChild(nicknameVC)
         addChild(addfriendsVC)
         addChild(locationSettingVC)
-        nicknameVC.viewModel = viewModel
+        
         baseScrollView.addSubview(baseStackView)
         [nicknameVC.view, addfriendsVC.view, locationSettingVC.view].forEach {
             baseStackView.addArrangedSubview($0)
         }
         
+        nicknameVC.delegate = self
+        
         progressView.progress = page / pageCnt
         
-        setRightBarBtnActive(viewModel.output.isNextBtnActive.value)
+        setRightBarBtnActive(false)
     }
 }
 
@@ -147,7 +141,7 @@ extension UserInfoSettingVC {
                 ? self.setPage(self.page)
                 : self.popVC()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         naviBar.rightBtn.rx.tap
             .asDriver()
@@ -168,7 +162,7 @@ extension UserInfoSettingVC {
                 
                 if self.page == 3 { self.naviBar.rightBtn.setTitle("완료", for: .normal) }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         baseScrollView.rx.didScroll
             .asDriver()
@@ -177,28 +171,21 @@ extension UserInfoSettingVC {
                 let progress = (self.baseScrollView.contentOffset.x + self.screenWidth) / self.screenWidth
                 self.progressView.progress = Float(progress) / self.pageCnt
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
-
-// MARK: - Output
-
-extension UserInfoSettingVC {
-    private func bindNextBtnActive() {
-        viewModel.output.isNextBtnActive
-            .asDriver(onErrorJustReturn: false)
-            .drive(onNext: { [weak self] isValid in
-                guard let self = self else { return }
-                self.setRightBarBtnActive(isValid)
-            })
-            .disposed(by: bag)
-    }
-}
-
 // MARK: - Custom Methods
 
 extension UserInfoSettingVC {
     private func setPage(_ page: Float) {
         baseScrollView.scrollToHorizontalOffset(offset: screenWidth * CGFloat(page - 1))
+    }
+}
+
+// MARK: - NavigationBarNextBtnDelegate
+
+extension UserInfoSettingVC: NavigationBarNextBtnDelegate {
+    func changeNaviBarNextBtnActiveStatus(_ status: Bool) {
+        setRightBarBtnActive(status)
     }
 }

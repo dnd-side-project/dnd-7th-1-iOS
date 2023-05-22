@@ -54,8 +54,6 @@ class RankingListVC : BaseViewController {
     var selectedDate: Date = .now
 
     let myUserNickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) ?? ""
-    
-    let bag = DisposeBag()
 
     // MARK: - Life Cycle
     
@@ -196,7 +194,7 @@ extension RankingListVC {
                 
                 self.configureWeeksNavigation(targetDate: -7)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         nextWeekButton.rx.tap
             .asDriver()
@@ -205,7 +203,7 @@ extension RankingListVC {
                 
                 self.configureWeeksNavigation(targetDate: 7)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
 }

@@ -116,7 +116,6 @@ class CreateWeekChallengeVC: CreateChallengeVC {
     // MARK: - Variables and Properties
     
     private let viewModel = CreateWeekChallengeVM()
-    private let bag = DisposeBag()
     private var creatChallengeResponseModel: CreatChallengeResponseModel?
     
     var friends: [FriendDefaultInfo] = []
@@ -166,7 +165,8 @@ class CreateWeekChallengeVC: CreateChallengeVC {
     
     override func bindOutput() {
         super.bindOutput()
-
+        
+        bindAPIErrorAlert(viewModel)
         responseCreateWeekChallenge()
     }
     
@@ -415,7 +415,7 @@ extension CreateWeekChallengeVC {
                 })
                 
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         insertChallengeNameTextField.rx.controlEvent([.editingDidEnd])
             .subscribe(onNext: { [self] in
@@ -426,7 +426,7 @@ extension CreateWeekChallengeVC {
                     limitedAlertChallengeNameCountLabel.isHidden = true
                 })
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         insertChallengeNameTextField.rx.controlEvent([.editingChanged])
             .asDriver()
@@ -451,7 +451,7 @@ extension CreateWeekChallengeVC {
                 self.checkConfirmButtonEnableCondition()
                 
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     private func bindInsertChallengeMessageTextView() {
@@ -473,7 +473,7 @@ extension CreateWeekChallengeVC {
                 }
                 
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         insertChallengeMessageTextView.tv.rx.didEndEditing
             .subscribe(onNext: { [weak self] _ in
@@ -495,7 +495,7 @@ extension CreateWeekChallengeVC {
                 self.checkConfirmButtonEnableCondition()
                 
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
 }
@@ -513,7 +513,7 @@ extension CreateWeekChallengeVC {
                     self.popUpAlert(alertType: .createWeekChallenge, targetVC: self, highlightBtnAction: #selector(self.dismissAlert), normalBtnAction: nil)
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         viewModel.output.successWithResponseData
             .subscribe(onNext: { [weak self] data in
@@ -525,7 +525,7 @@ extension CreateWeekChallengeVC {
                 createChallengeSuccuessVC.modalPresentationStyle = .fullScreen
                 self.present(createChallengeSuccuessVC, animated: true)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 

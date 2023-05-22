@@ -79,7 +79,6 @@ class WalkingVC: BaseViewController {
     private var secondTimeValue: Int = 0
     private var startTime: Date?
     private let viewModel = WalkingVM()
-    private let bag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -113,6 +112,7 @@ class WalkingVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        bindAPIErrorAlert(viewModel)
         bindRecordValue()
         bindWeekBlocksCnt()
         bindFriendAnnotation()
@@ -128,7 +128,7 @@ class WalkingVC: BaseViewController {
                 guard let self = self else { return }
                 self.loading(loading: isLoading)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 
@@ -223,7 +223,7 @@ extension WalkingVC {
                                                self.mapVC.mapView.region.center.longitude,
                                                self.mapVC.mapView.region.span.latitudeDelta)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     private func bindBtn() {
@@ -235,7 +235,7 @@ extension WalkingVC {
                 self.setRecordBtnStatus(isWalking: false)
                 self.mapVC.stopUpdateStep()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         // 기록 중단 버튼
         stopBtn.rx.tap
@@ -263,7 +263,7 @@ extension WalkingVC {
                     self.present(recordResultNC, animated: true)
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         // 기록 재시작 버튼
         playBtn.rx.tap
@@ -273,7 +273,7 @@ extension WalkingVC {
                 self.setRecordBtnStatus(isWalking: true)
                 self.mapVC.updateStep()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 
@@ -288,7 +288,7 @@ extension WalkingVC {
                 guard let self = self else { return }
                 self.distanceView.recordValue.text = "\(distance.toKilometer)"
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         // 이동 시간 기록
         viewModel.timer.driver.asObservable()
@@ -300,7 +300,7 @@ extension WalkingVC {
                     = self.secondTimeValue.toExerciseTime
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         // 채운 칸 수 기록
         mapVC.blocksCnt
@@ -309,7 +309,7 @@ extension WalkingVC {
                 guard let self = self else { return }
                 self.blocksNumView.recordValue.text = "\(blocksCnt.insertComma)"
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     private func bindWeekBlocksCnt() {
@@ -320,7 +320,7 @@ extension WalkingVC {
                       let cnt = matricesNumber else { return }
                 self.configureWeekBlockCnt(cnt)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     /// 일반 친구의 마커를 연결하는 메서드
@@ -339,7 +339,7 @@ extension WalkingVC {
                                                isHidden: !self.viewModel.output.friendVisible.value,
                                                isEnabled: true)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     /// 챌린지를 함께하는 친구의 마커를 연결하는 메서드
@@ -359,7 +359,7 @@ extension WalkingVC {
                                                isHidden: !self.viewModel.output.friendVisible.value,
                                                isEnabled: true)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     /// Matrix 배열을 입력받아 지도에 영역을 그리는 메서드
@@ -379,7 +379,7 @@ extension WalkingVC {
                                              blockColor: blockColor.blockColor)
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 

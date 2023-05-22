@@ -46,6 +46,12 @@ class AccumulateRankingListVC : RankingListVC {
         weeksNavigationView.isHidden = true
     }
     
+    override func bindOutput() {
+        super.bindOutput()
+        
+        bindAPIErrorAlert(viewModel)
+    }
+    
     // MARK: - Functions
     
     func configureRankingUserTVC() {
@@ -153,6 +159,6 @@ extension AccumulateRankingListVC {
                 self.configureRankingUserTVC()
                 self.rankingTableView.reloadData()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }

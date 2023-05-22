@@ -70,7 +70,6 @@ class RecordResultVC: BaseViewController {
     
     private let naviBar = NavigationBar()
     private let viewModel = RecordResultVM()
-    private let bag = DisposeBag()
     private var recordData: RecordDataRequest?
     
     override func viewDidLoad() {
@@ -96,8 +95,9 @@ class RecordResultVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        bindAPIErrorAlert(viewModel)
         bindKeyboardScroll()
-        bindDismiss()
+        bindPostResult()
     }
     
     override func bindLoading() {
@@ -108,7 +108,7 @@ class RecordResultVC: BaseViewController {
                 guard let self = self else { return }
                 self.loading(loading: isLoading)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 
@@ -117,8 +117,8 @@ class RecordResultVC: BaseViewController {
 extension RecordResultVC {
     private func configureNaviBar() {
         view.addSubview(naviBar)
-        let month = Calendar.current.component(.month, from: Date.now)
-        let day = Calendar.current.component(.day, from: Date.now)
+        let month = Date.now.month
+        let day = Date.now.day
         naviBar.naviType = .present
         naviBar.configureNaviBar(targetVC: self,
                                  title: "\(month)월 \(day)일의 기록")
@@ -228,7 +228,7 @@ extension RecordResultVC {
                 recordData.message = self.memoTextView.tv.text
                 self.viewModel.postRecordData(with: recordData)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     private func bindMyDetailMap() {
@@ -241,7 +241,7 @@ extension RecordResultVC {
                 detailMapVC.matrices = recordData.matrices
                 self.navigationController?.pushViewController(detailMapVC, animated: true)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 
@@ -254,19 +254,19 @@ extension RecordResultVC {
                 guard let self = self else { return }
                 self.baseScrollView.scrollToBottom(animated: true)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
-    private func bindDismiss() {
-        // dismiss to rootViewController
-        // TODO: - error alert 추가
+    private func bindPostResult() {
         viewModel.output.isValidPost
             .subscribe(onNext: { [weak self] validation in
                 guard let self = self else { return }
                 validation
                 ? self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
-                : print("네트워크 연결 상태가 좋지 않습니다.")
+                : self.viewModel.apiError.onNext(.error(ErrorResponseModel(code: "200 False",
+                                                                           message: "잠시후 다시 시도해주세요 😢",
+                                                                           trace: nil)))
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }

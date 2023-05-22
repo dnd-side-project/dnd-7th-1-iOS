@@ -75,7 +75,6 @@ class MyProfileVC: BaseViewController {
     private let signOutBtn = ArrowBtn(title: "회원 탈퇴")
     
     private let viewModel = UserInfoSettingVM()
-    private let bag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -104,6 +103,7 @@ class MyProfileVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        bindAPIErrorAlert(viewModel)
         bindProfileData()
     }
     
@@ -200,7 +200,7 @@ extension MyProfileVC {
                 guard let self = self else { return }
                 self.showProfileImage(with: self.profileImageBtn.currentImage!)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         editProfileBtn.rx.tap
             .asDriver()
@@ -210,7 +210,7 @@ extension MyProfileVC {
                 editProfileVC.delegate = self
                 self.navigationController?.pushViewController(editProfileVC, animated: true)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 
@@ -223,7 +223,7 @@ extension MyProfileVC {
                 guard let self = self else { return }
                 self.configureProfileData(data)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 

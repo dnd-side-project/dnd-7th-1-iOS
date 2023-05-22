@@ -83,10 +83,6 @@ class TermsConditionsAgreementVC: BaseViewController {
             $0.isEnabled = false
         }
     
-    // MARK: - Variables and Properties
-    
-    private let bag = DisposeBag()
-    
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
@@ -220,7 +216,7 @@ extension TermsConditionsAgreementVC {
                     agreeView.isAgreeDetailTermsConditions(isAgree: isAgreeAllButtonSelected)
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         agreeViewList.forEach { agreeView in
             agreeView.checkStatusButton.rx.tap
@@ -241,7 +237,7 @@ extension TermsConditionsAgreementVC {
                 }
                 self.toggleAgreeAllStatus(agreedAll: isAgreedAll)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
             
         }
         
@@ -258,7 +254,7 @@ extension TermsConditionsAgreementVC {
                     
                     self.showTermsConditionsWebPage(url: buttonType.webLink.url)
                 })
-                .disposed(by: bag)
+                .disposed(by: disposeBag)
         }
         
         startButton.rx.tap
@@ -268,7 +264,7 @@ extension TermsConditionsAgreementVC {
                 // TODO: - 네모두 시작하기 버튼 바인딩
                 print("startButton - 네모두 시작하기 pressed")
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
 }

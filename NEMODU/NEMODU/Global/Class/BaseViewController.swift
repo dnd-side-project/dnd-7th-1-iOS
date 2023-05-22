@@ -20,6 +20,8 @@ class BaseViewController: UIViewController {
     let keyboardWillShow = NotificationCenter.default.rx.notification(UIResponder.keyboardWillShowNotification)
     let keyboardWillHide = NotificationCenter.default.rx.notification(UIResponder.keyboardWillHideNotification)
     
+    let disposeBag = DisposeBag()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
@@ -49,16 +51,15 @@ class BaseViewController: UIViewController {
     
     func bindLoading() {}
     
+}
+
+// MARK: - Custom Methods
+
+extension BaseViewController {
     /// 메인화면을 rootViewControllerf로 변경하는 메서드
     func setTBCtoRootVC() {
         guard let ad = UIApplication.shared.delegate as? AppDelegate else { return }
         ad.window?.rootViewController = NEMODUTBC()
-    }
-    
-    /// 로그인 화면을 rootViewControllerf로 변경하는 메서드
-    func setLoginToRootVC() {
-        guard let ad = UIApplication.shared.delegate as? AppDelegate else { return }
-        ad.window?.rootViewController = LoginNC()
     }
     
     /// 제스쳐로 뒤로가기 인터랙션 Enabled 상태를 지정하는 메서드
@@ -66,3 +67,7 @@ class BaseViewController: UIViewController {
         navigationController?.interactivePopGestureRecognizer?.isEnabled = isEnabled
     }
 }
+
+// MARK: - APIErrorHandling
+
+extension BaseViewController: APIErrorHandling {}

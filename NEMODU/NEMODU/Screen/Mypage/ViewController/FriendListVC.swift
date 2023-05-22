@@ -100,7 +100,6 @@ class FriendListVC: BaseViewController {
     
     static let friendCellHeight = 64.0
     private let viewModel = FriendListVM()
-    private let bag = DisposeBag()
     
     weak var delegate: NavigationBarBackBtnDelegate?
     
@@ -131,6 +130,7 @@ class FriendListVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        bindAPIErrorAlert(viewModel)
         bindFriendRequestTableView()
         bindFriendListTableView()
         bindFriendRequestHandlingStatus()
@@ -248,7 +248,7 @@ extension FriendListVC {
                     self.viewModel.postDeleteFriendRequest(self.removedFriendsList.map { $0.nickname })
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 
@@ -259,7 +259,7 @@ extension FriendListVC {
     private func bindFriendRequestTableView() {
         viewModel.output.friendRequestList.dataSource
             .bind(to: requestHandlingTV.rx.items(dataSource: friendRequestTableViewDataSource()))
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         viewModel.output.friendRequestList.friendsInfo
             .withUnretained(self)
@@ -267,14 +267,14 @@ extension FriendListVC {
                 owner.requestNoneMessageLabel.isHidden = item.count != 0
                 owner.requestHandlingTV.reloadData()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     /// 내 친구 목록 tableView 바인딩
     private func bindFriendListTableView() {
         viewModel.output.myFriendsList.dataSource
             .bind(to: friendListTV.rx.items(dataSource: friendListTableViewDataSource()))
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         viewModel.output.myFriendsList.friendsInfo
             .withUnretained(self)
@@ -282,7 +282,7 @@ extension FriendListVC {
                 owner.friendNoneMessageLabel.isHidden = item.count != 0
                 owner.friendListTV.reloadData()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     /// 친구 요청을 수락/거절했을때 이벤트를 처리하는 메서드
@@ -297,7 +297,7 @@ extension FriendListVC {
                     self.popupToast(toastType: .refuseFriendRequest(nickname: data.friendNickname))
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     private func bindToastView() {
@@ -310,7 +310,7 @@ extension FriendListVC {
                 }
                 // 서버에서 status가 false인 경우인 존재하지 않음
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 

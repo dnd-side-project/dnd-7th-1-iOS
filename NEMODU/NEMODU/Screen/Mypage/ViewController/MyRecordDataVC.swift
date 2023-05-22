@@ -85,7 +85,6 @@ class MyRecordDataVC: BaseViewController {
     
     private let naviBar = NavigationBar()
     private let viewModel = MyRecordDataVM()
-    private let bag = DisposeBag()
     
     private var isWeeklyScope = true
     
@@ -126,6 +125,7 @@ class MyRecordDataVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        bindAPIErrorAlert(viewModel)
         bindTableView()
         bindCalendarReload()
         bindNoneDataMessage()
@@ -291,7 +291,7 @@ extension MyRecordDataVC {
                 self.calendarCV.reloadData()
                 self.selectCV(date: self.viewModel.input.selectedDay.value)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         prevWeekBtn.rx.tap
             .asDriver()
@@ -303,7 +303,7 @@ extension MyRecordDataVC {
                 self.calendarCV.reloadData()
                 self.selectCV(date: self.viewModel.input.selectedDay.value)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         calendarScopeBtn.rx.tap
             .asDriver()
@@ -317,7 +317,7 @@ extension MyRecordDataVC {
                 self.setCalendarHeight()
                 self.selectCV(date: self.viewModel.input.selectedDay.value)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     private func bindDaySelect() {
@@ -338,7 +338,7 @@ extension MyRecordDataVC {
                                                    ended: self.viewModel.endDateFormatter(day))
                 self.recordTableView.reloadData()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         calendarCV.rx.itemSelected
             .asDriver()
@@ -362,7 +362,7 @@ extension MyRecordDataVC {
                     self.selectCV(date: selectedDate)
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 
@@ -376,13 +376,13 @@ extension MyRecordDataVC {
                 guard let self = self else { return }
                 self.noneMessage.isHidden = !isEmpty
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     private func bindTableView() {
         viewModel.output.dataSource
             .bind(to: recordTableView.rx.items(dataSource: tableViewDataSource()))
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         recordTableView.rx.itemSelected
             .asDriver()
@@ -395,7 +395,7 @@ extension MyRecordDataVC {
                 myRecordDetailVC.recordID = recordID
                 self.navigationController?.pushViewController(myRecordDetailVC, animated: true)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     private func bindCalendarReload() {
@@ -406,7 +406,7 @@ extension MyRecordDataVC {
                 self.calendarCV.reloadData()
                 self.selectCV(date: self.viewModel.input.selectedDay.value)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 

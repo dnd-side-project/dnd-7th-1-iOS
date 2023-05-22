@@ -47,10 +47,6 @@ class NotificationBoxVC: BaseViewController {
             $0.rowHeight = UITableView.automaticDimension
         }
     
-    // MARK: - Variables and Properties
-    
-    private let bag = DisposeBag()
-    
     // TODO: 서버연결 후 Dummy Data 삭제
     typealias NotificationListType = ((iconType: String, title: String, body: String, time:String, isRead: Bool))
     private let dummyData: [NotificationListType] = [("COMMON", "주차 시작 알림", "이번 주차 기록/챌린지가 자정에 곧 종료돼요.", "2023-05-04T16:50:00", false),
@@ -153,7 +149,7 @@ extension NotificationBoxVC {
                 self.navigationBar.rightBtn.isEnabled = false
                 self.navigationBar.rightBtn.setTitleColor(.gray300, for: .normal)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
 }

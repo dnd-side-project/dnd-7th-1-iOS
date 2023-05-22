@@ -129,7 +129,6 @@ class ChallengeHistoryDetailVC: ChallengeDetailVC {
     // MARK: - Variables and Properties
     
     private let viewModel = ChallengeHistoryDetailVM()
-    private let bag = DisposeBag()
     var challengeHistoryDetailResponseModel: ChallengeHistoryDetailResponseModel?
     
     var challgeStatus: String?
@@ -167,6 +166,7 @@ class ChallengeHistoryDetailVC: ChallengeDetailVC {
     override func bindOutput() {
         super.bindOutput()
         
+        bindAPIErrorAlert(viewModel)
         bindChallengeHistoryDetail()
     }
     
@@ -560,7 +560,7 @@ extension ChallengeHistoryDetailVC {
                 
                 self.configureUpdateStatusLabel()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         miniMapVC.magnificationBtn.rx.tap
             .asDriver()
@@ -574,7 +574,7 @@ extension ChallengeHistoryDetailVC {
                 
                 self.navigationController?.pushViewController(challengeDetailMapVC, animated: true)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 
@@ -591,6 +591,6 @@ extension ChallengeHistoryDetailVC {
                 self.configureChallengeHistoryDetailVC(challengeHistoryDetailInfo: data)
                 self.miniMapVC.drawMyMapAtOnce(matrices: data.matrices)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }

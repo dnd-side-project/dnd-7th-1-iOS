@@ -27,10 +27,6 @@ class SetPrivacyVC: BaseViewController {
             $0.setMessage("전체 사용자에게 보여지는 추천친구에서\n내 계정이 표시되지않습니다")
         }
     
-    // MARK: - Variables and Properties
-    
-    private let bag = DisposeBag()
-    
     // MARK: - Life Cycle
     
     override func configureView() {
@@ -94,7 +90,7 @@ extension SetPrivacyVC {
             .subscribe(onNext: { owner, status in
                 print("친구목록제외 isOn changed: \(status)") // TODO: - 친구목록제외 여부 설정 서버연결
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
 }
