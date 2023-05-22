@@ -218,7 +218,7 @@ extension MyProfileVC {
                 guard let self = self else { return }
                 self.popUpAlert(alertType: .logout,
                                 targetVC: self,
-                                highlightBtnAction: #selector(self.dismissAlert),
+                                highlightBtnAction: #selector(self.logout),
                                 normalBtnAction: #selector(self.dismissAlert))
             })
             .disposed(by: disposeBag)
