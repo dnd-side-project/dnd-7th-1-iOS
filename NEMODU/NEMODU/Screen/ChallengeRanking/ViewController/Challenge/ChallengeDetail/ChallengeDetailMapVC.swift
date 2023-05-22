@@ -146,12 +146,13 @@ extension ChallengeDetailMapVC {
         userRankingListTV.rx.itemSelected
             .subscribe(onNext: { [weak self] indexPath in
                 guard let self = self,
-                      let cell = self.userRankingListTV.cellForRow(at: indexPath) as? ChallengeDetailMapRankingTVC,
-                      let location = cell.getLocation(),
+                      let cell = self.userRankingListTV.cellForRow(at: indexPath) as? ChallengeDetailMapRankingTVC
+                else { return }
+                guard let location = cell.getLocation(),
                       let latitude = location.latitude,
                       let longitude = location.longitude
                 else {
-                    // TODO: - 영역 기록을 안한 유저 처리
+                    self.popupToast(toastType: .noRecord)
                     return
                 }
                 _ = self.mapVC.goLocation(latitudeValue: latitude,
