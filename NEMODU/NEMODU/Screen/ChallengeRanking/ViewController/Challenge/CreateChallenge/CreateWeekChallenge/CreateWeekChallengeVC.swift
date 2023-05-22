@@ -193,11 +193,13 @@ class CreateWeekChallengeVC: CreateChallengeVC {
     private func updateSelectedChallengePeriod() {
         if started != nil {
             challengePeriodButtonView.statusImageView.image = UIImage(named: "check")
-            
             challengePeriodButtonView.dateLabel.isHidden = false
-            guard let startDate = started?.split(separator: " ") else { return }
-            guard let endDate = ended?.split(separator: " ") else { return }
-            challengePeriodButtonView.dateLabel.text = "\(startDate[1]) \(startDate[2]) - \(endDate[1]) \(endDate[2])"
+            
+            let startDate = started?.split(separator: " ")
+            let endDate = ended?.split(separator: " ")
+            if let startDate, let endDate {
+                challengePeriodButtonView.dateLabel.text = "\(startDate[1]) \(startDate[2]) - \(endDate[1]) \(endDate[2])"
+            }
         }
     }
     
@@ -223,21 +225,14 @@ class CreateWeekChallengeVC: CreateChallengeVC {
                 .then {
                     $0.axis = .vertical
                     $0.alignment = .fill
-                    
                 }
             
             for friend in friends {
-                let tableViewCell = SelectFriendsTVC()
-                    .then {
-                        $0.configureSelectFriendsTVC(friendInfo: friend)
-                        $0.checkImageView.isHidden = true
-                    }
+                let selectFriendsView = SelectFriendsView()
+                selectFriendsView.configureSelectFriendsView(friendInfo: friend)
+                selectFriendsView.checkImageView.isHidden = true
                 
-                tableViewCell.snp.makeConstraints {
-                    $0.height.equalTo(64)
-                }
-                
-                stackView.addArrangedSubview(tableViewCell)
+                stackView.addArrangedSubview(selectFriendsView)
             }
             
             selectFriendsButtonView.snp.remakeConstraints {

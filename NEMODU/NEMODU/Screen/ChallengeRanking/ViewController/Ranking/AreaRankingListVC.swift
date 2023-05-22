@@ -44,8 +44,8 @@ class AreaRankingListVC : RankingListVC {
         guard let areaRankingList = areaRankingListResponseModel else { return }
         for areaRanking in areaRankingList.areaRankings {
             if areaRanking.nickname == myUserNickname {
-                myRankingTVC.configureRankingCell(rankNumber: areaRanking.rank, profileImageURL: areaRanking.picturePathURL, nickname: areaRanking.nickname, blocksNumber: areaRanking.score)
-                myRankingTVC.configureRankingTopCell()
+                myRankingView.configureRankingUserView(rankNumber: areaRanking.rank, profileImageURL: areaRanking.picturePathURL, nickname: areaRanking.nickname, blocksNumber: areaRanking.score)
+                myRankingView.configureRankingTop()
             }
         }
     }

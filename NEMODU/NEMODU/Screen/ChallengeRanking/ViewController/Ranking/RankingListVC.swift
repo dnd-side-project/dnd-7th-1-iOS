@@ -33,7 +33,7 @@ class RankingListVC : BaseViewController {
             $0.tintColor = .gray900
         }
     
-    let myRankingTVC = RankingUserTVC()
+    let myRankingView = RankingUserView()
     
     private let rankingHeaderBorderLineView = UIView()
         .then {
@@ -133,11 +133,10 @@ class RankingListVC : BaseViewController {
 extension RankingListVC {
     
     private func configureLayout() {
-        view.addSubviews([
-                                 weeksNavigationView,
-                                 myRankingTVC,
-                                 rankingHeaderBorderLineView,
-                                 rankingTableView])
+        view.addSubviews([weeksNavigationView,
+                          myRankingView,
+                          rankingHeaderBorderLineView,
+                          rankingTableView])
         weeksNavigationView.addSubviews([previousWeekButton, weeksNavigationLabel, nextWeekButton])
         
         
@@ -164,16 +163,14 @@ extension RankingListVC {
             $0.left.equalTo(weeksNavigationLabel.snp.right).offset(24)
         }
         
-        myRankingTVC.snp.makeConstraints {
-            $0.height.equalTo(84)
-            
+        myRankingView.snp.makeConstraints {
             $0.top.equalTo(weeksNavigationView.snp.bottom)
             $0.horizontalEdges.equalTo(view)
         }
         rankingHeaderBorderLineView.snp.makeConstraints {
             $0.height.equalTo(1)
             
-            $0.top.equalTo(myRankingTVC.snp.bottom).offset(4)
+            $0.top.equalTo(myRankingView.snp.bottom).offset(4)
             $0.horizontalEdges.equalTo(view)
         }
         rankingTableView.snp.makeConstraints {

@@ -322,15 +322,15 @@ extension SelectFriendsVC {
             $0.horizontalEdges.equalTo(view).inset(16)
         }
         friendsListView1.snp.makeConstraints {
-            $0.verticalEdges.equalTo(friendsListContainerView).inset(16)
+            $0.centerY.equalTo(friendsListContainerView)
             $0.left.equalTo(friendsListContainerView.snp.left)
         }
         friendsListView2.snp.makeConstraints {
-            $0.verticalEdges.equalTo(friendsListView1)
+            $0.centerY.equalTo(friendsListView1)
             $0.left.equalTo(friendsListView1.snp.right).offset(12)
         }
         friendsListView3.snp.makeConstraints {
-            $0.verticalEdges.equalTo(friendsListView1)
+            $0.centerY.equalTo(friendsListView2)
             $0.left.equalTo(friendsListView2.snp.right).offset(12)
         }
 
@@ -399,11 +399,11 @@ extension SelectFriendsVC : UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 64
+        return UITableView.automaticDimension
     }
 
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 64
+        return UITableView.automaticDimension
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
