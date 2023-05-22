@@ -103,8 +103,7 @@ extension SetAuthorityVC {
     private func configureAuthorityListStackView() {
         typealias Auth = (imageNamed: String, title: String, option: String, explain: String)
         let authList: [Auth] = [("LocationOn", "위치", "(필수)", "현재 위치를 바탕으로 기록 저장"),
-                                  ("CameraAlt", "카메라", "(선택)", "프로필 사진 촬영 및 저장"),
-                                  ("AllInbox", "저장 공간", "(선택)", "앱을 통해 프로필 사진 촬영 시 기기에 저장")]
+                                  ("AllInbox", "저장 공간", "(선택)", "프로필 사진 변경 시 갤러리 접근")]
         
         authList.forEach { auth in
             let baseView = UIView()
@@ -217,7 +216,7 @@ extension SetAuthorityVC {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 // TODO: - 앱 권한 설정안내 확인버튼 바인딩
-                print("confirmButton pressed")
+                print("confirmButton - 확인 pressed")
             })
             .disposed(by: bag)
     }

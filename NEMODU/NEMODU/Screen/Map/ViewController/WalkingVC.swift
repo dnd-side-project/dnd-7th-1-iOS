@@ -331,7 +331,7 @@ extension WalkingVC {
                 guard let self = self,
                       let latitude = friend.latitude,
                       let longitude = friend.longitude,
-                      let profileImageURL = friend.profileImageURL else { return }
+                      let profileImageURL = friend.picturePathURL else { return }
                 // 마커 추가
                 self.mapVC.addFriendAnnotation(coordinate: [latitude, longitude],
                                                profileImageURL: profileImageURL,
@@ -350,7 +350,7 @@ extension WalkingVC {
                 guard let self = self,
                       let latitude = friend.latitude,
                       let longitude = friend.longitude,
-                      let profileImageURL = friend.profileImageURL else { return }
+                      let profileImageURL = friend.picturePathURL else { return }
                 // 마커 추가
                 self.mapVC.addFriendAnnotation(coordinate: [latitude, longitude],
                                                profileImageURL: profileImageURL,

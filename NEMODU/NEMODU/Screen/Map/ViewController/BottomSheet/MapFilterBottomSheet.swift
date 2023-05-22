@@ -123,10 +123,6 @@ extension MapFilterBottomSheet {
         btnStackView.addArrangedSubview(showMyBlocksBtn)
         btnStackView.addArrangedSubview(showFriendsBtn)
         
-        contentView.snp.makeConstraints {
-            $0.height.equalTo(340)
-        }
-        
         viewBar.snp.makeConstraints {
             $0.width.equalTo(32)
             $0.height.equalTo(4)
@@ -171,6 +167,7 @@ extension MapFilterBottomSheet {
         locationPermissionToggleBtn.snp.makeConstraints {
             $0.centerY.equalTo(locationPermissionMessage)
             $0.trailing.equalToSuperview().offset(-16)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-25)
         }
     }
 }

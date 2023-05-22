@@ -211,8 +211,14 @@ extension MapVC {
         currentLocationBtn.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in
-                guard let self = self,
-                      let coordinate = self.locationManager.location?.coordinate else { return }
+                guard let self = self else { return }
+                guard let coordinate = self.locationManager.location?.coordinate else {
+                    self.popUpAlert(alertType: .requestLocationAuthority,
+                                    targetVC: self,
+                                    highlightBtnAction: #selector(self.openSystem),
+                                    normalBtnAction: #selector(self.dismissAlert))
+                    return
+                }
                 _ = self.goLocation(latitudeValue: coordinate.latitude,
                                     longitudeValue: coordinate.longitude,
                                     delta: Map.defaultZoomScale)
@@ -295,6 +301,26 @@ extension MapVC {
             annotation.isEnabled = isEnabled
             annotation.isBorderOn = isBorderOn
             self.mapView.addAnnotation(annotation)
+        }
+    }
+    
+    /// 디바이스의 건강 데이터를 요청하는 메서드
+    func requestMotionAuthorization() -> Bool {
+        let status = CMMotionActivityManager.authorizationStatus()
+        switch status {
+        case .notDetermined:
+            let today = Date()
+            var status = false
+            self.activityManager.queryActivityStarting(from: today, to: today, to: OperationQueue.main) { _, error in
+                status = error != nil
+            }
+            return status
+        case .restricted, .denied:
+            return false
+        case .authorized:
+            return true
+        @unknown default:
+            fatalError()
         }
     }
     
@@ -468,11 +494,11 @@ extension MapVC: CLLocationManagerDelegate {
             DispatchQueue.main.async {
                 self.locationManager.requestWhenInUseAuthorization()
             }
-        case .denied:
-            print("GPS 권한 요청 거부됨")
-            // TODO: - 알람창 띄우기
         default:
-            print("GPS: Default")
+            self.popUpAlert(alertType: .requestLocationAuthority,
+                            targetVC: self,
+                            highlightBtnAction: #selector(openSystem),
+                            normalBtnAction: #selector(dismissAlert))
         }
     }
     
@@ -526,6 +552,8 @@ extension MapVC: CLLocationManagerDelegate {
         self.previousCoordinate = location.coordinate
     }
 }
+
+// MARK: - MKMapViewDelegate
 
 extension MapVC: MKMapViewDelegate {
     /// 사용자 땅을 칠하는 함수 /
@@ -591,11 +619,21 @@ extension MapVC: MKMapViewDelegate {
     }
 }
 
-extension MapVC: DeselectAnnotation {
+// MARK: - FriendProfileProtocol
+
+extension MapVC: FriendProfileProtocol {
     /// 선택된 annotation을 모두 deselect 하는 메서드
     func deselectAnnotation() {
         mapView.selectedAnnotations.forEach {
             mapView.deselectAnnotation($0, animated: true)
         }
+    }
+    
+    /// 진행중인 챌린지 상세 화면을 push하는 메서드
+    func pushChallengeDetail(_ uuid: String) {
+        let challengeDetailVC = ChallengeHistoryDetailVC()
+        challengeDetailVC.getChallengeHistoryDetailInfo(uuid: uuid)
+        challengeDetailVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(challengeDetailVC, animated: true)
     }
 }

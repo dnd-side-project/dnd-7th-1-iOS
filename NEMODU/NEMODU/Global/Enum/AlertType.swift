@@ -8,7 +8,8 @@
 import Foundation
 
 enum AlertType {
-    case requestAuthority
+    case requestLocationAuthority
+    case requestMotionAuthority
     case recordNetworkError
     case defaultNetworkError
     case minimumBlocks
@@ -16,14 +17,17 @@ enum AlertType {
     case realTimeChallenge
     case createWeekChallenge
     case sendMailError
-    case profileEdited
+    case discardChanges
+    case deleteFriend(nickname: String)
 }
 
 extension AlertType {
     var alertTitle: String {
         switch self {
-        case .requestAuthority:
+        case .requestLocationAuthority:
             return "위치 정보 접근을 허용해주세요!"
+        case .requestMotionAuthority:
+            return "동작 및 피트니스 활동\n접근을 허용해주세요!"
         case .recordNetworkError:
             return "네트워크 오류로 인해\n기록이 저장되지 않았습니다.\n\n다시 시도해볼까요?"
         case .defaultNetworkError:
@@ -38,16 +42,20 @@ extension AlertType {
             return "주간 챌린지 생성 실패"
         case .sendMailError:
             return "메일(Mail) 앱을 열 수 없습니다"
-        case .profileEdited:
-            return "프로필 편집 나가기"
+        case .discardChanges:
+            return "지금 나가시겠습니까?\n변경사항이 저장되지 않습니다."
+        case .deleteFriend(nickname: let nickname):
+            return "‘\(nickname)’님을 친구 목록에서\n 정말 삭제하시겠습니까?"
         }
     }
     
     var alertMessage: String? {
         switch self {
-        case .requestAuthority:
+        case .requestLocationAuthority:
             return "회원님의 위치 정보는\n활동 기록 및 측정에 사용됩니다.\n\n정보는 친구들에게만 보여지며\n설정에서 언제든 공유를 중지할 수 있습니다."
-        case .recordNetworkError:
+        case .requestMotionAuthority:
+            return "회원님의 피트니스 정보는\n걸음수 기록 및 측정에 사용됩니다.\n\n해당 정보는 보다 정확한\n기록 측정을 위해 사용됩니다.\n설정에서 언제든 공유를 중지할 수 있습니다."
+        case .recordNetworkError, .discardChanges, .deleteFriend:
             return nil
         case .defaultNetworkError:
             return "네트워크가 원활하지 않아 접속이 지연되고\n있습니다. 잠시 후에 다시 시도해 주세요."
@@ -61,35 +69,39 @@ extension AlertType {
             return "생성에 오류가 발생하였습니다"
         case .sendMailError:
             return "아래 주소를 통해 문의하실 수 있습니다\n📨 nemodu.official@gmail.com"
-        case .profileEdited:
-            return "화면을 나가면 변경사항은 저장되지 않습니다. 나가시겠습니까?"
         }
     }
     
     var highlightBtnTitle: String {
         switch self {
-        case .requestAuthority:
+        case .requestLocationAuthority, .requestMotionAuthority:
             return "시스템 설정 가기"
         case .recordNetworkError:
             return "다시 저장하기"
-        case .defaultNetworkError, .realTimeChallenge, .createWeekChallenge, .sendMailError, .profileEdited:
+        case .defaultNetworkError, .realTimeChallenge, .createWeekChallenge, .sendMailError:
             return "확인"
         case .minimumBlocks, .speedWarning:
             return "계속 하기"
+        case .discardChanges:
+            return "나가기"
+        case .deleteFriend:
+            return "삭제"
         }
     }
     
     var normalBtnTitle: String? {
         switch self {
-        case .requestAuthority:
+        case .requestMotionAuthority:
             return "다음에"
         case .recordNetworkError:
             return "그냥 나가기"
-        case .defaultNetworkError, .realTimeChallenge, .createWeekChallenge, .sendMailError:
+        case .requestLocationAuthority, .defaultNetworkError, .realTimeChallenge, .createWeekChallenge, .sendMailError:
             return nil
         case .minimumBlocks, .speedWarning:
             return "기록 끝내기"
-        case .profileEdited:
+        case .discardChanges:
+            return "계속 작성하기"
+        case .deleteFriend:
             return "취소"
         }
     }

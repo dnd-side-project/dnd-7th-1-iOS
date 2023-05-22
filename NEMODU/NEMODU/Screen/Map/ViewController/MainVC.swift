@@ -237,9 +237,16 @@ extension MainVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                let countdownVC = CountdownVC()
-                countdownVC.modalPresentationStyle = .fullScreen
-                self.present(countdownVC, animated: true)
+                if self.mapVC.requestMotionAuthorization() {
+                    let countdownVC = CountdownVC()
+                    countdownVC.modalPresentationStyle = .fullScreen
+                    self.present(countdownVC, animated: true)
+                } else {
+                    self.popUpAlert(alertType: .requestMotionAuthority,
+                                    targetVC: self,
+                                    highlightBtnAction: #selector(self.openSystem),
+                                    normalBtnAction: #selector(self.dismissAlert))
+                }
             })
             .disposed(by: bag)
         
@@ -249,6 +256,7 @@ extension MainVC {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 let challengeBottomSheet = ChallengeListBottomSheet()
+                challengeBottomSheet.delegate = self
                 self.present(challengeBottomSheet, animated: true)
             })
             .disposed(by: bag)
@@ -298,7 +306,7 @@ extension MainVC {
                 guard let self = self,
                       let latitude = user.latitude,
                       let longitude = user.longitude,
-                      let profileImageURL = user.profileImageURL else { return }
+                      let profileImageURL = user.picturePathURL else { return }
                 // 마커 추가
                 self.mapVC.addMyAnnotation(coordinate: [latitude, longitude],
                                            profileImageURL: profileImageURL,
@@ -314,7 +322,7 @@ extension MainVC {
                 guard let self = self,
                       let latitude = friend.latitude,
                       let longitude = friend.longitude,
-                      let profileImageURL = friend.profileImageURL else { return }
+                      let profileImageURL = friend.picturePathURL else { return }
                 // 마커 추가
                 self.mapVC.addFriendAnnotation(coordinate: [latitude, longitude],
                                                profileImageURL: profileImageURL,
@@ -333,7 +341,7 @@ extension MainVC {
                 guard let self = self,
                       let latitude = friend.latitude,
                       let longitude = friend.longitude,
-                      let profileImageURL = friend.profileImageURL else { return }
+                      let profileImageURL = friend.picturePathURL else { return }
                 // 마커 추가
                 self.mapVC.addFriendAnnotation(coordinate: [latitude, longitude],
                                                profileImageURL: profileImageURL,
@@ -395,5 +403,24 @@ extension MainVC {
             .disposed(by: bag)
         
         // TODO: - myLocationVisible MVP2 부터 개발!!
+    }
+}
+
+// MARK: - Protocol
+
+extension MainVC: PushChallengeVC {
+    /// 진행중인 챌린지 상세 화면을 push하는 메서드
+    func pushChallengeDetail(_ uuid: String) {
+        let challengeDetailVC = ChallengeHistoryDetailVC()
+        challengeDetailVC.getChallengeHistoryDetailInfo(uuid: uuid)
+        challengeDetailVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(challengeDetailVC, animated: true)
+    }
+    
+    /// 챌린지 생성 화면을 push 하는 메서드
+    func pushCreateChallengeVC() {
+        let selectChallengeCreateVC = SelectChallengeCreateVC()
+        selectChallengeCreateVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(selectChallengeCreateVC, animated: true)
     }
 }

@@ -106,7 +106,7 @@ class SelectFriendsVC: CreateChallengeVC {
     private let bag = DisposeBag()
     private var friendsListResponseModel: FriendsListResponseModel?
     
-    private var selectedFriendsList: [Info] = []
+    private var selectedFriendsList: [FriendDefaultInfo] = []
     
     private var friendsListContainerViewHeightConstraint: Constraint?
     
@@ -151,7 +151,7 @@ class SelectFriendsVC: CreateChallengeVC {
     
     // MARK: - Functions
     
-    private func showSelectedFriend(friendInfo: Info) {
+    private func showSelectedFriend(friendInfo: FriendDefaultInfo) {
         selectedFriendsList.append(friendInfo)
         
         // 친구목록 컨테이너 창 크기 조절하기
@@ -180,7 +180,7 @@ class SelectFriendsVC: CreateChallengeVC {
         }
     }
     
-    private func deleteSelectedFriend(friendInfo: Info) {
+    private func deleteSelectedFriend(friendInfo: FriendDefaultInfo) {
         var seletedFriendsProfileList: [UIImage] = []
         [friendsListView1, friendsListView2, friendsListView3].forEach {
             seletedFriendsProfileList.append($0.profileImageView.image ?? .defaultThumbnail)
@@ -276,7 +276,7 @@ extension SelectFriendsVC {
             }
     }
     
-    private func configureFriendListView(friendListView: FriendListView, friendInfo: Info) {
+    private func configureFriendListView(friendListView: FriendListView, friendInfo: FriendDefaultInfo) {
         friendListView.isHidden = false
         friendListView.configureFriendsListView(friendInfo: friendInfo)
     }

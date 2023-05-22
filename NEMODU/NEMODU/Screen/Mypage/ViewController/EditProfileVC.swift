@@ -126,11 +126,6 @@ extension EditProfileVC {
                                      titleColor: .main)
     }
     
-    /// 제스쳐로 뒤로가기 인터랙션 Enabled 상태를 지정하는 메서드
-    private func setInteractivePopGesture(_ isEnabled: Bool) {
-        navigationController?.interactivePopGestureRecognizer?.isEnabled = isEnabled
-    }
-    
     private func configureContentView() {
         view.addSubview(baseScrollView)
         baseScrollView.addSubview(contentView)
@@ -145,7 +140,7 @@ extension EditProfileVC {
     }
     
     private func configureProfileData(_ data: MyProfileResponseModel) {
-        profileImageBtn.kf.setImage(with: data.profileImageURL,
+        profileImageBtn.kf.setImage(with: data.picturePathURL,
                                     for: .normal,
                                     placeholder: .defaultThumbnail)
         profileMessageTextView.tv.text = data.intro
@@ -367,7 +362,7 @@ extension EditProfileVC {
                 let isProfileMessageChanged = self.viewModel.input.isProfileMessageChanged.value
                 
                 if isProfileImageChanged || isNicknameChanged || isProfileMessageChanged {
-                    self.popUpAlert(alertType: .profileEdited,
+                    self.popUpAlert(alertType: .discardChanges,
                                     targetVC: self,
                                     highlightBtnAction: #selector(self.dismissAlertAndPopVC),
                                     normalBtnAction: #selector(self.dismissAlert))

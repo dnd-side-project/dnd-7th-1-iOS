@@ -47,20 +47,10 @@ class CreateWeekChallengeVC: CreateChallengeVC {
             $0.font = .body1
             $0.textColor = .gray900
         }
-    private let insertChallengeNameTextField = UITextField()
+    private let insertChallengeNameTextField = NemoduTextField()
         .then {
-            $0.attributedPlaceholder = NSAttributedString(string: "챌린지 이름을 작성해주세요.",
-                                                          attributes: [NSAttributedString.Key.foregroundColor : UIColor.gray600,
-                                                                       NSAttributedString.Key.font: UIFont.caption1])
-            $0.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 12, height: 0))
-            $0.leftViewMode = .always
-            
-            $0.tintColor = .main
-            $0.backgroundColor = .gray50
-            
-            $0.layer.cornerRadius = 8
-            $0.layer.borderWidth = 1
-            $0.layer.borderColor = UIColor.clear.cgColor
+            $0.placeholder = "챌린지 이름을 작성해주세요"
+            $0.returnKeyType = .done
         }
     private let limitedAlertChallengeNameCountImageView = UIImageView()
         .then {
@@ -129,7 +119,7 @@ class CreateWeekChallengeVC: CreateChallengeVC {
     private let bag = DisposeBag()
     private var creatChallengeResponseModel: CreatChallengeResponseModel?
     
-    var friends: [Info] = []
+    var friends: [FriendDefaultInfo] = []
     var message, name, nickname, started, ended: String?
     var startedDate: Date?
     
@@ -158,6 +148,7 @@ class CreateWeekChallengeVC: CreateChallengeVC {
         
         configureNavigationBar()
         configureConfirmButton()
+        configureTextField()
     }
     
     override func layoutView() {
@@ -311,6 +302,10 @@ extension CreateWeekChallengeVC {
             }
     }
     
+    /// 챌린지 이름을 입력하는 텍스트필드의 완료 버튼의 delegate를 연결하는 메서드
+    private func configureTextField() {
+        insertChallengeNameTextField.delegate = self
+    }
 }
 
 // MARK: - Layout
@@ -352,7 +347,7 @@ extension CreateWeekChallengeVC {
             $0.horizontalEdges.equalTo(insertChallengeNameView).inset(16)
         }
         insertChallengeNameTextField.snp.makeConstraints {
-            $0.height.equalTo(38)
+            $0.height.equalTo(42)
 
             $0.top.equalTo(insertChallengeNameLabel.snp.bottom).offset(18.5)
             $0.horizontalEdges.equalTo(insertChallengeNameLabel)
@@ -531,5 +526,14 @@ extension CreateWeekChallengeVC {
                 self.present(createChallengeSuccuessVC, animated: true)
             })
             .disposed(by: bag)
+    }
+}
+
+// MARK: - UITextFieldDelegate
+
+extension CreateWeekChallengeVC: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }
