@@ -45,6 +45,7 @@
 		232F0B6528B686C5005C9A07 /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232F0B6428B686C5005C9A07 /* AlertType.swift */; };
 		233258A128D60C370073B09E /* AuthInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233258A028D60C370073B09E /* AuthInterceptor.swift */; };
 		2333CC762A192EF3003F864C /* APIErrorHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2333CC752A192EF3003F864C /* APIErrorHandling.swift */; };
+		2333CC782A1B47AD003F864C /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2333CC772A1B47AD003F864C /* NetworkMonitor.swift */; };
 		2336FFBB29F2DC7B002D5CBF /* Area.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2336FFBA29F2DC7B002D5CBF /* Area.swift */; };
 		2339D74E28B2849F0018013D /* MyRecordDataVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2339D74D28B2849F0018013D /* MyRecordDataVC.swift */; };
 		2339D75028B284C20018013D /* MypageNC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2339D74F28B284C20018013D /* MypageNC.swift */; };
@@ -314,6 +315,7 @@
 		232F0B6428B686C5005C9A07 /* AlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertType.swift; sourceTree = "<group>"; };
 		233258A028D60C370073B09E /* AuthInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthInterceptor.swift; sourceTree = "<group>"; };
 		2333CC752A192EF3003F864C /* APIErrorHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIErrorHandling.swift; sourceTree = "<group>"; };
+		2333CC772A1B47AD003F864C /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
 		2336FFBA29F2DC7B002D5CBF /* Area.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Area.swift; sourceTree = "<group>"; };
 		2339D74D28B2849F0018013D /* MyRecordDataVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordDataVC.swift; sourceTree = "<group>"; };
 		2339D74F28B284C20018013D /* MypageNC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MypageNC.swift; sourceTree = "<group>"; };
@@ -893,6 +895,7 @@
 				233258A028D60C370073B09E /* AuthInterceptor.swift */,
 				23ECC09E28D859E000F65692 /* AuthAPI.swift */,
 				2333CC752A192EF3003F864C /* APIErrorHandling.swift */,
+				2333CC772A1B47AD003F864C /* NetworkMonitor.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -1678,6 +1681,7 @@
 				3C506C1F29FD3A4E006EDAAE /* TermsConditionsWebLink.swift in Sources */,
 				230CB2CB28ABB7B400B11270 /* CountdownVC.swift in Sources */,
 				23412FE028AE648300B73D62 /* ProfileResponseModel.swift in Sources */,
+				2333CC782A1B47AD003F864C /* NetworkMonitor.swift in Sources */,
 				2336FFBB29F2DC7B002D5CBF /* Area.swift in Sources */,
 				237573D128F5660A006026ED /* EditRecordMemoVM.swift in Sources */,
 				23A8684929FE33F000B6683E /* FriendRequestModel.swift in Sources */,

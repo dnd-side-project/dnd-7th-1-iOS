@@ -37,6 +37,8 @@ extension APIErrorHandling {
     /// Error Alert의 확인 버튼과 연결된 메서드
     func errorAlertConfirmAction(_ error: APIError) -> Selector {
         switch error {
+        case .networkDisconnected:
+            return #selector(confirmNetworkError)
         case .endOfOperation:
             // TODO: - 로그아웃 구현 후 수정
             return #selector(setLoginToRootVC)

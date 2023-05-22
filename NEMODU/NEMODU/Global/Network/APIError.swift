@@ -8,6 +8,8 @@
 import Foundation
 
 enum APIError: Error {
+    /// 네트워크 연결 상태 에러
+    case networkDisconnected
     /// 서비스 종료(서버 죽음)
     case endOfOperation(_ status: Int)
     /// 정의되지 않은 에러
@@ -19,6 +21,8 @@ enum APIError: Error {
 extension APIError {
     var title: String {
         switch self {
+        case .networkDisconnected:
+            return "네트워크 상태를 확인해주세요"
         case .endOfOperation:
             return "서비스 운영이 종료되었습니다."
         case .unknownError:
@@ -30,6 +34,8 @@ extension APIError {
     
     var code: String {
         switch self {
+        case .networkDisconnected:
+            return "NETWORK"
         case .endOfOperation(let status):
             return "\(status)"
         case .unknownError(let status):
@@ -42,6 +48,8 @@ extension APIError {
     // MARK: - 테스트플라이트 에러 확인용 임시
     var message: String {
         switch self {
+        case .networkDisconnected:
+            return "연결상태를 확인 후 다시 시도해주세요."
         case .endOfOperation(let status):
             return "(\(status)) 찬호야 서버 켜줘.."
         case .unknownError(let status):

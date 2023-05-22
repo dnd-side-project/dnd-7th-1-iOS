@@ -67,6 +67,13 @@ extension UIViewController {
         ad.window?.rootViewController = LoginNC()
     }
     
+    /// 네트워크 연결 에러 알람창 확인 버튼 메서드
+    @objc func confirmNetworkError() {
+        if NetworkMonitor.shared.isConnected {
+            dismissAlert()
+        }
+    }
+    
     /// 기기 스크린 hight에 맞춰 비율을 계산해 height를 리턴하는 함수
     func calculateHeightbyScreenHeight(originalHeight: CGFloat) -> CGFloat {
         let screenHeight = UIScreen.main.bounds.height
