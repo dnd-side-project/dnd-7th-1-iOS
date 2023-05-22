@@ -54,12 +54,12 @@ extension ToastView {
         toastMessage.text = toastType.toastMessage
         
         switch toastType {
-        case .friendProfileError, .networkError:
+        case .informationError, .networkError:
             [warningImageView, toastMessage].forEach {
                 baseStackView.addArrangedSubview($0)
             }
             setImageSize()
-        case .friendAdded, .friendDeleted, .profileChanged, .saveCompleted, .noRecord:
+        case .postFriendRequest, .cancelFriendRequest, .profileChanged, .saveCompleted, .acceptFriendRequest, .refuseFriendRequest:
             baseStackView.addArrangedSubview(toastMessage)
         }
     }

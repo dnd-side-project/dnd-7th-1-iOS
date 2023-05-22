@@ -17,7 +17,7 @@ struct ChallengeBlockResponseModel: Codable {
 }
 
 extension ChallengeBlockResponseModel {
-    var profileImageURL: URL? {
+    var picturePathURL: URL? {
         guard let profileImageURL = picturePath.encodeURL() else { return nil }
         return URL(string: profileImageURL)
     }

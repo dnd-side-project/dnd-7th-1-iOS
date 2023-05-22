@@ -61,6 +61,19 @@ extension UIViewController {
         popVC()
     }
     
+    /// 로그인 화면을 rootViewControllerf로 변경하는 메서드
+    @objc func setLoginToRootVC() {
+        guard let ad = UIApplication.shared.delegate as? AppDelegate else { return }
+        ad.window?.rootViewController = LoginNC()
+    }
+    
+    /// 네트워크 연결 에러 알람창 확인 버튼 메서드
+    @objc func confirmNetworkError() {
+        if NetworkMonitor.shared.isConnected {
+            dismissAlert()
+        }
+    }
+    
     /// 기기 스크린 hight에 맞춰 비율을 계산해 height를 리턴하는 함수
     func calculateHeightbyScreenHeight(originalHeight: CGFloat) -> CGFloat {
         let screenHeight = UIScreen.main.bounds.height
@@ -80,19 +93,6 @@ extension UIViewController {
         self.present(alertViewController, animated: true, completion: completion)
     }
     
-    /// 에러 Alert 메서드
-    func showErrorAlert(_ message: String?) {
-        let alertController = UIAlertController(title: "Error",
-                                                message: message,
-                                                preferredStyle: .alert)
-        let action = UIAlertAction(title: "Confirm",
-                                   style: .default)
-        
-        alertController.addAction(action)
-        
-        present(alertController, animated: true)
-    }
-    
     /// topViewController에 로딩을 보여주는 메서드
     func loading(loading: Bool) {
         guard let topViewController = UIApplication.topViewController() else { return }
@@ -108,7 +108,10 @@ extension UIViewController {
     }
     
     /// 알람창을 띄우는 메서드
-    func popUpAlert(alertType: AlertType, targetVC: UIViewController, highlightBtnAction: Selector, normalBtnAction: Selector?) {
+    func popUpAlert(alertType: AlertType,
+                    targetVC: UIViewController,
+                    highlightBtnAction: Selector,
+                    normalBtnAction: Selector?) {
         let alertVC = AlertVC()
         alertVC.configureAlert(of: alertType,
                                targetVC: targetVC,
@@ -116,6 +119,35 @@ extension UIViewController {
                                normalBtnAction: normalBtnAction)
         alertVC.modalPresentationStyle = .overFullScreen
         targetVC.present(alertVC, animated: false, completion: nil)
+    }
+    
+    /// 에러 알림창을 띄우는 메서드.
+    /// local Error일 경우에만 직접 호출.
+    /// 네트워크 에러의 경우 bindAPIErrorAlert 사용해주세요.
+    func popUpErrorAlert(targetVC: UIViewController,
+                         title: String,
+                         message: String?,
+                         confirmEvent: Selector) {
+        let alertVC = AlertVC()
+        alertVC.configureErrorAlert(targetVC: targetVC,
+                                    title: title,
+                                    message: message,
+                                    confirmEvent: confirmEvent)
+        alertVC.modalPresentationStyle = .overFullScreen
+        targetVC.present(alertVC, animated: false, completion: nil)
+    }
+    
+    /// 시스템 에러 Alert 메서드
+    func systemErrorAlert(_ message: String?) {
+        let alertController = UIAlertController(title: "Error",
+                                                message: message,
+                                                preferredStyle: .alert)
+        let action = UIAlertAction(title: "Confirm",
+                                   style: .default)
+        
+        alertController.addAction(action)
+        
+        present(alertController, animated: true)
     }
     
     /// ToastType에 맞는 ToastView를 띄워주는 메서드

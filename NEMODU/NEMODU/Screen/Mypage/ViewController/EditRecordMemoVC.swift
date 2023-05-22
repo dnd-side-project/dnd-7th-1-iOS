@@ -22,7 +22,6 @@ class EditRecordMemoVC: BaseViewController {
         }
     
     private let viewModel = EditRecordMemoVM()
-    private let bag = DisposeBag()
     weak var delegate: RecordMemoChanged?
     
     private var memo = ""
@@ -57,6 +56,7 @@ class EditRecordMemoVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        bindAPIErrorAlert(viewModel)
         bindDismiss()
     }
     
@@ -112,7 +112,7 @@ extension EditRecordMemoVC {
                                                                              recordId: self.recordId))
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     private func bindBackBtn() {
@@ -133,7 +133,7 @@ extension EditRecordMemoVC {
                     self.popVC()
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 
@@ -150,7 +150,7 @@ extension EditRecordMemoVC {
                     self.delegate?.popupToastView()
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 

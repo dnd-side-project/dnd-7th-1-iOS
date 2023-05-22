@@ -65,7 +65,6 @@ class EditProfileVC: BaseViewController {
     
     private var imagePicker = UIImagePickerController()
     private let viewModel = UserInfoSettingVM()
-    private let bag = DisposeBag()
     private var isBasic = false
     weak var delegate: ProfileChanged?
     
@@ -105,6 +104,7 @@ class EditProfileVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        bindAPIErrorAlert(viewModel)
         bindProfileData()
         bindValidationView()
         bindBaseScrollView()
@@ -140,7 +140,7 @@ extension EditProfileVC {
     }
     
     private func configureProfileData(_ data: MyProfileResponseModel) {
-        profileImageBtn.kf.setImage(with: data.profileImageURL,
+        profileImageBtn.kf.setImage(with: data.picturePathURL,
                                     for: .normal,
                                     placeholder: .defaultThumbnail)
         profileMessageTextView.tv.text = data.intro
@@ -284,7 +284,7 @@ extension EditProfileVC {
                 [library, setDefaultImage, cancel].forEach { alert.addAction($0) }
                 self.present(alert, animated: true, completion: nil)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     /// 닉네임 유효성 검사를 요청하는 메서드
@@ -304,7 +304,7 @@ extension EditProfileVC {
                     : self.viewModel.getNicknameValidation(nickname: nickname)
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     /// 저장 버튼 status & post 바인딩
@@ -322,7 +322,7 @@ extension EditProfileVC {
                                             intro: self.profileMessageTextView.tv.text,
                                             isBasic: self.isBasic))
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         // 닉네임 확인 상태에 따른 저장 버튼 활성화 상태 및 색상 연결
         viewModel.output.isNextBtnActive
@@ -331,7 +331,7 @@ extension EditProfileVC {
                 guard let self = self else { return }
                 self.setRightBarBtnActive(isNicknameChecked)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         // 닉네임 변경 시, 버튼 비활성화
         nicknameCheckView.nicknameTextField.rx.text
@@ -343,7 +343,7 @@ extension EditProfileVC {
                 else { return }
                 self.viewModel.output.isNextBtnActive.accept(defaultNickname == newNickname)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     private func bindBackBtn() {
@@ -370,7 +370,7 @@ extension EditProfileVC {
                     self.popVC()
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 
@@ -383,7 +383,7 @@ extension EditProfileVC {
                 guard let self = self else { return }
                 self.configureProfileData(data)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     /// 사용 가능한 닉네임인지 판단 후 상태에 따라 view를 구성하는 메서드
@@ -394,7 +394,7 @@ extension EditProfileVC {
                 guard let self = self else { return }
                 self.nicknameCheckView.setValidationView(isValid ? .available : .notAvailable)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     private func bindBaseScrollView() {
@@ -405,7 +405,7 @@ extension EditProfileVC {
                 self.baseScrollView.scrollToBottom(animated: true)
                 self.viewModel.input.isProfileMessageChanged.accept(true)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     private func bindDismiss() {
@@ -416,7 +416,7 @@ extension EditProfileVC {
                 self.navigationController?.popViewController(animated: true)
                 self.delegate?.popupToastView()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 

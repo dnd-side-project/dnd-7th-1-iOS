@@ -62,8 +62,6 @@ class CountdownVC: BaseViewController {
         "지금까지 누적한 칸 수는\n마이페이지에서 확인할 수 있습니다."
     ]
     
-    private let bag = DisposeBag()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
     }

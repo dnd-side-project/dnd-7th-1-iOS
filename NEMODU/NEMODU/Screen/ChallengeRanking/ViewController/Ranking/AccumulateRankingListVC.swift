@@ -32,18 +32,24 @@ class AccumulateRankingListVC : RankingListVC {
         viewModel.getAccumulateRankingList(with: myUserNickname)
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        weeksNavigationView.snp.updateConstraints {
-            $0.height.equalTo(0)
-        }
-    }
-    
     override func bindInput() {
         super.bindInput()
         
         bindAccumulateRankingList()
+    }
+    
+    override func configureWeeksNavigation(targetDate: Int) {
+        weeksNavigationView.snp.updateConstraints {
+            $0.height.equalTo(0)
+        }
+        
+        weeksNavigationView.isHidden = true
+    }
+    
+    override func bindOutput() {
+        super.bindOutput()
+        
+        bindAPIErrorAlert(viewModel)
     }
     
     // MARK: - Functions
@@ -52,8 +58,8 @@ class AccumulateRankingListVC : RankingListVC {
         guard let accumulateRankingList = accumulateRankingListResponseModel else { return }
         for accumulateRanking in accumulateRankingList.matrixRankings {
             if accumulateRanking.nickname == myUserNickname {
-                myRankingTVC.configureRankingCell(rankNumber: accumulateRanking.rank, profileImageURL: accumulateRanking.picturePathURL, nickname: accumulateRanking.nickname, blocksNumber: accumulateRanking.score)
-                myRankingTVC.configureRankingTopCell()
+                myRankingView.configureRankingUserView(rankNumber: accumulateRanking.rank, profileImageURL: accumulateRanking.picturePathURL, nickname: accumulateRanking.nickname, blocksNumber: accumulateRanking.score)
+                myRankingView.configureRankingTop()
             }
         }
     }
@@ -153,6 +159,6 @@ extension AccumulateRankingListVC {
                 self.configureRankingUserTVC()
                 self.rankingTableView.reloadData()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }

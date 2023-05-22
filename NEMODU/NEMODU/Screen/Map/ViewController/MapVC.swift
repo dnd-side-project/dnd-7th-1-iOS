@@ -377,12 +377,13 @@ extension MapVC {
     
     /// 좌표, 소유자, 색상을 입력받아 네 개의 꼭짓점을 만들어 Block 폴리곤을 반환하는 메서드
     func makeBlocks(matrix: Matrix, owner: BlocksType, color: UIColor) -> Block {
+        let longitudeBlockSize = Map.longitudeBlockSize * (matrix.longitude < 0 ? -1 : 1)
         let overlayTopLeftCoordinate = CLLocationCoordinate2D(latitude: matrix.latitude,
-                                                              longitude: matrix.longitude - Map.longitudeBlockSize)
+                                                              longitude: matrix.longitude + longitudeBlockSize)
         let overlayTopRightCoordinate = CLLocationCoordinate2D(latitude: matrix.latitude,
                                                                longitude: matrix.longitude)
         let overlayBottomLeftCoordinate = CLLocationCoordinate2D(latitude: matrix.latitude + Map.latitudeBlockSize,
-                                                                 longitude: matrix.longitude - Map.longitudeBlockSize)
+                                                                 longitude: matrix.longitude + longitudeBlockSize)
         let overlayBottomRightCoordinate = CLLocationCoordinate2D(latitude: matrix.latitude + Map.latitudeBlockSize,
                                                                   longitude: matrix.longitude)
         

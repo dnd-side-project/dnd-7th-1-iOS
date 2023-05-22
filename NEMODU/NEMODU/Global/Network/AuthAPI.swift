@@ -28,6 +28,11 @@ extension AuthAPI {
     /// [POST] 헤더에 kakaoAccessToken을 붙여 회원가입을 요청하는 메서드
     func signupRequest<T: Decodable>(with urlResource: urlResource<T>, param: Parameters) -> Observable<Result<T, APIError>> {
         Observable<Result<T, APIError>>.create { observer in
+            if !NetworkMonitor.shared.isConnected {
+                observer.onNext(.failure(.networkDisconnected))
+                return Disposables.create()
+            }
+            
             let headers: HTTPHeaders = [
                 "Content-Type": "application/json"
             ]
@@ -40,8 +45,10 @@ extension AuthAPI {
                 .validate(statusCode: 200...399)
                 .responseDecodable(of: T.self) { response in
                     switch response.result {
-                    case .failure:
-                        observer.onNext(urlResource.judgeError(statusCode: response.response?.statusCode ?? -1))
+                    case .failure(let error):
+                        dump(error)
+                        guard let error = response.data else { return }
+                        observer.onNext(urlResource.judgeError(data: error))
                         
                     case .success(let data):
                         setUserDefaultsToken(headers: response.response?.headers)
@@ -59,6 +66,11 @@ extension AuthAPI {
     /// [GET] 헤더에 소셜 토큰을 붙여 소셜 로그인을 요청하는 메서드
     func socialLoginRequest<T: Decodable>(with urlResource: urlResource<T>, token: String) -> Observable<Result<T, APIError>> {
         Observable<Result<T, APIError>>.create { observer in
+            if !NetworkMonitor.shared.isConnected {
+                observer.onNext(.failure(.networkDisconnected))
+                return Disposables.create()
+            }
+            
             let headers: HTTPHeaders = [
                 "Content-Type": "application/json",
                 "Authorization": token
@@ -70,8 +82,10 @@ extension AuthAPI {
                 .validate(statusCode: 200...399)
                 .responseDecodable(of: T.self) { response in
                     switch response.result {
-                    case .failure:
-                        observer.onNext(urlResource.judgeError(statusCode: response.response?.statusCode ?? -1))
+                    case .failure(let error):
+                        dump(error)
+                        guard let error = response.data else { return }
+                        observer.onNext(urlResource.judgeError(data: error))
                         
                     case .success(let data):
                         observer.onNext(.success(data))
@@ -87,6 +101,11 @@ extension AuthAPI {
     /// [POST] 헤더에 소셜 토큰을 붙여 네모두 로그인을 요청하는 메서드
     func loginRequest<T: Decodable>(with urlResource: urlResource<T>, token: String, param: Parameters) -> Observable<Result<T, APIError>> {
         Observable<Result<T, APIError>>.create { observer in
+            if !NetworkMonitor.shared.isConnected {
+                observer.onNext(.failure(.networkDisconnected))
+                return Disposables.create()
+            }
+            
             let headers: HTTPHeaders = [
                 "Content-Type": "application/json",
                 "Authorization": token
@@ -100,8 +119,10 @@ extension AuthAPI {
                 .validate(statusCode: 200...399)
                 .responseDecodable(of: T.self) { response in
                     switch response.result {
-                    case .failure:
-                        observer.onNext(urlResource.judgeError(statusCode: response.response?.statusCode ?? -1))
+                    case .failure(let error):
+                        dump(error)
+                        guard let error = response.data else { return }
+                        observer.onNext(urlResource.judgeError(data: error))
                         
                     case .success(let data):
                         // 자체 토큰 저장
@@ -143,8 +164,10 @@ extension AuthAPI {
                 .validate(statusCode: 200...399)
                 .responseDecodable(of: RenewalTokenModel.self) { response in
                     switch response.result {
-                    case .failure:
-                        observer.onNext(urlResource.judgeError(statusCode: response.response?.statusCode ?? -1))
+                    case .failure(let error):
+                        dump(error)
+                        guard let error = response.data else { return }
+                        observer.onNext(urlResource.judgeError(data: error))
                         
                     case .success:
                         setUserDefaultsToken(headers: response.response?.headers)
@@ -163,6 +186,11 @@ extension AuthAPI {
     func checkNickname<T>(with urlResource: urlResource<T>) -> Observable<Result<T, APIError>> where T : Decodable {
         
         Observable<Result<T, APIError>>.create { observer in
+            if !NetworkMonitor.shared.isConnected {
+                observer.onNext(.failure(.networkDisconnected))
+                return Disposables.create()
+            }
+            
             let headers: HTTPHeaders = [
                 "Content-Type": "application/json"
             ]
@@ -173,8 +201,10 @@ extension AuthAPI {
                 .validate(statusCode: 200...399)
                 .responseDecodable(of: T.self) { response in
                     switch response.result {
-                    case .failure:
-                        observer.onNext(urlResource.judgeError(statusCode: response.response?.statusCode ?? -1))
+                    case .failure(let error):
+                        dump(error)
+                        guard let error = response.data else { return }
+                        observer.onNext(urlResource.judgeError(data: error))
                         
                     case .success(let data):
                         observer.onNext(.success(data))
@@ -191,6 +221,11 @@ extension AuthAPI {
     func editProfile<T: Decodable>(with urlResource: urlResource<T>, param: Parameters, image: UIImage) -> Observable<Result<T, APIError>> {
         
         Observable<Result<T, APIError>>.create { observer in
+            if !NetworkMonitor.shared.isConnected {
+                observer.onNext(.failure(.networkDisconnected))
+                return Disposables.create()
+            }
+            
             let headers: HTTPHeaders = [
                 "Content-Type": "application/json"
             ]
@@ -209,8 +244,10 @@ extension AuthAPI {
                 .validate(statusCode: 200...399)
                 .responseDecodable(of: T.self) { response in
                     switch response.result {
-                    case .failure:
-                        observer.onNext(urlResource.judgeError(statusCode: response.response?.statusCode ?? -1))
+                    case .failure(let error):
+                        dump(error)
+                        guard let error = response.data else { return }
+                        observer.onNext(urlResource.judgeError(data: error))
                         
                     case .success(let data):
                         setUserDefaultsToken(headers: response.response?.headers)

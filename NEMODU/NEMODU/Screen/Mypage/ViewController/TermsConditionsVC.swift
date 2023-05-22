@@ -31,10 +31,6 @@ class TermsConditionsVC: BaseViewController {
     private let privacyTermsConditionsButton = ArrowBtn(title: "개인 정보 수집 및 이용 동의")
     private let locationTermsConditionsButton = ArrowBtn(title: "위치 기반 서비스 약관")
     
-    // MARK: - Variables and Properties
-    
-    private let bag = DisposeBag()
-    
     // MARK: - Life Cycle
     
     override func configureView() {
@@ -124,7 +120,7 @@ extension TermsConditionsVC {
                     
                     self.showTermsConditionsWebPage(url: buttonType.webLink.url)
                 })
-                .disposed(by: bag)
+                .disposed(by: disposeBag)
         }
     }
     

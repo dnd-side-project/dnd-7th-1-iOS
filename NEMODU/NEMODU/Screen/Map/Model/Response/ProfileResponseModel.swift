@@ -16,7 +16,7 @@ struct ProfileResponseModel: Codable {
 }
 
 extension ProfileResponseModel {
-    var profileImageURL: URL? {
+    var picturePathURL: URL? {
         guard let profileImageURL = picturePath.encodeURL() else { return nil }
         return URL(string: profileImageURL)
     }

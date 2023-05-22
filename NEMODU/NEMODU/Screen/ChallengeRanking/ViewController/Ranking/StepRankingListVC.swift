@@ -32,15 +32,21 @@ class StepRankingListVC : RankingListVC {
         bindStepRankingList()
     }
     
+    override func bindOutput() {
+        super.bindOutput()
+        
+        bindAPIErrorAlert(viewModel)
+    }
+    
     // MARK: - Functions
     
     func configureRankingUserTVC() {
         guard let stepRankingList = stepRankingListResponseModel else { return }
         for stepRanking in stepRankingList.stepRankings {
             if stepRanking.nickname == myUserNickname {
-                myRankingTVC.configureRankingCell(rankNumber: stepRanking.rank, profileImageURL: stepRanking.picturePathURL, nickname: stepRanking.nickname, blocksNumber: stepRanking.score)
-                myRankingTVC.configureRankingTopCell()
-                myRankingTVC.configureStepRankingCell()
+                myRankingView.configureRankingUserView(rankNumber: stepRanking.rank, profileImageURL: stepRanking.picturePathURL, nickname: stepRanking.nickname, blocksNumber: stepRanking.score)
+                myRankingView.configureRankingTop()
+                myRankingView.configureStepRanking()
             }
         }
     }
@@ -154,6 +160,6 @@ extension StepRankingListVC {
                 self.configureRankingUserTVC()
                 self.rankingTableView.reloadData()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }

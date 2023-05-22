@@ -101,12 +101,12 @@ extension RecommendListVC {
         nemoduView.addSubviews([nemoduTitleLabel,
                                 nemoduRecommendTV])
         
-        kakaoRecommendTV.register(RecommendFriendTVC.self, forCellReuseIdentifier: RecommendFriendTVC.className)
+        kakaoRecommendTV.register(FriendAddTVC.self, forCellReuseIdentifier: FriendAddTVC.className)
         kakaoRecommendTV.register(ViewMoreTVC.self, forCellReuseIdentifier: ViewMoreTVC.className)
         kakaoRecommendTV.dataSource = self
         kakaoRecommendTV.delegate = self
         
-        nemoduRecommendTV.register(RecommendFriendTVC.self, forCellReuseIdentifier: RecommendFriendTVC.className)
+        nemoduRecommendTV.register(FriendAddTVC.self, forCellReuseIdentifier: FriendAddTVC.className)
         nemoduRecommendTV.register(ViewMoreTVC.self, forCellReuseIdentifier: ViewMoreTVC.className)
         nemoduRecommendTV.dataSource = self
         nemoduRecommendTV.delegate = self
@@ -187,7 +187,7 @@ extension RecommendListVC: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: RecommendFriendTVC.className) as? RecommendFriendTVC,
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: FriendAddTVC.className) as? FriendAddTVC,
               let viewMoreCell = tableView.dequeueReusableCell(withIdentifier: ViewMoreTVC.className) as? ViewMoreTVC
         else { return UITableViewCell() }
         
@@ -196,9 +196,10 @@ extension RecommendListVC: UITableViewDataSource {
         }
         
         if tableView == kakaoRecommendTV {
-            cell.configureCell("카카오 저장 이름")
+            // TODO: - 데이터 연결
+//            cell.configureCell(<#T##friendInfo: FriendsInfo##FriendsInfo#>)
         } else {
-            cell.configureCell()
+//            cell.configureCell(<#T##friendInfo: FriendsInfo##FriendsInfo#>)
         }
         return cell
     }

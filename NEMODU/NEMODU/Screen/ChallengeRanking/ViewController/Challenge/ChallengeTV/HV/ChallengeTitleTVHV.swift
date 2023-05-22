@@ -62,7 +62,7 @@ class ChallengeTitleTVHV : UITableViewHeaderFooterView {
         
         
         containerView.snp.makeConstraints {
-            $0.height.equalTo(containerViewHeight)
+            $0.height.equalTo(containerViewHeight).priority(.high)
             
             $0.top.equalTo(contentView.snp.top)
             $0.horizontalEdges.equalTo(contentView)

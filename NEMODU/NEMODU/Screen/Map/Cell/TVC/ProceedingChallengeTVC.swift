@@ -36,6 +36,7 @@ class ProceedingChallengeTVC: UITableViewCell {
         }
     
     var challengeUUID: String?
+    var endDate: Date?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -51,7 +52,7 @@ class ProceedingChallengeTVC: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        challengeIcon.image = nil
+        challengeIcon.tintColor = .clear
         challengeTitle.text = nil
         challengeSubtitle.text = nil
         challengeUUID = nil
@@ -94,6 +95,7 @@ extension ProceedingChallengeTVC {
         challengeIcon.tintColor = ChallengeColorType(rawValue: element.color)?.primaryColor ?? .gray500
         challengeTitle.text = element.name
         challengeUUID = element.uuid
+        endDate = element.ended.toDate(.hyphen)
         
         if let rank = element.rank {
             challengeSubtitle.text = isMyList

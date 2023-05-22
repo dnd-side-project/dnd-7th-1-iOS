@@ -34,7 +34,6 @@ class ChallengeDetailMapVC: BaseViewController {
     var longitude: Double?
     
     private let viewModel = ChallengeDetailMapVM()
-    private let bag = DisposeBag()
     
     
     override func viewDidLoad() {
@@ -70,6 +69,7 @@ class ChallengeDetailMapVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        bindAPIErrorAlert(viewModel)
         bindAnnotations()
         bindMatrices()
         bindRank()
@@ -83,7 +83,7 @@ class ChallengeDetailMapVC: BaseViewController {
                 guard let self = self else { return }
                 self.loading(loading: isLoading)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
 }
@@ -232,7 +232,7 @@ extension ChallengeDetailMapVC {
                 guard let self = self else { return }
                 self.userRankingListTV.reloadData()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 

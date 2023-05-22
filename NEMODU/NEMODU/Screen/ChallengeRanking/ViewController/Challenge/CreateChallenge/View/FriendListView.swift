@@ -47,7 +47,7 @@ class FriendListView: BaseView {
     
     // MARK: - Functions
     
-    func configureFriendsListView(friendInfo: Info) {
+    func configureFriendsListView(friendInfo: FriendDefaultInfo) {
         nicknameLabel.text = friendInfo.nickname
         profileImageView.kf.setImage(with: friendInfo.picturePathURL, placeholder: UIImage.defaultThumbnail)
     }

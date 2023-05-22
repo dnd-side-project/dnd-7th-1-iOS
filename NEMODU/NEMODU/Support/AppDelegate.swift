@@ -22,6 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // SplashView 1초동안 보이게
         Thread.sleep(forTimeInterval: 1)
         
+        NetworkMonitor.shared.startMonitoring()
+        
         // FCM Push Notification Settings
         FirebaseApp.configure()
         Messaging.messaging().delegate = self

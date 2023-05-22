@@ -32,14 +32,20 @@ class AreaRankingListVC : RankingListVC {
         bindAreaRankingList()
     }
     
+    override func bindOutput() {
+        super.bindOutput()
+        
+        bindAPIErrorAlert(viewModel)
+    }
+    
     // MARK: - Functions
     
     func configureRankingUserTVC() {
         guard let areaRankingList = areaRankingListResponseModel else { return }
         for areaRanking in areaRankingList.areaRankings {
             if areaRanking.nickname == myUserNickname {
-                myRankingTVC.configureRankingCell(rankNumber: areaRanking.rank, profileImageURL: areaRanking.picturePathURL, nickname: areaRanking.nickname, blocksNumber: areaRanking.score)
-                myRankingTVC.configureRankingTopCell()
+                myRankingView.configureRankingUserView(rankNumber: areaRanking.rank, profileImageURL: areaRanking.picturePathURL, nickname: areaRanking.nickname, blocksNumber: areaRanking.score)
+                myRankingView.configureRankingTop()
             }
         }
     }
@@ -152,6 +158,6 @@ extension AreaRankingListVC {
                 self.configureRankingUserTVC()
                 self.rankingTableView.reloadData()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }

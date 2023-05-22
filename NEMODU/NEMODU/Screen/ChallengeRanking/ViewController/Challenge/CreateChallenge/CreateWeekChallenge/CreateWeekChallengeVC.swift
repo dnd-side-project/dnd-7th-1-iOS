@@ -116,10 +116,9 @@ class CreateWeekChallengeVC: CreateChallengeVC {
     // MARK: - Variables and Properties
     
     private let viewModel = CreateWeekChallengeVM()
-    private let bag = DisposeBag()
     private var creatChallengeResponseModel: CreatChallengeResponseModel?
     
-    var friends: [Info] = []
+    var friends: [FriendDefaultInfo] = []
     var message, name, nickname, started, ended: String?
     var startedDate: Date?
     
@@ -166,7 +165,8 @@ class CreateWeekChallengeVC: CreateChallengeVC {
     
     override func bindOutput() {
         super.bindOutput()
-
+        
+        bindAPIErrorAlert(viewModel)
         responseCreateWeekChallenge()
     }
     
@@ -193,11 +193,13 @@ class CreateWeekChallengeVC: CreateChallengeVC {
     private func updateSelectedChallengePeriod() {
         if started != nil {
             challengePeriodButtonView.statusImageView.image = UIImage(named: "check")
-            
             challengePeriodButtonView.dateLabel.isHidden = false
-            guard let startDate = started?.split(separator: " ") else { return }
-            guard let endDate = ended?.split(separator: " ") else { return }
-            challengePeriodButtonView.dateLabel.text = "\(startDate[1]) \(startDate[2]) - \(endDate[1]) \(endDate[2])"
+            
+            let startDate = started?.split(separator: " ")
+            let endDate = ended?.split(separator: " ")
+            if let startDate, let endDate {
+                challengePeriodButtonView.dateLabel.text = "\(startDate[1]) \(startDate[2]) - \(endDate[1]) \(endDate[2])"
+            }
         }
     }
     
@@ -223,21 +225,14 @@ class CreateWeekChallengeVC: CreateChallengeVC {
                 .then {
                     $0.axis = .vertical
                     $0.alignment = .fill
-                    
                 }
             
             for friend in friends {
-                let tableViewCell = SelectFriendsTVC()
-                    .then {
-                        $0.configureSelectFriendsTVC(friendInfo: friend)
-                        $0.checkImageView.isHidden = true
-                    }
+                let selectFriendsView = SelectFriendsView()
+                selectFriendsView.configureSelectFriendsView(friendInfo: friend)
+                selectFriendsView.checkImageView.isHidden = true
                 
-                tableViewCell.snp.makeConstraints {
-                    $0.height.equalTo(64)
-                }
-                
-                stackView.addArrangedSubview(tableViewCell)
+                stackView.addArrangedSubview(selectFriendsView)
             }
             
             selectFriendsButtonView.snp.remakeConstraints {
@@ -420,7 +415,7 @@ extension CreateWeekChallengeVC {
                 })
                 
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         insertChallengeNameTextField.rx.controlEvent([.editingDidEnd])
             .subscribe(onNext: { [self] in
@@ -431,7 +426,7 @@ extension CreateWeekChallengeVC {
                     limitedAlertChallengeNameCountLabel.isHidden = true
                 })
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         insertChallengeNameTextField.rx.controlEvent([.editingChanged])
             .asDriver()
@@ -456,7 +451,7 @@ extension CreateWeekChallengeVC {
                 self.checkConfirmButtonEnableCondition()
                 
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     private func bindInsertChallengeMessageTextView() {
@@ -478,7 +473,7 @@ extension CreateWeekChallengeVC {
                 }
                 
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         insertChallengeMessageTextView.tv.rx.didEndEditing
             .subscribe(onNext: { [weak self] _ in
@@ -500,7 +495,7 @@ extension CreateWeekChallengeVC {
                 self.checkConfirmButtonEnableCondition()
                 
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
 }
@@ -518,7 +513,7 @@ extension CreateWeekChallengeVC {
                     self.popUpAlert(alertType: .createWeekChallenge, targetVC: self, highlightBtnAction: #selector(self.dismissAlert), normalBtnAction: nil)
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         viewModel.output.successWithResponseData
             .subscribe(onNext: { [weak self] data in
@@ -530,7 +525,7 @@ extension CreateWeekChallengeVC {
                 createChallengeSuccuessVC.modalPresentationStyle = .fullScreen
                 self.present(createChallengeSuccuessVC, animated: true)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 

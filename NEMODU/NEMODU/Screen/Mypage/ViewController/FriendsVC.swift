@@ -38,7 +38,8 @@ class FriendsVC: BaseViewController {
     
     private let recommendListVC = RecommendListVC()
     
-    private let bag = DisposeBag()
+    /// 친구 목록 편집 상태
+    private var isFriendListEditing = BehaviorRelay<Bool>(value: false)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,6 +59,7 @@ class FriendsVC: BaseViewController {
     override func bindInput() {
         super.bindInput()
         bindTabScroll()
+        bindBackBtn()
     }
     
     override func bindOutput() {
@@ -86,6 +88,8 @@ extension FriendsVC {
         [friendListVC.view, recommendListVC.view].forEach {
             baseStackView.addArrangedSubview($0)
         }
+        
+        friendListVC.delegate = self
     }
 }
 
@@ -132,7 +136,7 @@ extension FriendsVC {
                 let offset = CGFloat(indexPath.row) * self.screenWidth
                 self.baseScrollView.scrollToHorizontalOffset(offset: offset)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         baseScrollView.rx.contentOffset
             .asDriver()
@@ -142,12 +146,41 @@ extension FriendsVC {
                 if page.isNaN || page.isInfinite { return }
                 self.menuBar.selectTab(Int(page))
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindBackBtn() {
+        // 기존 뒤로가기 pop 액션 remove
+        naviBar.backBtn.removeTarget(self,
+                                     action: #selector(self.popVC),
+                                     for: .touchUpInside)
+        // 편집 상태에 따라 binding
+        naviBar.backBtn.rx.tap
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.isFriendListEditing.value
+                ? self.popUpAlert(alertType: .discardChanges,
+                                  targetVC: self,
+                                  highlightBtnAction: #selector(self.dismissAlertAndPopVC),
+                                  normalBtnAction: #selector(self.dismissAlert))
+                : self.popVC()
+            })
+            .disposed(by: disposeBag)
+        
+        // 편집 상태에 따라 뒤로가기 제스쳐 가능 상태 변경
+        isFriendListEditing
+            .subscribe(onNext: { [weak self] status in
+                guard let self = self else { return }
+                self.navigationController?.interactivePopGestureRecognizer?.isEnabled = !status
+            })
+            .disposed(by: disposeBag)
     }
 }
 
-// MARK: - Output
-
-extension FriendsVC {
-    
+// MARK: - NavigationBarBackBtnDelegate
+extension FriendsVC: NavigationBarBackBtnDelegate {
+    /// 편집 상태 변경
+    func changeFriendListEditingStatus(_ status: Bool) {
+        isFriendListEditing.accept(status)
+    }
 }

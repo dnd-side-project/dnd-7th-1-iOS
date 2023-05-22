@@ -103,10 +103,9 @@ class SelectFriendsVC: CreateChallengeVC {
     var createWeekChallengeVC: CreateWeekChallengeVC?
     
     private let viewModel = SelectFriendsVM()
-    private let bag = DisposeBag()
     private var friendsListResponseModel: FriendsListResponseModel?
     
-    private var selectedFriendsList: [Info] = []
+    private var selectedFriendsList: [FriendDefaultInfo] = []
     
     private var friendsListContainerViewHeightConstraint: Constraint?
     
@@ -146,12 +145,13 @@ class SelectFriendsVC: CreateChallengeVC {
     override func bindOutput() {
         super.bindOutput()
         
+        bindAPIErrorAlert(viewModel)
         responseFriendsList()
     }
     
     // MARK: - Functions
     
-    private func showSelectedFriend(friendInfo: Info) {
+    private func showSelectedFriend(friendInfo: FriendDefaultInfo) {
         selectedFriendsList.append(friendInfo)
         
         // 친구목록 컨테이너 창 크기 조절하기
@@ -180,7 +180,7 @@ class SelectFriendsVC: CreateChallengeVC {
         }
     }
     
-    private func deleteSelectedFriend(friendInfo: Info) {
+    private func deleteSelectedFriend(friendInfo: FriendDefaultInfo) {
         var seletedFriendsProfileList: [UIImage] = []
         [friendsListView1, friendsListView2, friendsListView3].forEach {
             seletedFriendsProfileList.append($0.profileImageView.image ?? .defaultThumbnail)
@@ -276,7 +276,7 @@ extension SelectFriendsVC {
             }
     }
     
-    private func configureFriendListView(friendListView: FriendListView, friendInfo: Info) {
+    private func configureFriendListView(friendListView: FriendListView, friendInfo: FriendDefaultInfo) {
         friendListView.isHidden = false
         friendListView.configureFriendsListView(friendInfo: friendInfo)
     }
@@ -322,15 +322,15 @@ extension SelectFriendsVC {
             $0.horizontalEdges.equalTo(view).inset(16)
         }
         friendsListView1.snp.makeConstraints {
-            $0.verticalEdges.equalTo(friendsListContainerView).inset(16)
+            $0.centerY.equalTo(friendsListContainerView)
             $0.left.equalTo(friendsListContainerView.snp.left)
         }
         friendsListView2.snp.makeConstraints {
-            $0.verticalEdges.equalTo(friendsListView1)
+            $0.centerY.equalTo(friendsListView1)
             $0.left.equalTo(friendsListView1.snp.right).offset(12)
         }
         friendsListView3.snp.makeConstraints {
-            $0.verticalEdges.equalTo(friendsListView1)
+            $0.centerY.equalTo(friendsListView2)
             $0.left.equalTo(friendsListView2.snp.right).offset(12)
         }
 
@@ -399,11 +399,11 @@ extension SelectFriendsVC : UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 64
+        return UITableView.automaticDimension
     }
 
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 64
+        return UITableView.automaticDimension
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -466,7 +466,7 @@ extension SelectFriendsVC {
                 
                 searchNickname.count == 0 ? (self.deleteAllTextButton.isHidden = true) : (self.deleteAllTextButton.isHidden = false)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     private func bindButtons() {
@@ -479,7 +479,7 @@ extension SelectFriendsVC {
                 self.deleteAllTextButton.isHidden = true
                 self.searchTextField.becomeFirstResponder()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
 }
@@ -496,7 +496,7 @@ extension SelectFriendsVC {
                 self.friendsListResponseModel = data
                 self.friendsListTableView.reloadData()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
 }

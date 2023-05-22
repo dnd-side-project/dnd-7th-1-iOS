@@ -11,5 +11,7 @@ import RxSwift
 protocol BaseViewModel: Input, Output {
     var apiSession: APIService { get }
     
+    var apiError: PublishSubject<APIError> { get }
+    
     var bag: DisposeBag { get }
 }
