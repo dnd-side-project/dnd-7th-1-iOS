@@ -237,7 +237,7 @@ extension TermsConditionsAgreementVC {
                 }
                 self.toggleAgreeAllStatus(agreedAll: isAgreedAll)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
             
         }
         
@@ -264,7 +264,7 @@ extension TermsConditionsAgreementVC {
                 // TODO: - 네모두 시작하기 버튼 바인딩
                 print("startButton - 네모두 시작하기 pressed")
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
 }
