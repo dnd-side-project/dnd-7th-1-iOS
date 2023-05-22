@@ -29,8 +29,13 @@ final class ChallengeDetailMapVM: BaseViewModel {
     
     struct Output: Lodable {
         var loading = BehaviorRelay<Bool>(value: false)
-        var userMatrixData = PublishRelay<[MatrixList]>()
+        
+        // Rank
         var usersRankData = BehaviorRelay<[RankingList]>(value: [])
+        
+        // Matrices
+        var userMatrixData = PublishRelay<[MatrixList]>()
+        var matrices = PublishRelay<(nickname: String, matrices: [Matrix])>()
     }
     
     // MARK: - Init
@@ -60,8 +65,9 @@ extension ChallengeDetailMapVM: Output {
 // MARK: - Networking
 
 extension ChallengeDetailMapVM {
-    func getChallengeDetailMap(nickname: String, uuid: String) {
-        let path = "challenge/detail/map?nickname=\(nickname)&uuid=\(uuid)"
+    func getChallengeDetailMap(uuid: String, latitude: Double, longitude: Double) {
+        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
+        let path = "challenge/detail/map?nickname=\(nickname)&uuid=\(uuid)&latitude=\(latitude)&longitude=\(longitude)&spanDelta=\(Map.defaultZoomScale * 1.5)"
         let resource = urlResource<ChallengeDetailMapResponseModel>(path: path)
         
         output.beginLoading()
@@ -79,6 +85,31 @@ extension ChallengeDetailMapVM {
                     // data binding
                     owner.output.userMatrixData.accept(data.matrixList)
                     owner.output.usersRankData.accept(data.rankingList)
+                }
+                owner.output.endLoading()
+            })
+            .disposed(by: bag)
+    }
+    
+    /// 지도 제스쳐 시, 현재 화면에 보이는 영역을 받아오는 메서드
+    func getUpdateBlocks(_ uuid: String, _ latitude: Double, _ longitude: Double, _ spanDelta: Double = Map.defaultZoomScale * 1.5) {
+        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
+        let type = MapType.challenge.rawValue
+        let path = "matrix?nickname=\(nickname)&latitude=\(latitude)&longitude=\(longitude)&spanDelta=\(spanDelta)&type=\(type)&uuid=\(uuid)"
+        let resource = urlResource<[UserMatrixResponseModel]?>(path: path)
+        
+        output.beginLoading()
+        apiSession.getRequest(with: resource)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, result in
+                switch result {
+                case .failure(let error):
+                    owner.apiError.onNext(error)
+                case .success(let data):
+                    guard let data = data else { return }
+                    for data in data {
+                        owner.output.matrices.accept((data.nickname, data.matrices))
+                    }
                 }
                 owner.output.endLoading()
             })

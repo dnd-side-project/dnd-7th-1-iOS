@@ -29,6 +29,7 @@ class ChallengeDetailMapVC: BaseViewController {
         }
     
     var challengeTitle: String?
+    var uuid: String?
     
     private let viewModel = ChallengeDetailMapVM()
     private let bag = DisposeBag()
@@ -51,6 +52,7 @@ class ChallengeDetailMapVC: BaseViewController {
     
     override func bindInput() {
         super.bindInput()
+        bindMapGesture()
         bindSelectUserRankingListTV()
     }
     
@@ -91,11 +93,15 @@ extension ChallengeDetailMapVC {
                                    forCellReuseIdentifier: ChallengeDetailMapRankingTVC.className)
         
         userRankingListTV.dataSource = self
+        mapVC.isUserInteractionEnabled(true)
     }
     
-    func getChallengeDetailMap(uuid: String) {
-        let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) ?? ""
-        viewModel.getChallengeDetailMap(nickname: nickname, uuid: uuid)
+    /// ChallengeHistoryDetailVC에서 데이터를 넘겨주는 메서드
+    func getChallengeDetailMap(latitude: Double, longitude: Double) {
+        guard let uuid = uuid else { return }
+        viewModel.getChallengeDetailMap(uuid: uuid,
+                                        latitude: latitude,
+                                        longitude: longitude)
     }
 }
 
@@ -118,6 +124,22 @@ extension ChallengeDetailMapVC {
 // MARK: - Input
 
 extension ChallengeDetailMapVC {
+    /// 지도 제스쳐에 맞춰 현재 보이는 화면의 영역을 받아오는 메서드
+    private func bindMapGesture() {
+        mapVC.mapView.rx.anyGesture(.pan(), .pinch())
+            .when(.ended)
+            .debounce(.seconds(1), scheduler: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self,
+                      let uuid = self.uuid else { return }
+                self.viewModel.getUpdateBlocks(uuid,
+                                               self.mapVC.mapView.region.center.latitude,
+                                               self.mapVC.mapView.region.center.longitude,
+                                               self.mapVC.mapView.region.span.latitudeDelta)
+            })
+            .disposed(by: bag)
+    }
+    
     /// 유저 선택 시 해당 유저의 마지막 위치로 이동하는 메서드
     private func bindSelectUserRankingListTV() {
         userRankingListTV.rx.itemSelected

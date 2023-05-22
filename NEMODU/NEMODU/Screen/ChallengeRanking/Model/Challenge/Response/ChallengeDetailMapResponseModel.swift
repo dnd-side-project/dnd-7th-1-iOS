@@ -24,6 +24,13 @@ struct MatrixList: Codable {
     let picturePath: String
 }
 
+extension MatrixList {
+    var picturePathURL: URL? {
+        guard let picturePathURL = picturePath.encodeURL() else { return nil }
+        return URL(string: picturePathURL)
+    }
+}
+
 // MARK: - RankingList
 
 struct RankingList: Codable {
