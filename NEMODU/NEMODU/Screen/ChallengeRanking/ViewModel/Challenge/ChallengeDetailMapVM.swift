@@ -74,7 +74,7 @@ extension ChallengeDetailMapVM {
                 case .success(let data):
                     // userTable 생성
                     for i in 0..<data.matrixList.count {
-                        owner.input.userTable[data.rankingList[i].nickname] = data.matrixList[i]
+                        owner.input.userTable[data.matrixList[i].nickname] = data.matrixList[i]
                     }
                     // data binding
                     owner.output.userMatrixData.accept(data.matrixList)
