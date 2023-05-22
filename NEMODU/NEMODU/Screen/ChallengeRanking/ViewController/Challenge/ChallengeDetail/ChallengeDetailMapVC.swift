@@ -30,6 +30,8 @@ class ChallengeDetailMapVC: BaseViewController {
     
     var challengeTitle: String?
     var uuid: String?
+    var latitude: Double?
+    var longitude: Double?
     
     private let viewModel = ChallengeDetailMapVM()
     private let bag = DisposeBag()
@@ -37,6 +39,16 @@ class ChallengeDetailMapVC: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        guard let uuid = uuid,
+              let location = mapVC.locationManager.location
+        else { return }
+        viewModel.getChallengeDetailMap(uuid: uuid,
+                                        latitude: latitude ?? location.coordinate.latitude,
+                                        longitude: longitude ?? location.coordinate.longitude)
     }
     
     override func configureView() {
@@ -94,15 +106,17 @@ extension ChallengeDetailMapVC {
                                    forCellReuseIdentifier: ChallengeDetailMapRankingTVC.className)
         
         userRankingListTV.dataSource = self
+        
+        // TODO: - 지도 구조 변경
+        mapVC.mapView.layer.cornerRadius = 0
         mapVC.isUserInteractionEnabled(true)
-    }
-    
-    /// ChallengeHistoryDetailVC에서 데이터를 넘겨주는 메서드
-    func getChallengeDetailMap(latitude: Double, longitude: Double) {
-        guard let uuid = uuid else { return }
-        viewModel.getChallengeDetailMap(uuid: uuid,
-                                        latitude: latitude,
-                                        longitude: longitude)
+        
+        if let latitude = latitude,
+           let longitude = longitude {
+            _ = mapVC.goLocation(latitudeValue: latitude,
+                                 longitudeValue: longitude,
+                                 delta: Map.defaultZoomScale)
+        }
     }
 }
 
@@ -146,7 +160,8 @@ extension ChallengeDetailMapVC {
         userRankingListTV.rx.itemSelected
             .subscribe(onNext: { [weak self] indexPath in
                 guard let self = self,
-                      let cell = self.userRankingListTV.cellForRow(at: indexPath) as? ChallengeDetailMapRankingTVC
+                      let cell = self.userRankingListTV.cellForRow(at: indexPath) as? ChallengeDetailMapRankingTVC,
+                      let uuid = self.uuid
                 else { return }
                 guard let location = cell.getLocation(),
                       let latitude = location.latitude,
@@ -155,6 +170,11 @@ extension ChallengeDetailMapVC {
                     self.popupToast(toastType: .noRecord)
                     return
                 }
+                self.viewModel.getUpdateBlocks(uuid,
+                                               latitude,
+                                               longitude,
+                                               self.mapVC.mapView.region.span.latitudeDelta)
+                
                 _ = self.mapVC.goLocation(latitudeValue: latitude,
                                           longitudeValue: longitude,
                                           delta: Map.defaultZoomScale)
