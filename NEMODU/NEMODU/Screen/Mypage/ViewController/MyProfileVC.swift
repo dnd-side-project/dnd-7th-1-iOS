@@ -211,6 +211,17 @@ extension MyProfileVC {
                 self.navigationController?.pushViewController(editProfileVC, animated: true)
             })
             .disposed(by: disposeBag)
+        
+        logoutBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.popUpAlert(alertType: .logout,
+                                targetVC: self,
+                                highlightBtnAction: #selector(self.dismissAlert),
+                                normalBtnAction: #selector(self.dismissAlert))
+            })
+            .disposed(by: disposeBag)
     }
 }
 
