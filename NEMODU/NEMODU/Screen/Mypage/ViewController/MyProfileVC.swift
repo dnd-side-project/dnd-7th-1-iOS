@@ -72,7 +72,7 @@ class MyProfileVC: BaseViewController {
     
     private let logoutBtn = ArrowBtn(title: "로그아웃")
     
-    private let signOutBtn = ArrowBtn(title: "회원 탈퇴")
+    private let withdrawalBtn = ArrowBtn(title: "회원 탈퇴")
     
     private let viewModel = UserInfoSettingVM()
     
@@ -128,7 +128,7 @@ extension MyProfileVC {
         accountInfoView.addSubviews([accountInfoTitleLabel,
                                      accountLabel])
         
-        [editProfileBtn, accountInfoView, logoutBtn, signOutBtn].forEach {
+        [editProfileBtn, accountInfoView, logoutBtn, withdrawalBtn].forEach {
             settingBtnStackView.addArrangedSubview($0)
         }
         settingBtnStackView.addHorizontalSeparators(color: .gray50, height: 1)
@@ -172,7 +172,7 @@ extension MyProfileVC {
             $0.height.equalTo(227)
         }
         
-        [editProfileBtn, accountInfoView, logoutBtn, signOutBtn].forEach {
+        [editProfileBtn, accountInfoView, logoutBtn, withdrawalBtn].forEach {
             $0.snp.makeConstraints {
                 $0.height.equalTo(56)
             }
@@ -217,6 +217,17 @@ extension MyProfileVC {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.popUpAlert(alertType: .logout,
+                                targetVC: self,
+                                highlightBtnAction: #selector(self.logout),
+                                normalBtnAction: #selector(self.dismissAlert))
+            })
+            .disposed(by: disposeBag)
+        
+        withdrawalBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.popUpAlert(alertType: .deleteUser,
                                 targetVC: self,
                                 highlightBtnAction: #selector(self.logout),
                                 normalBtnAction: #selector(self.dismissAlert))
