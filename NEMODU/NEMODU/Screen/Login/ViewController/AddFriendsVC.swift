@@ -84,7 +84,7 @@ extension AddFriendsVC {
                           friendsCntLabel,
                           friendsTV])
         
-        friendsTV.register(FriendAddTVC.self, forCellReuseIdentifier: FriendAddTVC.className)
+        friendsTV.register(AddKakaoFriendTVC.self, forCellReuseIdentifier: AddKakaoFriendTVC.className)
     }
 }
 

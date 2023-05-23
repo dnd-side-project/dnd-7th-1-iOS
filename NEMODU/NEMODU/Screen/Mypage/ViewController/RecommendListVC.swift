@@ -126,9 +126,9 @@ extension RecommendListVC {
                                 nemoduRecommendTV,
                                 viewMoreNEMODUFriendBtn])
         
-        kakaoRecommendTV.register(FriendAddTVC.self, forCellReuseIdentifier: FriendAddTVC.className)
+        kakaoRecommendTV.register(AddKakaoFriendTVC.self, forCellReuseIdentifier: AddKakaoFriendTVC.className)
         
-        nemoduRecommendTV.register(FriendAddTVC.self, forCellReuseIdentifier: FriendAddTVC.className)
+        nemoduRecommendTV.register(AddKakaoFriendTVC.self, forCellReuseIdentifier: AddKakaoFriendTVC.className)
         nemoduRecommendTV.dataSource = self
     }
 }
@@ -229,12 +229,11 @@ extension RecommendListVC {
         RxTableViewSectionedReloadDataSource<FriendListDataSource<KakaoFriendInfo>>(
             configureCell: { dataSource, tableView, indexPath, item in
                 guard let cell = tableView.dequeueReusableCell(
-                        withIdentifier: FriendAddTVC.className,
+                        withIdentifier: AddKakaoFriendTVC.className,
                         for: indexPath
-                      ) as? FriendAddTVC
-                else {
-                    return UITableViewCell()
-                }
+                      ) as? AddKakaoFriendTVC
+                else { return UITableViewCell() }
+                cell.configureCell(item)
                 return cell
             })
     }
@@ -248,7 +247,7 @@ extension RecommendListVC: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: FriendAddTVC.className) as? FriendAddTVC else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: AddKakaoFriendTVC.className) as? AddKakaoFriendTVC else { return UITableViewCell() }
         
         return cell
     }

@@ -33,7 +33,7 @@
 		23255A6A28CF12DB005D6D5A /* NicknameVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A6928CF12DB005D6D5A /* NicknameVC.swift */; };
 		23255A6C28CF1307005D6D5A /* AddFriendsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A6B28CF1307005D6D5A /* AddFriendsVC.swift */; };
 		23255A6E28CF3787005D6D5A /* NicknameType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A6D28CF3787005D6D5A /* NicknameType.swift */; };
-		23255A7228CF457E005D6D5A /* FriendAddTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A7128CF457E005D6D5A /* FriendAddTVC.swift */; };
+		23255A7228CF457E005D6D5A /* AddKakaoFriendTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A7128CF457E005D6D5A /* AddKakaoFriendTVC.swift */; };
 		23255A7428CF5325005D6D5A /* EnterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A7328CF5325005D6D5A /* EnterVC.swift */; };
 		23255A7628CF5C1F005D6D5A /* UserInfoSettingVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A7528CF5C1F005D6D5A /* UserInfoSettingVM.swift */; };
 		23255A7928D05912005D6D5A /* DayCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A7828D05912005D6D5A /* DayCVC.swift */; };
@@ -46,9 +46,9 @@
 		232F0B6328B6803C005C9A07 /* AlertVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232F0B6228B6803C005C9A07 /* AlertVC.swift */; };
 		232F0B6528B686C5005C9A07 /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232F0B6428B686C5005C9A07 /* AlertType.swift */; };
 		233258A128D60C370073B09E /* AuthInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233258A028D60C370073B09E /* AuthInterceptor.swift */; };
-		2333CC7A2A1BB3BD003F864C /* CGPoint+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2333CC792A1BB3BD003F864C /* CGPoint+.swift */; };
 		2333CC762A192EF3003F864C /* APIErrorHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2333CC752A192EF3003F864C /* APIErrorHandling.swift */; };
 		2333CC782A1B47AD003F864C /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2333CC772A1B47AD003F864C /* NetworkMonitor.swift */; };
+		2333CC7A2A1BB3BD003F864C /* CGPoint+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2333CC792A1BB3BD003F864C /* CGPoint+.swift */; };
 		2336FFBB29F2DC7B002D5CBF /* Area.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2336FFBA29F2DC7B002D5CBF /* Area.swift */; };
 		2339D74E28B2849F0018013D /* MyRecordDataVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2339D74D28B2849F0018013D /* MyRecordDataVC.swift */; };
 		2339D75028B284C20018013D /* MypageNC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2339D74F28B284C20018013D /* MypageNC.swift */; };
@@ -106,9 +106,9 @@
 		2365F3B42A1CE7D000475736 /* KakaoFriendInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2365F3B32A1CE7D000475736 /* KakaoFriendInfo.swift */; };
 		2365F3B62A1CEA3D00475736 /* KakaoAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2365F3B52A1CEA3D00475736 /* KakaoAPI.swift */; };
 		2365F3B82A1D140600475736 /* ViewMoreBtn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2365F3B72A1D140600475736 /* ViewMoreBtn.swift */; };
+		2370E4952A16687B00C51672 /* ChallengeDetailMapRankingTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2370E4942A16687B00C51672 /* ChallengeDetailMapRankingTVC.swift */; };
 		2370E4982A173B5F00C51672 /* ErrorResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2370E4972A173B5F00C51672 /* ErrorResponseModel.swift */; };
 		23731BAF2A12109200CC9892 /* FriendRequestHandlingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23731BAE2A12109200CC9892 /* FriendRequestHandlingModel.swift */; };
-		2370E4952A16687B00C51672 /* ChallengeDetailMapRankingTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2370E4942A16687B00C51672 /* ChallengeDetailMapRankingTVC.swift */; };
 		237573CF28F55F84006026ED /* EditRecordMemoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573CE28F55F84006026ED /* EditRecordMemoVC.swift */; };
 		237573D128F5660A006026ED /* EditRecordMemoVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573D028F5660A006026ED /* EditRecordMemoVM.swift */; };
 		237573D328F56A7B006026ED /* EditMemoRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573D228F56A7B006026ED /* EditMemoRequestModel.swift */; };
@@ -314,7 +314,7 @@
 		23255A6928CF12DB005D6D5A /* NicknameVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameVC.swift; sourceTree = "<group>"; };
 		23255A6B28CF1307005D6D5A /* AddFriendsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendsVC.swift; sourceTree = "<group>"; };
 		23255A6D28CF3787005D6D5A /* NicknameType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameType.swift; sourceTree = "<group>"; };
-		23255A7128CF457E005D6D5A /* FriendAddTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendAddTVC.swift; sourceTree = "<group>"; };
+		23255A7128CF457E005D6D5A /* AddKakaoFriendTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddKakaoFriendTVC.swift; sourceTree = "<group>"; };
 		23255A7328CF5325005D6D5A /* EnterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterVC.swift; sourceTree = "<group>"; };
 		23255A7528CF5C1F005D6D5A /* UserInfoSettingVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoSettingVM.swift; sourceTree = "<group>"; };
 		23255A7828D05912005D6D5A /* DayCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayCVC.swift; sourceTree = "<group>"; };
@@ -390,9 +390,9 @@
 		2365F3B32A1CE7D000475736 /* KakaoFriendInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoFriendInfo.swift; sourceTree = "<group>"; };
 		2365F3B52A1CEA3D00475736 /* KakaoAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAPI.swift; sourceTree = "<group>"; };
 		2365F3B72A1D140600475736 /* ViewMoreBtn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreBtn.swift; sourceTree = "<group>"; };
+		2370E4942A16687B00C51672 /* ChallengeDetailMapRankingTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeDetailMapRankingTVC.swift; sourceTree = "<group>"; };
 		2370E4972A173B5F00C51672 /* ErrorResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponseModel.swift; sourceTree = "<group>"; };
 		23731BAE2A12109200CC9892 /* FriendRequestHandlingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestHandlingModel.swift; sourceTree = "<group>"; };
-		2370E4942A16687B00C51672 /* ChallengeDetailMapRankingTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeDetailMapRankingTVC.swift; sourceTree = "<group>"; };
 		237573CE28F55F84006026ED /* EditRecordMemoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditRecordMemoVC.swift; sourceTree = "<group>"; };
 		237573D028F5660A006026ED /* EditRecordMemoVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditRecordMemoVM.swift; sourceTree = "<group>"; };
 		237573D228F56A7B006026ED /* EditMemoRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMemoRequestModel.swift; sourceTree = "<group>"; };
@@ -703,7 +703,7 @@
 		23255A7028CF455D005D6D5A /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				23255A7128CF457E005D6D5A /* FriendAddTVC.swift */,
+				23255A7128CF457E005D6D5A /* AddKakaoFriendTVC.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -1748,7 +1748,7 @@
 				2348B3E72892D08D001095BC /* BaseViewModel.swift in Sources */,
 				2304FB9F28F2DC3300DD3A50 /* LoginBtn.swift in Sources */,
 				2348B4092892D2E5001095BC /* UIViewController+.swift in Sources */,
-				23255A7228CF457E005D6D5A /* FriendAddTVC.swift in Sources */,
+				23255A7228CF457E005D6D5A /* AddKakaoFriendTVC.swift in Sources */,
 				2312519428B6943B00DF1C69 /* ToastType.swift in Sources */,
 				3C064BC2290FCA1400522274 /* InvitedChallengeDetailVC.swift in Sources */,
 				23A0BE4C2A112D2800AF10BE /* FriendListVM.swift in Sources */,
