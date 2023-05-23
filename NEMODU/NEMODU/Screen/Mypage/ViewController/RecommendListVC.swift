@@ -101,6 +101,7 @@ class RecommendListVC: BaseViewController {
     
     override func bindInput() {
         super.bindInput()
+        bindViewMoreBtn()
     }
     
     override func bindOutput() {
@@ -201,7 +202,17 @@ extension RecommendListVC {
 // MARK: - Input
 
 extension RecommendListVC {
-    
+    func bindViewMoreBtn() {
+        viewMoreKakaoFriendBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                let allFriendListVC = AllFriendListVC()
+                allFriendListVC.listType = .kakao
+                self.navigationController?.pushViewController(allFriendListVC, animated: true)
+            })
+            .disposed(by: disposeBag)
+    }
 }
 
 // MARK: - Output
@@ -224,7 +235,7 @@ extension RecommendListVC {
 // MARK: - DataSource
 
 extension RecommendListVC {
-    /// 내 친구 목록 tableView DataSource
+    /// 카카오 추천 친구 목록 tableView DataSource
     func kakaoTableViewDataSource() -> RxTableViewSectionedReloadDataSource<FriendListDataSource<KakaoFriendInfo>> {
         RxTableViewSectionedReloadDataSource<FriendListDataSource<KakaoFriendInfo>>(
             configureCell: { dataSource, tableView, indexPath, item in

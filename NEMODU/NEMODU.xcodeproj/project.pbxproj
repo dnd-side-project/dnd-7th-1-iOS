@@ -25,6 +25,7 @@
 		2312519628B6944B00DF1C69 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2312519528B6944B00DF1C69 /* ToastView.swift */; };
 		2315258D28B4F07D00B80E03 /* DetailRecordDataResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2315258C28B4F07D00B80E03 /* DetailRecordDataResponseModel.swift */; };
 		2315258F28B4F2A000B80E03 /* MyRecordDetailVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2315258E28B4F2A000B80E03 /* MyRecordDetailVM.swift */; };
+		2318D4202A1D29C7008754C4 /* AllFriendListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2318D41F2A1D29C7008754C4 /* AllFriendListVC.swift */; };
 		231A2B8D28B20B3E00FF884B /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231A2B8C28B20B3E00FF884B /* ProfileView.swift */; };
 		231A2B8F28B20B5600FF884B /* BlockCntView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231A2B8E28B20B5600FF884B /* BlockCntView.swift */; };
 		231A2B9128B2787200FF884B /* MypageVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231A2B9028B2787200FF884B /* MypageVM.swift */; };
@@ -306,6 +307,7 @@
 		2312519528B6944B00DF1C69 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		2315258C28B4F07D00B80E03 /* DetailRecordDataResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRecordDataResponseModel.swift; sourceTree = "<group>"; };
 		2315258E28B4F2A000B80E03 /* MyRecordDetailVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordDetailVM.swift; sourceTree = "<group>"; };
+		2318D41F2A1D29C7008754C4 /* AllFriendListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllFriendListVC.swift; sourceTree = "<group>"; };
 		231A2B8C28B20B3E00FF884B /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		231A2B8E28B20B5600FF884B /* BlockCntView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockCntView.swift; sourceTree = "<group>"; };
 		231A2B9028B2787200FF884B /* MypageVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MypageVM.swift; sourceTree = "<group>"; };
@@ -1007,6 +1009,7 @@
 				3CF039ED29E290FF001CA475 /* SetNotificationVC.swift */,
 				3C506C1C29FD3189006EDAAE /* TermsConditionsVC.swift */,
 				3C2327B62A03730700251316 /* NotificationBoxVC.swift */,
+				2318D41F2A1D29C7008754C4 /* AllFriendListVC.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -1699,6 +1702,7 @@
 				23C64DD52988DAF400509E5B /* SocialLoginResponseModel.swift in Sources */,
 				3C0029F329011378001BB6AE /* CreatChallengeResponseModel.swift in Sources */,
 				2348B3F52892D131001095BC /* Service.swift in Sources */,
+				2318D4202A1D29C7008754C4 /* AllFriendListVC.swift in Sources */,
 				3C48920528B0C8A800B11207 /* NoChallengeStatusMessage.swift in Sources */,
 				23D8B7E528B4D5AA00F48165 /* CalendarSelectStackView.swift in Sources */,
 				23AB8F3328B5E5FA007E3A2F /* BlocksType.swift in Sources */,
