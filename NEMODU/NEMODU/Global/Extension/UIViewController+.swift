@@ -87,6 +87,7 @@ extension UIViewController {
         UserDefaults.standard.set(nil, forKey: UserDefaults.Keys.email)
         UserDefaults.standard.set(nil, forKey: UserDefaults.Keys.pictureName)
         UserDefaults.standard.set(nil, forKey: UserDefaults.Keys.picturePath)
+        UserDefaults.standard.set(nil, forKey: UserDefaults.Keys.fcmToken)
     }
     
     /// 기기 스크린 hight에 맞춰 비율을 계산해 height를 리턴하는 함수
