@@ -37,9 +37,10 @@ class UserInfoSettingVC: BaseViewController {
     private let nicknameVC = NicknameVC()
     private let addfriendsVC = AddFriendsVC()
     private let locationSettingVC = LocationSettingVC()
+    private let friendRecommendSettingVC = FriendRecommendSettingVC()
     
     private var page: Float = 1
-    private let pageCnt: Float = 3
+    private let pageCnt: Float = 4
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -90,9 +91,10 @@ extension UserInfoSettingVC {
         addChild(nicknameVC)
         addChild(addfriendsVC)
         addChild(locationSettingVC)
+        addChild(friendRecommendSettingVC)
         
         baseScrollView.addSubview(baseStackView)
-        [nicknameVC.view, addfriendsVC.view, locationSettingVC.view].forEach {
+        [nicknameVC.view, addfriendsVC.view, locationSettingVC.view, friendRecommendSettingVC.view].forEach {
             baseStackView.addArrangedSubview($0)
         }
         
@@ -135,7 +137,7 @@ extension UserInfoSettingVC {
             .drive(onNext: { [weak self] _ in
                 guard let self = self,
                       self.page > 1 else { return }
-                if self.page == 3 { self.naviBar.rightBtn.setTitle("다음", for: .normal) }
+                if self.page == self.pageCnt { self.naviBar.rightBtn.setTitle("다음", for: .normal) }
                 self.page -= 1
                 self.page != 0
                 ? self.setPage(self.page)
@@ -147,11 +149,15 @@ extension UserInfoSettingVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self,
-                      self.page <= 3 else { return }
+                      self.page <= self.pageCnt else { return }
                 self.page += 1
                 
                 if self.page != self.pageCnt + 1 {
                     self.setPage(self.page)
+                    if self.page == 2,
+                       let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) {
+                        self.friendRecommendSettingVC.setNicknameLabel(nickname)
+                    }
                 } else {
                     let enterVC = EnterVC()
                     // TODO: - 친구 목록 연결
@@ -160,7 +166,7 @@ extension UserInfoSettingVC {
                     self.navigationController?.pushViewController(enterVC, animated: true)
                 }
                 
-                if self.page == 3 { self.naviBar.rightBtn.setTitle("완료", for: .normal) }
+                if self.page == self.pageCnt { self.naviBar.rightBtn.setTitle("완료", for: .normal) }
             })
             .disposed(by: disposeBag)
         
