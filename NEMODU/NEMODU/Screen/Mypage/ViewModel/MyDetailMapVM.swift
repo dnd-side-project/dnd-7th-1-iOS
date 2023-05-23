@@ -24,7 +24,7 @@ final class MyDetailMapVM: BaseViewModel {
     
     struct Output: Lodable {
         var loading = BehaviorRelay<Bool>(value: false)
-        var profileImageURL = PublishRelay<String>()
+        var profileImageURL = PublishRelay<URL?>()
     }
     
     // MARK: - Init
@@ -67,7 +67,7 @@ extension MyDetailMapVM {
                 case .failure(let error):
                     owner.apiError.onNext(error)
                 case .success(let data):
-                    owner.output.profileImageURL.accept(data.picturePath)
+                    owner.output.profileImageURL.accept(data.picturePathURL)
                 }
                 owner.output.endLoading()
             })

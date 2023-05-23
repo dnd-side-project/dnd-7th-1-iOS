@@ -108,13 +108,13 @@ extension MyDetailMapVC {
 extension MyDetailMapVC {
     private func bindUserData() {
         viewModel.output.profileImageURL
-            .subscribe(onNext: { [weak self] picturePath in
+            .subscribe(onNext: { [weak self] picturePathURL in
                 guard let self = self,
                       let matrices = self.matrices,
                       let lastBlock = matrices.last else { return }
                 self.mapVC.addMyAnnotation(coordinate: Matrix(latitude: lastBlock.latitude,
                                                               longitude: lastBlock.longitude),
-                                           profileImageURL: data.picturePathURL)
+                                           profileImageURL: picturePathURL)
                 self.mapVC.drawMyMapAtOnce(matrices: matrices)
             })
             .disposed(by: disposeBag)
