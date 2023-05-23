@@ -89,4 +89,46 @@ struct APISession: APIService {
             }
         }
     }
+    
+    /// [DELETE]
+    func deleteRequest<T: Decodable>(with urlResource: urlResource<T>) -> Observable<Result<T, APIError>> {
+        
+        Observable<Result<T, APIError>>.create { observer in
+            if !NetworkMonitor.shared.isConnected {
+                observer.onNext(.failure(.networkDisconnected))
+                return Disposables.create()
+            }
+            
+            guard let kakaoAccessToken = UserDefaults.standard.string(forKey: UserDefaults.Keys.kakaoAccessToken) else { fatalError() }
+            
+            let headers: HTTPHeaders = [
+                "Content-Type": "application/json",
+                "Kakao-Access-Token": kakaoAccessToken
+            ]
+            
+            let task = AF.request(urlResource.resultURL,
+                                  method: .delete,
+                                  encoding: JSONEncoding.default,
+                                  headers: headers,
+                                  interceptor: AuthInterceptor())
+                .validate(statusCode: 200...399)
+                .responseDecodable(of: T.self) { response in
+                    switch response.result {
+                    case .failure(let error):
+                        dump(error)
+                        guard let error = response.data else {
+                            observer.onNext(.failure(.endOfOperation(response.response?.statusCode ?? -1)))
+                            return
+                        }
+                        observer.onNext(urlResource.judgeError(data: error))
+                    case .success(let data):
+                        observer.onNext(.success(data))
+                    }
+                }
+            
+            return Disposables.create {
+                task.cancel()
+            }
+        }
+    }
 }
