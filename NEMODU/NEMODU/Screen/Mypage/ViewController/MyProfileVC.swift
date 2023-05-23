@@ -12,6 +12,7 @@ import RxSwift
 import SnapKit
 import Then
 import Kingfisher
+import KakaoSDKUser
 
 class MyProfileVC: BaseViewController {
     
@@ -72,7 +73,7 @@ class MyProfileVC: BaseViewController {
     
     private let logoutBtn = ArrowBtn(title: "로그아웃")
     
-    private let signOutBtn = ArrowBtn(title: "회원 탈퇴")
+    private let withdrawalBtn = ArrowBtn(title: "회원 탈퇴")
     
     private let viewModel = UserInfoSettingVM()
     
@@ -105,6 +106,8 @@ class MyProfileVC: BaseViewController {
         super.bindOutput()
         bindAPIErrorAlert(viewModel)
         bindProfileData()
+        bindLogout()
+        bindDeleteUser()
     }
     
 }
@@ -128,7 +131,7 @@ extension MyProfileVC {
         accountInfoView.addSubviews([accountInfoTitleLabel,
                                      accountLabel])
         
-        [editProfileBtn, accountInfoView, logoutBtn, signOutBtn].forEach {
+        [editProfileBtn, accountInfoView, logoutBtn, withdrawalBtn].forEach {
             settingBtnStackView.addArrangedSubview($0)
         }
         settingBtnStackView.addHorizontalSeparators(color: .gray50, height: 1)
@@ -172,7 +175,7 @@ extension MyProfileVC {
             $0.height.equalTo(227)
         }
         
-        [editProfileBtn, accountInfoView, logoutBtn, signOutBtn].forEach {
+        [editProfileBtn, accountInfoView, logoutBtn, withdrawalBtn].forEach {
             $0.snp.makeConstraints {
                 $0.height.equalTo(56)
             }
@@ -187,6 +190,17 @@ extension MyProfileVC {
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().offset(-16)
         }
+    }
+}
+
+extension MyProfileVC {
+    /// 로그아웃 확인 버튼 메서드
+    @objc func confirmLogout() {
+        viewModel.postLogout()
+    }
+    
+    @objc func confirmDeleteUser() {
+        viewModel.deleteUser()
     }
 }
 
@@ -211,6 +225,28 @@ extension MyProfileVC {
                 self.navigationController?.pushViewController(editProfileVC, animated: true)
             })
             .disposed(by: disposeBag)
+        
+        logoutBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.popUpAlert(alertType: .logout,
+                                targetVC: self,
+                                highlightBtnAction: #selector(self.confirmLogout),
+                                normalBtnAction: #selector(self.dismissAlert))
+            })
+            .disposed(by: disposeBag)
+        
+        withdrawalBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.popUpAlert(alertType: .deleteUser,
+                                targetVC: self,
+                                highlightBtnAction: #selector(self.confirmDeleteUser),
+                                normalBtnAction: #selector(self.dismissAlert))
+            })
+            .disposed(by: disposeBag)
     }
 }
 
@@ -222,6 +258,35 @@ extension MyProfileVC {
             .subscribe(onNext: { [weak self] data in
                 guard let self = self else { return }
                 self.configureProfileData(data)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindLogout() {
+        viewModel.output.isLogout
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                if UserDefaults.standard.string(forKey: UserDefaults.Keys.loginType) == LoginType.kakao.rawValue {
+                    UserApi.shared.logout { error in
+                        self.removeUserData()
+                        self.setLoginToRootVC()
+                    }
+                } else {
+                    self.removeUserData()
+                    self.setLoginToRootVC()
+                }
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindDeleteUser() {
+        viewModel.output.isDeleted
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.removeUserData()
+                self.setLoginToRootVC()
             })
             .disposed(by: disposeBag)
     }

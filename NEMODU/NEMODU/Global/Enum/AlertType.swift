@@ -19,6 +19,8 @@ enum AlertType {
     case sendMailError
     case discardChanges
     case deleteFriend(nickname: String)
+    case logout
+    case deleteUser
 }
 
 extension AlertType {
@@ -46,6 +48,10 @@ extension AlertType {
             return "지금 나가시겠습니까?\n변경사항이 저장되지 않습니다."
         case .deleteFriend(nickname: let nickname):
             return "‘\(nickname)’님을 친구 목록에서\n 정말 삭제하시겠습니까?"
+        case .logout:
+            return "로그아웃"
+        case .deleteUser:
+            return "네모두 탈퇴하기"
         }
     }
     
@@ -69,6 +75,10 @@ extension AlertType {
             return "생성에 오류가 발생하였습니다"
         case .sendMailError:
             return "아래 주소를 통해 문의하실 수 있습니다\n📨 nemodu.official@gmail.com"
+        case .logout:
+            return "로그아웃 하시겠습니까?"
+        case .deleteUser:
+            return "탈퇴하기 버튼을 누르면 모든 정보가 즉시\n삭제되며, 복구할 수 없습니다.\n\n정말로 탈퇴하시겠습니까?"
         }
     }
     
@@ -86,6 +96,10 @@ extension AlertType {
             return "나가기"
         case .deleteFriend:
             return "삭제"
+        case .logout:
+            return "로그아웃 하기"
+        case .deleteUser:
+            return "탈퇴하기"
         }
     }
     
@@ -101,7 +115,7 @@ extension AlertType {
             return "기록 끝내기"
         case .discardChanges:
             return "계속 작성하기"
-        case .deleteFriend:
+        case .deleteFriend, .logout, .deleteUser:
             return "취소"
         }
     }
