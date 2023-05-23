@@ -97,6 +97,7 @@
 		235CD76B28B0F8C5000EBAD9 /* OnboardingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235CD76A28B0F8C5000EBAD9 /* OnboardingVC.swift */; };
 		235CD76D28B0FA14000EBAD9 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235CD76C28B0FA14000EBAD9 /* OnboardingView.swift */; };
 		23602E0828B5581800B9DC9E /* MapFilteVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23602E0728B5581800B9DC9E /* MapFilteVM.swift */; };
+		2365F3AE2A1CBE7D00475736 /* LogoutRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2365F3AD2A1CBE7D00475736 /* LogoutRequestModel.swift */; };
 		2370E4982A173B5F00C51672 /* ErrorResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2370E4972A173B5F00C51672 /* ErrorResponseModel.swift */; };
 		23731BAF2A12109200CC9892 /* FriendRequestHandlingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23731BAE2A12109200CC9892 /* FriendRequestHandlingModel.swift */; };
 		237573CF28F55F84006026ED /* EditRecordMemoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573CE28F55F84006026ED /* EditRecordMemoVC.swift */; };
@@ -372,6 +373,7 @@
 		235CD76A28B0F8C5000EBAD9 /* OnboardingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingVC.swift; sourceTree = "<group>"; };
 		235CD76C28B0FA14000EBAD9 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		23602E0728B5581800B9DC9E /* MapFilteVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapFilteVM.swift; sourceTree = "<group>"; };
+		2365F3AD2A1CBE7D00475736 /* LogoutRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutRequestModel.swift; sourceTree = "<group>"; };
 		2370E4972A173B5F00C51672 /* ErrorResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponseModel.swift; sourceTree = "<group>"; };
 		23731BAE2A12109200CC9892 /* FriendRequestHandlingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestHandlingModel.swift; sourceTree = "<group>"; };
 		237573CE28F55F84006026ED /* EditRecordMemoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditRecordMemoVC.swift; sourceTree = "<group>"; };
@@ -1137,6 +1139,7 @@
 				3CA057CA29F7F37F007BB0D0 /* UpdateNotificationSettingRequestModel.swift */,
 				23731BAE2A12109200CC9892 /* FriendRequestHandlingModel.swift */,
 				23766CE32A13E90A00522420 /* FriendDeleteRequestModel.swift */,
+				2365F3AD2A1CBE7D00475736 /* LogoutRequestModel.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -1863,6 +1866,7 @@
 				3C48920C28B101D100B11207 /* ChallengeListTypeMenuBarCV.swift in Sources */,
 				3C05FFF528B7E0900017F4E1 /* SelectFriendsTVC.swift in Sources */,
 				3C9776B829767AE500CBBC6B /* ChallengeDetailInfoView.swift in Sources */,
+				2365F3AE2A1CBE7D00475736 /* LogoutRequestModel.swift in Sources */,
 				3C9CD99D28AB7E9800A7550C /* ChallengeListTVC.swift in Sources */,
 				3C2327B72A03730700251316 /* NotificationBoxVC.swift in Sources */,
 				23255A7428CF5325005D6D5A /* EnterVC.swift in Sources */,

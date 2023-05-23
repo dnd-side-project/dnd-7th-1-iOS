@@ -105,6 +105,7 @@ class MyProfileVC: BaseViewController {
         super.bindOutput()
         bindAPIErrorAlert(viewModel)
         bindProfileData()
+        bindLogout()
     }
     
 }
@@ -190,6 +191,13 @@ extension MyProfileVC {
     }
 }
 
+extension MyProfileVC {
+    /// 로그아웃 확인 버튼 메서드
+    @objc func confirmLogout() {
+        viewModel.postLogout()
+    }
+}
+
 // MARK: - Input
 
 extension MyProfileVC {
@@ -218,7 +226,7 @@ extension MyProfileVC {
                 guard let self = self else { return }
                 self.popUpAlert(alertType: .logout,
                                 targetVC: self,
-                                highlightBtnAction: #selector(self.logout),
+                                highlightBtnAction: #selector(self.confirmLogout),
                                 normalBtnAction: #selector(self.dismissAlert))
             })
             .disposed(by: disposeBag)
@@ -229,7 +237,7 @@ extension MyProfileVC {
                 guard let self = self else { return }
                 self.popUpAlert(alertType: .deleteUser,
                                 targetVC: self,
-                                highlightBtnAction: #selector(self.logout),
+                                highlightBtnAction: #selector(self.confirmLogout),
                                 normalBtnAction: #selector(self.dismissAlert))
             })
             .disposed(by: disposeBag)
@@ -244,6 +252,17 @@ extension MyProfileVC {
             .subscribe(onNext: { [weak self] data in
                 guard let self = self else { return }
                 self.configureProfileData(data)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindLogout() {
+        viewModel.output.isLogout
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.removeUserData()
+                self.setLoginToRootVC()
             })
             .disposed(by: disposeBag)
     }

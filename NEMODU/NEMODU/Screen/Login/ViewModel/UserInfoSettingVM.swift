@@ -30,6 +30,8 @@ final class UserInfoSettingVM: BaseViewModel {
         var isNextBtnActive = BehaviorRelay<Bool>(value: false)
         var isValidNickname = PublishRelay<Bool>()
         var isProfileSaved = PublishRelay<Bool>()
+        
+        var isLogout = PublishRelay<Bool>()
     }
     
     // MARK: - Init
@@ -120,5 +122,26 @@ extension UserInfoSettingVM {
             }
         })
         .disposed(by: bag)
+    }
+    
+    /// 로그아웃을 요청하는 메서드
+    func postLogout() {
+        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
+        let path = "auth/logout"
+        let resource = urlResource<String>(path: path)
+        let param = LogoutRequestModel(deviceType: UIDevice.current.model.contains("iPhone") ? "PHONE" : "PAD",
+                                       nickname: nickname)
+        
+        apiSession.postRequest(with: resource, param: param.param)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, result in
+                switch result {
+                case .failure(let error):
+                    owner.apiError.onNext(error)
+                case .success:
+                    owner.output.isLogout.accept(true)
+                }
+            })
+            .disposed(by: bag)
     }
 }

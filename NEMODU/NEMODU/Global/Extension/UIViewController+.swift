@@ -74,15 +74,19 @@ extension UIViewController {
         }
     }
     
-    /// 로그인 화면으로 이동하면서 모든 UserDefault 값 삭제
-    @objc func logout() {
+    /// 로그아웃, 회원 탈퇴 시 저장된 회원 정보를 지우고 로그인 화면으로 이동하는 메서드
+    @objc func removeUserData() {
+        UserDefaults.standard.set(nil, forKey: UserDefaults.Keys.loginType)
         UserDefaults.standard.set(nil, forKey: UserDefaults.Keys.accessToken)
         UserDefaults.standard.set(nil, forKey: UserDefaults.Keys.refreshToken)
+        UserDefaults.standard.set(nil, forKey: UserDefaults.Keys.appleToken)
         UserDefaults.standard.set(nil, forKey: UserDefaults.Keys.kakaoAccessToken)
         UserDefaults.standard.set(nil, forKey: UserDefaults.Keys.kakaoRefreshToken)
-        UserDefaults.standard.set(nil, forKey: UserDefaults.Keys.appleToken)
-        
-        setLoginToRootVC()
+        UserDefaults.standard.set(nil, forKey: UserDefaults.Keys.kakaoUserID)
+        UserDefaults.standard.set(nil, forKey: UserDefaults.Keys.nickname)
+        UserDefaults.standard.set(nil, forKey: UserDefaults.Keys.email)
+        UserDefaults.standard.set(nil, forKey: UserDefaults.Keys.pictureName)
+        UserDefaults.standard.set(nil, forKey: UserDefaults.Keys.picturePath)
     }
     
     /// 기기 스크린 hight에 맞춰 비율을 계산해 height를 리턴하는 함수
