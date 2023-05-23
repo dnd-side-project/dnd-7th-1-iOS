@@ -68,6 +68,12 @@ class RecommendListVC: BaseViewController {
             $0.separatorStyle = .none
             $0.backgroundColor = .clear
             $0.isScrollEnabled = false
+            $0.rowHeight = RecommendListVC.friendCellHeight
+        }
+    
+    private let viewMoreNEMODUFriendBtn = ViewMoreBtn()
+        .then {
+            $0.imageView?.layer.transform = CATransform3DMakeScale(0.7, 0.7, 0.7)
         }
     
     static let friendCellHeight = 64.0
@@ -117,15 +123,13 @@ extension RecommendListVC {
                                kakaoRecommendTV,
                                viewMoreKakaoFriendBtn])
         nemoduView.addSubviews([nemoduTitleLabel,
-                                nemoduRecommendTV])
+                                nemoduRecommendTV,
+                                viewMoreNEMODUFriendBtn])
         
         kakaoRecommendTV.register(FriendAddTVC.self, forCellReuseIdentifier: FriendAddTVC.className)
-        kakaoRecommendTV.register(ViewMoreTVC.self, forCellReuseIdentifier: ViewMoreTVC.className)
         
         nemoduRecommendTV.register(FriendAddTVC.self, forCellReuseIdentifier: FriendAddTVC.className)
-        nemoduRecommendTV.register(ViewMoreTVC.self, forCellReuseIdentifier: ViewMoreTVC.className)
         nemoduRecommendTV.dataSource = self
-        nemoduRecommendTV.delegate = self
     }
 }
 
@@ -186,6 +190,11 @@ extension RecommendListVC {
             $0.top.equalTo(nemoduTitleLabel.snp.bottom)
             $0.leading.trailing.bottom.equalToSuperview()
         }
+        
+        viewMoreNEMODUFriendBtn.snp.makeConstraints {
+            $0.leading.trailing.bottom.equalToSuperview()
+            $0.height.equalTo(40)
+        }
     }
 }
 
@@ -235,31 +244,12 @@ extension RecommendListVC {
 
 extension RecommendListVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        4
+        3
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: FriendAddTVC.className) as? FriendAddTVC,
-              let viewMoreCell = tableView.dequeueReusableCell(withIdentifier: ViewMoreTVC.className) as? ViewMoreTVC
-        else { return UITableViewCell() }
-        
-        if indexPath.row == 3 {
-            return viewMoreCell
-        }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: FriendAddTVC.className) as? FriendAddTVC else { return UITableViewCell() }
         
         return cell
-    }
-}
-
-// MARK: - UITableViewDelegate
-
-extension RecommendListVC: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        // TODO: - 인덱스 수정
-        if indexPath.row == 3 {
-            return 40
-        } else {
-            return 64
-        }
     }
 }
