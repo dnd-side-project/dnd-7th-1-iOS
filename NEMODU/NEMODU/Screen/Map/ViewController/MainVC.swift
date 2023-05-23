@@ -305,11 +305,12 @@ extension MainVC {
             .subscribe(onNext: { [weak self] user in
                 guard let self = self,
                       let latitude = user.latitude,
-                      let longitude = user.longitude,
-                      let profileImageURL = user.picturePathURL else { return }
+                      let longitude = user.longitude
+                else { return }
                 // 마커 추가
-                self.mapVC.addMyAnnotation(coordinate: [latitude, longitude],
-                                           profileImageURL: profileImageURL,
+                self.mapVC.addMyAnnotation(coordinate: Matrix(latitude: latitude,
+                                                              longitude: longitude),
+                                           profileImageURL: user.picturePathURL,
                                            isHidden: !self.viewModel.output.myBlocksVisible.value)
             })
             .disposed(by: disposeBag)
@@ -321,11 +322,12 @@ extension MainVC {
             .subscribe(onNext: { [weak self] friend in
                 guard let self = self,
                       let latitude = friend.latitude,
-                      let longitude = friend.longitude,
-                      let profileImageURL = friend.picturePathURL else { return }
+                      let longitude = friend.longitude
+                else { return }
                 // 마커 추가
-                self.mapVC.addFriendAnnotation(coordinate: [latitude, longitude],
-                                               profileImageURL: profileImageURL,
+                self.mapVC.addFriendAnnotation(coordinate: Matrix(latitude: latitude,
+                                                                  longitude: longitude),
+                                               profileImageURL: friend.picturePathURL,
                                                nickname: friend.nickname,
                                                color: .main,
                                                isHidden: !self.viewModel.output.friendVisible.value,
@@ -340,11 +342,12 @@ extension MainVC {
             .subscribe(onNext: { [weak self] friend in
                 guard let self = self,
                       let latitude = friend.latitude,
-                      let longitude = friend.longitude,
-                      let profileImageURL = friend.picturePathURL else { return }
+                      let longitude = friend.longitude
+                else { return }
                 // 마커 추가
-                self.mapVC.addFriendAnnotation(coordinate: [latitude, longitude],
-                                               profileImageURL: profileImageURL,
+                self.mapVC.addFriendAnnotation(coordinate: Matrix(latitude: latitude,
+                                                                  longitude: longitude),
+                                               profileImageURL: friend.picturePathURL,
                                                nickname: friend.nickname,
                                                color: ChallengeColorType(rawValue: friend.challengeColor)?.primaryColor ?? .main,
                                                challengeCnt: friend.challengeNumber,

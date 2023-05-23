@@ -46,6 +46,7 @@
 		232F0B6328B6803C005C9A07 /* AlertVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232F0B6228B6803C005C9A07 /* AlertVC.swift */; };
 		232F0B6528B686C5005C9A07 /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232F0B6428B686C5005C9A07 /* AlertType.swift */; };
 		233258A128D60C370073B09E /* AuthInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233258A028D60C370073B09E /* AuthInterceptor.swift */; };
+		2333CC7A2A1BB3BD003F864C /* CGPoint+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2333CC792A1BB3BD003F864C /* CGPoint+.swift */; };
 		2333CC762A192EF3003F864C /* APIErrorHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2333CC752A192EF3003F864C /* APIErrorHandling.swift */; };
 		2333CC782A1B47AD003F864C /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2333CC772A1B47AD003F864C /* NetworkMonitor.swift */; };
 		2336FFBB29F2DC7B002D5CBF /* Area.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2336FFBA29F2DC7B002D5CBF /* Area.swift */; };
@@ -102,6 +103,7 @@
 		2365F3AE2A1CBE7D00475736 /* LogoutRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2365F3AD2A1CBE7D00475736 /* LogoutRequestModel.swift */; };
 		2370E4982A173B5F00C51672 /* ErrorResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2370E4972A173B5F00C51672 /* ErrorResponseModel.swift */; };
 		23731BAF2A12109200CC9892 /* FriendRequestHandlingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23731BAE2A12109200CC9892 /* FriendRequestHandlingModel.swift */; };
+		2370E4952A16687B00C51672 /* ChallengeDetailMapRankingTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2370E4942A16687B00C51672 /* ChallengeDetailMapRankingTVC.swift */; };
 		237573CF28F55F84006026ED /* EditRecordMemoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573CE28F55F84006026ED /* EditRecordMemoVC.swift */; };
 		237573D128F5660A006026ED /* EditRecordMemoVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573D028F5660A006026ED /* EditRecordMemoVM.swift */; };
 		237573D328F56A7B006026ED /* EditMemoRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573D228F56A7B006026ED /* EditMemoRequestModel.swift */; };
@@ -323,6 +325,7 @@
 		233258A028D60C370073B09E /* AuthInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthInterceptor.swift; sourceTree = "<group>"; };
 		2333CC752A192EF3003F864C /* APIErrorHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIErrorHandling.swift; sourceTree = "<group>"; };
 		2333CC772A1B47AD003F864C /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
+		2333CC792A1BB3BD003F864C /* CGPoint+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+.swift"; sourceTree = "<group>"; };
 		2336FFBA29F2DC7B002D5CBF /* Area.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Area.swift; sourceTree = "<group>"; };
 		2339D74D28B2849F0018013D /* MyRecordDataVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordDataVC.swift; sourceTree = "<group>"; };
 		2339D74F28B284C20018013D /* MypageNC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MypageNC.swift; sourceTree = "<group>"; };
@@ -380,6 +383,7 @@
 		2365F3AD2A1CBE7D00475736 /* LogoutRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutRequestModel.swift; sourceTree = "<group>"; };
 		2370E4972A173B5F00C51672 /* ErrorResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponseModel.swift; sourceTree = "<group>"; };
 		23731BAE2A12109200CC9892 /* FriendRequestHandlingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestHandlingModel.swift; sourceTree = "<group>"; };
+		2370E4942A16687B00C51672 /* ChallengeDetailMapRankingTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeDetailMapRankingTVC.swift; sourceTree = "<group>"; };
 		237573CE28F55F84006026ED /* EditRecordMemoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditRecordMemoVC.swift; sourceTree = "<group>"; };
 		237573D028F5660A006026ED /* EditRecordMemoVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditRecordMemoVM.swift; sourceTree = "<group>"; };
 		237573D228F56A7B006026ED /* EditMemoRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMemoRequestModel.swift; sourceTree = "<group>"; };
@@ -938,6 +942,7 @@
 				23062A9728B7F6B00064C978 /* Date+.swift */,
 				2354239028BBA54000865E51 /* UserDefaults+.swift */,
 				2376B9062A05422600528DA6 /* UIApplication+.swift */,
+				2333CC792A1BB3BD003F864C /* CGPoint+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1288,6 +1293,7 @@
 				3C064BC1290FCA1400522274 /* InvitedChallengeDetailVC.swift */,
 				3C304369292F7DA000FAD69A /* ChallengeHistoryDetailVC.swift */,
 				3C7ECBAC298A7A7700C964F0 /* ChallengeDetailMapVC.swift */,
+				2370E4942A16687B00C51672 /* ChallengeDetailMapRankingTVC.swift */,
 			);
 			path = ChallengeDetail;
 			sourceTree = "<group>";
@@ -1648,6 +1654,7 @@
 				23842E0A2A1902F7006DFCA4 /* ErrorType.swift in Sources */,
 				23F5718228AA6038005F2E21 /* UIImage+.swift in Sources */,
 				237573D328F56A7B006026ED /* EditMemoRequestModel.swift in Sources */,
+				2333CC7A2A1BB3BD003F864C /* CGPoint+.swift in Sources */,
 				2378A4972904106900FB7031 /* LocationSettingVC.swift in Sources */,
 				23B7207028A12DBB00D3A410 /* RecordView.swift in Sources */,
 				3C09AE3B28AF6450005DD125 /* ChallengeFinishTVC.swift in Sources */,
@@ -1848,6 +1855,7 @@
 				3CF039EE29E290FF001CA475 /* SetNotificationVC.swift in Sources */,
 				232CE4FA290E39D300644AC6 /* FriendStatusType.swift in Sources */,
 				23412FEA28AF795600B73D62 /* RecordDataRequest.swift in Sources */,
+				2370E4952A16687B00C51672 /* ChallengeDetailMapRankingTVC.swift in Sources */,
 				3C2A263228FF8BE4009E0069 /* AreaRankingListVM.swift in Sources */,
 				23B86D2128A26F0F00B1630E /* NavigationBar.swift in Sources */,
 				2376B9072A05422600528DA6 /* UIApplication+.swift in Sources */,

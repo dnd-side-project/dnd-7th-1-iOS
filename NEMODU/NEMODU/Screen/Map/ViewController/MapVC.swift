@@ -249,58 +249,69 @@ extension MapVC {
     }
     
     /// 내 핀을 설치하는 메서드
-    func addMyAnnotation(coordinate: [Double], profileImageURL: URL, isHidden: Bool = false) {
-        KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: profileImageURL)) { result in
-            var profileImage = UIImage.defaultThumbnail
-            
-            switch result {
-            case .success(let data):
-                profileImage = data.image
-            case .failure(let error):
-                print(error)
+    func addMyAnnotation(coordinate: Matrix,
+                         profileImageURL: URL?,
+                         isHidden: Bool = false) {
+        let annotation = MyAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate.latitude + Map.latitudeBlockSize / 2,
+                                                                         longitude: coordinate.longitude - Map.longitudeBlockSize / 2))
+        annotation.profileImage = .defaultThumbnail
+        annotation.isHidden = isHidden
+
+        if let profileImageURL = profileImageURL {
+            KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: profileImageURL)) {[weak self] result in
+                guard let self = self else { return }
+                
+                switch result {
+                case .success(let data):
+                    annotation.profileImage = data.image
+                case .failure(let error):
+                    print(error)
+                }
+                
+                self.mapView.addAnnotation(annotation)
             }
-            
-            let annotation = MyAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate[0] + Map.latitudeBlockSize / 2,
-                                                                             longitude: coordinate[1] - Map.longitudeBlockSize / 2))
-            annotation.profileImage = profileImage
-            annotation.isHidden = isHidden
-            self.mapView.addAnnotation(annotation)
+        } else {
+            mapView.addAnnotation(annotation)
         }
-        
     }
     
     /// 친구 핀을 설치하는 메서드.
     /// isHidden: visible 상태
     /// isEnabled: 마커 선택 가능성
     /// isBorderOn: 테두리 존재 여부
-    func addFriendAnnotation(coordinate: [Double],
-                             profileImageURL: URL,
+    func addFriendAnnotation(coordinate: Matrix,
+                             profileImageURL: URL?,
                              nickname: String,
                              color: UIColor,
                              challengeCnt: Int = 0,
                              isHidden: Bool = false,
                              isEnabled: Bool = false,
                              isBorderOn: Bool = false) {
-        KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: profileImageURL)) { result in
-            var profileImage = UIImage.defaultThumbnail
-            
-            switch result {
-            case .success(let data):
-                profileImage = data.image
-            case .failure(let error):
-                print(error)
+        let annotation = FriendAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate.latitude + Map.latitudeBlockSize / 2,
+                                                                             longitude: coordinate.longitude - Map.longitudeBlockSize / 2))
+        annotation.title = nickname
+        annotation.profileImage = .defaultThumbnail
+        annotation.color = color
+        annotation.challengeCnt = challengeCnt
+        annotation.isHidden = isHidden
+        annotation.isEnabled = isEnabled
+        annotation.isBorderOn = isBorderOn
+        
+        if let profileImageURL = profileImageURL {
+            KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: profileImageURL)) {[weak self] result in
+                guard let self = self else { return }
+                
+                switch result {
+                case .success(let data):
+                    annotation.profileImage = data.image
+                case .failure(let error):
+                    print(error)
+                }
+                
+                self.mapView.addAnnotation(annotation)
             }
-         
-            let annotation = FriendAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate[0] + Map.latitudeBlockSize / 2,
-                                                                                 longitude: coordinate[1] - Map.longitudeBlockSize / 2))
-            annotation.title = nickname
-            annotation.profileImage = profileImage
-            annotation.color = color
-            annotation.challengeCnt = challengeCnt
-            annotation.isHidden = isHidden
-            annotation.isEnabled = isEnabled
-            annotation.isBorderOn = isBorderOn
-            self.mapView.addAnnotation(annotation)
+        } else {
+            mapView.addAnnotation(annotation)
         }
     }
     

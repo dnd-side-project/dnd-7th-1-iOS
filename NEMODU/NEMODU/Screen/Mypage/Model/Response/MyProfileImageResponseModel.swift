@@ -10,3 +10,10 @@ import Foundation
 struct MyProfileImageResponseModel: Codable {
     let nickname, picturePath: String
 }
+
+extension MyProfileImageResponseModel {
+    var picturePathURL: URL? {
+        guard let picturePathURL = picturePath.encodeURL() else { return nil }
+        return URL(string: picturePathURL)
+    }
+}

@@ -17,10 +17,18 @@ struct ChallengeDetailMapResponseModel: Codable {
 // MARK: - MatrixList
 
 struct MatrixList: Codable {
+    let nickname: String
     let color: String
     let latitude, longitude: Double?
     let matrices: [Matrix]
     let picturePath: String
+}
+
+extension MatrixList {
+    var picturePathURL: URL? {
+        guard let picturePathURL = picturePath.encodeURL() else { return nil }
+        return URL(string: picturePathURL)
+    }
 }
 
 // MARK: - RankingList
