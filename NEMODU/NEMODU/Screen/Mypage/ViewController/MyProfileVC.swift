@@ -12,6 +12,7 @@ import RxSwift
 import SnapKit
 import Then
 import Kingfisher
+import KakaoSDKUser
 
 class MyProfileVC: BaseViewController {
     
@@ -266,8 +267,15 @@ extension MyProfileVC {
             .asDriver(onErrorJustReturn: false)
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                self.removeUserData()
-                self.setLoginToRootVC()
+                if UserDefaults.standard.string(forKey: UserDefaults.Keys.loginType) == LoginType.kakao.rawValue {
+                    UserApi.shared.logout { error in
+                        self.removeUserData()
+                        self.setLoginToRootVC()
+                    }
+                } else {
+                    self.removeUserData()
+                    self.setLoginToRootVC()
+                }
             })
             .disposed(by: disposeBag)
     }
