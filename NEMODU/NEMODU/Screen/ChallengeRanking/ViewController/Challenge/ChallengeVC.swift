@@ -406,11 +406,12 @@ extension ChallengeVC {
         createChallengeButton.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                
                 let selectChallengeCreateVC = SelectChallengeCreateVC()
                 selectChallengeCreateVC.hidesBottomBarWhenPushed = true
                 
-                let rootViewController = self?.view.superview?.findViewController()
-                rootViewController?.navigationController?.pushViewController(selectChallengeCreateVC, animated: true)
+                self.navigationController?.pushViewController(selectChallengeCreateVC, animated: true)
             })
             .disposed(by: disposeBag)
     }
