@@ -41,6 +41,11 @@ class RecommendListVC: BaseViewController {
             $0.rowHeight = RecommendListVC.friendCellHeight
         }
     
+    private let viewMoreKakaoFriendBtn = ViewMoreBtn()
+        .then {
+            $0.imageView?.layer.transform = CATransform3DMakeScale(0.7, 0.7, 0.7)
+        }
+    
     private let separatorView = UIView()
         .then {
             $0.backgroundColor = .gray50
@@ -109,7 +114,8 @@ extension RecommendListVC {
                                  separatorView,
                                  nemoduView])
         kakaoView.addSubviews([kakaoTitleLabel,
-                               kakaoRecommendTV])
+                               kakaoRecommendTV,
+                               viewMoreKakaoFriendBtn])
         nemoduView.addSubviews([nemoduTitleLabel,
                                 nemoduRecommendTV])
         
@@ -149,7 +155,13 @@ extension RecommendListVC {
         
         kakaoRecommendTV.snp.makeConstraints {
             $0.top.equalTo(kakaoTitleLabel.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(viewMoreKakaoFriendBtn.snp.top)
+        }
+        
+        viewMoreKakaoFriendBtn.snp.makeConstraints {
             $0.leading.trailing.bottom.equalToSuperview()
+            $0.height.equalTo(40)
         }
         
         separatorView.snp.makeConstraints {

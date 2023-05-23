@@ -103,6 +103,7 @@
 		2365F3B22A1CE7B900475736 /* KakaoFriendListResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2365F3B12A1CE7B900475736 /* KakaoFriendListResponseModel.swift */; };
 		2365F3B42A1CE7D000475736 /* KakaoFriendInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2365F3B32A1CE7D000475736 /* KakaoFriendInfo.swift */; };
 		2365F3B62A1CEA3D00475736 /* KakaoAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2365F3B52A1CEA3D00475736 /* KakaoAPI.swift */; };
+		2365F3B82A1D140600475736 /* ViewMoreBtn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2365F3B72A1D140600475736 /* ViewMoreBtn.swift */; };
 		2370E4982A173B5F00C51672 /* ErrorResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2370E4972A173B5F00C51672 /* ErrorResponseModel.swift */; };
 		23731BAF2A12109200CC9892 /* FriendRequestHandlingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23731BAE2A12109200CC9892 /* FriendRequestHandlingModel.swift */; };
 		237573CF28F55F84006026ED /* EditRecordMemoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573CE28F55F84006026ED /* EditRecordMemoVC.swift */; };
@@ -384,6 +385,7 @@
 		2365F3B12A1CE7B900475736 /* KakaoFriendListResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoFriendListResponseModel.swift; sourceTree = "<group>"; };
 		2365F3B32A1CE7D000475736 /* KakaoFriendInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoFriendInfo.swift; sourceTree = "<group>"; };
 		2365F3B52A1CEA3D00475736 /* KakaoAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAPI.swift; sourceTree = "<group>"; };
+		2365F3B72A1D140600475736 /* ViewMoreBtn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMoreBtn.swift; sourceTree = "<group>"; };
 		2370E4972A173B5F00C51672 /* ErrorResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponseModel.swift; sourceTree = "<group>"; };
 		23731BAE2A12109200CC9892 /* FriendRequestHandlingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestHandlingModel.swift; sourceTree = "<group>"; };
 		237573CE28F55F84006026ED /* EditRecordMemoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditRecordMemoVC.swift; sourceTree = "<group>"; };
@@ -749,6 +751,7 @@
 				237573EA28FA5A00006026ED /* ProfileImageVC.swift */,
 				23EE33562A0FF4CD00EC50E7 /* ContentSizedTableView.swift */,
 				23566E6B2A11186E00EBA458 /* FriendCellProfileView.swift */,
+				2365F3B72A1D140600475736 /* ViewMoreBtn.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1903,6 +1906,7 @@
 				3C72D7BE28B508B2006E2229 /* SelectChallengeTypeVC.swift in Sources */,
 				3CC1EC7328D06811007C87F6 /* CreateWidenChallengeVC.swift in Sources */,
 				3C064BC4290FE45600522274 /* InvitedChallengeDetailTVHV.swift in Sources */,
+				2365F3B82A1D140600475736 /* ViewMoreBtn.swift in Sources */,
 				235CD76D28B0FA14000EBAD9 /* OnboardingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
