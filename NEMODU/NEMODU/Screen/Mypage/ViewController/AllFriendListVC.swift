@@ -27,12 +27,18 @@ class AllFriendListVC: BaseViewController {
     
     var listType: LoginType?
     
+    private let viewModel = RecommendListVM()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // TODO: - 네모두 추천 친구로 변경
+        listType == .kakao
+        ? viewModel.getKakaoFriendList()
+        : viewModel.getKakaoFriendList()
     }
     
     override func configureView() {
@@ -52,6 +58,10 @@ class AllFriendListVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        // TODO: - 네모두 추천 친구로 변경
+        listType == .kakao
+        ? bindKakaoRecommendTV()
+        : bindKakaoRecommendTV()
     }
 }
 
@@ -109,7 +119,18 @@ extension AllFriendListVC {
 // MARK: - Output
 
 extension AllFriendListVC {
-    
+    private func bindKakaoRecommendTV() {
+        viewModel.output.kakaoFriendsList.dataSource
+            .bind(to: friendListTV.rx.items(dataSource: kakaoTableViewDataSource()))
+            .disposed(by: disposeBag)
+        
+        viewModel.output.kakaoFriendsList.friendsInfo
+            .withUnretained(self)
+            .subscribe(onNext: { owner, item in
+                owner.friendListTV.reloadData()
+            })
+            .disposed(by: disposeBag)
+    }
 }
 
 // MARK: - DataSource
