@@ -63,8 +63,15 @@ class RecommendListVC: BaseViewController {
             $0.isScrollEnabled = false
         }
     
+    private let viewModel = RecommendListVM()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.getKakaoFriendList(size: 6)
     }
     
     override func configureView() {

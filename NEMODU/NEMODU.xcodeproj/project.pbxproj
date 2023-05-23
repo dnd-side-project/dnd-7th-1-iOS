@@ -99,6 +99,10 @@
 		235CD76B28B0F8C5000EBAD9 /* OnboardingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235CD76A28B0F8C5000EBAD9 /* OnboardingVC.swift */; };
 		235CD76D28B0FA14000EBAD9 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235CD76C28B0FA14000EBAD9 /* OnboardingView.swift */; };
 		23602E0828B5581800B9DC9E /* MapFilteVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23602E0728B5581800B9DC9E /* MapFilteVM.swift */; };
+		2365F3B02A1CE43B00475736 /* RecommendListVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2365F3AF2A1CE43B00475736 /* RecommendListVM.swift */; };
+		2365F3B22A1CE7B900475736 /* KakaoFriendListResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2365F3B12A1CE7B900475736 /* KakaoFriendListResponseModel.swift */; };
+		2365F3B42A1CE7D000475736 /* KakaoFriendInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2365F3B32A1CE7D000475736 /* KakaoFriendInfo.swift */; };
+		2365F3B62A1CEA3D00475736 /* KakaoAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2365F3B52A1CEA3D00475736 /* KakaoAPI.swift */; };
 		2370E4982A173B5F00C51672 /* ErrorResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2370E4972A173B5F00C51672 /* ErrorResponseModel.swift */; };
 		23731BAF2A12109200CC9892 /* FriendRequestHandlingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23731BAE2A12109200CC9892 /* FriendRequestHandlingModel.swift */; };
 		237573CF28F55F84006026ED /* EditRecordMemoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237573CE28F55F84006026ED /* EditRecordMemoVC.swift */; };
@@ -376,6 +380,10 @@
 		235CD76A28B0F8C5000EBAD9 /* OnboardingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingVC.swift; sourceTree = "<group>"; };
 		235CD76C28B0FA14000EBAD9 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		23602E0728B5581800B9DC9E /* MapFilteVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapFilteVM.swift; sourceTree = "<group>"; };
+		2365F3AF2A1CE43B00475736 /* RecommendListVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendListVM.swift; sourceTree = "<group>"; };
+		2365F3B12A1CE7B900475736 /* KakaoFriendListResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoFriendListResponseModel.swift; sourceTree = "<group>"; };
+		2365F3B32A1CE7D000475736 /* KakaoFriendInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoFriendInfo.swift; sourceTree = "<group>"; };
+		2365F3B52A1CEA3D00475736 /* KakaoAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAPI.swift; sourceTree = "<group>"; };
 		2370E4972A173B5F00C51672 /* ErrorResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponseModel.swift; sourceTree = "<group>"; };
 		23731BAE2A12109200CC9892 /* FriendRequestHandlingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestHandlingModel.swift; sourceTree = "<group>"; };
 		237573CE28F55F84006026ED /* EditRecordMemoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditRecordMemoVC.swift; sourceTree = "<group>"; };
@@ -752,6 +760,8 @@
 				23255A7E28D0DC30005D6D5A /* NicknameModel.swift */,
 				3C6F031C29111E84002829D7 /* FriendsListResponseModel.swift */,
 				23B0AD052A1287690099E9FC /* FriendDefaultInfo.swift */,
+				2365F3B12A1CE7B900475736 /* KakaoFriendListResponseModel.swift */,
+				2365F3B32A1CE7D000475736 /* KakaoFriendInfo.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -905,6 +915,7 @@
 				23ECC09E28D859E000F65692 /* AuthAPI.swift */,
 				2333CC752A192EF3003F864C /* APIErrorHandling.swift */,
 				2333CC772A1B47AD003F864C /* NetworkMonitor.swift */,
+				2365F3B52A1CEA3D00475736 /* KakaoAPI.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -998,10 +1009,11 @@
 				231A2B9028B2787200FF884B /* MypageVM.swift */,
 				23D8B7DA28B396A100F48165 /* MyRecordDataVM.swift */,
 				2315258E28B4F2A000B80E03 /* MyRecordDetailVM.swift */,
+				230E87F82A1BD6B500EE328D /* MyDetailMapVM.swift */,
 				237573D028F5660A006026ED /* EditRecordMemoVM.swift */,
 				3CCEDB5C29EFDA440047CF6E /* SetNotificationVM.swift */,
 				23A0BE4B2A112D2800AF10BE /* FriendListVM.swift */,
-				230E87F82A1BD6B500EE328D /* MyDetailMapVM.swift */,
+				2365F3AF2A1CE43B00475736 /* RecommendListVM.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1706,6 +1718,7 @@
 				2348B3BF2892C675001095BC /* AppDelegate.swift in Sources */,
 				3C72D7C428B51BB6006E2229 /* SelectChallengeCreateVC.swift in Sources */,
 				23ECC09F28D859E000F65692 /* AuthAPI.swift in Sources */,
+				2365F3B42A1CE7D000475736 /* KakaoFriendInfo.swift in Sources */,
 				23B7205D28A0CBAC00D3A410 /* ChallengeListBottomSheet.swift in Sources */,
 				2348B4122892D901001095BC /* LoadingView.swift in Sources */,
 				23EE33572A0FF4CD00EC50E7 /* ContentSizedTableView.swift in Sources */,
@@ -1765,6 +1778,7 @@
 				23C64DD929923E2300509E5B /* RenewalTokenModel.swift in Sources */,
 				23412FD828AE245D00B73D62 /* Block.swift in Sources */,
 				237573D728F57824006026ED /* ArrowBtn.swift in Sources */,
+				2365F3B62A1CEA3D00475736 /* KakaoAPI.swift in Sources */,
 				237573F328FAF2A1006026ED /* EditProfileRequestModel.swift in Sources */,
 				238C4DE328A3F0D6000BEE36 /* NemoduTextView.swift in Sources */,
 				2354239128BBA54000865E51 /* UserDefaults+.swift in Sources */,
@@ -1831,6 +1845,7 @@
 				237573FF28FC26DF006026ED /* FriendListVC.swift in Sources */,
 				2315258D28B4F07D00B80E03 /* DetailRecordDataResponseModel.swift in Sources */,
 				230E87FB2A1BD78A00EE328D /* MyProfileImageResponseModel.swift in Sources */,
+				2365F3B02A1CE43B00475736 /* RecommendListVM.swift in Sources */,
 				230CB2D828AD042300B11270 /* MainMapResponseModel.swift in Sources */,
 				3C506C1D29FD3189006EDAAE /* TermsConditionsVC.swift in Sources */,
 				23412FEC28AF81F700B73D62 /* RecordResultVM.swift in Sources */,
@@ -1839,6 +1854,7 @@
 				2375740528FC4856006026ED /* FriendListDefaultTVC.swift in Sources */,
 				3C4E855A298CDB05001E8766 /* ChallengeDetailMapResponseModel.swift in Sources */,
 				3C064BBD290F95B500522274 /* ProgressAndDoneChallengeListResponseModel.swift in Sources */,
+				2365F3B22A1CE7B900475736 /* KakaoFriendListResponseModel.swift in Sources */,
 				2348B4012892D1A6001095BC /* UITextField+.swift in Sources */,
 				3C44DEE62948A4360039681A /* InvitedChallengeAcceptType.swift in Sources */,
 				23F5717528A92D4A005F2E21 /* ProfileRecordStackView.swift in Sources */,
