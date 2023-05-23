@@ -2,7 +2,7 @@
 //  ChallengeDetailMapVC.swift
 //  NEMODU
 //
-//  Created by Kim HeeJae on 2023/01/20.
+//  Created by 황윤경 on 2023/05/18.
 //
 
 import UIKit
@@ -13,64 +13,66 @@ import SnapKit
 import Then
 
 class ChallengeDetailMapVC: BaseViewController {
-    
-    // MARK: - UI components
-    
-    private let navigationBar = NavigationBar()
-        .then {
-            $0.backgroundColor = .white
-            $0.naviType = .push
-        }
+    private let naviBar = NavigationBar()
     
     private let mapVC = MiniMapVC()
         .then {
             $0.hideMagnificationBtn()
-            $0.mapView.layer.masksToBounds = false
         }
     
-    private let userRankingListStackView = UIStackView()
+    private let userRankingListTV = ContentSizedTableView(frame: .zero)
         .then {
-            $0.axis = .vertical
-            $0.spacing = 12
-            $0.distribution = .fillEqually
-            $0.alignment = .leading
-            
             $0.backgroundColor = .clear
+            $0.isScrollEnabled = false
+            $0.rowHeight = 52
+            $0.separatorStyle = .none
         }
-    
-    // MARK: - Variables and Properties
     
     var challengeTitle: String?
+    var uuid: String?
+    var latitude: Double?
+    var longitude: Double?
     
     private let viewModel = ChallengeDetailMapVM()
     
-    // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        guard let uuid = uuid,
+              let location = mapVC.locationManager.location
+        else { return }
+        viewModel.getChallengeDetailMap(uuid: uuid,
+                                        latitude: latitude ?? location.coordinate.latitude,
+                                        longitude: longitude ?? location.coordinate.longitude)
+    }
+    
     override func configureView() {
         super.configureView()
-        
         configureNavigationBar()
+        configureContentView()
     }
     
     override func layoutView() {
         super.layoutView()
-        
         configureLayout()
     }
     
     override func bindInput() {
         super.bindInput()
+        bindMapGesture()
+        bindSelectUserRankingListTV()
     }
     
     override func bindOutput() {
         super.bindOutput()
-        
         bindAPIErrorAlert(viewModel)
-        bindUserData()
+        bindAnnotations()
+        bindMatrices()
+        bindRank()
     }
     
     override func bindLoading() {
@@ -84,141 +86,36 @@ class ChallengeDetailMapVC: BaseViewController {
             .disposed(by: disposeBag)
     }
     
-    // MARK: - Functions
-    
-    func getChallengeDetailMap(uuid: String) {
-        let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) ?? ""
-        viewModel.getChallengeDetailMap(nickname: nickname, uuid: uuid)
-    }
-    
 }
 
 // MARK: - Configure
 
 extension ChallengeDetailMapVC {
-    
     private func configureNavigationBar() {
-        _ = navigationBar
-            .then {
-                $0.configureBackBtn(targetVC: self)
-                $0.configureNaviBar(targetVC: self, title: challengeTitle)
-            }
+        naviBar.naviType = .push
+        naviBar.backgroundColor = .white
+        naviBar.configureBackBtn(targetVC: self)
+        naviBar.configureNaviBar(targetVC: self, title: challengeTitle)
     }
     
-    private func drawUsersRoute(matrixList: [MatrixList], rankingList: [RankingList]) {
-        mapVC.isUserInteractionEnabled(true)
-
-        let myUserNickName = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) ?? ""
-        for i in rankingList.indices {
-            let matrixInfo = matrixList[i]
-            guard let color = ChallengeColorType(rawValue: matrixInfo.color) else {
-                print("challenge user color error")
-                continue
-            }
-            
-            guard let latitude = matrixInfo.latitude,
-                  let longitude = matrixInfo.longitude,
-                  let imageURL = URL(string: rankingList[i].picturePath)
-            else { continue }
-            
-            if(rankingList[i].nickname == myUserNickName) {
-                mapVC.drawMyMapAtOnce(matrices: matrixInfo.matrices)
-                mapVC.addMyAnnotation(coordinate: [latitude, longitude],
-                                      profileImageURL: imageURL)
-            } else {
-                mapVC.drawBlockArea(matrices: matrixInfo.matrices,
-                                    owner: .friends,
-                                    blockColor: color.blockColor)
-                
-                mapVC.addFriendAnnotation(coordinate: [latitude, longitude],
-                                          profileImageURL: imageURL,
-                                          nickname: rankingList[i].nickname,
-                                          color: color.primaryColor,
-                                          challengeCnt: rankingList[i].rank,
-                                          isBorderOn: true)
-            }
-        }
-    }
-    
-    private func configureUserRankigListStackView(matrixList: [MatrixList], rankingList: [RankingList]) {
-        let myUserNickName = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) ?? ""
+    private func configureContentView() {
+        addChild(mapVC)
+        view.addSubviews([mapVC.view,
+                          userRankingListTV])
+        userRankingListTV.register(ChallengeDetailMapRankingTVC.self,
+                                   forCellReuseIdentifier: ChallengeDetailMapRankingTVC.className)
         
-        for i in rankingList.indices {
-            let userRankingView = UIView()
-            userRankingView.backgroundColor = .clear
-            
-            let rankLabel = UILabel()
-            rankLabel.font = .caption1
-            rankLabel.textColor = .gray700
-            rankLabel.text = String(rankingList[i].rank) + "위"
-            
-            let userProfileImageView = UIImageView()
-            userProfileImageView.kf.setImage(with: rankingList[i].picturePathURL, placeholder: UIImage.defaultThumbnail)
-            userProfileImageView.layer.cornerRadius = 20
-            userProfileImageView.layer.masksToBounds = true
-            userProfileImageView.layer.borderWidth = 2
-            userProfileImageView.layer.borderColor = ChallengeColorType(rawValue: matrixList[i].color)?.primaryColor.cgColor
-            
-            let userNicknameLabel = UILabel()
-            userNicknameLabel.font = .caption1
-            userNicknameLabel.textColor = .gray700
-            userNicknameLabel.text = rankingList[i].nickname
-            
-            let blocksNumberLabel = UILabel()
-                .then {
-                    $0.font = .title3M
-                    $0.textColor = .gray900
-                }
-            blocksNumberLabel.text = String(rankingList[i].score) + "칸"
-            
-            
-            userRankingView.addSubviews([rankLabel,
-                                         userProfileImageView,
-                                         userNicknameLabel, blocksNumberLabel])
-            rankLabel.snp.makeConstraints {
-                $0.centerY.equalTo(userRankingView)
-                $0.left.equalTo(userRankingView.snp.left)
-            }
-            userProfileImageView.snp.makeConstraints {
-                $0.width.height.equalTo(userProfileImageView.layer.cornerRadius * 2)
-                
-                $0.verticalEdges.equalTo(userRankingView)
-                $0.left.equalTo(rankLabel.snp.right).offset(8)
-            }
-            
-            if(userNicknameLabel.text == myUserNickName) {
-                let showMeLabel = UILabel()
-                showMeLabel.text = "나"
-                showMeLabel.textAlignment = .center
-                showMeLabel.textColor = .white
-                showMeLabel.font = .PretendardRegular(size: 10)
-                
-                showMeLabel.layer.cornerRadius = 7
-                showMeLabel.layer.masksToBounds = true
-                showMeLabel.layer.borderWidth = 1
-                showMeLabel.layer.borderColor = UIColor.white.cgColor
-                showMeLabel.translatesAutoresizingMaskIntoConstraints = false
-                
-                showMeLabel.backgroundColor = .secondary
-                
-                userRankingView.addSubview(showMeLabel)
-                showMeLabel.snp.makeConstraints {
-                    $0.width.height.equalTo(showMeLabel.layer.cornerRadius * 2)
-                    
-                    $0.right.bottom.equalTo(userProfileImageView)
-                }
-            }
-            
-            userNicknameLabel.snp.makeConstraints {
-                $0.top.right.equalTo(userRankingView)
-                $0.left.equalTo(userProfileImageView.snp.right).offset(12)
-            }
-            blocksNumberLabel.snp.makeConstraints {
-                $0.top.equalTo(userNicknameLabel.snp.bottom).offset(2)
-                $0.left.equalTo(userNicknameLabel.snp.left)
-            }
-            
-            userRankingListStackView.addArrangedSubview(userRankingView)
+        userRankingListTV.dataSource = self
+        
+        // TODO: - 지도 구조 변경
+        mapVC.mapView.layer.cornerRadius = 0
+        mapVC.isUserInteractionEnabled(true)
+        
+        if let latitude = latitude,
+           let longitude = longitude {
+            _ = mapVC.goLocation(latitudeValue: latitude,
+                                 longitudeValue: longitude,
+                                 delta: Map.defaultZoomScale)
         }
     }
 }
@@ -226,41 +123,135 @@ extension ChallengeDetailMapVC {
 // MARK: - Layout
 
 extension ChallengeDetailMapVC {
-    
     private func configureLayout() {
-        view.addSubviews([mapVC.view,
-                         userRankingListStackView])
-        addChild(mapVC)
-        
-        
         mapVC.view.snp.makeConstraints {
-            $0.top.equalTo(navigationBar.snp.bottom)
-            $0.left.right.bottom.equalTo(view)
+            $0.top.equalTo(naviBar.snp.bottom)
+            $0.leading.trailing.bottom.equalToSuperview()
         }
         
-        userRankingListStackView.snp.makeConstraints {
-            $0.left.right.equalTo(view).offset(20)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(22)
+        userRankingListTV.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().offset(20)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-22)
         }
     }
+}
+
+// MARK: - Input
+
+extension ChallengeDetailMapVC {
+    /// 지도 제스쳐에 맞춰 현재 보이는 화면의 영역을 받아오는 메서드
+    private func bindMapGesture() {
+        mapVC.mapView.rx.anyGesture(.pan(), .pinch())
+            .when(.ended)
+            .debounce(.seconds(1), scheduler: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self,
+                      let uuid = self.uuid else { return }
+                self.viewModel.getUpdateBlocks(uuid,
+                                               self.mapVC.mapView.region.center.latitude,
+                                               self.mapVC.mapView.region.center.longitude,
+                                               self.mapVC.mapView.region.span.latitudeDelta)
+            })
+            .disposed(by: disposeBag)
+    }
     
+    /// 유저 선택 시 해당 유저의 마지막 위치로 이동하는 메서드
+    private func bindSelectUserRankingListTV() {
+        userRankingListTV.rx.itemSelected
+            .subscribe(onNext: { [weak self] indexPath in
+                guard let self = self,
+                      let cell = self.userRankingListTV.cellForRow(at: indexPath) as? ChallengeDetailMapRankingTVC,
+                      let uuid = self.uuid
+                else { return }
+                guard let location = cell.getLocation(),
+                      let latitude = location.latitude,
+                      let longitude = location.longitude
+                else {
+                    self.popupToast(toastType: .noRecord)
+                    return
+                }
+                self.viewModel.getUpdateBlocks(uuid,
+                                               latitude,
+                                               longitude,
+                                               self.mapVC.mapView.region.span.latitudeDelta)
+                
+                _ = self.mapVC.goLocation(latitudeValue: latitude,
+                                          longitudeValue: longitude,
+                                          delta: Map.defaultZoomScale)
+            })
+            .disposed(by: disposeBag)
+    }
 }
 
 // MARK: - Output
 
 extension ChallengeDetailMapVC {
-    
-    private func bindUserData() {
-        viewModel.output.challengeDetailMap
+    private func bindAnnotations() {
+        viewModel.output.userLastLocation
             .subscribe(onNext: { [weak self] data in
-                guard let self = self else { return }
-                
-                self.drawUsersRoute(matrixList: data.matrixList,
-                                    rankingList: data.rankingList)
-                self.configureUserRankigListStackView(matrixList: data.matrixList,
-                                                      rankingList: data.rankingList)
+                guard let self = self,
+                      let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname)
+                else { return }
+                for user in data {
+                    if let latitude = user.latitude,
+                       let longitude = user.longitude {
+                        
+                        user.nickname == nickname
+                        ? self.mapVC.addMyAnnotation(coordinate: Matrix(latitude: latitude,
+                                                                        longitude: longitude),
+                                                     profileImageURL: user.picturePathURL)
+                        : self.mapVC.addFriendAnnotation(coordinate: Matrix(latitude: latitude,
+                                                                            longitude: longitude),
+                                                         profileImageURL: user.picturePathURL,
+                                                         nickname: user.nickname,
+                                                         color: ChallengeColorType(rawValue: user.color)?.primaryColor ?? .main,
+                                                         isBorderOn: true)
+                    }
+                }
             })
             .disposed(by: disposeBag)
     }
     
+    private func bindMatrices() {
+        viewModel.output.matrices
+            .subscribe(onNext: { [weak self] nickname, matrices in
+                guard let self = self,
+                      let myNickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname),
+                      let blockColor = self.viewModel.input.userTable[nickname] else { return }
+                let owner: BlocksType = nickname == myNickname ? .mine : .friends
+                self.mapVC.drawBlockArea(matrices: matrices,
+                                         owner: owner,
+                                         blockColor: ChallengeColorType(rawValue: blockColor.color)?.blockColor ?? .clear)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindRank() {
+        viewModel.output.usersRankData
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.userRankingListTV.reloadData()
+            })
+            .disposed(by: disposeBag)
+    }
+}
+
+// MARK: - UITableViewDataSource
+
+extension ChallengeDetailMapVC: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        viewModel.output.usersRankData.value.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ChallengeDetailMapRankingTVC.className,
+                                                       for: indexPath) as? ChallengeDetailMapRankingTVC
+        else { return UITableViewCell() }
+        let nickname = viewModel.output.usersRankData.value[indexPath.row].nickname
+        
+        guard let user = viewModel.input.userTable[nickname] else { return cell }
+        cell.configureCell(rank: viewModel.output.usersRankData.value[indexPath.row],
+                           matrix: user)
+        return cell
+    }
 }

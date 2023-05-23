@@ -12,5 +12,7 @@ protocol APIService {
     func getRequest<T: Decodable>(with urlResource: urlResource<T>) -> Observable<Result<T, APIError>>
     
     func postRequest<T: Decodable>(with urlResource: urlResource<T>, param: Parameters?) -> Observable<Result<T, APIError>>
+    
+    func deleteRequest<T: Decodable>(with urlResource: urlResource<T>) -> Observable<Result<T, APIError>>
 }
 

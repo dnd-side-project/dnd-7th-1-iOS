@@ -16,6 +16,7 @@ enum ToastType {
     case refuseFriendRequest(nickname: String)
     case profileChanged
     case saveCompleted
+    case noRecord
 }
 
 extension ToastType {
@@ -37,6 +38,8 @@ extension ToastType {
             return "연결이 좋지 않습니다. 네트워크 연결을 확인해주세요."
         case .saveCompleted:
             return "저장이 완료되었습니다."
+        case .noRecord:
+            return "기록이 없습니다."
         }
     }
 }

@@ -570,7 +570,9 @@ extension ChallengeHistoryDetailVC {
                 let challengeDetailMapVC = ChallengeDetailMapVC()
                 guard let responseModel: ChallengeHistoryDetailResponseModel = self.challengeHistoryDetailResponseModel else { return print("No challengeHistoryDetailResponseModel") }
                 challengeDetailMapVC.challengeTitle = responseModel.name
-                challengeDetailMapVC.getChallengeDetailMap(uuid: responseModel.uuid)
+                challengeDetailMapVC.uuid = responseModel.uuid
+                challengeDetailMapVC.latitude = responseModel.latitude
+                challengeDetailMapVC.longitude = responseModel.longitude
                 
                 self.navigationController?.pushViewController(challengeDetailMapVC, animated: true)
             })
