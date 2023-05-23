@@ -20,7 +20,7 @@ class MyDetailMapVC: BaseViewController {
             $0.hideMagnificationBtn()
         }
     
-    private let viewModel = MypageVM()
+    private let viewModel = MyDetailMapVM()
     
     var matrices: [Matrix]?
     
@@ -107,8 +107,8 @@ extension MyDetailMapVC {
 
 extension MyDetailMapVC {
     private func bindUserData() {
-        viewModel.output.userData
-            .subscribe(onNext: { [weak self] data in
+        viewModel.output.profileImageURL
+            .subscribe(onNext: { [weak self] picturePath in
                 guard let self = self,
                       let matrices = self.matrices,
                       let lastBlock = matrices.last else { return }
