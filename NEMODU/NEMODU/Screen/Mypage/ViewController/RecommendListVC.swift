@@ -11,6 +11,7 @@ import RxGesture
 import RxSwift
 import SnapKit
 import Then
+import RxDataSources
 
 class RecommendListVC: BaseViewController {
     private let baseScrollView = UIScrollView()
@@ -37,6 +38,7 @@ class RecommendListVC: BaseViewController {
             $0.separatorStyle = .none
             $0.backgroundColor = .clear
             $0.isScrollEnabled = false
+            $0.rowHeight = RecommendListVC.friendCellHeight
         }
     
     private let separatorView = UIView()
@@ -63,6 +65,8 @@ class RecommendListVC: BaseViewController {
             $0.isScrollEnabled = false
         }
     
+    static let friendCellHeight = 64.0
+    
     private let viewModel = RecommendListVM()
     
     override func viewDidLoad() {
@@ -71,7 +75,7 @@ class RecommendListVC: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.getKakaoFriendList(size: 6)
+        viewModel.getKakaoFriendList()
     }
     
     override func configureView() {
@@ -90,6 +94,7 @@ class RecommendListVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        bindKakaoRecommendTV()
     }
     
 }
@@ -110,8 +115,6 @@ extension RecommendListVC {
         
         kakaoRecommendTV.register(FriendAddTVC.self, forCellReuseIdentifier: FriendAddTVC.className)
         kakaoRecommendTV.register(ViewMoreTVC.self, forCellReuseIdentifier: ViewMoreTVC.className)
-        kakaoRecommendTV.dataSource = self
-        kakaoRecommendTV.delegate = self
         
         nemoduRecommendTV.register(FriendAddTVC.self, forCellReuseIdentifier: FriendAddTVC.className)
         nemoduRecommendTV.register(ViewMoreTVC.self, forCellReuseIdentifier: ViewMoreTVC.className)
@@ -183,7 +186,37 @@ extension RecommendListVC {
 // MARK: - Output
 
 extension RecommendListVC {
-    
+    private func bindKakaoRecommendTV() {
+        viewModel.output.kakaoFriendsList.dataSource
+            .bind(to: kakaoRecommendTV.rx.items(dataSource: kakaoTableViewDataSource()))
+            .disposed(by: disposeBag)
+        
+        viewModel.output.kakaoFriendsList.friendsInfo
+            .withUnretained(self)
+            .subscribe(onNext: { owner, item in
+                owner.kakaoRecommendTV.reloadData()
+            })
+            .disposed(by: disposeBag)
+    }
+}
+
+// MARK: - DataSource
+
+extension RecommendListVC {
+    /// 내 친구 목록 tableView DataSource
+    func kakaoTableViewDataSource() -> RxTableViewSectionedReloadDataSource<FriendListDataSource<KakaoFriendInfo>> {
+        RxTableViewSectionedReloadDataSource<FriendListDataSource<KakaoFriendInfo>>(
+            configureCell: { dataSource, tableView, indexPath, item in
+                guard let cell = tableView.dequeueReusableCell(
+                        withIdentifier: FriendAddTVC.className,
+                        for: indexPath
+                      ) as? FriendAddTVC
+                else {
+                    return UITableViewCell()
+                }
+                return cell
+            })
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -202,12 +235,6 @@ extension RecommendListVC: UITableViewDataSource {
             return viewMoreCell
         }
         
-        if tableView == kakaoRecommendTV {
-            // TODO: - 데이터 연결
-//            cell.configureCell(<#T##friendInfo: FriendsInfo##FriendsInfo#>)
-        } else {
-//            cell.configureCell(<#T##friendInfo: FriendsInfo##FriendsInfo#>)
-        }
         return cell
     }
 }
