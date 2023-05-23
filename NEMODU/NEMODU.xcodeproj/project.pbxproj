@@ -17,6 +17,8 @@
 		230CB2DF28AD473100B11270 /* UserBlockResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230CB2DE28AD473100B11270 /* UserBlockResponseModel.swift */; };
 		230CB2E128AD474E00B11270 /* ChallengeBlockResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230CB2E028AD474E00B11270 /* ChallengeBlockResponseModel.swift */; };
 		230CB2E428AD478000B11270 /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230CB2E328AD478000B11270 /* Matrix.swift */; };
+		230E87F92A1BD6B500EE328D /* MyDetailMapVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230E87F82A1BD6B500EE328D /* MyDetailMapVM.swift */; };
+		230E87FB2A1BD78A00EE328D /* MyProfileImageResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230E87FA2A1BD78A00EE328D /* MyProfileImageResponseModel.swift */; };
 		2312200329DDD6E400928E4E /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2312200229DDD6E400928E4E /* Map.swift */; };
 		2312200529DE5A5400928E4E /* ToggleButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2312200429DE5A5400928E4E /* ToggleButtonView.swift */; };
 		2312519428B6943B00DF1C69 /* ToastType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2312519328B6943B00DF1C69 /* ToastType.swift */; };
@@ -290,6 +292,8 @@
 		230CB2DE28AD473100B11270 /* UserBlockResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBlockResponseModel.swift; sourceTree = "<group>"; };
 		230CB2E028AD474E00B11270 /* ChallengeBlockResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeBlockResponseModel.swift; sourceTree = "<group>"; };
 		230CB2E328AD478000B11270 /* Matrix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Matrix.swift; sourceTree = "<group>"; };
+		230E87F82A1BD6B500EE328D /* MyDetailMapVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDetailMapVM.swift; sourceTree = "<group>"; };
+		230E87FA2A1BD78A00EE328D /* MyProfileImageResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileImageResponseModel.swift; sourceTree = "<group>"; };
 		2312200229DDD6E400928E4E /* Map.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
 		2312200429DE5A5400928E4E /* ToggleButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleButtonView.swift; sourceTree = "<group>"; };
 		2312519328B6943B00DF1C69 /* ToastType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastType.swift; sourceTree = "<group>"; };
@@ -653,6 +657,7 @@
 				237573F428FBE6BE006026ED /* MyProfileResponseModel.swift */,
 				23EFB828291A0D9E009A2D01 /* EditProfileResponseModel.swift */,
 				3CCEDB5E29EFDC470047CF6E /* SetNotificationResponseModel.swift */,
+				230E87FA2A1BD78A00EE328D /* MyProfileImageResponseModel.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -998,6 +1003,7 @@
 				237573D028F5660A006026ED /* EditRecordMemoVM.swift */,
 				3CCEDB5C29EFDA440047CF6E /* SetNotificationVM.swift */,
 				23A0BE4B2A112D2800AF10BE /* FriendListVM.swift */,
+				230E87F82A1BD6B500EE328D /* MyDetailMapVM.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1750,6 +1756,7 @@
 				2348B3EE2892D0ED001095BC /* APIService.swift in Sources */,
 				3C064BBF290FAEAB00522274 /* InvitedChallengeListResponseModel.swift in Sources */,
 				3CC1EC7528D06917007C87F6 /* CreateAccumulateChallengeVC.swift in Sources */,
+				230E87F92A1BD6B500EE328D /* MyDetailMapVM.swift in Sources */,
 				23412FDC28AE375D00B73D62 /* ChallengeElementResponseModel.swift in Sources */,
 				3C2327B92A0387EA00251316 /* NotificationListTVC.swift in Sources */,
 				23566E6A2A11095C00EBA458 /* FriendListOutput.swift in Sources */,
@@ -1826,6 +1833,7 @@
 				23D8B7E128B3AC9C00F48165 /* MyRecordListTVC.swift in Sources */,
 				237573FF28FC26DF006026ED /* FriendListVC.swift in Sources */,
 				2315258D28B4F07D00B80E03 /* DetailRecordDataResponseModel.swift in Sources */,
+				230E87FB2A1BD78A00EE328D /* MyProfileImageResponseModel.swift in Sources */,
 				230CB2D828AD042300B11270 /* MainMapResponseModel.swift in Sources */,
 				3C506C1D29FD3189006EDAAE /* TermsConditionsVC.swift in Sources */,
 				23412FEC28AF81F700B73D62 /* RecordResultVM.swift in Sources */,
