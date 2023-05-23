@@ -31,6 +31,7 @@ final class UserInfoSettingVM: BaseViewModel {
         var isValidNickname = PublishRelay<Bool>()
         var isProfileSaved = PublishRelay<Bool>()
         
+        var isDeleted = PublishRelay<Bool>()
         var isLogout = PublishRelay<Bool>()
     }
     
@@ -140,6 +141,27 @@ extension UserInfoSettingVM {
                     owner.apiError.onNext(error)
                 case .success:
                     owner.output.isLogout.accept(true)
+                }
+            })
+            .disposed(by: bag)
+    }
+    
+    /// 회원 탈퇴를 요청하는 메서드
+    func deleteUser() {
+        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname),
+              let loginType = UserDefaults.standard.string(forKey: UserDefaults.Keys.loginType)
+        else { fatalError() }
+        let path = "auth/sign?nickname=\(nickname)&loginType=\(loginType)"
+        let resource = urlResource<String>(path: path)
+        
+        apiSession.deleteRequest(with: resource)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, result in
+                switch result {
+                case .failure(let error):
+                    owner.apiError.onNext(error)
+                case .success:
+                    owner.output.isDeleted.accept(true)
                 }
             })
             .disposed(by: bag)

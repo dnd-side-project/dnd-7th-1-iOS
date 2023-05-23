@@ -99,7 +99,7 @@ struct APISession: APIService {
                 return Disposables.create()
             }
             
-            guard let kakaoAccessToken = UserDefaults.standard.string(forKey: UserDefaults.Keys.kakaoAccessToken) else { fatalError() }
+            let kakaoAccessToken = UserDefaults.standard.string(forKey: UserDefaults.Keys.kakaoAccessToken) ?? ""
             
             let headers: HTTPHeaders = [
                 "Content-Type": "application/json",

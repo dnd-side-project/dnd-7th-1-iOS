@@ -106,6 +106,7 @@ class MyProfileVC: BaseViewController {
         bindAPIErrorAlert(viewModel)
         bindProfileData()
         bindLogout()
+        bindDeleteUser()
     }
     
 }
@@ -196,6 +197,10 @@ extension MyProfileVC {
     @objc func confirmLogout() {
         viewModel.postLogout()
     }
+    
+    @objc func confirmDeleteUser() {
+        viewModel.deleteUser()
+    }
 }
 
 // MARK: - Input
@@ -237,7 +242,7 @@ extension MyProfileVC {
                 guard let self = self else { return }
                 self.popUpAlert(alertType: .deleteUser,
                                 targetVC: self,
-                                highlightBtnAction: #selector(self.confirmLogout),
+                                highlightBtnAction: #selector(self.confirmDeleteUser),
                                 normalBtnAction: #selector(self.dismissAlert))
             })
             .disposed(by: disposeBag)
@@ -258,6 +263,17 @@ extension MyProfileVC {
     
     private func bindLogout() {
         viewModel.output.isLogout
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.removeUserData()
+                self.setLoginToRootVC()
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindDeleteUser() {
+        viewModel.output.isDeleted
             .asDriver(onErrorJustReturn: false)
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
