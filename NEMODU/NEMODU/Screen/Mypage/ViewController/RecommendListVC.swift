@@ -58,7 +58,7 @@ class RecommendListVC: BaseViewController {
     
     private let nemoduTitleLabel = UILabel()
         .then {
-            $0.text = "카카오톡 추천 친구"
+            $0.text = "네모두 추천 친구"
             $0.font = .body1
             $0.textColor = .gray900
         }
@@ -82,10 +82,6 @@ class RecommendListVC: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         viewModel.getKakaoFriendList()
         viewModel.getNEMODUFriendList()
     }
@@ -108,6 +104,7 @@ class RecommendListVC: BaseViewController {
     override func bindOutput() {
         super.bindOutput()
         bindKakaoRecommendTV()
+        bindNemoduRecommendTV()
     }
     
 }
@@ -128,10 +125,11 @@ extension RecommendListVC {
                                 nemoduRecommendTV,
                                 viewMoreNEMODUFriendBtn])
         
-        kakaoRecommendTV.register(AddKakaoFriendTVC.self, forCellReuseIdentifier: AddKakaoFriendTVC.className)
+        kakaoRecommendTV.register(AddKakaoFriendTVC.self,
+                                  forCellReuseIdentifier: AddKakaoFriendTVC.className)
         
-        nemoduRecommendTV.register(AddKakaoFriendTVC.self, forCellReuseIdentifier: AddKakaoFriendTVC.className)
-        nemoduRecommendTV.dataSource = self
+        nemoduRecommendTV.register(AddNemoduFriendTVC.self,
+                                   forCellReuseIdentifier: AddNemoduFriendTVC.className)
     }
 }
 
@@ -213,6 +211,16 @@ extension RecommendListVC {
                 self.navigationController?.pushViewController(allFriendListVC, animated: true)
             })
             .disposed(by: disposeBag)
+        
+        viewMoreNEMODUFriendBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                let allFriendListVC = AllFriendListVC()
+                allFriendListVC.listType = .apple
+                self.navigationController?.pushViewController(allFriendListVC, animated: true)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
@@ -228,6 +236,19 @@ extension RecommendListVC {
             .withUnretained(self)
             .subscribe(onNext: { owner, item in
                 owner.kakaoRecommendTV.reloadData()
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindNemoduRecommendTV() {
+        viewModel.output.nemoduFriendslist.dataSource
+            .bind(to: nemoduRecommendTV.rx.items(dataSource: nemoduTableViewDataSource()))
+            .disposed(by: disposeBag)
+        
+        viewModel.output.nemoduFriendslist.friendsInfo
+            .withUnretained(self)
+            .subscribe(onNext: { owner, item in
+                owner.nemoduRecommendTV.reloadData()
             })
             .disposed(by: disposeBag)
     }
@@ -249,18 +270,18 @@ extension RecommendListVC {
                 return cell
             })
     }
-}
-
-// MARK: - UITableViewDataSource
-
-extension RecommendListVC: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        3
-    }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: AddKakaoFriendTVC.className) as? AddKakaoFriendTVC else { return UITableViewCell() }
-        
-        return cell
+    func nemoduTableViewDataSource() -> RxTableViewSectionedReloadDataSource<FriendListDataSource<FriendDefaultInfo>> {
+        RxTableViewSectionedReloadDataSource<FriendListDataSource<FriendDefaultInfo>> (
+            configureCell: { dataSource, tableView, indexPath, item in
+                guard let cell = tableView.dequeueReusableCell(
+                    withIdentifier: AddNemoduFriendTVC.className,
+                    for: indexPath
+                ) as? AddNemoduFriendTVC
+                else { return UITableViewCell() }
+                cell.configureCell(item)
+                return cell
+            }
+        )
     }
 }

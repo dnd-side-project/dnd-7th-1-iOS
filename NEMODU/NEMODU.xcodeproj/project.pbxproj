@@ -136,6 +136,7 @@
 		2387F1B329FFADDA001B4897 /* UserMatrixResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2387F1B229FFADDA001B4897 /* UserMatrixResponseModel.swift */; };
 		2387F1B529FFAEA6001B4897 /* MapType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2387F1B429FFAEA6001B4897 /* MapType.swift */; };
 		2388B66B2A1E091A00DF75B4 /* NEMODUFriendListResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2388B66A2A1E091A00DF75B4 /* NEMODUFriendListResponseModel.swift */; };
+		2388B66D2A1E149F00DF75B4 /* AddNemoduFriendTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2388B66C2A1E149F00DF75B4 /* AddNemoduFriendTVC.swift */; };
 		238C4DDF28A3AC18000BEE36 /* RecordResultVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DDE28A3AC18000BEE36 /* RecordResultVC.swift */; };
 		238C4DE328A3F0D6000BEE36 /* NemoduTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */; };
 		238C4DE528A4BFE2000BEE36 /* UIScrollView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DE428A4BFE2000BEE36 /* UIScrollView+.swift */; };
@@ -423,6 +424,7 @@
 		2387F1B229FFADDA001B4897 /* UserMatrixResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMatrixResponseModel.swift; sourceTree = "<group>"; };
 		2387F1B429FFAEA6001B4897 /* MapType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapType.swift; sourceTree = "<group>"; };
 		2388B66A2A1E091A00DF75B4 /* NEMODUFriendListResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NEMODUFriendListResponseModel.swift; sourceTree = "<group>"; };
+		2388B66C2A1E149F00DF75B4 /* AddNemoduFriendTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNemoduFriendTVC.swift; sourceTree = "<group>"; };
 		238C4DDE28A3AC18000BEE36 /* RecordResultVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordResultVC.swift; sourceTree = "<group>"; };
 		238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NemoduTextView.swift; sourceTree = "<group>"; };
 		238C4DE428A4BFE2000BEE36 /* UIScrollView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+.swift"; sourceTree = "<group>"; };
@@ -708,6 +710,7 @@
 			isa = PBXGroup;
 			children = (
 				23255A7128CF457E005D6D5A /* AddKakaoFriendTVC.swift */,
+				2388B66C2A1E149F00DF75B4 /* AddNemoduFriendTVC.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -1840,6 +1843,7 @@
 				237573FB28FC053D006026ED /* TabCVC.swift in Sources */,
 				3C304368292F676700FAD69A /* ChallengeDetailVC.swift in Sources */,
 				2348B40D2892D360001095BC /* UIColor+.swift in Sources */,
+				2388B66D2A1E149F00DF75B4 /* AddNemoduFriendTVC.swift in Sources */,
 				2312200529DE5A5400928E4E /* ToggleButtonView.swift in Sources */,
 				23566E642A11034A00EBA458 /* FriendListDataSource.swift in Sources */,
 				3C2A2634290018C0009E0069 /* StepRankingListVM.swift in Sources */,
