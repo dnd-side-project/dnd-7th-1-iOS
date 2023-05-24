@@ -35,10 +35,9 @@ class AllFriendListVC: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // TODO: - 네모두 추천 친구로 변경
         listType == .kakao
-        ? viewModel.getKakaoFriendList()
-        : viewModel.getKakaoFriendList()
+        ? viewModel.getKakaoFriendList(size: 15)
+        : viewModel.getNEMODUFriendList(size: 15)
     }
     
     override func configureView() {
@@ -58,10 +57,9 @@ class AllFriendListVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
-        // TODO: - 네모두 추천 친구로 변경
         listType == .kakao
         ? bindKakaoRecommendTV()
-        : bindKakaoRecommendTV()
+        : bindNemoduRecommendTV()
     }
 }
 
@@ -84,10 +82,11 @@ extension AllFriendListVC {
                           friendListTV])
         
         if listType == .kakao {
-            friendListTV.register(AddKakaoFriendTVC.self, forCellReuseIdentifier: AddKakaoFriendTVC.className)
+            friendListTV.register(AddKakaoFriendTVC.self,
+                                  forCellReuseIdentifier: AddKakaoFriendTVC.className)
         } else {
-            // TODO: - TVC 변경
-            friendListTV.register(AddKakaoFriendTVC.self, forCellReuseIdentifier: AddKakaoFriendTVC.className)
+            friendListTV.register(AddNemoduFriendTVC.self,
+                                  forCellReuseIdentifier: AddNemoduFriendTVC.className)
         }
     }
 }
@@ -119,12 +118,27 @@ extension AllFriendListVC {
 // MARK: - Output
 
 extension AllFriendListVC {
+    /// 카카오톡 추천 친구 목록 tableView 연결
     private func bindKakaoRecommendTV() {
         viewModel.output.kakaoFriendsList.dataSource
             .bind(to: friendListTV.rx.items(dataSource: kakaoTableViewDataSource()))
             .disposed(by: disposeBag)
         
         viewModel.output.kakaoFriendsList.friendsInfo
+            .withUnretained(self)
+            .subscribe(onNext: { owner, item in
+                owner.friendListTV.reloadData()
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    /// NEMODU 추천 친구 목록 tableView 연결
+    private func bindNemoduRecommendTV() {
+        viewModel.output.nemoduFriendslist.dataSource
+            .bind(to: friendListTV.rx.items(dataSource: nemoduTableViewDataSource()))
+            .disposed(by: disposeBag)
+        
+        viewModel.output.nemoduFriendslist.friendsInfo
             .withUnretained(self)
             .subscribe(onNext: { owner, item in
                 owner.friendListTV.reloadData()
@@ -148,5 +162,20 @@ extension AllFriendListVC {
                 cell.configureCell(item)
                 return cell
             })
+    }
+    
+    /// 네모두 추천 친구 목록 tableView DataSource
+    func nemoduTableViewDataSource() -> RxTableViewSectionedReloadDataSource<FriendListDataSource<FriendDefaultInfo>> {
+        RxTableViewSectionedReloadDataSource<FriendListDataSource<FriendDefaultInfo>> (
+            configureCell: { dataSource, tableView, indexPath, item in
+                guard let cell = tableView.dequeueReusableCell(
+                    withIdentifier: AddNemoduFriendTVC.className,
+                    for: indexPath
+                ) as? AddNemoduFriendTVC
+                else { return UITableViewCell() }
+                cell.configureCell(item)
+                return cell
+            }
+        )
     }
 }
