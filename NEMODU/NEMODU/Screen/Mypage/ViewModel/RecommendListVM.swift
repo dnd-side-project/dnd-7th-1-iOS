@@ -141,7 +141,7 @@ extension RecommendListVM {
         }
         let resource = urlResource<NEMODUFriendListResponseModel>(path: path)
         
-        apiSession.getRequest(with: resource)
+        apiSession.getRequestWithoutHeader(with: resource)
             .withUnretained(self)
             .subscribe(onNext: { owner, result in
                 switch result {
