@@ -11,11 +11,11 @@ import RxGesture
 import RxSwift
 import SnapKit
 import Then
+import RxDataSources
 
 class AddFriendsVC: BaseViewController {
     private let titleLabel = UILabel()
         .then {
-            $0.text = "네모두를 이용중인\n카카오톡 친구"
             $0.font = .title1
             $0.textColor = .gray900
             $0.setLineBreakMode()
@@ -23,7 +23,6 @@ class AddFriendsVC: BaseViewController {
     
     private let messageLabel = UILabel()
         .then {
-            $0.text = "친구가 되면 함께 챌린지를 할 수 있어요.\n친구 요청을 보내보세요!"
             $0.font = .body3
             $0.textColor = .gray700
             $0.setLineBreakMode()
@@ -31,27 +30,30 @@ class AddFriendsVC: BaseViewController {
     
     private let subTitleLabel = UILabel()
         .then {
-            $0.text = "카카오톡 친구"
             $0.font = .body1
             $0.textColor = .gray900
         }
     
-    private let friendsCntLabel = UILabel()
-        .then {
-            $0.text = "(0/0)"
-            $0.font = .body3
-            $0.textColor = .gray400
-            $0.textAlignment = .right
-        }
-    
-    private let friendsTV = UITableView(frame: .zero)
+    private let friendListTV = UITableView(frame: .zero)
         .then {
             $0.separatorStyle = .none
             $0.rowHeight = 64
         }
     
+    private let viewModel = RecommendListVM()
+    private let listType = UserDefaults.standard.string(forKey: UserDefaults.Keys.loginType)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        guard let listType = listType else { return }
+        listType == LoginType.kakao.rawValue
+        ? viewModel.getKakaoFriendList(size: 15)
+        : viewModel.getNEMODUFriendList(size: 15)
     }
     
     override func configureView() {
@@ -70,6 +72,12 @@ class AddFriendsVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        bindAPIErrorAlert(viewModel)
+        
+        guard let listType = listType else { return }
+        listType == LoginType.kakao.rawValue
+        ? bindKakaoRecommendTV()
+        : bindNemoduRecommendTV()
     }
     
 }
@@ -81,10 +89,23 @@ extension AddFriendsVC {
         view.addSubviews([titleLabel,
                           messageLabel,
                           subTitleLabel,
-                          friendsCntLabel,
-                          friendsTV])
+                          friendListTV])
         
-        friendsTV.register(AddKakaoFriendTVC.self, forCellReuseIdentifier: AddKakaoFriendTVC.className)
+        
+        if listType == LoginType.kakao.rawValue {
+            titleLabel.text = "카카오톡 친구"
+            messageLabel.text = "친구가 되면 함께 챌린지를 할 수 있어요.\n친구 요청을 보내보세요!"
+            subTitleLabel.text = "카카오톡 친구"
+            
+            friendListTV.register(AddKakaoFriendTVC.self, forCellReuseIdentifier: AddKakaoFriendTVC.className)
+            
+        } else {
+            titleLabel.text = "함께 할 수 있는\n네모두 친구"
+            messageLabel.text = "활동하고 있는 네모두 친구들이에요!\n함께 해보는거 어떨까요?"
+            subTitleLabel.text = "네모두 친구"
+            
+            friendListTV.register(AddNemoduFriendTVC.self, forCellReuseIdentifier: AddNemoduFriendTVC.className)
+        }
     }
 }
 
@@ -110,12 +131,7 @@ extension AddFriendsVC {
             $0.height.equalTo(56)
         }
         
-        friendsCntLabel.snp.makeConstraints {
-            $0.centerY.equalTo(subTitleLabel.snp.centerY)
-            $0.trailing.equalToSuperview().offset(-16)
-        }
-        
-        friendsTV.snp.makeConstraints {
+        friendListTV.snp.makeConstraints {
             $0.top.equalTo(subTitleLabel.snp.bottom)
             $0.leading.trailing.bottom.equalToSuperview()
         }
@@ -131,5 +147,64 @@ extension AddFriendsVC {
 // MARK: - Output
 
 extension AddFriendsVC {
+    /// 카카오톡 추천 친구 목록 tableView 연결
+    private func bindKakaoRecommendTV() {
+        viewModel.output.kakaoFriendsList.dataSource
+            .bind(to: friendListTV.rx.items(dataSource: kakaoTableViewDataSource()))
+            .disposed(by: disposeBag)
+        
+        viewModel.output.kakaoFriendsList.friendsInfo
+            .withUnretained(self)
+            .subscribe(onNext: { owner, item in
+                owner.friendListTV.reloadData()
+            })
+            .disposed(by: disposeBag)
+    }
     
+    /// NEMODU 추천 친구 목록 tableView 연결
+    private func bindNemoduRecommendTV() {
+        viewModel.output.nemoduFriendslist.dataSource
+            .bind(to: friendListTV.rx.items(dataSource: nemoduTableViewDataSource()))
+            .disposed(by: disposeBag)
+        
+        viewModel.output.nemoduFriendslist.friendsInfo
+            .withUnretained(self)
+            .subscribe(onNext: { owner, item in
+                owner.friendListTV.reloadData()
+            })
+            .disposed(by: disposeBag)
+    }
+}
+
+// MARK: - DataSource
+
+extension AddFriendsVC {
+    /// 카카오 추천 친구 목록 tableView DataSource
+    func kakaoTableViewDataSource() -> RxTableViewSectionedReloadDataSource<FriendListDataSource<KakaoFriendInfo>> {
+        RxTableViewSectionedReloadDataSource<FriendListDataSource<KakaoFriendInfo>>(
+            configureCell: { dataSource, tableView, indexPath, item in
+                guard let cell = tableView.dequeueReusableCell(
+                    withIdentifier: AddKakaoFriendTVC.className,
+                    for: indexPath
+                ) as? AddKakaoFriendTVC
+                else { return UITableViewCell() }
+                cell.configureCell(item)
+                return cell
+            })
+    }
+    
+    /// 네모두 추천 친구 목록 tableView DataSource
+    func nemoduTableViewDataSource() -> RxTableViewSectionedReloadDataSource<FriendListDataSource<FriendDefaultInfo>> {
+        RxTableViewSectionedReloadDataSource<FriendListDataSource<FriendDefaultInfo>> (
+            configureCell: { dataSource, tableView, indexPath, item in
+                guard let cell = tableView.dequeueReusableCell(
+                    withIdentifier: AddNemoduFriendTVC.className,
+                    for: indexPath
+                ) as? AddNemoduFriendTVC
+                else { return UITableViewCell() }
+                cell.configureCell(item)
+                return cell
+            }
+        )
+    }
 }
