@@ -141,7 +141,6 @@ extension ChallengeVC {
                 // footerView
                 $0.register(NoListStatusTVFV.self, forHeaderFooterViewReuseIdentifier: NoListStatusTVFV.className)
                 
-                
                 // footerView 하단 여백이 생기는 것을 방지(tableView 내의 scrollView의 inset 값 때문인 것으로 추정)
                 $0.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: -20, right: 0)
             }
