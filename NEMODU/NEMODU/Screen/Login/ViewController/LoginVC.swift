@@ -173,7 +173,7 @@ extension LoginVC {
                 guard let self = self else { return }
                 isOriginUser
                 ? self.viewModel.nemoduLogin()
-                : self.navigationController?.pushViewController(UserInfoSettingVC(), animated: true)
+                : self.navigationController?.pushViewController(TermsConditionsAgreementVC(), animated: true)
             })
             .disposed(by: disposeBag)
         

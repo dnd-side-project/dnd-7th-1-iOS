@@ -66,6 +66,10 @@ class SetAuthorityVC: BaseViewController {
             $0.addShadow()
         }
     
+    private let viewModel = EnterVM()
+    
+    var userDataModel: UserDataModel?
+    
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
@@ -90,6 +94,22 @@ class SetAuthorityVC: BaseViewController {
         bindButton()
     }
     
+    override func bindOutput() {
+        super.bindOutput()
+        
+        changeRootVC()
+    }
+    
+    override func bindLoading() {
+        super.bindLoading()
+        viewModel.output.loading
+            .asDriver()
+            .drive(onNext: { [weak self] isLoading in
+                guard let self = self else { return }
+                self.loading(loading: isLoading)
+            })
+            .disposed(by: disposeBag)
+    }
 }
 
 // MARK: - Configure
@@ -205,16 +225,28 @@ extension SetAuthorityVC {
 // MARK: - Input
 
 extension SetAuthorityVC {
-    
     private func bindButton() {
         confirmButton.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in
-                guard let self = self else { return }
-                // TODO: - 앱 권한 설정안내 확인버튼 바인딩
-                print("confirmButton - 확인 pressed")
+                guard let self = self,
+                      let userDataModel = self.userDataModel else { return }
+                self.viewModel.requestSignup(userDataModel)
             })
             .disposed(by: disposeBag)
     }
-    
+}
+
+// MARK: - Output
+
+extension SetAuthorityVC {
+    private func changeRootVC() {
+        viewModel.output.isLoginSuccess
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.setTBCtoRootVC()
+            })
+            .disposed(by: disposeBag)
+    }
 }
