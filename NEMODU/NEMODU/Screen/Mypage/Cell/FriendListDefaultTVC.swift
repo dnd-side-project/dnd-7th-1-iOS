@@ -67,6 +67,10 @@ extension FriendListDefaultTVC {
         self.delegate = deleteDelegate
         self.indexPath = indexPath
     }
+    
+    func getNickname() -> String? {
+        return friendProfileView.getNickname()
+    }
 }
 
 // MARK: - Input
