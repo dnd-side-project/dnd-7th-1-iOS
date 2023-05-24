@@ -18,7 +18,10 @@ final class UserInfoSettingVM: BaseViewModel {
     
     // MARK: - Input
     
-    struct Input {}
+    struct Input {
+        var isProfileImageChanged = BehaviorRelay<Bool>(value: false)
+        var isProfileMessageChanged = BehaviorRelay<Bool>(value: false)
+    }
     
     // MARK: - Output
     
@@ -27,6 +30,9 @@ final class UserInfoSettingVM: BaseViewModel {
         var isNextBtnActive = BehaviorRelay<Bool>(value: false)
         var isValidNickname = PublishRelay<Bool>()
         var isProfileSaved = PublishRelay<Bool>()
+        
+        var isDeleted = PublishRelay<Bool>()
+        var isLogout = PublishRelay<Bool>()
     }
     
     // MARK: - Init
@@ -60,6 +66,7 @@ extension UserInfoSettingVM: Output {
 // MARK: - Networking
 
 extension UserInfoSettingVM {
+    /// 마이페이지 프로필 데이터를 받아오는 메서드
     func getMyProfile() {
         guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { return }
         let path = "user/info/profile?nickname=\(nickname)"
@@ -78,6 +85,7 @@ extension UserInfoSettingVM {
             .disposed(by: bag)
     }
     
+    /// 닉네임 유효성 검사를 진행하는 메서드
     func getNicknameValidation(nickname: String) {
         let path = "auth/check/nickname?nickname=\(nickname)"
         let resource = urlResource<Bool>(path: path)
@@ -96,6 +104,7 @@ extension UserInfoSettingVM {
             .disposed(by: bag)
     }
     
+    /// 프로필 수정을 요청하는 메서드
     func postEditProfile(_ profile: EditProfileRequestModel) {
         let path = "user/info/profile/edit"
         let resource = urlResource<EditProfileResponseModel>(path: path)
@@ -114,5 +123,47 @@ extension UserInfoSettingVM {
             }
         })
         .disposed(by: bag)
+    }
+    
+    /// 로그아웃을 요청하는 메서드
+    func postLogout() {
+        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
+        let path = "auth/logout"
+        let resource = urlResource<String>(path: path)
+        let param = LogoutRequestModel(deviceType: UIDevice.current.model.contains("iPhone") ? "PHONE" : "PAD",
+                                       nickname: nickname)
+        
+        apiSession.postRequest(with: resource, param: param.param)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, result in
+                switch result {
+                case .failure(let error):
+                    owner.apiError.onNext(error)
+                case .success:
+                    owner.output.isLogout.accept(true)
+                }
+            })
+            .disposed(by: bag)
+    }
+    
+    /// 회원 탈퇴를 요청하는 메서드
+    func deleteUser() {
+        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname),
+              let loginType = UserDefaults.standard.string(forKey: UserDefaults.Keys.loginType)
+        else { fatalError() }
+        let path = "auth/sign?nickname=\(nickname)&loginType=\(loginType)"
+        let resource = urlResource<String>(path: path)
+        
+        apiSession.deleteRequest(with: resource)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, result in
+                switch result {
+                case .failure(let error):
+                    owner.apiError.onNext(error)
+                case .success:
+                    owner.output.isDeleted.accept(true)
+                }
+            })
+            .disposed(by: bag)
     }
 }

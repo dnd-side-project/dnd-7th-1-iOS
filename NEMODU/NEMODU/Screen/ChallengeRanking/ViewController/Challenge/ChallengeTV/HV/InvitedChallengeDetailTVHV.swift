@@ -79,21 +79,23 @@ class InvitedChallengeDetailTVHV : ChallengeDetailTVHV {
     // MARK: - Function
     
     func configureInvitedChallengeDetailTVHV(invitedChallengeDetailInfo: InvitedChallengeDetailResponseModel) {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = DateType.withTime.dateFormatter
-        guard let startDate: Date = dateFormatter.date(from: invitedChallengeDetailInfo.started) else { return }
-        guard let endDate: Date = dateFormatter.date(from: invitedChallengeDetailInfo.ended) else { return }
+        weekChallengeTypeLabel.text = ChallengeType(rawValue: invitedChallengeDetailInfo.type)?.title
+        
+        challengeNameImage.tintColor = ChallengeColorType(rawValue: invitedChallengeDetailInfo.color)?.primaryColor
+        challengeNameLabel.text = invitedChallengeDetailInfo.name
+        
+        let startDate: Date? = invitedChallengeDetailInfo.started.toDate(.withTime)
+        let endDate: Date? = invitedChallengeDetailInfo.ended.toDate(.withTime)
         
         var calendar = Calendar(identifier: .gregorian)
         calendar.firstWeekday = 2
-        let weekOfMonth = calendar.component(.weekOfMonth, from: invitedChallengeDetailInfo.started.toDate(.hyphen))
+        let weekOfMonth = calendar.component(.weekOfMonth, from: invitedChallengeDetailInfo.started.toDate(.withTime))
         
-        weekChallengeTypeLabel.text = ChallengeType(rawValue: invitedChallengeDetailInfo.type)?.title
-        challengeNameImage.tintColor = ChallengeColorType(rawValue: invitedChallengeDetailInfo.color)?.primaryColor
-        challengeNameLabel.text = invitedChallengeDetailInfo.name
-        currentStateLabel.text = "\(startDate.year) \(startDate.month.showTwoDigitNumber)월 \(weekOfMonth)주차 (\(startDate.month.showTwoDigitNumber).\(startDate.day.showTwoDigitNumber)~\(endDate.month.showTwoDigitNumber).\(endDate.day.showTwoDigitNumber))"
+        if let startDate, let endDate {
+            currentStateLabel.text = "\(startDate.year) \(startDate.month.showTwoDigitNumber)월 \(weekOfMonth)주차 (\(startDate.month.showTwoDigitNumber).\(startDate.day.showTwoDigitNumber)~\(endDate.month.showTwoDigitNumber).\(endDate.day.showTwoDigitNumber))"
+        }
+        
         configureInvitedFriendsListTitleLabel(friendsCnt: invitedChallengeDetailInfo.infos.count)
-        
         updateInviteChallengeByMyUserStatus(infos: invitedChallengeDetailInfo.infos)
     }
     
@@ -103,7 +105,7 @@ class InvitedChallengeDetailTVHV : ChallengeDetailTVHV {
         for info in infos {
             if info.nickname == myUserNickname {
                 switch info.status {
-                case InvitedChallengeAcceptType.progress.description:
+                case InvitedChallengeAcceptType.ready.description:
                     rejectButton.isHidden = true
                     acceptButton.isHidden = true
                     

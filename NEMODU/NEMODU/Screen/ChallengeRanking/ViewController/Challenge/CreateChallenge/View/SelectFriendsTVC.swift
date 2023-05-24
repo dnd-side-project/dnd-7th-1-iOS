@@ -15,28 +15,11 @@ class SelectFriendsTVC : BaseTableViewCell {
     
     // MARK: - UI components
     
-    let userProfileImageView = UIImageView()
-        .then {
-            $0.image = .defaultThumbnail
-            $0.layer.cornerRadius = 20
-            $0.layer.masksToBounds = true
-        }
+    private let selectFriendsView = SelectFriendsView()
     
-    let userNicknameLabel = UILabel()
-        .then {
-            $0.font = .body3
-            $0.textColor = .gray900
-        }
-    
-    let checkImageView = UIImageView()
-        .then {
-            $0.image = UIImage(named: "uncheck")?.withRenderingMode(.alwaysTemplate)
-            $0.tintColor = .gray300
-        }
-        
     // MARK: - Variables and Properties
     
-    var isSelectCheck: Bool = false
+    private var isSelectCheck: Bool = false
     
     // MARK: - Life Cycle
     
@@ -54,10 +37,11 @@ class SelectFriendsTVC : BaseTableViewCell {
     
     // MARK: - Function
     
+    /// 친구목록 셀 선택/해제 시 체크 이미지 토글 함수
     func didTapCheck() {
         isSelectCheck.toggle()
-        checkImageView.image = UIImage(named: isSelectCheck ? "checkCircle" : "uncheck")?.withRenderingMode(.alwaysTemplate)
-        checkImageView.tintColor = isSelectCheck ? .secondary : .gray300
+        selectFriendsView.checkImageView.image = UIImage(named: isSelectCheck ? "checkCircle" : "uncheck")?.withRenderingMode(.alwaysTemplate)
+        selectFriendsView.checkImageView.tintColor = isSelectCheck ? .secondary : .gray300
     }
     
 }
@@ -70,12 +54,9 @@ extension SelectFriendsTVC {
         selectionStyle = .none
     }
     
-    func configureSelectFriendsTVC(friendInfo: Info) {
-        userNicknameLabel.text = friendInfo.nickname
-        userProfileImageView.kf.setImage(with: URL(string: friendInfo.picturePath))
-        if userProfileImageView.image == nil {
-            userProfileImageView.image = .defaultThumbnail
-        }
+    /// SelectFriendsTVC 내부 컴포넌트 표시 값 초기화 함수
+    func configureSelectFriendsTVC(friendInfo: FriendDefaultInfo) {
+        selectFriendsView.configureSelectFriendsView(friendInfo: friendInfo)
     }
     
 }
@@ -85,24 +66,10 @@ extension SelectFriendsTVC {
 extension SelectFriendsTVC {
     
     private func configureLayout() {
-        contentView.addSubviews([userProfileImageView, userNicknameLabel, checkImageView])
+        contentView.addSubview(selectFriendsView)
         
-        
-        userProfileImageView.snp.makeConstraints {
-            $0.width.height.equalTo(userProfileImageView.layer.cornerRadius * 2)
-            
-            $0.centerY.equalTo(contentView)
-            $0.left.equalTo(contentView.snp.left).offset(16)
-        }
-        userNicknameLabel.snp.makeConstraints {
-            $0.centerY.equalTo(contentView)
-            $0.left.equalTo(userProfileImageView.snp.right).offset(16)
-        }
-        checkImageView.snp.makeConstraints {
-            $0.width.height.equalTo(24)
-            
-            $0.centerY.equalTo(contentView)
-            $0.right.equalTo(contentView.snp.right).inset(16)
+        selectFriendsView.snp.makeConstraints {
+            $0.edges.equalTo(contentView)
         }
     }
     

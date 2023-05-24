@@ -22,7 +22,8 @@ final class EnterVM: BaseViewModel {
     
     // MARK: - Output
     
-    struct Output {
+    struct Output: Lodable {
+        var loading = BehaviorRelay<Bool>(value: false)
         var isLoginSuccess = PublishRelay<Bool>()
     }
     
@@ -57,6 +58,7 @@ extension EnterVM {
         let path = "auth/sign"
         let resource = urlResource<NicknameModel>(path: path)
         
+        output.beginLoading()
         AuthAPI.shared.signupRequest(with: resource, param: userData.userDataParam)
             .withUnretained(self)
             .subscribe(onNext: { owner, result in
@@ -67,6 +69,7 @@ extension EnterVM {
                     UserDefaults.standard.set(data.nickname, forKey: UserDefaults.Keys.nickname)
                     owner.output.isLoginSuccess.accept(true)
                 }
+                owner.output.endLoading()
             })
             .disposed(by: bag)
     }

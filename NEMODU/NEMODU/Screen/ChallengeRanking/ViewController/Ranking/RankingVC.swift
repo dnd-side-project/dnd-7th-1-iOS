@@ -39,10 +39,6 @@ class RankingVC : BaseViewController {
     private let stepRankingListVC = StepRankingListVC()
     private let accumulateRankingListVC = AccumulateRankingListVC()
     
-    // MARK: - Variables and Properties
-    
-    private let bag = DisposeBag()
-    
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
@@ -121,7 +117,7 @@ extension RankingVC {
                 let offset = CGFloat(indexPath.row) * self.view.frame.width
                 self.baseScrollView.setContentOffset(CGPoint(x: offset, y: 0), animated: true)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
 }

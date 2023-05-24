@@ -32,15 +32,21 @@ class StepRankingListVC : RankingListVC {
         bindStepRankingList()
     }
     
+    override func bindOutput() {
+        super.bindOutput()
+        
+        bindAPIErrorAlert(viewModel)
+    }
+    
     // MARK: - Functions
     
     func configureRankingUserTVC() {
         guard let stepRankingList = stepRankingListResponseModel else { return }
         for stepRanking in stepRankingList.stepRankings {
             if stepRanking.nickname == myUserNickname {
-                myRankingTVC.configureRankingCell(rankNumber: stepRanking.rank, profileImageURL: stepRanking.picturePathURL, nickname: stepRanking.nickname, blocksNumber: stepRanking.score)
-                myRankingTVC.configureRankingTopCell()
-                myRankingTVC.configureStepRankingCell()
+                myRankingView.configureRankingUserView(rankNumber: stepRanking.rank, profileImageURL: stepRanking.picturePathURL, nickname: stepRanking.nickname, blocksNumber: stepRanking.score)
+                myRankingView.configureRankingTop()
+                myRankingView.configureStepRanking()
             }
         }
     }
@@ -109,34 +115,9 @@ extension StepRankingListVC : UITableViewDelegate {
             return fakeView
     }
 
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 24
-    }
-
-    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        return 24
-    }
-    
     // Cell
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return stepRankingListResponseModel?.stepRankings.count ?? 0
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 84
-    }
-
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 84
-    }
-
-    // FooterView
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return .leastNormalMagnitude
-    }
-
-    func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
-        return .leastNormalMagnitude
     }
     
 }
@@ -154,6 +135,6 @@ extension StepRankingListVC {
                 self.configureRankingUserTVC()
                 self.rankingTableView.reloadData()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }

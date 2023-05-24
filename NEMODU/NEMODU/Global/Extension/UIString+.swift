@@ -36,7 +36,8 @@ extension String {
     /// Date String을 RelativeDateTime 타입으로 반환하는 함수
     func relativeDateTime(_ dateType: DateType) -> String {
         let dateFormatter = RelativeDateTimeFormatter()
-        dateFormatter.dateTimeStyle = .named
+        dateFormatter.dateTimeStyle = .numeric
+        dateFormatter.locale = Locale(identifier: "ko_KR")
         let relativeDate = dateFormatter.localizedString(for: self.toDate(dateType), relativeTo: Date.now)
         return relativeDate
     }

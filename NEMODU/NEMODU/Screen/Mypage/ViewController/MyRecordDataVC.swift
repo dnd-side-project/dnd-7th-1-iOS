@@ -80,11 +80,11 @@ class MyRecordDataVC: BaseViewController {
         .then {
             $0.backgroundColor = .clear
             $0.separatorStyle = .none
+            $0.rowHeight = 76 + 12
         }
     
     private let naviBar = NavigationBar()
     private let viewModel = MyRecordDataVM()
-    private let bag = DisposeBag()
     
     private var isWeeklyScope = true
     
@@ -125,8 +125,10 @@ class MyRecordDataVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        bindAPIErrorAlert(viewModel)
         bindTableView()
         bindCalendarReload()
+        bindNoneDataMessage()
     }
     
 }
@@ -159,7 +161,6 @@ extension MyRecordDataVC {
         calendarCV.register(DayCVC.self, forCellWithReuseIdentifier: DayCVC.className)
         
         recordTableView.register(MyRecordListTVC.self, forCellReuseIdentifier: MyRecordListTVC.className)
-        recordTableView.delegate = self
     }
     
     private func configureCalendarCV() {
@@ -290,7 +291,7 @@ extension MyRecordDataVC {
                 self.calendarCV.reloadData()
                 self.selectCV(date: self.viewModel.input.selectedDay.value)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         prevWeekBtn.rx.tap
             .asDriver()
@@ -302,7 +303,7 @@ extension MyRecordDataVC {
                 self.calendarCV.reloadData()
                 self.selectCV(date: self.viewModel.input.selectedDay.value)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         calendarScopeBtn.rx.tap
             .asDriver()
@@ -316,7 +317,7 @@ extension MyRecordDataVC {
                 self.setCalendarHeight()
                 self.selectCV(date: self.viewModel.input.selectedDay.value)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     private func bindDaySelect() {
@@ -337,7 +338,7 @@ extension MyRecordDataVC {
                                                    ended: self.viewModel.endDateFormatter(day))
                 self.recordTableView.reloadData()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         calendarCV.rx.itemSelected
             .asDriver()
@@ -361,17 +362,27 @@ extension MyRecordDataVC {
                     self.selectCV(date: selectedDate)
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 
 // MARK: - Output
 
 extension MyRecordDataVC {
+    private func bindNoneDataMessage() {
+        viewModel.output.isRecordEmpty
+            .asDriver(onErrorJustReturn: true)
+            .drive(onNext: { [weak self] isEmpty in
+                guard let self = self else { return }
+                self.noneMessage.isHidden = !isEmpty
+            })
+            .disposed(by: disposeBag)
+    }
+    
     private func bindTableView() {
         viewModel.output.dataSource
             .bind(to: recordTableView.rx.items(dataSource: tableViewDataSource()))
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         recordTableView.rx.itemSelected
             .asDriver()
@@ -384,7 +395,7 @@ extension MyRecordDataVC {
                 myRecordDetailVC.recordID = recordID
                 self.navigationController?.pushViewController(myRecordDetailVC, animated: true)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     private func bindCalendarReload() {
@@ -395,7 +406,7 @@ extension MyRecordDataVC {
                 self.calendarCV.reloadData()
                 self.selectCV(date: self.viewModel.input.selectedDay.value)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 
@@ -416,17 +427,9 @@ extension MyRecordDataVC {
     }
 }
 
-// MARK: - UITableViewDelegate
+// MARK: - UICollectionViewDelegate
 
-extension MyRecordDataVC: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        76.0 + 12.0
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
+extension MyRecordDataVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         // 미래 선택 불가능
         guard let cell = collectionView.cellForItem(at: indexPath) as? DayCVC,
@@ -435,7 +438,7 @@ extension MyRecordDataVC: UITableViewDelegate {
     }
 }
 
-// MARK: - UICollectionViewDelegate
+// MARK: - UICollectionViewDelegateFlowLayout
 
 extension MyRecordDataVC: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

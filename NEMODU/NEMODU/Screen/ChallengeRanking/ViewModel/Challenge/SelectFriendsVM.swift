@@ -25,7 +25,9 @@ final class SelectFriendsVM: BaseViewModel {
     // MARK: - Output
     
     struct Output {
-        var successWithResponseData = PublishRelay<FriendsListResponseModel>()
+        var friendsList = BehaviorRelay<[FriendDefaultInfo]>(value: [])
+        var isLast = BehaviorRelay<Bool>(value: true)
+        var nextOffset = BehaviorRelay<Int?>(value: nil)
     }
     
     // MARK: - Init
@@ -55,9 +57,12 @@ extension SelectFriendsVM: Output {
 // MARK: - Networking
 
 extension SelectFriendsVM {
-    func getFriendsList(offset: Int) {
-        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { return }
-        let path = "friend/list?nickname=\(nickname)&offset=\(offset)"
+    func getFriendsList(size: Int) {
+        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
+        var path = "friend/list?nickname=\(nickname)&size=\(size)"
+        if let offset = output.nextOffset.value {
+            path += "&offset=\(offset)"
+        }
         let resource = urlResource<FriendsListResponseModel>(path: path)
         
         apiSession.getRequest(with: resource)
@@ -67,7 +72,9 @@ extension SelectFriendsVM {
                 case .failure(let error):
                     owner.apiError.onNext(error)
                 case .success(let data):
-                    owner.output.successWithResponseData.accept(data)
+                    owner.output.friendsList.accept(data.infos)
+                    owner.output.nextOffset.accept(data.offset)
+                    owner.output.isLast.accept(data.isLast)
                 }
             })
             .disposed(by: bag)

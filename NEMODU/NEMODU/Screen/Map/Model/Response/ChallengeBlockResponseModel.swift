@@ -9,7 +9,7 @@ import Foundation
 
 struct ChallengeBlockResponseModel: Codable {
     let nickname: String
-    let latitude, longitude: Double
+    let latitude, longitude: Double?
     let matrices: [Matrix]?
     let challengeColor: String
     let challengeNumber: Int
@@ -17,7 +17,7 @@ struct ChallengeBlockResponseModel: Codable {
 }
 
 extension ChallengeBlockResponseModel {
-    var profileImageURL: URL? {
+    var picturePathURL: URL? {
         guard let profileImageURL = picturePath.encodeURL() else { return nil }
         return URL(string: profileImageURL)
     }

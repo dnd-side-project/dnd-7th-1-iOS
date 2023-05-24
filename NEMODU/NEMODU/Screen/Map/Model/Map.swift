@@ -13,7 +13,7 @@ enum Map {
     static let longitudeBlockSize: Double = 0.0003740
     
     // 화면의 Zoom 비율
-    static let defalutZoomScale = 0.003
+    static let defaultZoomScale = 0.003
     static let cameraZoomRange: Double = 60000
     
     // 단위 배수 값

@@ -18,7 +18,6 @@ class InvitedChallengeDetailVC: ChallengeDetailVC {
     // MARK: - Variables and Properties
     
     private let viewModel = InvitedChallengeDetailVM()
-    private let bag = DisposeBag()
     
     var uuid: String = ""
     var invitedChallengeDetailResponseModel: InvitedChallengeDetailResponseModel?
@@ -42,6 +41,7 @@ class InvitedChallengeDetailVC: ChallengeDetailVC {
     override func bindOutput() {
         super.bindOutput()
         
+        bindAPIErrorAlert(viewModel)
         bindInvitedChallengeDetail()
         responseAcceptChallengeSuccess()
         responseRejectChallengeSuccess()
@@ -60,6 +60,8 @@ class InvitedChallengeDetailVC: ChallengeDetailVC {
             .then {
                 $0.delegate = self
                 $0.dataSource = self
+                
+                $0.rowHeight = 64.0
                 
                 $0.register(InvitedChallengeDetailTVHV.self, forHeaderFooterViewReuseIdentifier: InvitedChallengeDetailTVHV.className)
                 $0.register(InvitedFriendsTVC.self, forCellReuseIdentifier: InvitedFriendsTVC.className)
@@ -116,19 +118,6 @@ extension InvitedChallengeDetailVC : UITableViewDelegate {
         return UITableView.automaticDimension
     }
 
-    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        return UITableView.automaticDimension
-    }
-
-    // Cell
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 64
-    }
-
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 64
-    }
-    
 }
 
 // MARK: - Output
@@ -143,7 +132,7 @@ extension InvitedChallengeDetailVC {
                 self.invitedChallengeDetailResponseModel = data
                 self.challengeDetailTableView.reloadData()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     private func responseAcceptChallengeSuccess() {
@@ -156,7 +145,7 @@ extension InvitedChallengeDetailVC {
                     self.getInvitedChallengeDetailInfo()
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     private func responseRejectChallengeSuccess() {
@@ -169,7 +158,7 @@ extension InvitedChallengeDetailVC {
                     self.popVC()
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
 }

@@ -10,8 +10,9 @@ import UIKit
 enum FriendStatusType: String {
     case accept = "ACCEPT" // 친구중
     case requesting = "REQUESTING" // 친구 요청중
-    case responseWait = "RESPONSEWAIT" // 수락 대기중
-    case noFriend = "NOFRIEND" // 친구 아님
+    case responseWait = "RESPONSE_WAIT" // 수락 대기중
+    case noFriend = "NO_FRIEND" // 친구 아님
+    case reject = "REJECT"  // 친구 신청 거절
 }
 
 extension FriendStatusType {
@@ -21,6 +22,8 @@ extension FriendStatusType {
             return false
         case .requesting, .noFriend:
             return true
+        default:
+            fatalError("무관")
         }
     }
     
@@ -32,6 +35,8 @@ extension FriendStatusType {
             return false
         case .accept, .responseWait:
             return nil
+        default:
+            fatalError("무관")
         }
     }
     
@@ -41,6 +46,8 @@ extension FriendStatusType {
             return .white
         case .noFriend:
             return .main
+        default:
+            fatalError("무관")
         }
     }
     
@@ -52,6 +59,8 @@ extension FriendStatusType {
             return .white
         case .requesting, .responseWait:
             return .gray700
+        default:
+            fatalError("무관")
         }
     }
     
@@ -61,6 +70,8 @@ extension FriendStatusType {
             return UIColor.main.cgColor
         case .requesting, .responseWait:
             return UIColor.gray700.cgColor
+        default:
+            fatalError("무관")
         }
     }
     
@@ -74,6 +85,8 @@ extension FriendStatusType {
             return "수락 대기중"
         case .noFriend:
             return "친구 추가"
+        default:
+            fatalError("무관")
         }
     }
     
@@ -88,6 +101,8 @@ extension FriendStatusType {
         case .noFriend:
             return UIImage(named: "add")!.withTintColor(.white,
                                                         renderingMode: .alwaysOriginal)
+        default:
+            fatalError("무관")
         }
     }
 }

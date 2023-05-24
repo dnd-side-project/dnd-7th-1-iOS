@@ -43,9 +43,18 @@ extension Date {
     func getDayOfWeek() -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "EEEEEE"
-        formatter.locale = Locale(identifier:"ko_KR")
+        formatter.locale = Locale(identifier: "ko_KR")
         let convertStr = formatter.string(from: self)
         return convertStr
+    }
+    
+    /// 특정 날짜의 시간을 반환
+    func toTime(_ dateFormatter: DateType) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = dateFormatter.dateFormatter
+        formatter.locale = Locale(identifier: "ko_KR")
+        let time = formatter.string(from: self)
+        return time
     }
 }
 

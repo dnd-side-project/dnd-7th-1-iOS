@@ -47,6 +47,7 @@ class AddFriendsVC: BaseViewController {
     private let friendsTV = UITableView(frame: .zero)
         .then {
             $0.separatorStyle = .none
+            $0.rowHeight = 64
         }
     
     override func viewDidLoad() {
@@ -83,8 +84,7 @@ extension AddFriendsVC {
                           friendsCntLabel,
                           friendsTV])
         
-        friendsTV.register(AddFriendTVC.self, forCellReuseIdentifier: AddFriendTVC.className)
-        friendsTV.delegate = self
+        friendsTV.register(FriendAddTVC.self, forCellReuseIdentifier: FriendAddTVC.className)
     }
 }
 
@@ -132,12 +132,4 @@ extension AddFriendsVC {
 
 extension AddFriendsVC {
     
-}
-
-// MARK: - UITableViewDelegate
-
-extension AddFriendsVC: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        64.0
-    }
 }

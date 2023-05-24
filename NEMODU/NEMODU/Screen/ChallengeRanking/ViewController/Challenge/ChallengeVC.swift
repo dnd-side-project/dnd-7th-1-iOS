@@ -20,6 +20,7 @@ class ChallengeVC : BaseViewController {
             $0.separatorStyle = .none
             $0.backgroundColor = .white
             $0.showsVerticalScrollIndicator = false
+            $0.rowHeight = 116.0
         }
     
     private lazy var createChallengeButton = UIButton().then {
@@ -46,20 +47,17 @@ class ChallengeVC : BaseViewController {
     var doneChallengeListResponseModel: ProgressAndDoneChallengeListResponseModel?
     
     private let viewModel = ChallengeVM()
-    private let bag = DisposeBag()
     
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        viewModel.getWaitChallengeList()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        viewModel.getInvitedChallengeList()
+        getChallengeList()
     }
     
     override func configureView() {
@@ -83,28 +81,48 @@ class ChallengeVC : BaseViewController {
     override func bindOutput() {
         super.bindOutput()
         
+        bindAPIErrorAlert(viewModel)
         bindInvitedList()
         bindChallengeList()
     }
 
     // MARK: - Functions
     
-    func getChallengeList(index: Int) {
-        switch index {
-        case 0:
+    private func getChallengeList() {
+        DispatchQueue.global().sync {
+            let beforeCntInvited = invitedChallengeListResponseModel?.count
+            let beforeCntWait = waitChallengeListResponseModel?.count
+            let beforeCntProgress = progressChallengeListResponseModel?.count
+            let beforeCntDone = doneChallengeListResponseModel?.count
+
+            // 초대받은 챌린지
+            viewModel.getInvitedChallengeList()
+            
+            // 챌린지 내역
             viewModel.getWaitChallengeList()
-        case 1:
             viewModel.getProgressChallengeList()
-        case 2:
             viewModel.getDoneChallengeList()
-        default:
-            break
+
+            if invitedChallengeListResponseModel?.count != beforeCntInvited ||
+                waitChallengeListResponseModel?.count != beforeCntWait ||
+                progressChallengeListResponseModel?.count != beforeCntProgress ||
+                doneChallengeListResponseModel?.count != beforeCntDone {
+                challengeTableView.reloadData()
+            } else {
+                reloadChallengeTableView(toMoveIndex: reloadCellIndex)
+            }
         }
     }
     
     func reloadChallengeTableView(toMoveIndex: Int) {
+        let curIndex = reloadCellIndex
         reloadCellIndex = toMoveIndex
-        challengeTableView.reloadSections(IndexSet(2...2), with: .fade)
+        
+        if toMoveIndex == curIndex {
+            challengeTableView.reloadData()
+        } else {
+            challengeTableView.reloadSections(IndexSet(2...2), with: toMoveIndex < curIndex ? .right : .left)
+        }
     }
     
 }
@@ -138,7 +156,6 @@ extension ChallengeVC {
                 
                 // footerView
                 $0.register(NoListStatusTVFV.self, forHeaderFooterViewReuseIdentifier: NoListStatusTVFV.className)
-                
                 
                 // footerView 하단 여백이 생기는 것을 방지(tableView 내의 scrollView의 inset 값 때문인 것으로 추정)
                 $0.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: -20, right: 0)
@@ -253,8 +270,7 @@ extension ChallengeVC : UITableViewDelegate {
         case 1:
             headerId = ChallengeListTVHV.className
             let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerId) as? ChallengeListTVHV
-            
-            headerView?.challengeListTypeMenuBar.challengeContainerCVC = self
+            headerView?.challengeListTypeMenuBar.challengeVC = self
             
             return headerView
         case 2:
@@ -272,10 +288,6 @@ extension ChallengeVC : UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        section == 2 ? .leastNormalMagnitude : UITableView.automaticDimension
-    }
-
-    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
         section == 2 ? .leastNormalMagnitude : UITableView.automaticDimension
     }
 
@@ -321,14 +333,6 @@ extension ChallengeVC : UITableViewDelegate {
         }
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 116
-    }
-
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 116
-    }
-
     // FooterView
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         var message = ""
@@ -375,28 +379,6 @@ extension ChallengeVC : UITableViewDelegate {
         }
     }
 
-    func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
-        switch section {
-        case 0: // 초대받은 챌린지
-            return invitedChallengeListResponseModel?.count ?? 0 == 0 ? 93 : .leastNormalMagnitude
-        case 1: // 챌린지 내역 및 메뉴바
-            return .leastNormalMagnitude
-        case 2: // 챌린지 목록
-            switch reloadCellIndex {
-            case 0: // 진행 대기중
-                return waitChallengeListResponseModel?.count ?? 0 == 0 ? 93 : .leastNormalMagnitude
-            case 1: // 진행 중
-                return progressChallengeListResponseModel?.count ?? 0 == 0 ? 93 : .leastNormalMagnitude
-            case 2: // 진행 완료
-                return doneChallengeListResponseModel?.count ?? 0 == 0 ? 93 : .leastNormalMagnitude
-            default:
-                return 93
-            }
-        default:
-            return 93
-        }
-    }
-    
 }
 
 // MARK: - Input
@@ -406,13 +388,14 @@ extension ChallengeVC {
         createChallengeButton.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                
                 let selectChallengeCreateVC = SelectChallengeCreateVC()
                 selectChallengeCreateVC.hidesBottomBarWhenPushed = true
                 
-                let rootViewController = self?.view.superview?.findViewController()
-                rootViewController?.navigationController?.pushViewController(selectChallengeCreateVC, animated: true)
+                self.navigationController?.pushViewController(selectChallengeCreateVC, animated: true)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 
@@ -427,7 +410,7 @@ extension ChallengeVC {
                 self.invitedChallengeListResponseModel = data
                 self.challengeTableView.reloadSections(IndexSet(0...0), with: .none)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     private func bindChallengeList() {
@@ -436,26 +419,23 @@ extension ChallengeVC {
                 guard let self = self else { return }
                 
                 self.waitChallengeListResponseModel = data
-                self.reloadChallengeTableView(toMoveIndex: 0)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         viewModel.output.progressChallengeList
             .subscribe(onNext: { [weak self] data in
                 guard let self = self else { return }
                 
                 self.progressChallengeListResponseModel = data
-                self.reloadChallengeTableView(toMoveIndex: 1)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         viewModel.output.doneChallengeList
             .subscribe(onNext: { [weak self] data in
                 guard let self = self else { return }
                 
                 self.doneChallengeListResponseModel = data
-                self.reloadChallengeTableView(toMoveIndex: 2)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }

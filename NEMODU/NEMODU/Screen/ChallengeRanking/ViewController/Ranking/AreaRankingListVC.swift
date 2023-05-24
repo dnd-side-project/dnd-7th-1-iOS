@@ -32,14 +32,20 @@ class AreaRankingListVC : RankingListVC {
         bindAreaRankingList()
     }
     
+    override func bindOutput() {
+        super.bindOutput()
+        
+        bindAPIErrorAlert(viewModel)
+    }
+    
     // MARK: - Functions
     
     func configureRankingUserTVC() {
         guard let areaRankingList = areaRankingListResponseModel else { return }
         for areaRanking in areaRankingList.areaRankings {
             if areaRanking.nickname == myUserNickname {
-                myRankingTVC.configureRankingCell(rankNumber: areaRanking.rank, profileImageURL: areaRanking.picturePathURL, nickname: areaRanking.nickname, blocksNumber: areaRanking.score)
-                myRankingTVC.configureRankingTopCell()
+                myRankingView.configureRankingUserView(rankNumber: areaRanking.rank, profileImageURL: areaRanking.picturePathURL, nickname: areaRanking.nickname, blocksNumber: areaRanking.score)
+                myRankingView.configureRankingTop()
             }
         }
     }
@@ -107,34 +113,9 @@ extension AreaRankingListVC : UITableViewDelegate {
             return fakeView
     }
 
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 24
-    }
-
-    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        return 24
-    }
-    
     // Cell
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return areaRankingListResponseModel?.areaRankings.count ?? 0
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 84
-    }
-
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 84
-    }
-
-    // FooterView
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return .leastNormalMagnitude
-    }
-
-    func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
-        return .leastNormalMagnitude
     }
     
 }
@@ -152,6 +133,6 @@ extension AreaRankingListVC {
                 self.configureRankingUserTVC()
                 self.rankingTableView.reloadData()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }

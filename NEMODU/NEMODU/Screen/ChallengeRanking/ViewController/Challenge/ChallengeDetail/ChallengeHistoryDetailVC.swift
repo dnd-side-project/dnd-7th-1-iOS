@@ -129,7 +129,6 @@ class ChallengeHistoryDetailVC: ChallengeDetailVC {
     // MARK: - Variables and Properties
     
     private let viewModel = ChallengeHistoryDetailVM()
-    private let bag = DisposeBag()
     var challengeHistoryDetailResponseModel: ChallengeHistoryDetailResponseModel?
     
     var challgeStatus: String?
@@ -167,6 +166,7 @@ class ChallengeHistoryDetailVC: ChallengeDetailVC {
     override func bindOutput() {
         super.bindOutput()
         
+        bindAPIErrorAlert(viewModel)
         bindChallengeHistoryDetail()
     }
     
@@ -183,24 +183,25 @@ class ChallengeHistoryDetailVC: ChallengeDetailVC {
 
 extension ChallengeHistoryDetailVC {
     
-    private func configureChallengeHistoryDetailVC(challengeHistoryDetailInfo: ChallengeHistoryDetailResponseModel) {   
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = DateType.withTime.dateFormatter
-        guard let startDate: Date = dateFormatter.date(from: challengeHistoryDetailInfo.started) else { return }
-        guard let endDate: Date = dateFormatter.date(from: challengeHistoryDetailInfo.ended) else { return }
-        
-        var calendar = Calendar(identifier: .gregorian)
-        calendar.firstWeekday = 2
-        let weekOfMonth = calendar.component(.weekOfMonth, from: challengeHistoryDetailInfo.started.toDate(.hyphen))
-        
+    private func configureChallengeHistoryDetailVC(challengeHistoryDetailInfo: ChallengeHistoryDetailResponseModel) {
         challengeDetailInfoView.weekChallengeTypeLabel.text = ChallengeType(rawValue: challengeHistoryDetailInfo.type)?.title
         challengeDetailInfoView.challengeNameImageView.tintColor = ChallengeColorType(rawValue: challengeHistoryDetailInfo.color)?.primaryColor
         challengeDetailInfoView.challengeNameLabel.text = challengeHistoryDetailInfo.name
-        challengeDetailInfoView.currentStateLabel.text = "\(startDate.year) \(startDate.month.showTwoDigitNumber)월 \(weekOfMonth)주차 (\(startDate.month.showTwoDigitNumber).\(startDate.day.showTwoDigitNumber)~\(endDate.month.showTwoDigitNumber).\(endDate.day.showTwoDigitNumber))"
-        setDDayStatus()
         
-        startLabel.text = "\(startDate.month.showTwoDigitNumber).\(startDate.day.showTwoDigitNumber) 부터"
-        endLabel.text = "\(endDate.month.showTwoDigitNumber).\(endDate.day.showTwoDigitNumber) 까지"
+        let startDate: Date? = challengeHistoryDetailInfo.started.toDate(.withTime)
+        let endDate: Date? = challengeHistoryDetailInfo.ended.toDate(.withTime)
+        
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.firstWeekday = 2
+        let weekOfMonth = calendar.component(.weekOfMonth, from: challengeHistoryDetailInfo.started.toDate(.withTime))
+
+        if let startDate, let endDate {
+            challengeDetailInfoView.currentStateLabel.text = "\(startDate.year) \(startDate.month.showTwoDigitNumber)월 \(weekOfMonth)주차 (\(startDate.month.showTwoDigitNumber).\(startDate.day.showTwoDigitNumber)~\(endDate.month.showTwoDigitNumber).\(endDate.day.showTwoDigitNumber))"
+            setDDayStatus()
+            
+            startLabel.text = "\(startDate.month.showTwoDigitNumber).\(startDate.day.showTwoDigitNumber) 부터"
+            endLabel.text = "\(endDate.month.showTwoDigitNumber).\(endDate.day.showTwoDigitNumber) 까지"
+        }
         
         updateChallengeTableViewHeight(rankingsCnt: challengeHistoryDetailInfo.rankings.count)
         
@@ -221,7 +222,12 @@ extension ChallengeHistoryDetailVC {
         
         let startDate = dateFormatter.string(from: .now)
         
-        let currentDayNum = calendar.component(.weekday, from: startDate.toDate(.withTime))
+        var currentDayNum = calendar.component(.weekday, from: startDate.toDate(.withTime))
+        // 일요일일 경우 D-Day 계산을 위한 값 보정
+        if currentDayNum == 1 {
+            currentDayNum = 8
+        }
+        
         let toGoSundayNum = 8 - currentDayNum
         let sundayDate = calendar.date(byAdding: .day, value: toGoSundayNum, to: startDate.toDate(.withTime)) ?? startDate.toDate(.withTime)
         
@@ -232,7 +238,7 @@ extension ChallengeHistoryDetailVC {
         progressBlackBarStackView.snp.makeConstraints {
             let bar = (progressBarStackView.frame.size.width - 6.0) / 7
             let pastDay = 7 - toGoSundayNum
-            let spaceBetweenBar = pastDay == 7 ? 0 : pastDay-1;
+            let spaceBetweenBar = pastDay == 7 ? 6 : pastDay-1;
             let length = (Int(bar) * pastDay) + (1 * spaceBetweenBar)
             
             $0.width.equalTo(length)
@@ -317,6 +323,8 @@ extension ChallengeHistoryDetailVC {
             .then {
                 $0.delegate = self
                 $0.dataSource = self
+                
+                $0.rowHeight = 84.0
                 
                 $0.register(RankingUserTVC.self, forCellReuseIdentifier: RankingUserTVC.className)
                 
@@ -514,19 +522,6 @@ extension ChallengeHistoryDetailVC : UITableViewDelegate {
         return .leastNormalMagnitude
     }
 
-    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        return .leastNormalMagnitude
-    }
-
-    // Cell
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 84
-    }
-
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 84
-    }
-    
     // FooterView
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let fakeView = UIView()
@@ -538,11 +533,7 @@ extension ChallengeHistoryDetailVC : UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return .leastNormalMagnitude
     }
-
-    func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
-        return .leastNormalMagnitude
-    }
-    
+ 
 }
 
 // MARK: - Input
@@ -559,7 +550,7 @@ extension ChallengeHistoryDetailVC {
                 
                 self.configureUpdateStatusLabel()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         miniMapVC.magnificationBtn.rx.tap
             .asDriver()
@@ -569,11 +560,13 @@ extension ChallengeHistoryDetailVC {
                 let challengeDetailMapVC = ChallengeDetailMapVC()
                 guard let responseModel: ChallengeHistoryDetailResponseModel = self.challengeHistoryDetailResponseModel else { return print("No challengeHistoryDetailResponseModel") }
                 challengeDetailMapVC.challengeTitle = responseModel.name
-                challengeDetailMapVC.getChallengeDetailMap(uuid: responseModel.uuid)
+                challengeDetailMapVC.uuid = responseModel.uuid
+                challengeDetailMapVC.latitude = responseModel.latitude
+                challengeDetailMapVC.longitude = responseModel.longitude
                 
                 self.navigationController?.pushViewController(challengeDetailMapVC, animated: true)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 
@@ -590,6 +583,6 @@ extension ChallengeHistoryDetailVC {
                 self.configureChallengeHistoryDetailVC(challengeHistoryDetailInfo: data)
                 self.miniMapVC.drawMyMapAtOnce(matrices: data.matrices)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }

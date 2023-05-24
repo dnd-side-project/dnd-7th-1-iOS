@@ -96,6 +96,7 @@ class SelectFriendsVC: CreateChallengeVC {
         .then {
             $0.separatorStyle = .none
             $0.allowsMultipleSelection = true
+            $0.rowHeight = UITableView.automaticDimension
         }
     
     // MARK: - Variables and Properties
@@ -103,10 +104,9 @@ class SelectFriendsVC: CreateChallengeVC {
     var createWeekChallengeVC: CreateWeekChallengeVC?
     
     private let viewModel = SelectFriendsVM()
-    private let bag = DisposeBag()
-    private var friendsListResponseModel: FriendsListResponseModel?
+    private var friendsListResponseModel: [FriendDefaultInfo]?
     
-    private var selectedFriendsList: [Info] = []
+    private var selectedFriendsList: [FriendDefaultInfo] = []
     
     private var friendsListContainerViewHeightConstraint: Constraint?
     
@@ -115,7 +115,7 @@ class SelectFriendsVC: CreateChallengeVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewModel.getFriendsList(offset: 0)
+        viewModel.getFriendsList(size: 15)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -146,12 +146,13 @@ class SelectFriendsVC: CreateChallengeVC {
     override func bindOutput() {
         super.bindOutput()
         
+        bindAPIErrorAlert(viewModel)
         responseFriendsList()
     }
     
     // MARK: - Functions
     
-    private func showSelectedFriend(friendInfo: Info) {
+    private func showSelectedFriend(friendInfo: FriendDefaultInfo) {
         selectedFriendsList.append(friendInfo)
         
         // 친구목록 컨테이너 창 크기 조절하기
@@ -180,7 +181,7 @@ class SelectFriendsVC: CreateChallengeVC {
         }
     }
     
-    private func deleteSelectedFriend(friendInfo: Info) {
+    private func deleteSelectedFriend(friendInfo: FriendDefaultInfo) {
         var seletedFriendsProfileList: [UIImage] = []
         [friendsListView1, friendsListView2, friendsListView3].forEach {
             seletedFriendsProfileList.append($0.profileImageView.image ?? .defaultThumbnail)
@@ -231,8 +232,8 @@ class SelectFriendsVC: CreateChallengeVC {
         guard let friendsList = friendsListResponseModel else { return }
         
         var targetIndex = 3
-        for i in 0..<friendsList.infos.count {
-            if friendsList.infos[i].nickname == selectedFriendsList[sender.tag].nickname {
+        for i in 0..<friendsList.count {
+            if friendsList[i].nickname == selectedFriendsList[sender.tag].nickname {
                 targetIndex = i
                 break
             }
@@ -276,7 +277,7 @@ extension SelectFriendsVC {
             }
     }
     
-    private func configureFriendListView(friendListView: FriendListView, friendInfo: Info) {
+    private func configureFriendListView(friendListView: FriendListView, friendInfo: FriendDefaultInfo) {
         friendListView.isHidden = false
         friendListView.configureFriendsListView(friendInfo: friendInfo)
     }
@@ -322,15 +323,15 @@ extension SelectFriendsVC {
             $0.horizontalEdges.equalTo(view).inset(16)
         }
         friendsListView1.snp.makeConstraints {
-            $0.verticalEdges.equalTo(friendsListContainerView).inset(16)
+            $0.centerY.equalTo(friendsListContainerView)
             $0.left.equalTo(friendsListContainerView.snp.left)
         }
         friendsListView2.snp.makeConstraints {
-            $0.verticalEdges.equalTo(friendsListView1)
+            $0.centerY.equalTo(friendsListView1)
             $0.left.equalTo(friendsListView1.snp.right).offset(12)
         }
         friendsListView3.snp.makeConstraints {
-            $0.verticalEdges.equalTo(friendsListView1)
+            $0.centerY.equalTo(friendsListView2)
             $0.left.equalTo(friendsListView2.snp.right).offset(12)
         }
 
@@ -382,7 +383,7 @@ extension SelectFriendsVC : UITableViewDataSource {
             return UITableViewCell()
         }
         guard let friendsList = friendsListResponseModel else { return UITableViewCell() }
-        cell.configureSelectFriendsTVC(friendInfo: friendsList.infos[indexPath.row])
+        cell.configureSelectFriendsTVC(friendInfo: friendsList[indexPath.row])
         
         return cell
     }
@@ -395,23 +396,15 @@ extension SelectFriendsVC : UITableViewDelegate {
     
     // Cell
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return friendsListResponseModel?.infos.count ?? 0
+        return friendsListResponseModel?.count ?? 0
     }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 64
-    }
-
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 64
-    }
-
+   
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) as? SelectFriendsTVC else { return }
         cell.didTapCheck()
         
         guard let friendsList = friendsListResponseModel else { return }
-        showSelectedFriend(friendInfo: friendsList.infos[indexPath.row])
+        showSelectedFriend(friendInfo: friendsList[indexPath.row])
         
         updateLimitFriendsCountLabel()
         checkConfirmButtonEnable()
@@ -422,7 +415,7 @@ extension SelectFriendsVC : UITableViewDelegate {
         cell.didTapCheck()
         
         guard let friendsList = friendsListResponseModel else { return }
-        deleteSelectedFriend(friendInfo: friendsList.infos[indexPath.row])
+        deleteSelectedFriend(friendInfo: friendsList[indexPath.row])
 
         updateLimitFriendsCountLabel()
         checkConfirmButtonEnable()
@@ -443,14 +436,9 @@ extension SelectFriendsVC : UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         guard let friendsList = friendsListResponseModel else { return 93 }
-        return friendsList.infos.count == 0 ? 93 : .leastNormalMagnitude
+        return friendsList.count == 0 ? 93 : .leastNormalMagnitude
     }
-
-    func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
-        guard let friendsList = friendsListResponseModel else { return 93 }
-        return friendsList.infos.count == 0 ? 93 : .leastNormalMagnitude
-    }
-    
+   
 }
 
 // MARK: - Input
@@ -466,7 +454,7 @@ extension SelectFriendsVC {
                 
                 searchNickname.count == 0 ? (self.deleteAllTextButton.isHidden = true) : (self.deleteAllTextButton.isHidden = false)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     private func bindButtons() {
@@ -479,7 +467,7 @@ extension SelectFriendsVC {
                 self.deleteAllTextButton.isHidden = true
                 self.searchTextField.becomeFirstResponder()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
 }
@@ -489,14 +477,14 @@ extension SelectFriendsVC {
 extension SelectFriendsVC {
     
     private func responseFriendsList() {
-        viewModel.output.successWithResponseData
+        viewModel.output.friendsList
             .subscribe(onNext: { [weak self] data in
                 guard let self = self else { return }
                 
                 self.friendsListResponseModel = data
                 self.friendsListTableView.reloadData()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
 }

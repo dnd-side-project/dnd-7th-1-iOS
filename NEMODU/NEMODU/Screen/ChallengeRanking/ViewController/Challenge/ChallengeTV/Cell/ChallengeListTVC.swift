@@ -29,7 +29,7 @@ class ChallengeListTVC : BaseTableViewCell {
     
     private let challengeTypeLabel = UILabel()
         .then {
-            $0.text = "종류"
+            $0.text = "--"
             $0.font = .caption1
             $0.textColor = .main
             $0.backgroundColor = .clear
@@ -56,11 +56,11 @@ class ChallengeListTVC : BaseTableViewCell {
     private let challengeNameImageView = UIImageView()
         .then {
             $0.image = UIImage(named: "badge_flag")?.withRenderingMode(.alwaysTemplate)
-            $0.tintColor = ChallengeColorType.pink.primaryColor
+            $0.tintColor = ChallengeColorType.green.primaryColor
         }
     private let challengeNameLabel = UILabel()
         .then {
-            $0.text = "챌린지 이름"
+            $0.text = "----"
             $0.font = .body3
             $0.textColor = .gray900
         }
@@ -82,6 +82,17 @@ class ChallengeListTVC : BaseTableViewCell {
     
     // MARK: - Life Cycle
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        challengeTypeLabel.text = "--"
+        challengeTermLabel.text = "00.00(-) - 00.00(-)"
+        challengeNameImageView.tintColor = ChallengeColorType.green.primaryColor
+        challengeNameLabel.text = "----"
+        currentStateLabel.text = "----"
+        currentJoinUserLabel.text = "-/-"
+    }
+    
     override func configureView() {
         super.configureView()
         
@@ -101,19 +112,19 @@ class ChallengeListTVC : BaseTableViewCell {
         challengeTypeLabel.text = "주간" // TODO: - 서버 response 값으로 주간, 실시간 표시 필요
         
         // 날짜
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = DateType.withTime.dateFormatter
-        guard let startDates: Date = dateFormatter.date(from: startDate) else { return }
-        guard let endDates: Date = dateFormatter.date(from: endDate) else { return }
+        let startDates: Date? = startDate.toDate(.withTime)
+        let endDates: Date? = endDate.toDate(.withTime)
         
         let format = DateFormatter()
         format.timeZone = TimeZone(identifier: "KST")
         format.dateFormat = DateType.hyphen.dateFormatter
         
-        let dayOfWeekDate = format.date(from: String(startDate.split(separator: "T")[0]))
-        let dayOfWeekString = dayOfWeekDate?.getDayOfWeek()
+        let dayOfWeekDate: Date? = format.date(from: String(startDate.split(separator: "T")[0]))
+        let dayOfWeekString: String? = dayOfWeekDate?.getDayOfWeek()
         
-        challengeTermLabel.text = "\(startDates.month.showTwoDigitNumber).\(startDates.day.showTwoDigitNumber)(\(dayOfWeekString ?? "?")) - \(endDates.month.showTwoDigitNumber).\(endDates.day.showTwoDigitNumber)(일)"
+        if let startDates, let endDates, let dayOfWeekString {
+            challengeTermLabel.text = "\(startDates.month.showTwoDigitNumber).\(startDates.day.showTwoDigitNumber)(\(dayOfWeekString)) - \(endDates.month.showTwoDigitNumber).\(endDates.day.showTwoDigitNumber)(일)"
+        }
         
         // 챌린지 아이콘 색상 설정
         challengeNameImageView.tintColor = ChallengeColorType(rawValue: challengeColor)?.primaryColor

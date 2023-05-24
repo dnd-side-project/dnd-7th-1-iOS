@@ -66,9 +66,9 @@ class SetAuthorityVC: BaseViewController {
             $0.addShadow()
         }
     
-    // MARK: - Variables and Properties
+    private let viewModel = EnterVM()
     
-    private let bag = DisposeBag()
+    var userDataModel: UserDataModel?
     
     // MARK: - Life Cycle
     
@@ -94,6 +94,22 @@ class SetAuthorityVC: BaseViewController {
         bindButton()
     }
     
+    override func bindOutput() {
+        super.bindOutput()
+        
+        changeRootVC()
+    }
+    
+    override func bindLoading() {
+        super.bindLoading()
+        viewModel.output.loading
+            .asDriver()
+            .drive(onNext: { [weak self] isLoading in
+                guard let self = self else { return }
+                self.loading(loading: isLoading)
+            })
+            .disposed(by: disposeBag)
+    }
 }
 
 // MARK: - Configure
@@ -103,8 +119,7 @@ extension SetAuthorityVC {
     private func configureAuthorityListStackView() {
         typealias Auth = (imageNamed: String, title: String, option: String, explain: String)
         let authList: [Auth] = [("LocationOn", "위치", "(필수)", "현재 위치를 바탕으로 기록 저장"),
-                                  ("CameraAlt", "카메라", "(선택)", "프로필 사진 촬영 및 저장"),
-                                  ("AllInbox", "저장 공간", "(선택)", "앱을 통해 프로필 사진 촬영 시 기기에 저장")]
+                                  ("AllInbox", "저장 공간", "(선택)", "프로필 사진 변경 시 갤러리 접근")]
         
         authList.forEach { auth in
             let baseView = UIView()
@@ -210,16 +225,28 @@ extension SetAuthorityVC {
 // MARK: - Input
 
 extension SetAuthorityVC {
-    
     private func bindButton() {
         confirmButton.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in
-                guard let self = self else { return }
-                // TODO: - 앱 권한 설정안내 확인버튼 바인딩
-                print("confirmButton pressed")
+                guard let self = self,
+                      let userDataModel = self.userDataModel else { return }
+                self.viewModel.requestSignup(userDataModel)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
-    
+}
+
+// MARK: - Output
+
+extension SetAuthorityVC {
+    private func changeRootVC() {
+        viewModel.output.isLoginSuccess
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.setTBCtoRootVC()
+            })
+            .disposed(by: disposeBag)
+    }
 }

@@ -105,7 +105,8 @@ extension AlertVC {
         view.addSubview(alertBaseView)
         alertBaseView.addSubviews([baseStackView,
                                    btnStackView])
-        [alertImage, alertTitle, alertMessage].forEach {
+        let alertBase = [alertImage, alertTitle] + ((alertMessage.text != nil) ? [alertMessage] : [])
+        alertBase.forEach {
             baseStackView.addArrangedSubview($0)
         }
     }
@@ -123,16 +124,16 @@ extension AlertVC {
         normalBtn.setTitle(alertType.normalBtnTitle, for: .normal)
         switch alertType {
         // 버튼 한 개
-        case .defaultNetworkError, .realTimeChallenge, .createWeekChallenge, .sendMailError:
+        case .defaultNetworkError, .requestLocationAuthority, .realTimeChallenge, .createWeekChallenge, .sendMailError:
             btnStackView.addArrangedSubview(highlightBtn)
         // 버튼 세로 두 개
-        case .requestAuthority:
+        case .requestMotionAuthority:
             btnStackView.axis = .vertical
             [highlightBtn, normalBtn].forEach {
                 btnStackView.addArrangedSubview($0)
             }
         // 버튼 가로 두 개
-        case .recordNetworkError, .minimumBlocks, .speedWarning:
+        case .recordNetworkError, .minimumBlocks, .speedWarning, .discardChanges, .deleteFriend, .logout, .deleteUser:
             btnStackView.axis = .horizontal
             [normalBtn, highlightBtn].forEach {
                 btnStackView.addArrangedSubview($0)
@@ -140,14 +141,36 @@ extension AlertVC {
         }
     }
     
-    func configureAlert(of alertType: AlertType, targetVC: UIViewController, highlightBtnAction: Selector, normalBtnAction: Selector?) {
+    /// AlertType에 따른 알람창 구현
+    func configureAlert(of alertType: AlertType,
+                        targetVC: UIViewController,
+                        highlightBtnAction: Selector,
+                        normalBtnAction: Selector?) {
         setTitle(of: alertType)
         setMessage(of: alertType)
         setBtn(of: alertType)
-        highlightBtn.addTarget(targetVC, action: highlightBtnAction, for: .touchUpInside)
+        highlightBtn.addTarget(targetVC,
+                               action: highlightBtnAction,
+                               for: .touchUpInside)
         
         guard let normalBtnAction = normalBtnAction else { return }
-        normalBtn.addTarget(targetVC, action: normalBtnAction, for: .touchUpInside)
+        normalBtn.addTarget(targetVC,
+                            action: normalBtnAction,
+                            for: .touchUpInside)
+    }
+    
+    /// Error Alert 구현
+    func configureErrorAlert(targetVC: UIViewController,
+                             title: String,
+                             message: String?,
+                             confirmEvent: Selector) {
+        alertTitle.text = title
+        if let message = message { alertMessage.text = message }
+        highlightBtn.setTitle("확인", for: .normal)
+        highlightBtn.addTarget(targetVC,
+                               action: confirmEvent,
+                               for: .touchUpInside)
+        btnStackView.addArrangedSubview(highlightBtn)
     }
 }
 

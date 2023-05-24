@@ -12,6 +12,7 @@ enum ChallengeColorType: String {
     case pink = "PINK"
     case yellow = "YELLOW"
     case green = "GREEN"
+    case gray = "GRAY"
 }
 
 extension ChallengeColorType {
@@ -23,7 +24,7 @@ extension ChallengeColorType {
             return .pink100
         case .yellow:
             return .yellow100
-        case .green:
+        case .green, .gray:
             return .main
         }
     }
@@ -38,6 +39,8 @@ extension ChallengeColorType {
             return .yellow20
         case .green:
             return .main40
+        case .gray:
+            return .gray25
         }
     }
 }

@@ -38,10 +38,6 @@ class ChallengeRankingVC: BaseViewController {
     private let challengeVC = ChallengeVC()
     private let rankingVC = RankingVC()
     
-    // MARK: - Variables and Properties
-    
-    private let bag = DisposeBag()
-    
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
@@ -125,7 +121,7 @@ extension ChallengeRankingVC {
                 let offset = CGFloat(indexPath.row) * self.view.frame.width
                 self.baseScrollView.setContentOffset(CGPoint(x: offset, y: 0), animated: true)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         baseScrollView.rx.contentOffset
             .asDriver()
@@ -134,7 +130,7 @@ extension ChallengeRankingVC {
                 
                 self.challengeRankingMenuBar.positionBarView.frame.origin.x = contentOffset.x / CGFloat(self.challengeRankingMenuBar.menuList.count)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
 }

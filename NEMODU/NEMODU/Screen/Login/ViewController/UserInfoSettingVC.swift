@@ -37,12 +37,10 @@ class UserInfoSettingVC: BaseViewController {
     private let nicknameVC = NicknameVC()
     private let addfriendsVC = AddFriendsVC()
     private let locationSettingVC = LocationSettingVC()
+    private let friendRecommendSettingVC = FriendRecommendSettingVC()
     
     private var page: Float = 1
-    private let pageCnt: Float = 3
-    
-    private let viewModel = UserInfoSettingVM()
-    private let bag = DisposeBag()
+    private let pageCnt: Float = 4
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,11 +60,6 @@ class UserInfoSettingVC: BaseViewController {
     override func bindInput() {
         super.bindInput()
         bindNaviBtn()
-    }
-    
-    override func bindOutput() {
-        super.bindOutput()
-        bindNextBtnActive()
     }
     
 }
@@ -98,15 +91,18 @@ extension UserInfoSettingVC {
         addChild(nicknameVC)
         addChild(addfriendsVC)
         addChild(locationSettingVC)
-        nicknameVC.viewModel = viewModel
+        addChild(friendRecommendSettingVC)
+        
         baseScrollView.addSubview(baseStackView)
-        [nicknameVC.view, addfriendsVC.view, locationSettingVC.view].forEach {
+        [nicknameVC.view, addfriendsVC.view, locationSettingVC.view, friendRecommendSettingVC.view].forEach {
             baseStackView.addArrangedSubview($0)
         }
         
+        nicknameVC.delegate = self
+        
         progressView.progress = page / pageCnt
         
-        setRightBarBtnActive(viewModel.output.isNextBtnActive.value)
+        setRightBarBtnActive(false)
     }
 }
 
@@ -139,36 +135,40 @@ extension UserInfoSettingVC {
         naviBar.backBtn.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in
-                guard let self = self,
-                      self.page > 1 else { return }
-                if self.page == 3 { self.naviBar.rightBtn.setTitle("다음", for: .normal) }
+                guard let self = self else { return }
+                if self.page == self.pageCnt { self.naviBar.rightBtn.setTitle("다음", for: .normal) }
                 self.page -= 1
                 self.page != 0
                 ? self.setPage(self.page)
                 : self.popVC()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         naviBar.rightBtn.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self,
-                      self.page <= 3 else { return }
+                      self.page <= self.pageCnt else { return }
                 self.page += 1
                 
                 if self.page != self.pageCnt + 1 {
                     self.setPage(self.page)
+                    if self.page == 2,
+                       let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) {
+                        self.friendRecommendSettingVC.setNicknameLabel(nickname)
+                    }
                 } else {
-                    let enterVC = EnterVC()
+                    let setAuthorityVC = SetAuthorityVC()
                     // TODO: - 친구 목록 연결
-                    enterVC.userDataModel = UserDataModel(friends: [],
-                                                          isPublicRecord: self.locationSettingVC.getSignupValue())
-                    self.navigationController?.pushViewController(enterVC, animated: true)
+                    setAuthorityVC.userDataModel = UserDataModel(friends: [],
+                                                                 isPublicRecord: self.locationSettingVC.getSignupValue(),
+                                                                 isExceptRecommend: self.friendRecommendSettingVC.getRecommendAuth())
+                    self.navigationController?.pushViewController(setAuthorityVC, animated: true)
                 }
                 
-                if self.page == 3 { self.naviBar.rightBtn.setTitle("완료", for: .normal) }
+                if self.page == self.pageCnt { self.naviBar.rightBtn.setTitle("완료", for: .normal) }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         baseScrollView.rx.didScroll
             .asDriver()
@@ -177,28 +177,21 @@ extension UserInfoSettingVC {
                 let progress = (self.baseScrollView.contentOffset.x + self.screenWidth) / self.screenWidth
                 self.progressView.progress = Float(progress) / self.pageCnt
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
-
-// MARK: - Output
-
-extension UserInfoSettingVC {
-    private func bindNextBtnActive() {
-        viewModel.output.isNextBtnActive
-            .asDriver(onErrorJustReturn: false)
-            .drive(onNext: { [weak self] isValid in
-                guard let self = self else { return }
-                self.setRightBarBtnActive(isValid)
-            })
-            .disposed(by: bag)
-    }
-}
-
 // MARK: - Custom Methods
 
 extension UserInfoSettingVC {
     private func setPage(_ page: Float) {
         baseScrollView.scrollToHorizontalOffset(offset: screenWidth * CGFloat(page - 1))
+    }
+}
+
+// MARK: - NavigationBarNextBtnDelegate
+
+extension UserInfoSettingVC: NavigationBarNextBtnDelegate {
+    func changeNaviBarNextBtnActiveStatus(_ status: Bool) {
+        setRightBarBtnActive(status)
     }
 }

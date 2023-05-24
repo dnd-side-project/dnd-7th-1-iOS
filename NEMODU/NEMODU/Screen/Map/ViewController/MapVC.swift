@@ -61,12 +61,28 @@ class MapVC: BaseViewController {
     private let bag = DisposeBag()
     
     // Map Overlay
+    // mine
     var userOverlay = Area()
-    var friendsOverlay = Area()
     var myMatrices = Set<Matrix>()
-    var friendsMatrices = Set<Matrix>()
     var myBlocks = [Block]()
-    var friendsBlocks = [Block]()
+    
+    // 일반 친구
+    var grayOverlay = Area()
+    var grayMatrices = Set<Matrix>()
+    var grayBlocks = [Block]()
+    
+    // 챌린지 색깔별 친구
+    var redOverlay = Area()
+    var redMatrices = Set<Matrix>()
+    var redBlocks = [Block]()
+    
+    var pinkOverlay = Area()
+    var pinkMatrices = Set<Matrix>()
+    var pinkBlocks = [Block]()
+    
+    var yellowOverlay = Area()
+    var yellowMatrices = Set<Matrix>()
+    var yellowBlocks = [Block]()
     
     // 사용자 위치 이동
     var isFocusOn = true
@@ -132,7 +148,7 @@ extension MapVC {
         // 현재 위치로 이동
         _ = goLocation(latitudeValue: locationManager.location?.coordinate.latitude ?? 0,
                        longitudeValue: locationManager.location?.coordinate.longitude ?? 0,
-                       delta: Map.defalutZoomScale)
+                       delta: Map.defaultZoomScale)
     }
     
     private func registerMapAnnotationViews() {
@@ -195,11 +211,17 @@ extension MapVC {
         currentLocationBtn.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in
-                guard let self = self,
-                      let coordinate = self.locationManager.location?.coordinate else { return }
+                guard let self = self else { return }
+                guard let coordinate = self.locationManager.location?.coordinate else {
+                    self.popUpAlert(alertType: .requestLocationAuthority,
+                                    targetVC: self,
+                                    highlightBtnAction: #selector(self.openSystem),
+                                    normalBtnAction: #selector(self.dismissAlert))
+                    return
+                }
                 _ = self.goLocation(latitudeValue: coordinate.latitude,
                                     longitudeValue: coordinate.longitude,
-                                    delta: Map.defalutZoomScale)
+                                    delta: Map.defaultZoomScale)
                 
                 // 사용자 추적 On
                 self.isFocusOn = true
@@ -227,54 +249,89 @@ extension MapVC {
     }
     
     /// 내 핀을 설치하는 메서드
-    func addMyAnnotation(coordinate: [Double], profileImageURL: URL) {
-        KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: profileImageURL)) { result in
-            var profileImage = UIImage.defaultThumbnail
-            
-            switch result {
-            case .success(let data):
-                profileImage = data.image
-            case .failure(let error):
-                print(error)
+    func addMyAnnotation(coordinate: Matrix,
+                         profileImageURL: URL?,
+                         isHidden: Bool = false) {
+        let annotation = MyAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate.latitude + Map.latitudeBlockSize / 2,
+                                                                         longitude: coordinate.longitude - Map.longitudeBlockSize / 2))
+        annotation.profileImage = .defaultThumbnail
+        annotation.isHidden = isHidden
+
+        if let profileImageURL = profileImageURL {
+            KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: profileImageURL)) {[weak self] result in
+                guard let self = self else { return }
+                
+                switch result {
+                case .success(let data):
+                    annotation.profileImage = data.image
+                case .failure(let error):
+                    print(error)
+                }
+                
+                self.mapView.addAnnotation(annotation)
             }
-            
-            let annotation = MyAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate[0] + Map.latitudeBlockSize / 2,
-                                                                             longitude: coordinate[1] - Map.longitudeBlockSize / 2))
-            annotation.profileImage = profileImage
-            self.mapView.addAnnotation(annotation)
+        } else {
+            mapView.addAnnotation(annotation)
         }
-        
     }
     
     /// 친구 핀을 설치하는 메서드.
+    /// isHidden: visible 상태
     /// isEnabled: 마커 선택 가능성
     /// isBorderOn: 테두리 존재 여부
-    func addFriendAnnotation(coordinate: [Double],
-                             profileImageURL: URL,
+    func addFriendAnnotation(coordinate: Matrix,
+                             profileImageURL: URL?,
                              nickname: String,
                              color: UIColor,
                              challengeCnt: Int = 0,
+                             isHidden: Bool = false,
                              isEnabled: Bool = false,
                              isBorderOn: Bool = false) {
-        KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: profileImageURL)) { result in
-            var profileImage = UIImage.defaultThumbnail
-            
-            switch result {
-            case .success(let data):
-                profileImage = data.image
-            case .failure(let error):
-                print(error)
+        let annotation = FriendAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate.latitude + Map.latitudeBlockSize / 2,
+                                                                             longitude: coordinate.longitude - Map.longitudeBlockSize / 2))
+        annotation.title = nickname
+        annotation.profileImage = .defaultThumbnail
+        annotation.color = color
+        annotation.challengeCnt = challengeCnt
+        annotation.isHidden = isHidden
+        annotation.isEnabled = isEnabled
+        annotation.isBorderOn = isBorderOn
+        
+        if let profileImageURL = profileImageURL {
+            KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: profileImageURL)) {[weak self] result in
+                guard let self = self else { return }
+                
+                switch result {
+                case .success(let data):
+                    annotation.profileImage = data.image
+                case .failure(let error):
+                    print(error)
+                }
+                
+                self.mapView.addAnnotation(annotation)
             }
-         
-            let annotation = FriendAnnotation(coordinate: CLLocationCoordinate2D(latitude: coordinate[0] + Map.latitudeBlockSize / 2,
-                                                                                 longitude: coordinate[1] - Map.longitudeBlockSize / 2))
-            annotation.title = nickname
-            annotation.profileImage = profileImage
-            annotation.color = color
-            annotation.challengeCnt = challengeCnt
-            annotation.isEnabled = isEnabled
-            annotation.isBorderOn = isBorderOn
-            self.mapView.addAnnotation(annotation)
+        } else {
+            mapView.addAnnotation(annotation)
+        }
+    }
+    
+    /// 디바이스의 건강 데이터를 요청하는 메서드
+    func requestMotionAuthorization() -> Bool {
+        let status = CMMotionActivityManager.authorizationStatus()
+        switch status {
+        case .notDetermined:
+            let today = Date()
+            var status = false
+            self.activityManager.queryActivityStarting(from: today, to: today, to: OperationQueue.main) { _, error in
+                status = error != nil
+            }
+            return status
+        case .restricted, .denied:
+            return false
+        case .authorized:
+            return true
+        @unknown default:
+            fatalError()
         }
     }
     
@@ -320,12 +377,13 @@ extension MapVC {
     
     /// 좌표, 소유자, 색상을 입력받아 네 개의 꼭짓점을 만들어 Block 폴리곤을 반환하는 메서드
     func makeBlocks(matrix: Matrix, owner: BlocksType, color: UIColor) -> Block {
+        let longitudeBlockSize = Map.longitudeBlockSize * (matrix.longitude < 0 ? -1 : 1)
         let overlayTopLeftCoordinate = CLLocationCoordinate2D(latitude: matrix.latitude,
-                                                              longitude: matrix.longitude - Map.longitudeBlockSize)
+                                                              longitude: matrix.longitude + longitudeBlockSize)
         let overlayTopRightCoordinate = CLLocationCoordinate2D(latitude: matrix.latitude,
                                                                longitude: matrix.longitude)
         let overlayBottomLeftCoordinate = CLLocationCoordinate2D(latitude: matrix.latitude + Map.latitudeBlockSize,
-                                                                 longitude: matrix.longitude - Map.longitudeBlockSize)
+                                                                 longitude: matrix.longitude + longitudeBlockSize)
         let overlayBottomRightCoordinate = CLLocationCoordinate2D(latitude: matrix.latitude + Map.latitudeBlockSize,
                                                                   longitude: matrix.longitude)
         
@@ -345,43 +403,69 @@ extension MapVC {
                                       color: .main80))
     }
     
-    /// 영역 배열, 소유자, 색상을 받아 소유자의 영역 Set에 추가하고 기존 overlay를 remove 후 지도에 Area 추가
+    /// 영역 배열, 소유자, 색상을 받아 소유자의 영역 Set에 추가하고 기존 overlay를 remove 후 지도에 Area 추가.
+    /// 블록 색상에 따른 overlay에 Area 추가.
     func drawBlockArea(matrices: [Matrix], owner: BlocksType, blockColor: UIColor) {
-        if owner == .mine {
+        switch blockColor {
+        case ChallengeColorType.green.blockColor:
+            update(matrix: &myMatrices,
+                   blocks: &myBlocks,
+                   overlay: &userOverlay)
+        case ChallengeColorType.red.blockColor:
+            update(matrix: &redMatrices,
+                   blocks: &redBlocks,
+                   overlay: &redOverlay)
+        case ChallengeColorType.pink.blockColor:
+            update(matrix: &pinkMatrices,
+                   blocks: &pinkBlocks,
+                   overlay: &pinkOverlay)
+        case ChallengeColorType.yellow.blockColor:
+            update(matrix: &yellowMatrices,
+                   blocks: &yellowBlocks,
+                   overlay: &yellowOverlay)
+        default:
+            update(matrix: &grayMatrices,
+                   blocks: &grayBlocks,
+                   overlay: &grayOverlay)
+        }
+        
+        /// Set<matrix>, [block], overlay를 갱신시키고 overlay(Area)를 remove & add하는 메서드
+        func update(matrix: inout Set<Matrix>, blocks: inout [Block], overlay: inout Area) {
             matrices.forEach {
-                if !myMatrices.contains($0) {
-                    myMatrices.insert($0)
-                    myBlocks.append(makeBlocks(matrix: $0,
-                                               owner: owner,
-                                               color: blockColor))
+                if !matrix.contains($0) {
+                    matrix.insert($0)
+                    blocks.append(makeBlocks(matrix: $0,
+                                             owner: owner,
+                                             color: blockColor))
                 }
             }
-            mapView.removeOverlay(userOverlay)
-            userOverlay = Area(myBlocks)
-            userOverlay.color = blockColor
-            mapView.addOverlay(userOverlay)
-        } else {
-            matrices.forEach {
-                if !friendsMatrices.contains($0) {
-                    friendsMatrices.insert($0)
-                    friendsBlocks.append(makeBlocks(matrix: $0,
-                                                    owner: owner,
-                                                    color: blockColor))
-                }
-            }
-            mapView.removeOverlay(friendsOverlay)
-            friendsOverlay = Area(friendsBlocks)
-            friendsOverlay.color = blockColor
-            mapView.addOverlay(friendsOverlay)
+            mapView.removeOverlay(overlay)
+            overlay = Area(blocks)
+            overlay.color = blockColor
+            mapView.addOverlay(overlay)
         }
     }
     
     
     /// 영역의 소유자를 입력받아 visible 상태를 지정하는 함수
     func setOverlayVisible(of owner: BlocksType, visible: Bool) {
-        visible
-        ? mapView.addOverlay(owner == .mine ? userOverlay : friendsOverlay)
-        : mapView.removeOverlay(owner == .mine ? userOverlay : friendsOverlay)
+        if owner == .mine {
+            visible
+            ? mapView.addOverlay(userOverlay)
+            : mapView.removeOverlay(userOverlay)
+        } else {
+            if visible {
+                mapView.addOverlay(redOverlay)
+                mapView.addOverlay(pinkOverlay)
+                mapView.addOverlay(yellowOverlay)
+                mapView.addOverlay(grayOverlay)
+            } else {
+                mapView.removeOverlay(redOverlay)
+                mapView.removeOverlay(pinkOverlay)
+                mapView.removeOverlay(yellowOverlay)
+                mapView.removeOverlay(grayOverlay)
+            }
+        }
     }
     
     /// 내 annotation의 visible 상태를 지정하는 함수
@@ -422,11 +506,11 @@ extension MapVC: CLLocationManagerDelegate {
             DispatchQueue.main.async {
                 self.locationManager.requestWhenInUseAuthorization()
             }
-        case .denied:
-            print("GPS 권한 요청 거부됨")
-            // TODO: - 알람창 띄우기
         default:
-            print("GPS: Default")
+            self.popUpAlert(alertType: .requestLocationAuthority,
+                            targetVC: self,
+                            highlightBtnAction: #selector(openSystem),
+                            normalBtnAction: #selector(dismissAlert))
         }
     }
     
@@ -445,7 +529,7 @@ extension MapVC: CLLocationManagerDelegate {
         if isFocusOn {
             _ = goLocation(latitudeValue: latitude,
                            longitudeValue: longitude,
-                           delta: Map.defalutZoomScale)
+                           delta: Map.defaultZoomScale)
         }
         
         // 기록 중이고
@@ -480,6 +564,8 @@ extension MapVC: CLLocationManagerDelegate {
         self.previousCoordinate = location.coordinate
     }
 }
+
+// MARK: - MKMapViewDelegate
 
 extension MapVC: MKMapViewDelegate {
     /// 사용자 땅을 칠하는 함수 /
@@ -545,11 +631,21 @@ extension MapVC: MKMapViewDelegate {
     }
 }
 
-extension MapVC: DeselectAnnotation {
+// MARK: - FriendProfileProtocol
+
+extension MapVC: FriendProfileProtocol {
     /// 선택된 annotation을 모두 deselect 하는 메서드
     func deselectAnnotation() {
         mapView.selectedAnnotations.forEach {
             mapView.deselectAnnotation($0, animated: true)
         }
+    }
+    
+    /// 진행중인 챌린지 상세 화면을 push하는 메서드
+    func pushChallengeDetail(_ uuid: String) {
+        let challengeDetailVC = ChallengeHistoryDetailVC()
+        challengeDetailVC.getChallengeHistoryDetailInfo(uuid: uuid)
+        challengeDetailVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(challengeDetailVC, animated: true)
     }
 }

@@ -70,7 +70,7 @@ class WalkingVC: BaseViewController {
     
     private let timeView = RecordView()
         .then {
-            $0.recordValue.text = "0:00"
+            $0.recordValue.text = "00:00"
             $0.recordTitle.text = "시간"
             $0.recordSubtitle.text = " "
         }
@@ -79,7 +79,6 @@ class WalkingVC: BaseViewController {
     private var secondTimeValue: Int = 0
     private var startTime: Date?
     private let viewModel = WalkingVM()
-    private let bag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,8 +88,8 @@ class WalkingVC: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.getAllBlocks(mapVC.mapView.region.center.latitude,
-                               mapVC.mapView.region.center.longitude)
+        viewModel.getHomeData(mapVC.locationManager.location?.coordinate.latitude ?? 0,
+                              mapVC.locationManager.location?.coordinate.longitude ?? 0)
     }
     
     override func configureView() {
@@ -107,16 +106,18 @@ class WalkingVC: BaseViewController {
     
     override func bindInput() {
         super.bindInput()
+        bindMapGesture()
         bindBtn()
     }
     
     override func bindOutput() {
         super.bindOutput()
+        bindAPIErrorAlert(viewModel)
         bindRecordValue()
         bindWeekBlocksCnt()
-        bindMyBlocks()
-        bindFriendBlocks()
-        bindChallengeFriendBlocks()
+        bindFriendAnnotation()
+        bindChallengeFriendAnnotation()
+        bindMatrices()
     }
     
     override func bindLoading() {
@@ -127,7 +128,7 @@ class WalkingVC: BaseViewController {
                 guard let self = self else { return }
                 self.loading(loading: isLoading)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 
@@ -211,6 +212,20 @@ extension WalkingVC {
 // MARK: - Input
 
 extension WalkingVC {
+    /// 지도 제스쳐에 맞춰 현재 보이는 화면의 영역을 받아오는 메서드
+    private func bindMapGesture() {
+        mapVC.mapView.rx.anyGesture(.pan(), .pinch())
+            .when(.ended)
+            .debounce(.seconds(1), scheduler: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.viewModel.getUpdateBlocks(self.mapVC.mapView.region.center.latitude,
+                                               self.mapVC.mapView.region.center.longitude,
+                                               self.mapVC.mapView.region.span.latitudeDelta)
+            })
+            .disposed(by: disposeBag)
+    }
+    
     private func bindBtn() {
         // 일시 정지 버튼
         pauseBtn.rx.tap
@@ -220,7 +235,7 @@ extension WalkingVC {
                 self.setRecordBtnStatus(isWalking: false)
                 self.mapVC.stopUpdateStep()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         // 기록 중단 버튼
         stopBtn.rx.tap
@@ -248,7 +263,7 @@ extension WalkingVC {
                     self.present(recordResultNC, animated: true)
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         // 기록 재시작 버튼
         playBtn.rx.tap
@@ -258,7 +273,7 @@ extension WalkingVC {
                 self.setRecordBtnStatus(isWalking: true)
                 self.mapVC.updateStep()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 
@@ -273,20 +288,19 @@ extension WalkingVC {
                 guard let self = self else { return }
                 self.distanceView.recordValue.text = "\(distance.toKilometer)"
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         // 이동 시간 기록
-        viewModel.output.driver.asObservable()
+        viewModel.timer.driver.asObservable()
             .subscribe(onNext: { [weak self] second in
                 guard let self = self else { return }
                 if self.mapVC.isWalking ?? false {
                     self.secondTimeValue += second
                     self.timeView.recordValue.text
-                    = "\(self.secondTimeValue / 60):"
-                    + String(format: "%02d", self.secondTimeValue % 60)
+                    = self.secondTimeValue.toExerciseTime
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         // 채운 칸 수 기록
         mapVC.blocksCnt
@@ -295,86 +309,79 @@ extension WalkingVC {
                 guard let self = self else { return }
                 self.blocksNumView.recordValue.text = "\(blocksCnt.insertComma)"
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     private func bindWeekBlocksCnt() {
-        viewModel.output.blocksCnt
+        viewModel.output.matricesNumber
             .asDriver(onErrorJustReturn: 0)
-            .drive(onNext: { [weak self] cnt in
-                guard let self = self else { return }
+            .drive(onNext: { [weak self] matricesNumber in
+                guard let self = self,
+                      let cnt = matricesNumber else { return }
                 self.configureWeekBlockCnt(cnt)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
-    private func bindMyBlocks() {
-        viewModel.output.myBlocks
-            .subscribe(onNext: { [weak self] user in
-                guard let self = self else { return }
-                self.configureWeekBlockCnt(user.matricesNumber ?? 0)
-                if !self.viewModel.output.myBlocksVisible.value { return }
-                
-                // Area
-                self.mapVC.drawBlockArea(matrices: user.matrices ?? [],
-                                         owner: .mine,
-                                         blockColor: .main20)
+    /// 일반 친구의 마커를 연결하는 메서드
+    private func bindFriendAnnotation() {
+        viewModel.output.friendsLastLocations
+            .subscribe(onNext: { [weak self] friend in
+                guard let self = self,
+                      let latitude = friend.latitude,
+                      let longitude = friend.longitude
+                else { return }
+                // 마커 추가
+                self.mapVC.addFriendAnnotation(coordinate: Matrix(latitude: latitude,
+                                                                  longitude: longitude),
+                                               profileImageURL: friend.picturePathURL,
+                                               nickname: friend.nickname,
+                                               color: .main,
+                                               isHidden: !self.viewModel.output.friendVisible.value,
+                                               isEnabled: true)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
-    private func bindFriendBlocks() {
-        viewModel.output.friendBlocks
-            .subscribe(onNext: { [weak self] friends in
-                guard let self = self else { return }
-                if !self.viewModel.output.friendVisible.value { return }
-                friends.forEach {
-                    guard let latitude = $0.latitude,
-                          let longitude = $0.longitude,
-                          let picturePath = $0.picturePath,
-                          let profileImageURL = URL(string: picturePath) else { return }
-                    let nickname = $0.nickname
-                    
-                    // Annotation
-                    self.mapVC.addFriendAnnotation(coordinate: [latitude, longitude],
-                                                   profileImageURL: profileImageURL,
-                                                   nickname: nickname,
-                                                   color: .main,
-                                                   challengeCnt: 0,
-                                                   isEnabled: false)
-                    
-                    // Area
-                    self.mapVC.drawBlockArea(matrices: $0.matrices ?? [],
-                                             owner: .friends,
-                                             blockColor: .gray25)
+    /// 챌린지를 함께하는 친구의 마커를 연결하는 메서드
+    private func bindChallengeFriendAnnotation() {
+        viewModel.output.challengeFriendsLastLocations
+            .subscribe(onNext: { [weak self] friend in
+                guard let self = self,
+                      let latitude = friend.latitude,
+                      let longitude = friend.longitude
+                else { return }
+                // 마커 추가
+                self.mapVC.addFriendAnnotation(coordinate: Matrix(latitude: latitude,
+                                                                  longitude: longitude),
+                                               profileImageURL: friend.picturePathURL,
+                                               nickname: friend.nickname,
+                                               color: ChallengeColorType(rawValue: friend.challengeColor)?.primaryColor ?? .main,
+                                               challengeCnt: friend.challengeNumber,
+                                               isHidden: !self.viewModel.output.friendVisible.value,
+                                               isEnabled: true)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    /// Matrix 배열을 입력받아 지도에 영역을 그리는 메서드
+    private func bindMatrices() {
+        viewModel.output.matrices
+            .subscribe(onNext: { [weak self] nickname, matrices in
+                guard let self = self,
+                      let blockColor = self.viewModel.input.userTable[nickname] else { return }
+                let owner: BlocksType = (nickname == UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname)) ? .mine : .friends
+                if owner == .mine && self.viewModel.output.myBlocksVisible.value {
+                    self.mapVC.drawBlockArea(matrices: matrices,
+                                             owner: owner,
+                                             blockColor: blockColor.blockColor)
+                } else if owner == .friends && self.viewModel.output.friendVisible.value {
+                    self.mapVC.drawBlockArea(matrices: matrices,
+                                             owner: owner,
+                                             blockColor: blockColor.blockColor)
                 }
             })
-            .disposed(by: bag)
-    }
-    
-    private func bindChallengeFriendBlocks() {
-        viewModel.output.challengeFriendBlocks
-            .subscribe(onNext: { [weak self] friends in
-                guard let self = self else { return }
-                if !self.viewModel.output.friendVisible.value { return }
-                friends.forEach {
-                    guard let profileImageURL = $0.profileImageURL else { return }
-                    
-                    // Annotation
-                    self.mapVC.addFriendAnnotation(coordinate: [$0.latitude, $0.longitude],
-                                                   profileImageURL: profileImageURL,
-                                                   nickname: $0.nickname,
-                                                   color: ChallengeColorType(rawValue: $0.challengeColor)?.primaryColor ?? .main,
-                                                   challengeCnt: $0.challengeNumber,
-                                                   isEnabled: false)
-                    
-                    // Area
-                    self.mapVC.drawBlockArea(matrices: $0.matrices ?? [],
-                                             owner: .friends,
-                                             blockColor: ChallengeColorType(rawValue: $0.challengeColor)?.blockColor ?? .gray25)
-                }
-            })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 

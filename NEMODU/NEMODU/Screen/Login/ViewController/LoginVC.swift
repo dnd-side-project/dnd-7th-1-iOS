@@ -42,7 +42,6 @@ class LoginVC: BaseViewController {
                                          textColor: .white)
     
     private let viewModel = LoginVM()
-    private let bag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,6 +64,7 @@ class LoginVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        bindAPIErrorAlert(viewModel)
         bindLoginResult()
     }
     
@@ -123,7 +123,7 @@ extension LoginVC {
                 UserDefaults.standard.set(LoginType.apple.rawValue, forKey: UserDefaults.Keys.loginType)
                 self.appleLogin()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         kakaoLoginBtn.rx.tap
             .asDriver()
@@ -132,7 +132,7 @@ extension LoginVC {
                 UserDefaults.standard.set(LoginType.kakao.rawValue, forKey: UserDefaults.Keys.loginType)
                 self.viewModel.kakaoLogin()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     @objc func appleLogin() {
@@ -173,9 +173,9 @@ extension LoginVC {
                 guard let self = self else { return }
                 isOriginUser
                 ? self.viewModel.nemoduLogin()
-                : self.navigationController?.pushViewController(UserInfoSettingVC(), animated: true)
+                : self.navigationController?.pushViewController(TermsConditionsAgreementVC(), animated: true)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         viewModel.output.goToTabBar
             .asDriver(onErrorJustReturn: false)
@@ -183,7 +183,7 @@ extension LoginVC {
                 guard let self = self else { return }
                 self.setTBCtoRootVC()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 

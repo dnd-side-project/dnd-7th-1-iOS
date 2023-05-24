@@ -9,16 +9,17 @@ import Foundation
 import Alamofire
 
 struct ChallengeHistoryDetailResponseModel: Codable {
+    let uuid: String
+    let name: String
+    let type: String
+    let started, ended: String
     let color: String
     let distance: Int
-    let ended: String
     let exerciseTime: Int
-    let matrices: [Matrix]
-    let name: String
-    let rankings: [Ranking]
-    let started: String
     let stepCount: Int
-    let type, uuid: String
+    let latitude, longitude: Double?
+    let matrices: [Matrix]
+    let rankings: [Ranking]
 }
 
 // MARK: - Ranking

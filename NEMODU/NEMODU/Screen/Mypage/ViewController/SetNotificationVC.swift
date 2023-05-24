@@ -90,7 +90,6 @@ class SetNotificationVC: BaseViewController {
     
     // MARK: - Variables and Properties
     
-    private let bag = DisposeBag()
     private let viewModel = SetNotificationVM()
     
     // MARK: - Life Cycle
@@ -118,7 +117,8 @@ class SetNotificationVC: BaseViewController {
     override func bindOutput() {
         super.bindOutput()
         
-        fetchUserNotificationSettings()
+        bindAPIErrorAlert(viewModel)
+        bindUserNotificationSettings()
     }
     
 }
@@ -270,7 +270,7 @@ extension SetNotificationVC {
                 .subscribe(onNext: { owner, status in
                     owner.viewModel.updateNotificationSetting(notificationType: target.notificationType)
                 })
-                .disposed(by: bag)
+                .disposed(by: disposeBag)
         }
     }
     
@@ -280,13 +280,13 @@ extension SetNotificationVC {
 
 extension SetNotificationVC {
     
-    private func fetchUserNotificationSettings() {
+    private func bindUserNotificationSettings() {
         viewModel.output.userNotificationSettings
             .subscribe(onNext: { [weak self] data in
                 guard let self = self else { return }
                 self.setUserNotificaionSettings(userSettings: data)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
 }

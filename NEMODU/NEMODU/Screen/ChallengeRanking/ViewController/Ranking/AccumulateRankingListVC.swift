@@ -32,18 +32,24 @@ class AccumulateRankingListVC : RankingListVC {
         viewModel.getAccumulateRankingList(with: myUserNickname)
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        weeksNavigationView.snp.updateConstraints {
-            $0.height.equalTo(0)
-        }
-    }
-    
     override func bindInput() {
         super.bindInput()
         
         bindAccumulateRankingList()
+    }
+    
+    override func configureWeeksNavigation(targetDate: Int) {
+        weeksNavigationView.snp.updateConstraints {
+            $0.height.equalTo(0)
+        }
+        
+        weeksNavigationView.isHidden = true
+    }
+    
+    override func bindOutput() {
+        super.bindOutput()
+        
+        bindAPIErrorAlert(viewModel)
     }
     
     // MARK: - Functions
@@ -52,8 +58,8 @@ class AccumulateRankingListVC : RankingListVC {
         guard let accumulateRankingList = accumulateRankingListResponseModel else { return }
         for accumulateRanking in accumulateRankingList.matrixRankings {
             if accumulateRanking.nickname == myUserNickname {
-                myRankingTVC.configureRankingCell(rankNumber: accumulateRanking.rank, profileImageURL: accumulateRanking.picturePathURL, nickname: accumulateRanking.nickname, blocksNumber: accumulateRanking.score)
-                myRankingTVC.configureRankingTopCell()
+                myRankingView.configureRankingUserView(rankNumber: accumulateRanking.rank, profileImageURL: accumulateRanking.picturePathURL, nickname: accumulateRanking.nickname, blocksNumber: accumulateRanking.score)
+                myRankingView.configureRankingTop()
             }
         }
     }
@@ -108,34 +114,9 @@ extension AccumulateRankingListVC : UITableViewDelegate {
             return fakeView
     }
 
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 24
-    }
-
-    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        return 24
-    }
-    
     // Cell
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return accumulateRankingListResponseModel?.matrixRankings.count ?? 0
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 84
-    }
-
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 84
-    }
-
-    // FooterView
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return .leastNormalMagnitude
-    }
-
-    func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
-        return .leastNormalMagnitude
     }
     
 }
@@ -153,6 +134,6 @@ extension AccumulateRankingListVC {
                 self.configureRankingUserTVC()
                 self.rankingTableView.reloadData()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }

@@ -47,8 +47,6 @@ class LocationSettingVC: BaseViewController {
             $0.image = UIImage(named: "locationPublic")
         }
     
-    private let bag = DisposeBag()
-    
     private var isPublicRecord = true
     
     override func viewDidLoad() {
@@ -117,9 +115,11 @@ extension LocationSettingVC {
             $0.centerY.equalTo(subTitleLabel.snp.centerY)
         }
         
+        let imageViewRatio = (exampleImageView.image?.size.height ?? 1) / (exampleImageView.image?.size.width ?? 1)
         exampleImageView.snp.makeConstraints {
             $0.top.equalTo(subTitleLabel.snp.bottom).offset(52)
             $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(exampleImageView.snp.width).multipliedBy(imageViewRatio)
         }
     }
 }
@@ -149,7 +149,7 @@ extension LocationSettingVC {
                     : UIImage(named: "locationPrivate")
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 

@@ -29,23 +29,34 @@ class SetPrivacyVC: BaseViewController {
     
     // MARK: - Variables and Properties
     
-    private let bag = DisposeBag()
+    let viewModel = SetPrivacyVM()
     
     // MARK: - Life Cycle
     
     override func configureView() {
         super.configureView()
+        
         configureNavigationBar()
+        getUserPrivacySetting()
     }
     
     override func layoutView() {
         super.layoutView()
+        
         configureLayout()
     }
     
     override func bindInput() {
         super.bindInput()
+        
         bindButton()
+    }
+    
+    override func bindOutput() {
+        super.bindOutput()
+        
+        bindAPIErrorAlert(viewModel)
+        bindUserPrivacySetting()
     }
     
 }
@@ -59,6 +70,14 @@ extension SetPrivacyVC {
         navigationBar.configureNaviBar(targetVC: self,
                                  title: "개인정보 설정")
         navigationBar.configureBackBtn(targetVC: self)
+    }
+    
+    private func getUserPrivacySetting() {
+        viewModel.getUserPrivacySetting()
+    }
+    
+    private func setUserPrivacySetting(userSetting: SetPrivacyResponseModel) {
+        exceptFriendRecommendListToggleButtonView.toggleBtn.isOn = userSetting.value
     }
     
 }
@@ -92,9 +111,32 @@ extension SetPrivacyVC {
             .changed
             .withUnretained(self)
             .subscribe(onNext: { owner, status in
-                print("친구목록제외 isOn changed: \(status)") // TODO: - 친구목록제외 여부 설정 서버연결
+                owner.viewModel.updateUserPrivacySetting()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
+    }
+    
+}
+
+
+// MARK: - Output
+
+extension SetPrivacyVC {
+    
+    private func bindUserPrivacySetting() {
+        viewModel.output.userPrivacySetting
+            .subscribe(onNext: { [weak self] data in
+                guard let self = self else { return }
+                self.setUserPrivacySetting(userSetting: data)
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.output.isSuccessUpdatePrivacySetting
+            .subscribe(onNext: { [weak self] data in
+                guard let self = self else { return }
+                self.exceptFriendRecommendListToggleButtonView.toggleBtn.isOn = data
+            })
+            .disposed(by: disposeBag)
     }
     
 }

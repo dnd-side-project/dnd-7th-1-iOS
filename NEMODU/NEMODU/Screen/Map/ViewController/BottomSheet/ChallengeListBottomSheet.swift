@@ -13,7 +13,7 @@ import RxCocoa
 import RxDataSources
 import DynamicBottomSheet
 
-class ChallengeListBottomSheet: DynamicBottomSheetViewController {
+class ChallengeListBottomSheet: DynamicBottomSheetViewController, APIErrorHandling {
     private let viewBar = UIView()
         .then {
             $0.backgroundColor = UIColor.systemGray4
@@ -51,10 +51,16 @@ class ChallengeListBottomSheet: DynamicBottomSheetViewController {
             $0.separatorStyle = .singleLine
             $0.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
             $0.backgroundColor = .white
+            $0.rowHeight = CGFloat(ChallengeListBottomSheet.cellHeight)
         }
     
     private let viewModel = ChallengeListVM()
-    private let bag = DisposeBag()
+    let disposeBag = DisposeBag()
+    weak var delegate: PushChallengeVC?
+    
+    // constants
+    static let cellHeight = 69
+    private let emptyViewHeight = 304
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -65,6 +71,8 @@ class ChallengeListBottomSheet: DynamicBottomSheetViewController {
         super.configureView()
         configureBottomSheet()
         bindTableView()
+        bindMakeChallengeBtn()
+        bindAPIErrorAlert(viewModel)
     }
 }
 
@@ -74,11 +82,6 @@ extension ChallengeListBottomSheet {
     private func configureBottomSheet() {
         contentView.addSubviews([viewBar,
                                  sheetTitle])
-        
-        // bottomSheet height
-        contentView.snp.makeConstraints {
-            $0.height.equalTo(304)
-        }
         
         viewBar.snp.makeConstraints {
             $0.width.equalTo(32)
@@ -93,12 +96,17 @@ extension ChallengeListBottomSheet {
         }
     }
     
-    private func configureChallengeListTV() {
+    /// 챌린지 개수에 따라 화면 구현
+    private func configureChallengeListTV(_ challengeCnt: Int) {
         contentView.addSubview(proceedingChallengeTV)
         
         proceedingChallengeTV.register(ProceedingChallengeTVC.self,
                                        forCellReuseIdentifier: ProceedingChallengeTVC.className)
-        proceedingChallengeTV.delegate = self
+        
+        // Layout
+        contentView.snp.updateConstraints {
+            $0.height.equalTo(challengeCnt * ChallengeListBottomSheet.cellHeight + 55 + Int(UIApplication.shared.window?.safeAreaInsets.bottom ?? 0))
+        }
         
         proceedingChallengeTV.snp.makeConstraints {
             $0.top.equalTo(sheetTitle.snp.bottom).offset(12)
@@ -107,9 +115,14 @@ extension ChallengeListBottomSheet {
         }
     }
     
+    /// 챌린지가 존재하지 않을 때의 화면
     private func configureNoneData() {
         contentView.addSubviews([noneMessage,
                                  makeChallengeBtn])
+        
+        contentView.snp.makeConstraints {
+            $0.height.equalTo(emptyViewHeight)
+        }
         
         noneMessage.snp.makeConstraints {
             $0.centerX.equalToSuperview()
@@ -125,22 +138,51 @@ extension ChallengeListBottomSheet {
     }
 }
 
+// MARK: - Input
+extension ChallengeListBottomSheet {
+    func bindMakeChallengeBtn() {
+        makeChallengeBtn.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.dismiss(animated: true) {
+                    self.delegate?.pushCreateChallengeVC()
+                }
+            })
+            .disposed(by: disposeBag)
+    }
+}
+
 // MARK: - Output
 extension ChallengeListBottomSheet {
     func bindTableView() {
         viewModel.output.dataSource
             .bind(to: proceedingChallengeTV.rx.items(dataSource: tableViewDataSource()))
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
         
         viewModel.output.challengeList
             .withUnretained(self)
             .subscribe(onNext: { owner, item in
                 item.count == 0
                 ? owner.configureNoneData()
-                : owner.configureChallengeListTV()
+                : owner.configureChallengeListTV(item.count)
                 owner.proceedingChallengeTV.reloadData()
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
+        
+        proceedingChallengeTV.rx.itemSelected
+            .asDriver()
+            .drive(onNext: {[weak self] indexPath in
+                guard let self = self,
+                      let cell = self.proceedingChallengeTV.cellForRow(at: indexPath) as? ProceedingChallengeTVC,
+                      let uuid = cell.challengeUUID
+                else { return }
+                self.proceedingChallengeTV.deselectRow(at: indexPath, animated: true)
+                self.dismiss(animated: true) {
+                    self.delegate?.pushChallengeDetail(uuid)
+                }
+            })
+            .disposed(by: disposeBag)
     }
 }
 
@@ -163,14 +205,10 @@ extension ChallengeListBottomSheet {
     }
 }
 
-// MARK: - UITableViewDelegate
+// MARK: - Protocol
 
-extension ChallengeListBottomSheet: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        69.0
-    }
+protocol PushChallengeVC: AnyObject {
+    func pushCreateChallengeVC()
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
+    func pushChallengeDetail(_ uuid: String)
 }

@@ -22,13 +22,19 @@ class EditRecordMemoVC: BaseViewController {
         }
     
     private let viewModel = EditRecordMemoVM()
-    private let bag = DisposeBag()
+    weak var delegate: RecordMemoChanged?
     
     private var memo = ""
     private var recordId = -1
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setInteractivePopGesture(false)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        setInteractivePopGesture(true)
     }
     
     override func configureView() {
@@ -44,11 +50,13 @@ class EditRecordMemoVC: BaseViewController {
     
     override func bindInput() {
         super.bindInput()
+        bindBackBtn()
         bindSaveBtn()
     }
     
     override func bindOutput() {
         super.bindOutput()
+        bindAPIErrorAlert(viewModel)
         bindDismiss()
     }
     
@@ -104,7 +112,28 @@ extension EditRecordMemoVC {
                                                                              recordId: self.recordId))
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindBackBtn() {
+        // 기존 뒤로가기 pop 액션 remove
+        naviBar.backBtn.removeTarget(self,
+                                     action: #selector(self.popVC),
+                                     for: .touchUpInside)
+        // 값 상태에 따라 binding
+        naviBar.backBtn.rx.tap
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                if self.memoTextView.tv.text != self.memo {
+                    self.popUpAlert(alertType: .discardChanges,
+                                    targetVC: self,
+                                    highlightBtnAction: #selector(self.dismissAlertAndPopVC),
+                                    normalBtnAction: #selector(self.dismissAlert))
+                } else {
+                    self.popVC()
+                }
+            })
+            .disposed(by: disposeBag)
     }
 }
 
@@ -117,9 +146,16 @@ extension EditRecordMemoVC {
             .drive(onNext: { [weak self] validation in
                 guard let self = self else { return }
                 if validation {
-                    self.popVC()                    
+                    self.popVC()
+                    self.delegate?.popupToastView()
                 }
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
+}
+
+// MARK: - RecordMemoChanged Protocol
+
+protocol RecordMemoChanged: AnyObject {
+    func popupToastView()
 }

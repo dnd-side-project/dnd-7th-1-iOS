@@ -20,8 +20,7 @@ class MyDetailMapVC: BaseViewController {
             $0.hideMagnificationBtn()
         }
     
-    private let viewModel = MypageVM()
-    private let bag = DisposeBag()
+    private let viewModel = MyDetailMapVM()
     
     var matrices: [Matrix]?
     
@@ -51,6 +50,7 @@ class MyDetailMapVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        bindAPIErrorAlert(viewModel)
         bindUserData()
     }
     
@@ -62,7 +62,7 @@ class MyDetailMapVC: BaseViewController {
                 guard let self = self else { return }
                 self.loading(loading: isLoading)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
 
@@ -107,16 +107,16 @@ extension MyDetailMapVC {
 
 extension MyDetailMapVC {
     private func bindUserData() {
-        viewModel.output.userData
-            .subscribe(onNext: { [weak self] data in
+        viewModel.output.profileImageURL
+            .subscribe(onNext: { [weak self] picturePathURL in
                 guard let self = self,
                       let matrices = self.matrices,
-                      let profileImageURL = URL(string: data.picturePath),
                       let lastBlock = matrices.last else { return }
-                self.mapVC.addMyAnnotation(coordinate: [lastBlock.latitude, lastBlock.longitude],
-                                           profileImageURL: profileImageURL)
+                self.mapVC.addMyAnnotation(coordinate: Matrix(latitude: lastBlock.latitude,
+                                                              longitude: lastBlock.longitude),
+                                           profileImageURL: picturePathURL)
                 self.mapVC.drawMyMapAtOnce(matrices: matrices)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
 }
