@@ -161,7 +161,8 @@ extension UserInfoSettingVC {
                     let setAuthorityVC = SetAuthorityVC()
                     // TODO: - 친구 목록 연결
                     setAuthorityVC.userDataModel = UserDataModel(friends: [],
-                                                                 isPublicRecord: self.locationSettingVC.getSignupValue())
+                                                                 isPublicRecord: self.locationSettingVC.getSignupValue(),
+                                                                 isExceptRecommend: self.friendRecommendSettingVC.getRecommendAuth())
                     self.navigationController?.pushViewController(setAuthorityVC, animated: true)
                 }
                 
