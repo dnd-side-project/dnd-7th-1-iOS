@@ -87,6 +87,7 @@ class RecommendListVC: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.getKakaoFriendList()
+        viewModel.getNEMODUFriendList()
     }
     
     override func configureView() {
