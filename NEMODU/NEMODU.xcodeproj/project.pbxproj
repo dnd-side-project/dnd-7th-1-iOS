@@ -230,6 +230,8 @@
 		3C506C1D29FD3189006EDAAE /* TermsConditionsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C506C1C29FD3189006EDAAE /* TermsConditionsVC.swift */; };
 		3C506C1F29FD3A4E006EDAAE /* TermsConditionsWebLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C506C1E29FD3A4E006EDAAE /* TermsConditionsWebLink.swift */; };
 		3C533C762A1E5C48008D4717 /* RemoveNotificationListRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C533C752A1E5C48008D4717 /* RemoveNotificationListRequestModel.swift */; };
+		3C533C722A1E4388008D4717 /* SetPrivacyVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C533C712A1E4388008D4717 /* SetPrivacyVM.swift */; };
+		3C533C742A1E4570008D4717 /* SetPrivacyResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C533C732A1E4570008D4717 /* SetPrivacyResponseModel.swift */; };
 		3C5C2D4428B12AD700EB2799 /* RankingUserTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C5C2D4328B12AD700EB2799 /* RankingUserTVC.swift */; };
 		3C6F03152910B471002829D7 /* InvitedFriendsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C6F03142910B471002829D7 /* InvitedFriendsTVC.swift */; };
 		3C6F03172910E82E002829D7 /* InvitedChallengeDetailVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C6F03162910E82E002829D7 /* InvitedChallengeDetailVM.swift */; };
@@ -515,6 +517,8 @@
 		3C4FB96428AA937100A429B8 /* ChallengeListTVHV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeListTVHV.swift; sourceTree = "<group>"; };
 		3C506C1C29FD3189006EDAAE /* TermsConditionsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsConditionsVC.swift; sourceTree = "<group>"; };
 		3C506C1E29FD3A4E006EDAAE /* TermsConditionsWebLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsConditionsWebLink.swift; sourceTree = "<group>"; };
+		3C533C712A1E4388008D4717 /* SetPrivacyVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPrivacyVM.swift; sourceTree = "<group>"; };
+		3C533C732A1E4570008D4717 /* SetPrivacyResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPrivacyResponseModel.swift; sourceTree = "<group>"; };
 		3C533C752A1E5C48008D4717 /* RemoveNotificationListRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveNotificationListRequestModel.swift; sourceTree = "<group>"; };
 		3C5C2D4328B12AD700EB2799 /* RankingUserTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankingUserTVC.swift; sourceTree = "<group>"; };
 		3C6F03142910B471002829D7 /* InvitedFriendsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitedFriendsTVC.swift; sourceTree = "<group>"; };
@@ -668,6 +672,7 @@
 				23EFB828291A0D9E009A2D01 /* EditProfileResponseModel.swift */,
 				3CCEDB5E29EFDC470047CF6E /* SetNotificationResponseModel.swift */,
 				230E87FA2A1BD78A00EE328D /* MyProfileImageResponseModel.swift */,
+				3C533C732A1E4570008D4717 /* SetPrivacyResponseModel.swift */,
 				3C9256872A1DF0220011B093 /* NotificationBoxResponseModel.swift */,
 			);
 			path = Response;
@@ -1016,6 +1021,7 @@
 				3CCEDB5C29EFDA440047CF6E /* SetNotificationVM.swift */,
 				23A0BE4B2A112D2800AF10BE /* FriendListVM.swift */,
 				230E87F82A1BD6B500EE328D /* MyDetailMapVM.swift */,
+				3C533C712A1E4388008D4717 /* SetPrivacyVM.swift */,
 				3C9256852A1DEF7D0011B093 /* NotificationBoxVM.swift */,
 			);
 			path = ViewModel;
@@ -1769,6 +1775,7 @@
 				2348B4072892D286001095BC /* UIView+.swift in Sources */,
 				231A2B8F28B20B5600FF884B /* BlockCntView.swift in Sources */,
 				3C6F031B29111D6A002829D7 /* SelectFriendsVM.swift in Sources */,
+				3C533C742A1E4570008D4717 /* SetPrivacyResponseModel.swift in Sources */,
 				3CF68384293CB3A900A52521 /* ChallengeHistoryDetailVM.swift in Sources */,
 				2348B3EE2892D0ED001095BC /* APIService.swift in Sources */,
 				3C064BBF290FAEAB00522274 /* InvitedChallengeListResponseModel.swift in Sources */,
@@ -1833,6 +1840,7 @@
 				23566E642A11034A00EBA458 /* FriendListDataSource.swift in Sources */,
 				3C2A2634290018C0009E0069 /* StepRankingListVM.swift in Sources */,
 				3C3BD76E28B36E1400AD55B6 /* AreaRankingListResponseModel.swift in Sources */,
+				3C533C722A1E4388008D4717 /* SetPrivacyVM.swift in Sources */,
 				23F5718628AA6DAD005F2E21 /* MyAnnotation.swift in Sources */,
 				23255A6628CF117E005D6D5A /* LoginNC.swift in Sources */,
 				23F6959C28C9F6A7008D1378 /* UserInfoSettingVC.swift in Sources */,
