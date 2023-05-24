@@ -65,11 +65,6 @@ class NotificationListTVC: BaseTableViewCell {
             $0.backgroundColor = .gray100
         }
     
-    // MARK: - Variables and Properties
-    
-    // TODO: dummyData Type 삭제
-    typealias NotificationListType = ((iconType: String, title: String, body: String, time:String, isRead: Bool))
-    
     // MARK: - Life Cycle
     
     override func configureView() {
@@ -103,13 +98,12 @@ extension NotificationListTVC {
         selectionStyle = .none
     }
     
-    func configureNotificationListTVC(dummyData: NotificationListType) {
-        // TODO: 서버연결 후 dummyData 타입 변경
-        iconImageView.image = UIImage(named: (NotificationListIcon(rawValue: dummyData.iconType.lowercased())?.getNotificationIconImageNamed(isRead: dummyData.isRead)) ?? "defaultThumbnail")
-        iconImageView.clipsToBounds = dummyData.isRead
-        titleLabel.text = dummyData.title
-        bodyLabel.text = dummyData.body
-        timeAgoLabel.text = dummyData.time.relativeDateTime(.withTime)
+    func configureNotificationListTVC(notificationInfo: NotificationBoxElement) {
+        iconImageView.image = UIImage(named: (NotificationListIcon(rawValue: notificationInfo.type.description.lowercased())?.getNotificationIconImageNamed(isRead: notificationInfo.isRead)) ?? "defaultThumbnail")
+        iconImageView.clipsToBounds = notificationInfo.isRead
+        titleLabel.text = notificationInfo.title
+        bodyLabel.text = notificationInfo.content
+        timeAgoLabel.text = notificationInfo.reserved.relativeDateTime(.withTime)
         timeAgoLabel.snp.updateConstraints {
             $0.width.equalTo(timeAgoLabel.intrinsicContentSize.width)
         }

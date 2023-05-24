@@ -47,12 +47,10 @@ class NotificationBoxVC: BaseViewController {
             $0.rowHeight = UITableView.automaticDimension
         }
     
-    // TODO: 서버연결 후 Dummy Data 삭제
-    typealias NotificationListType = ((iconType: String, title: String, body: String, time:String, isRead: Bool))
-    private let dummyData: [NotificationListType] = [("COMMON", "주차 시작 알림", "이번 주차 기록/챌린지가 자정에 곧 종료돼요.", "2023-05-04T16:50:00", false),
-                                                     ("FRIEND", "혹시 자동차나 자전거를 타고 계신가요?", "속도가 너무 빠른 경우 기록이 일시정지됩니다. 앱을 켜서 확인해주세요.", "2023-05-04T1:50:00", false),
-                                                     ("CHALLENGE", "'네모두네모두'님의 친구 요청", "회원님의 친구 수락을 기다리고 있어요", "2023-04-04T16:50:00", true),
-                                                     ("RECORD", "챌린지가 이번 주차에 시작됩니다", "이번 주차 기록/챌린지가 자정에 곧 종료돼요.", "2022-05-04T16:50:00", true)]
+    // MARK: - Variables and Properties
+    
+    private let viewModel = NotificationBoxVM()
+    var notificationBoxResponseModel: NotificationBoxResponseModel?
     
     // MARK: - Life Cycle
     
@@ -79,6 +77,12 @@ class NotificationBoxVC: BaseViewController {
         super.bindInput()
         
         bindButton()
+    }
+    
+    override func bindOutput() {
+        super.bindOutput()
+        
+        bindTableView()
     }
     
 }
@@ -136,6 +140,17 @@ extension NotificationBoxVC {
 
 extension NotificationBoxVC {
     
+    private func bindTableView() {
+        viewModel.output.notificationList
+            .subscribe(onNext: { [weak self] data in
+                guard let self = self else { return }
+                
+                notificationBoxResponseModel = data
+                notificationListTableView.reloadData()
+            })
+            .disposed(by: disposeBag)
+    }
+    
     private func bindButton() {
         navigationBar.rightBtn.rx.tap
             .asDriver()
@@ -159,7 +174,7 @@ extension NotificationBoxVC {
 extension NotificationBoxVC {
     
     private func getUserNotificationList() {
-        // TODO: 알림목록 조회 서버연결
+        viewModel.getUserNotificationList()
     }
     
 }
@@ -169,12 +184,13 @@ extension NotificationBoxVC {
 extension NotificationBoxVC: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dummyData.count * 5
+        return notificationBoxResponseModel?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: NotificationListTVC.className, for: indexPath) as? NotificationListTVC else { return UITableViewCell() }
-        cell.configureNotificationListTVC(dummyData: dummyData[indexPath.row % dummyData.count])
+        guard let notificationList = notificationBoxResponseModel else { return UITableViewCell() }
+        cell.configureNotificationListTVC(notificationInfo: notificationList[indexPath.row])
         
         return cell
     }
@@ -186,7 +202,35 @@ extension NotificationBoxVC: UITableViewDataSource {
 extension NotificationBoxVC: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(indexPath.row, " - 해당 알림과 관련된 화면으로 푸시")
+        var toPushVC = UIViewController()
+        
+        switch notificationBoxResponseModel?[indexPath.row].type {
+            // 친구 요청, 수락 시 마이페이지의 친구화면으로 전환
+        case NotificationListIcon.friend.description:
+            let friendsVC = FriendsVC()
+            friendsVC.hidesBottomBarWhenPushed = true
+            
+            toPushVC = friendsVC
+            
+            // 초대, 수락, 시작 전 챌린지의 상세화면으로 전환
+        case NotificationListIcon.challenge.description:
+            // TODO: - 해당 알림의 챌린지 uuid값 필요
+//            guard let targetUUID = userInfo["challenge_uuid"] as? String else { return }
+            
+            let invitedChallengeDetailVC = InvitedChallengeDetailVC()
+            invitedChallengeDetailVC.hidesBottomBarWhenPushed = true
+            
+            // TODO: - 해당 챌린지 uuid로 푸시
+//            invitedChallengeDetailVC.uuid = targetUUID
+            invitedChallengeDetailVC.getInvitedChallengeDetailInfo()
+            
+            toPushVC = invitedChallengeDetailVC
+            
+        default:
+            break
+        }
+        
+        navigationController?.pushViewController(toPushVC, animated: true)
     }
     
 }
