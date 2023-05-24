@@ -271,7 +271,7 @@ extension RecommendListVC {
                         for: indexPath
                       ) as? AddKakaoFriendTVC
                 else { return UITableViewCell() }
-                cell.delegate = self
+                cell.popupToastViewDelegate = self
                 cell.configureCell(item)
                 return cell
             })

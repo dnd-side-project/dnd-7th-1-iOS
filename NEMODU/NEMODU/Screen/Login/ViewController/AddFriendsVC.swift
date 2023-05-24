@@ -42,6 +42,7 @@ class AddFriendsVC: BaseViewController {
     
     private let viewModel = RecommendListVM()
     private let listType = UserDefaults.standard.string(forKey: UserDefaults.Keys.loginType)
+    private var friendList = Set<String>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -182,13 +183,14 @@ extension AddFriendsVC {
     /// 카카오 추천 친구 목록 tableView DataSource
     func kakaoTableViewDataSource() -> RxTableViewSectionedReloadDataSource<FriendListDataSource<KakaoFriendInfo>> {
         RxTableViewSectionedReloadDataSource<FriendListDataSource<KakaoFriendInfo>>(
-            configureCell: { dataSource, tableView, indexPath, item in
-                guard let cell = tableView.dequeueReusableCell(
+            configureCell: { [weak self] dataSource, tableView, indexPath, item in
+                guard let self = self,
+                      let cell = tableView.dequeueReusableCell(
                     withIdentifier: AddKakaoFriendTVC.className,
                     for: indexPath
                 ) as? AddKakaoFriendTVC
                 else { return UITableViewCell() }
-                cell.configureCell(item)
+                cell.configureSignupCell(item, delegate: self)
                 return cell
             })
     }
@@ -206,5 +208,17 @@ extension AddFriendsVC {
                 return cell
             }
         )
+    }
+}
+
+extension AddFriendsVC: EditFriendListDelegate {
+    func addFriend(_ nickname: String) {
+        friendList.insert(nickname)
+        print(friendList)
+    }
+    
+    func removeFriend(_ nickname: String) {
+        friendList.remove(nickname)
+        print(friendList)
     }
 }
