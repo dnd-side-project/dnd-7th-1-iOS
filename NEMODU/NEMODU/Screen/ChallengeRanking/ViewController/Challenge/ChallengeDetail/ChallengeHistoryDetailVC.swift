@@ -222,7 +222,12 @@ extension ChallengeHistoryDetailVC {
         
         let startDate = dateFormatter.string(from: .now)
         
-        let currentDayNum = calendar.component(.weekday, from: startDate.toDate(.withTime))
+        var currentDayNum = calendar.component(.weekday, from: startDate.toDate(.withTime))
+        // 일요일일 경우 D-Day 계산을 위한 값 보정
+        if currentDayNum == 1 {
+            currentDayNum = 8
+        }
+        
         let toGoSundayNum = 8 - currentDayNum
         let sundayDate = calendar.date(byAdding: .day, value: toGoSundayNum, to: startDate.toDate(.withTime)) ?? startDate.toDate(.withTime)
         
@@ -233,7 +238,7 @@ extension ChallengeHistoryDetailVC {
         progressBlackBarStackView.snp.makeConstraints {
             let bar = (progressBarStackView.frame.size.width - 6.0) / 7
             let pastDay = 7 - toGoSundayNum
-            let spaceBetweenBar = pastDay == 7 ? 0 : pastDay-1;
+            let spaceBetweenBar = pastDay == 7 ? 6 : pastDay-1;
             let length = (Int(bar) * pastDay) + (1 * spaceBetweenBar)
             
             $0.width.equalTo(length)
