@@ -60,6 +60,12 @@ class NotificationBoxVC: BaseViewController {
         getUserNotificationList()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        markCommonNotificationRead()
+    }
+    
     override func configureView() {
         super.configureView()
     
@@ -83,6 +89,26 @@ class NotificationBoxVC: BaseViewController {
         super.bindOutput()
         
         bindTableView()
+    }
+    
+    // MARK: - Functions
+    
+    private func getUserNotificationList() {
+        viewModel.getUserNotificationList()
+    }
+    
+    private func markUserNotificationRead(selectedNotificationMessageId: String) {
+        viewModel.markUserNotificationRead(targetMessageId: selectedNotificationMessageId)
+    }
+    
+    private func markCommonNotificationRead() {
+        notificationBoxResponseModel?.forEach {
+            // 클릭시 아무런 액션이 없는 알림인 경우
+            if($0.type == NotificationListIcon.common.description) {
+                // 알림목록 조회 이후 일괄 읽음처리
+                markUserNotificationRead(selectedNotificationMessageId: $0.messageId)
+            }
+        }
     }
     
 }
@@ -140,29 +166,17 @@ extension NotificationBoxVC {
 
 extension NotificationBoxVC {
     
-    private func bindTableView() {
-        viewModel.output.notificationList
-            .subscribe(onNext: { [weak self] data in
-                guard let self = self else { return }
-                
-                notificationBoxResponseModel = data
-                notificationListTableView.reloadData()
-            })
-            .disposed(by: disposeBag)
-    }
-    
     private func bindButton() {
         navigationBar.rightBtn.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                print("알림 전체 비우기 클릭") // TODO: 알림 전체 비우는 서버호출
                 
-                self.notificationListTableView.reloadData()
-                self.notificationListTableView.isHidden = true
-                
-                self.navigationBar.rightBtn.isEnabled = false
-                self.navigationBar.rightBtn.setTitleColor(.gray300, for: .normal)
+                var messageIdList = [String]()
+                notificationBoxResponseModel?.forEach {
+                    messageIdList.append($0.messageId)
+                }
+                viewModel.emptyNotificationList(messageIdList: messageIdList)
             })
             .disposed(by: disposeBag)
     }
@@ -173,8 +187,28 @@ extension NotificationBoxVC {
 
 extension NotificationBoxVC {
     
-    private func getUserNotificationList() {
-        viewModel.getUserNotificationList()
+    private func bindTableView() {
+        viewModel.output.notificationList
+            .subscribe(onNext: { [weak self] data in
+                guard let self = self else { return }
+                
+                notificationBoxResponseModel = data
+                notificationListTableView.reloadData()
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.output.isEmptyNotificationList
+            .subscribe(onNext: { [weak self] isEmpty in
+                guard let self = self else { return }
+                
+                if isEmpty {
+                    self.notificationListTableView.isHidden = true
+                    
+                    self.navigationBar.rightBtn.isEnabled = false
+                    self.navigationBar.rightBtn.setTitleColor(.gray300, for: .normal)
+                }
+            })
+            .disposed(by: disposeBag)
     }
     
 }
@@ -202,9 +236,10 @@ extension NotificationBoxVC: UITableViewDataSource {
 extension NotificationBoxVC: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        var toPushVC = UIViewController()
+        guard let selectedNotification = notificationBoxResponseModel?[indexPath.row] else { return }
         
-        switch notificationBoxResponseModel?[indexPath.row].type {
+        var toPushVC = UIViewController()
+        switch selectedNotification.type {
             // 친구 요청, 수락 시 마이페이지의 친구화면으로 전환
         case NotificationListIcon.friend.description:
             let friendsVC = FriendsVC()
@@ -225,11 +260,14 @@ extension NotificationBoxVC: UITableViewDelegate {
             invitedChallengeDetailVC.getInvitedChallengeDetailInfo()
             
             toPushVC = invitedChallengeDetailVC
+            // TODO: - 해당 챌린지의 uuid값 조회 전까지 navigation push 제한
+            return
             
         default:
-            break
+            return
         }
         
+        markUserNotificationRead(selectedNotificationMessageId: selectedNotification.messageId)
         navigationController?.pushViewController(toPushVC, animated: true)
     }
     

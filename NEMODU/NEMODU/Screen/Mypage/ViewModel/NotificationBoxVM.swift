@@ -32,7 +32,8 @@ final class NotificationBoxVM: BaseViewModel {
     struct Output: NotificationBoxVMOuput {
         var loading = BehaviorRelay<Bool>(value: false)
         var notificationList = PublishRelay<NotificationBoxResponseModel>()
-//        var isSuccessUpdateNotificationSetting = PublishRelay<Bool>()
+        var isSuccessMarkReadNotification = PublishRelay<Bool>()
+        var isEmptyNotificationList = PublishRelay<Bool>()
     }
     
     // MARK: - Init
@@ -74,30 +75,50 @@ extension NotificationBoxVM {
                 case .failure(let error):
                     owner.apiError.onError(error)
                 case .success(let data):
-                    owner.output.notificationList.accept(data)
+                    if(data.count == 0) {
+                        owner.output.isEmptyNotificationList.accept(true)
+                    } else {
+                        owner.output.notificationList.accept(data)
+                    }
                 }
             })
             .disposed(by: bag)
     }
     
-//    func updateNotificationSetting(notificationType: NotificationCategoryType) {
-//        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { return }
-//
-//        let path = "user/filter/notification"
-//        let resource = urlResource<Bool>(path: path)
-//
-//        apiSession.postRequest(with: resource, param: UpdateNotificationSettingRequestModel(nickname: nickname, notification: notificationType.identifier).param)
-//            .withUnretained(self)
-//            .subscribe(onNext: { owner, result in
-//                switch result {
-//                case .failure(let error):
-//                    owner.apiError.onError(error)
-//                    owner.output.isSuccessUpdateNotificationSetting.accept(false)
-//                case .success(let data):
-//                    owner.output.isSuccessUpdateNotificationSetting.accept(data)
-//                }
-//            })
-//            .disposed(by: bag)
-//    }
+    func markUserNotificationRead(targetMessageId: String) {
+        let path = "noti?messageId=\(targetMessageId)"
+        let resource = urlResource<String>(path: path)
+        
+        apiSession.postRequest(with: resource, param: nil)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, result in
+                switch result {
+                case .failure(let error):
+                    owner.apiError.onError(error)
+                    owner.output.isSuccessMarkReadNotification.accept(false)
+                case .success(_):
+                    owner.output.isSuccessMarkReadNotification.accept(true)
+                }
+            })
+            .disposed(by: bag)
+    }
+    
+    func emptyNotificationList(messageIdList: [String]) {
+        let path = "noti/delete"
+        let resource = urlResource<String>(path: path)
+
+        apiSession.postRequest(with: resource, param: RemoveNotificationListRequestModel(notifications: messageIdList).removeNotificationList)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, result in
+                switch result {
+                case .failure(let error):
+                    owner.apiError.onError(error)
+                    owner.output.isEmptyNotificationList.accept(false)
+                case .success(_):
+                    owner.output.isEmptyNotificationList.accept(true)
+                }
+            })
+            .disposed(by: bag)
+    }
 }
 
