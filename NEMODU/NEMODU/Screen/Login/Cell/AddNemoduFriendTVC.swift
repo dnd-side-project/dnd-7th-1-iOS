@@ -25,7 +25,8 @@ class AddNemoduFriendTVC: BaseTableViewCell {
     
     private var viewModel = RecommendListVM()
     private let bag = DisposeBag()
-    weak var delegate: PopupToastViewDelegate?
+    weak var popupToastViewDelegate: PopupToastViewDelegate?
+    weak var editFriendListDelegate: EditFriendListDelegate?
     
     override func configureView() {
         super.configureView()
@@ -33,8 +34,6 @@ class AddNemoduFriendTVC: BaseTableViewCell {
         selectionStyle = .none
         contentView.addSubviews([friendProfileView,
                                  addFriendBtn])
-        
-        bindBtn()
     }
     
     override func layoutSubviews() {
@@ -67,13 +66,23 @@ class AddNemoduFriendTVC: BaseTableViewCell {
 extension AddNemoduFriendTVC {
     func configureCell(_ friendInfo: FriendDefaultInfo) {
         friendProfileView.setProfile(friendInfo)
+        
+        bindBtn()
+        bindAPIResult()
+    }
+    
+    func configureSignupCell(_ friendInfo: FriendDefaultInfo, delegate: EditFriendListDelegate) {
+        friendProfileView.setProfile(friendInfo)
+        editFriendListDelegate = delegate
+        
+        bindSignupFriendList()
     }
 }
 
 // MARK: - Input
 
 extension AddNemoduFriendTVC {
-    func bindBtn() {
+    private func bindBtn() {
         addFriendBtn.rx.tap
             .subscribe(onNext: { [weak self] _ in
                 guard let self = self,
@@ -84,7 +93,23 @@ extension AddNemoduFriendTVC {
                 : self.viewModel.deleteFriend(to: FriendRequestModel(friendNickname: friend))
             })
             .disposed(by: bag)
-        
+    }
+    
+    private func bindSignupFriendList() {
+        addFriendBtn.rx.tap
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self,
+                      let friend = self.friendProfileView.getNickname()
+                else { return }
+                !self.addFriendBtn.isSelected
+                ? self.editFriendListDelegate?.addFriend(friend)
+                : self.editFriendListDelegate?.removeFriend(friend)
+                self.addFriendBtn.isSelected.toggle()
+            })
+            .disposed(by: bag)
+    }
+    
+    private func bindAPIResult() {
         viewModel.requestStatus
             .asDriver(onErrorJustReturn: false)
             .drive(onNext: { [weak self] status in
@@ -92,7 +117,7 @@ extension AddNemoduFriendTVC {
                 if status {
                     self.addFriendBtn.isSelected.toggle()
                     self.addFriendBtn.tintColor = self.addFriendBtn.isSelected ? .gray500 : .white
-                    self.delegate?.popupToastView(.postFriendRequest)
+                    self.popupToastViewDelegate?.popupToastView(.postFriendRequest)
                 }
             })
             .disposed(by: bag)
@@ -104,7 +129,7 @@ extension AddNemoduFriendTVC {
                 if status {
                     self.addFriendBtn.isSelected.toggle()
                     self.addFriendBtn.tintColor = self.addFriendBtn.isSelected ? .gray500 : .white
-                    self.delegate?.popupToastView(.cancelFriendRequest)
+                    self.popupToastViewDelegate?.popupToastView(.cancelFriendRequest)
                 }
             })
             .disposed(by: bag)

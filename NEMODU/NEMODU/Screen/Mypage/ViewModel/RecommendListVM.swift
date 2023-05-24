@@ -132,13 +132,13 @@ extension RecommendListVM {
     /// 나의 현재 위치를 기반으로 가까이에 있는 네모두 추천 친구 목록을 조회하는 메서드.
     /// 위치 동의를 하지 않았다면 국내 랜덤 지역
     func getNEMODUFriendList(size: Int = 3) {
-        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname),
-              let coordinate = getCurrentLocation()
-        else { fatalError() }
-        var path = "friend/recommend?nickname=\(nickname)&size=\(size)&latitude=\(coordinate.latitude)&longitude=\(coordinate.longitude)"
+        guard let coordinate = getCurrentLocation() else { fatalError() }
+        var path = "friend/recommend?size=\(size)&latitude=\(coordinate.latitude)&longitude=\(coordinate.longitude)"
         if let distance = output.nemoduFriendslist.nextDistance.value {
             path += "&distance=\(distance)"
         }
+        // TODO: - 서버 확인 후 수정
+        path += "&nickname=\(UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) ?? "nickname")"
         let resource = urlResource<NEMODUFriendListResponseModel>(path: path)
         
         apiSession.getRequestWithoutHeader(with: resource)

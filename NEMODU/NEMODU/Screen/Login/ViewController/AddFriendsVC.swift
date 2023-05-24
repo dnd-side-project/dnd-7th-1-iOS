@@ -191,9 +191,9 @@ extension AddFriendsVC {
             configureCell: { [weak self] dataSource, tableView, indexPath, item in
                 guard let self = self,
                       let cell = tableView.dequeueReusableCell(
-                    withIdentifier: AddKakaoFriendTVC.className,
-                    for: indexPath
-                ) as? AddKakaoFriendTVC
+                        withIdentifier: AddKakaoFriendTVC.className,
+                        for: indexPath
+                      ) as? AddKakaoFriendTVC
                 else { return UITableViewCell() }
                 cell.configureSignupCell(item, delegate: self)
                 return cell
@@ -203,13 +203,14 @@ extension AddFriendsVC {
     /// 네모두 추천 친구 목록 tableView DataSource
     func nemoduTableViewDataSource() -> RxTableViewSectionedReloadDataSource<FriendListDataSource<FriendDefaultInfo>> {
         RxTableViewSectionedReloadDataSource<FriendListDataSource<FriendDefaultInfo>> (
-            configureCell: { dataSource, tableView, indexPath, item in
-                guard let cell = tableView.dequeueReusableCell(
-                    withIdentifier: AddNemoduFriendTVC.className,
-                    for: indexPath
-                ) as? AddNemoduFriendTVC
+            configureCell: { [weak self] dataSource, tableView, indexPath, item in
+                guard let self = self,
+                      let cell = tableView.dequeueReusableCell(
+                        withIdentifier: AddNemoduFriendTVC.className,
+                        for: indexPath
+                      ) as? AddNemoduFriendTVC
                 else { return UITableViewCell() }
-                cell.configureCell(item)
+                cell.configureSignupCell(item, delegate: self)
                 return cell
             }
         )

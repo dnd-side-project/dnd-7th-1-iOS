@@ -153,8 +153,9 @@ extension AllFriendListVC {
     /// 카카오 추천 친구 목록 tableView DataSource
     func kakaoTableViewDataSource() -> RxTableViewSectionedReloadDataSource<FriendListDataSource<KakaoFriendInfo>> {
         RxTableViewSectionedReloadDataSource<FriendListDataSource<KakaoFriendInfo>>(
-            configureCell: { dataSource, tableView, indexPath, item in
-                guard let cell = tableView.dequeueReusableCell(
+            configureCell: { [weak self] dataSource, tableView, indexPath, item in
+                guard let self = self,
+                      let cell = tableView.dequeueReusableCell(
                         withIdentifier: AddKakaoFriendTVC.className,
                         for: indexPath
                       ) as? AddKakaoFriendTVC
@@ -168,13 +169,14 @@ extension AllFriendListVC {
     /// 네모두 추천 친구 목록 tableView DataSource
     func nemoduTableViewDataSource() -> RxTableViewSectionedReloadDataSource<FriendListDataSource<FriendDefaultInfo>> {
         RxTableViewSectionedReloadDataSource<FriendListDataSource<FriendDefaultInfo>> (
-            configureCell: { dataSource, tableView, indexPath, item in
-                guard let cell = tableView.dequeueReusableCell(
-                    withIdentifier: AddNemoduFriendTVC.className,
-                    for: indexPath
-                ) as? AddNemoduFriendTVC
+            configureCell: { [weak self] dataSource, tableView, indexPath, item in
+                guard let self = self,
+                      let cell = tableView.dequeueReusableCell(
+                        withIdentifier: AddNemoduFriendTVC.className,
+                        for: indexPath
+                      ) as? AddNemoduFriendTVC
                 else { return UITableViewCell() }
-                cell.delegate = self
+                cell.popupToastViewDelegate = self
                 cell.configureCell(item)
                 return cell
             }
