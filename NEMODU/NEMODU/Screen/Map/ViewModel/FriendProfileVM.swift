@@ -15,12 +15,17 @@ protocol FriendProfileViewModelOutput: Lodable {
     var dataSource: Observable<[ProceedingChallengeDataSource]> { get }
 }
 
-final class FriendProfileVM: BaseViewModel {
+final class FriendProfileVM: BaseViewModel, AddDeleteFriendProtocol {
     var apiSession: APIService = APISession()
     let apiError = PublishSubject<APIError>()
     var bag = DisposeBag()
     var input = Input()
     var output = Output()
+    
+    // MARK: - AddDeleteFriendProtocol
+    
+    var requestStatus = PublishRelay<Bool>()
+    var deleteStatus = PublishRelay<Bool>()
     
     // MARK: - Input
     
@@ -38,8 +43,6 @@ final class FriendProfileVM: BaseViewModel {
                     [ProceedingChallengeDataSource(section: .zero, items: $0)]
                 }
         }
-        var requestStatus = PublishRelay<Bool>()
-        var deleteStatus = PublishRelay<Bool>()
     }
     
     // MARK: - Init
@@ -83,40 +86,6 @@ extension FriendProfileVM {
                 case .success(let data):
                     owner.output.profileData.accept(data)
                     owner.output.challengeList.accept(data.challenges)
-                }
-            })
-            .disposed(by: bag)
-    }
-    
-    func requestFriend(to friend: FriendRequestModel) {
-        let path = "friend/request"
-        let resource = urlResource<Bool>(path: path)
-        
-        apiSession.postRequest(with: resource, param: friend.param)
-            .withUnretained(self)
-            .subscribe(onNext: { owner, result in
-                switch result {
-                case .failure(let error):
-                    owner.apiError.onNext(error)
-                case .success(let data):
-                    owner.output.requestStatus.accept(data)
-                }
-            })
-            .disposed(by: bag)
-    }
-    
-    func deleteFriend(to friend: FriendRequestModel) {
-        let path = "friend/delete"
-        let resource = urlResource<Bool>(path: path)
-        
-        apiSession.postRequest(with: resource, param: friend.param)
-            .withUnretained(self)
-            .subscribe(onNext: { owner, result in
-                switch result {
-                case .failure(let error):
-                    owner.apiError.onNext(error)
-                case .success(let data):
-                    owner.output.deleteStatus.accept(data)
                 }
             })
             .disposed(by: bag)

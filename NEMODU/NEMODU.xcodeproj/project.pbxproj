@@ -137,6 +137,7 @@
 		2387F1B529FFAEA6001B4897 /* MapType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2387F1B429FFAEA6001B4897 /* MapType.swift */; };
 		2388B66B2A1E091A00DF75B4 /* NEMODUFriendListResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2388B66A2A1E091A00DF75B4 /* NEMODUFriendListResponseModel.swift */; };
 		2388B66D2A1E149F00DF75B4 /* AddNemoduFriendTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2388B66C2A1E149F00DF75B4 /* AddNemoduFriendTVC.swift */; };
+		2388B66F2A1E1D0200DF75B4 /* AddDeleteFriendProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2388B66E2A1E1D0200DF75B4 /* AddDeleteFriendProtocol.swift */; };
 		238C4DDF28A3AC18000BEE36 /* RecordResultVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DDE28A3AC18000BEE36 /* RecordResultVC.swift */; };
 		238C4DE328A3F0D6000BEE36 /* NemoduTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */; };
 		238C4DE528A4BFE2000BEE36 /* UIScrollView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DE428A4BFE2000BEE36 /* UIScrollView+.swift */; };
@@ -425,6 +426,7 @@
 		2387F1B429FFAEA6001B4897 /* MapType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapType.swift; sourceTree = "<group>"; };
 		2388B66A2A1E091A00DF75B4 /* NEMODUFriendListResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NEMODUFriendListResponseModel.swift; sourceTree = "<group>"; };
 		2388B66C2A1E149F00DF75B4 /* AddNemoduFriendTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNemoduFriendTVC.swift; sourceTree = "<group>"; };
+		2388B66E2A1E1D0200DF75B4 /* AddDeleteFriendProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDeleteFriendProtocol.swift; sourceTree = "<group>"; };
 		238C4DDE28A3AC18000BEE36 /* RecordResultVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordResultVC.swift; sourceTree = "<group>"; };
 		238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NemoduTextView.swift; sourceTree = "<group>"; };
 		238C4DE428A4BFE2000BEE36 /* UIScrollView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+.swift"; sourceTree = "<group>"; };
@@ -1059,6 +1061,7 @@
 			isa = PBXGroup;
 			children = (
 				23566E692A11095C00EBA458 /* FriendListOutput.swift */,
+				2388B66E2A1E1D0200DF75B4 /* AddDeleteFriendProtocol.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -1758,6 +1761,7 @@
 				23B86D1F28A26EEF00B1630E /* NaviType.swift in Sources */,
 				2348B3E72892D08D001095BC /* BaseViewModel.swift in Sources */,
 				2304FB9F28F2DC3300DD3A50 /* LoginBtn.swift in Sources */,
+				2388B66F2A1E1D0200DF75B4 /* AddDeleteFriendProtocol.swift in Sources */,
 				2348B4092892D2E5001095BC /* UIViewController+.swift in Sources */,
 				23255A7228CF457E005D6D5A /* AddKakaoFriendTVC.swift in Sources */,
 				2312519428B6943B00DF1C69 /* ToastType.swift in Sources */,
