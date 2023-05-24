@@ -25,6 +25,7 @@
 		2312519628B6944B00DF1C69 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2312519528B6944B00DF1C69 /* ToastView.swift */; };
 		2315258D28B4F07D00B80E03 /* DetailRecordDataResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2315258C28B4F07D00B80E03 /* DetailRecordDataResponseModel.swift */; };
 		2315258F28B4F2A000B80E03 /* MyRecordDetailVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2315258E28B4F2A000B80E03 /* MyRecordDetailVM.swift */; };
+		2318D4222A1D3579008754C4 /* FriendRecommendSettingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2318D4212A1D3579008754C4 /* FriendRecommendSettingVC.swift */; };
 		2318D4202A1D29C7008754C4 /* AllFriendListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2318D41F2A1D29C7008754C4 /* AllFriendListVC.swift */; };
 		231A2B8D28B20B3E00FF884B /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231A2B8C28B20B3E00FF884B /* ProfileView.swift */; };
 		231A2B8F28B20B5600FF884B /* BlockCntView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231A2B8E28B20B5600FF884B /* BlockCntView.swift */; };
@@ -35,7 +36,6 @@
 		23255A6C28CF1307005D6D5A /* AddFriendsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A6B28CF1307005D6D5A /* AddFriendsVC.swift */; };
 		23255A6E28CF3787005D6D5A /* NicknameType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A6D28CF3787005D6D5A /* NicknameType.swift */; };
 		23255A7228CF457E005D6D5A /* AddKakaoFriendTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A7128CF457E005D6D5A /* AddKakaoFriendTVC.swift */; };
-		23255A7428CF5325005D6D5A /* EnterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A7328CF5325005D6D5A /* EnterVC.swift */; };
 		23255A7628CF5C1F005D6D5A /* UserInfoSettingVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A7528CF5C1F005D6D5A /* UserInfoSettingVM.swift */; };
 		23255A7928D05912005D6D5A /* DayCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A7828D05912005D6D5A /* DayCVC.swift */; };
 		23255A7B28D09F10005D6D5A /* WeekCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A7A28D09F10005D6D5A /* WeekCVC.swift */; };
@@ -107,6 +107,7 @@
 		2365F3B42A1CE7D000475736 /* KakaoFriendInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2365F3B32A1CE7D000475736 /* KakaoFriendInfo.swift */; };
 		2365F3B62A1CEA3D00475736 /* KakaoAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2365F3B52A1CEA3D00475736 /* KakaoAPI.swift */; };
 		2365F3B82A1D140600475736 /* ViewMoreBtn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2365F3B72A1D140600475736 /* ViewMoreBtn.swift */; };
+		2370E4952A16687B00C51672 /* ChallengeDetailMapRankingTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2370E4942A16687B00C51672 /* ChallengeDetailMapRankingTVC.swift */; };
 		2370E4952A16687B00C51672 /* ChallengeDetailMapRankingTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2370E4942A16687B00C51672 /* ChallengeDetailMapRankingTVC.swift */; };
 		2370E4982A173B5F00C51672 /* ErrorResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2370E4972A173B5F00C51672 /* ErrorResponseModel.swift */; };
 		23731BAF2A12109200CC9892 /* FriendRequestHandlingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23731BAE2A12109200CC9892 /* FriendRequestHandlingModel.swift */; };
@@ -308,6 +309,7 @@
 		2315258C28B4F07D00B80E03 /* DetailRecordDataResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRecordDataResponseModel.swift; sourceTree = "<group>"; };
 		2315258E28B4F2A000B80E03 /* MyRecordDetailVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordDetailVM.swift; sourceTree = "<group>"; };
 		2318D41F2A1D29C7008754C4 /* AllFriendListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllFriendListVC.swift; sourceTree = "<group>"; };
+		2318D4212A1D3579008754C4 /* FriendRecommendSettingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRecommendSettingVC.swift; sourceTree = "<group>"; };
 		231A2B8C28B20B3E00FF884B /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		231A2B8E28B20B5600FF884B /* BlockCntView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockCntView.swift; sourceTree = "<group>"; };
 		231A2B9028B2787200FF884B /* MypageVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MypageVM.swift; sourceTree = "<group>"; };
@@ -317,7 +319,6 @@
 		23255A6B28CF1307005D6D5A /* AddFriendsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendsVC.swift; sourceTree = "<group>"; };
 		23255A6D28CF3787005D6D5A /* NicknameType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameType.swift; sourceTree = "<group>"; };
 		23255A7128CF457E005D6D5A /* AddKakaoFriendTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddKakaoFriendTVC.swift; sourceTree = "<group>"; };
-		23255A7328CF5325005D6D5A /* EnterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterVC.swift; sourceTree = "<group>"; };
 		23255A7528CF5C1F005D6D5A /* UserInfoSettingVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoSettingVM.swift; sourceTree = "<group>"; };
 		23255A7828D05912005D6D5A /* DayCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayCVC.swift; sourceTree = "<group>"; };
 		23255A7A28D09F10005D6D5A /* WeekCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekCVC.swift; sourceTree = "<group>"; };
@@ -387,6 +388,7 @@
 		235CD76C28B0FA14000EBAD9 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		23602E0728B5581800B9DC9E /* MapFilteVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapFilteVM.swift; sourceTree = "<group>"; };
 		2365F3AD2A1CBE7D00475736 /* LogoutRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutRequestModel.swift; sourceTree = "<group>"; };
+		2370E4942A16687B00C51672 /* ChallengeDetailMapRankingTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeDetailMapRankingTVC.swift; sourceTree = "<group>"; };
 		2365F3AF2A1CE43B00475736 /* RecommendListVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendListVM.swift; sourceTree = "<group>"; };
 		2365F3B12A1CE7B900475736 /* KakaoFriendListResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoFriendListResponseModel.swift; sourceTree = "<group>"; };
 		2365F3B32A1CE7D000475736 /* KakaoFriendInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoFriendInfo.swift; sourceTree = "<group>"; };
@@ -685,7 +687,7 @@
 				23255A6928CF12DB005D6D5A /* NicknameVC.swift */,
 				23255A6B28CF1307005D6D5A /* AddFriendsVC.swift */,
 				2378A4962904106900FB7031 /* LocationSettingVC.swift */,
-				23255A7328CF5325005D6D5A /* EnterVC.swift */,
+				2318D4212A1D3579008754C4 /* FriendRecommendSettingVC.swift */,
 				3CF039F129E2BBF1001CA475 /* TermsConditionsAgreementVC.swift */,
 				3C14411529E30B2A00FFCF31 /* SetAuthorityVC.swift */,
 			);
@@ -1670,6 +1672,7 @@
 				23F5718228AA6038005F2E21 /* UIImage+.swift in Sources */,
 				237573D328F56A7B006026ED /* EditMemoRequestModel.swift in Sources */,
 				2333CC7A2A1BB3BD003F864C /* CGPoint+.swift in Sources */,
+				2318D4222A1D3579008754C4 /* FriendRecommendSettingVC.swift in Sources */,
 				2378A4972904106900FB7031 /* LocationSettingVC.swift in Sources */,
 				23B7207028A12DBB00D3A410 /* RecordView.swift in Sources */,
 				3C09AE3B28AF6450005DD125 /* ChallengeFinishTVC.swift in Sources */,
@@ -1904,7 +1907,6 @@
 				2365F3AE2A1CBE7D00475736 /* LogoutRequestModel.swift in Sources */,
 				3C9CD99D28AB7E9800A7550C /* ChallengeListTVC.swift in Sources */,
 				3C2327B72A03730700251316 /* NotificationBoxVC.swift in Sources */,
-				23255A7428CF5325005D6D5A /* EnterVC.swift in Sources */,
 				3C14411629E30B2A00FFCF31 /* SetAuthorityVC.swift in Sources */,
 				23B7206328A0DCAA00D3A410 /* ProceedingChallengeDataSource.swift in Sources */,
 				238C4DE528A4BFE2000BEE36 /* UIScrollView+.swift in Sources */,
