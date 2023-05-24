@@ -11,7 +11,7 @@ import RxSwift
 import KakaoSDKUser
 import CoreLocation
 
-final class RecommendListVM: BaseViewModel, AddDeleteFriendProtocol {
+final class RecommendListVM: BaseViewModel, AddDeleteFriendProtocol, SearchFriendProtocol {
     var apiSession: APIService = APISession()
     let apiError = PublishSubject<APIError>()
     var bag = DisposeBag()
@@ -27,6 +27,10 @@ final class RecommendListVM: BaseViewModel, AddDeleteFriendProtocol {
     var requestStatus = PublishRelay<Bool>()
     var deleteStatus = PublishRelay<Bool>()
     var invitedStatus = PublishRelay<Bool>()
+    
+    // MARK: - SearchFriendProtocol
+    
+    var searchList = PublishRelay<[FriendDefaultInfo]>()
     
     // MARK: - Input
     
@@ -101,7 +105,14 @@ extension RecommendListVM: Input {
 // MARK: - Output
 
 extension RecommendListVM: Output {
-    func bindOutput() {}
+    func bindOutput() {
+        searchList
+            .subscribe(onNext: { [weak self] data in
+                guard let self = self else { return }
+                self.output.nemoduFriendslist.friendsInfo.accept(data)
+            })
+            .disposed(by: bag)
+    }
 }
 
 // MARK: - Network
