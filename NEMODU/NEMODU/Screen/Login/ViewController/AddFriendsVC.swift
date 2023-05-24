@@ -108,6 +108,11 @@ extension AddFriendsVC {
             friendListTV.register(AddNemoduFriendTVC.self, forCellReuseIdentifier: AddNemoduFriendTVC.className)
         }
     }
+    
+    /// 추가한 친구 목록을 반환하는 메서드
+    func getFriendList() -> [String] {
+        return friendList.map { String($0) }
+    }
 }
 
 // MARK: - Layout
