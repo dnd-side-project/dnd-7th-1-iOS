@@ -214,11 +214,11 @@ extension AddFriendsVC {
 extension AddFriendsVC: EditFriendListDelegate {
     func addFriend(_ nickname: String) {
         friendList.insert(nickname)
-        print(friendList)
+        popupToast(toastType: .postFriendRequest)
     }
     
     func removeFriend(_ nickname: String) {
         friendList.remove(nickname)
-        print(friendList)
+        popupToast(toastType: .cancelFriendRequest)
     }
 }
