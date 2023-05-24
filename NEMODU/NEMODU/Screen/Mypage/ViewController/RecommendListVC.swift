@@ -79,6 +79,7 @@ class RecommendListVC: BaseViewController {
     static let friendCellHeight = 64.0
     
     private let viewModel = RecommendListVM()
+    private let loginType = LoginType(rawValue: UserDefaults.standard.string(forKey: UserDefaults.Keys.loginType) ?? LoginType.apple.rawValue)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,7 +87,7 @@ class RecommendListVC: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.getKakaoFriendList()
+        if loginType == .kakao { viewModel.getKakaoFriendList() }
         viewModel.getNEMODUFriendList()
     }
     
@@ -98,6 +99,7 @@ class RecommendListVC: BaseViewController {
     override func layoutView() {
         super.layoutView()
         configureLayout()
+        if loginType == .kakao { layoutkakaoView() }
     }
     
     override func bindInput() {
@@ -120,18 +122,24 @@ extension RecommendListVC {
     private func configureContentView() {
         view.addSubview(baseScrollView)
         baseScrollView.addSubview(contentView)
+        
+        
         contentView.addSubviews([kakaoView,
                                  separatorView,
                                  nemoduView])
-        kakaoView.addSubviews([kakaoTitleLabel,
-                               kakaoRecommendTV,
-                               viewMoreKakaoFriendBtn])
+
         nemoduView.addSubviews([nemoduTitleLabel,
                                 nemoduRecommendTV,
                                 viewMoreNEMODUFriendBtn])
         
-        kakaoRecommendTV.register(AddKakaoFriendTVC.self,
-                                  forCellReuseIdentifier: AddKakaoFriendTVC.className)
+        if loginType == .kakao {
+            kakaoView.addSubviews([kakaoTitleLabel,
+                                   kakaoRecommendTV,
+                                   viewMoreKakaoFriendBtn])
+    
+            kakaoRecommendTV.register(AddKakaoFriendTVC.self,
+                                      forCellReuseIdentifier: AddKakaoFriendTVC.className)
+        }
         
         nemoduRecommendTV.register(AddNemoduFriendTVC.self,
                                    forCellReuseIdentifier: AddNemoduFriendTVC.className)
@@ -153,30 +161,13 @@ extension RecommendListVC {
         
         kakaoView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
-            $0.height.equalTo(288)
-        }
-        
-        kakaoTitleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview()
-            $0.leading.equalToSuperview().offset(16)
-            $0.height.equalTo(56)
-        }
-        
-        kakaoRecommendTV.snp.makeConstraints {
-            $0.top.equalTo(kakaoTitleLabel.snp.bottom)
-            $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(viewMoreKakaoFriendBtn.snp.top)
-        }
-        
-        viewMoreKakaoFriendBtn.snp.makeConstraints {
-            $0.leading.trailing.bottom.equalToSuperview()
-            $0.height.equalTo(40)
+            $0.height.equalTo(loginType == .kakao ? 288 : 0)
         }
         
         separatorView.snp.makeConstraints {
             $0.top.equalTo(kakaoView.snp.bottom)
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(8)
+            $0.height.equalTo(loginType == .kakao ? 8 : 0)
         }
         
         nemoduView.snp.makeConstraints {
@@ -197,6 +188,25 @@ extension RecommendListVC {
         }
         
         viewMoreNEMODUFriendBtn.snp.makeConstraints {
+            $0.leading.trailing.bottom.equalToSuperview()
+            $0.height.equalTo(40)
+        }
+    }
+    
+    func layoutkakaoView() {
+        kakaoTitleLabel.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview().offset(16)
+            $0.height.equalTo(56)
+        }
+        
+        kakaoRecommendTV.snp.makeConstraints {
+            $0.top.equalTo(kakaoTitleLabel.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(viewMoreKakaoFriendBtn.snp.top)
+        }
+        
+        viewMoreKakaoFriendBtn.snp.makeConstraints {
             $0.leading.trailing.bottom.equalToSuperview()
             $0.height.equalTo(40)
         }
