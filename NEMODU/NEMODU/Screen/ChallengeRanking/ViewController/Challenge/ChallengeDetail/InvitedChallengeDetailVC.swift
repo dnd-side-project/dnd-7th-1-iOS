@@ -61,6 +61,8 @@ class InvitedChallengeDetailVC: ChallengeDetailVC {
                 $0.delegate = self
                 $0.dataSource = self
                 
+                $0.rowHeight = 64.0
+                
                 $0.register(InvitedChallengeDetailTVHV.self, forHeaderFooterViewReuseIdentifier: InvitedChallengeDetailTVHV.className)
                 $0.register(InvitedFriendsTVC.self, forCellReuseIdentifier: InvitedFriendsTVC.className)
                 $0.register(NoListStatusTVFV.self, forHeaderFooterViewReuseIdentifier: NoListStatusTVFV.className)
@@ -116,19 +118,6 @@ extension InvitedChallengeDetailVC : UITableViewDelegate {
         return UITableView.automaticDimension
     }
 
-    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        return UITableView.automaticDimension
-    }
-
-    // Cell
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 64
-    }
-
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 64
-    }
-    
 }
 
 // MARK: - Output

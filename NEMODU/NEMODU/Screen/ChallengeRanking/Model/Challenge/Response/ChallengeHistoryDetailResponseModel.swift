@@ -17,7 +17,7 @@ struct ChallengeHistoryDetailResponseModel: Codable {
     let distance: Int
     let exerciseTime: Int
     let stepCount: Int
-    let latitude, longitude: Double
+    let latitude, longitude: Double?
     let matrices: [Matrix]
     let rankings: [Ranking]
 }
