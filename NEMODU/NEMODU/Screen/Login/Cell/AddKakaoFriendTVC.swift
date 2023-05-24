@@ -22,7 +22,11 @@ class AddKakaoFriendTVC: BaseTableViewCell {
             $0.tintColor = $0.isSelected ? .gray500 : .white
         }
     
+    private var viewModel = RecommendListVM()
     private let bag = DisposeBag()
+    weak var delegate: PopupToastViewDelegate?
+    
+    private var isSigned = false
     
     override func configureView() {
         super.configureView()
@@ -56,6 +60,7 @@ class AddKakaoFriendTVC: BaseTableViewCell {
         super.prepareForReuse()
         friendProfileView.prepareForReuse()
         addFriendBtn.isSelected = false
+        isSigned = false
     }
 }
 
@@ -75,6 +80,7 @@ extension AddKakaoFriendTVC {
     func configureCell(_ friendInfo: KakaoFriendInfo) {
         friendProfileView.setKakaoProfile(friendInfo)
         setButtonImage(friendInfo.isSigned)
+        isSigned = friendInfo.isSigned
     }
 }
 
@@ -84,9 +90,40 @@ extension AddKakaoFriendTVC {
     func bindBtn() {
         addFriendBtn.rx.tap
             .subscribe(onNext: { [weak self] _ in
+                guard let self = self,
+                      let friend = self.friendProfileView.getKakaoName()
+                else { return }
+                if self.isSigned {
+                    !self.addFriendBtn.isSelected
+                    ? self.viewModel.requestFriend(to: FriendRequestModel(friendNickname: friend))
+                    : self.viewModel.deleteFriend(to: FriendRequestModel(friendNickname: friend))
+                } else {
+                    // 카카오 메세지 보내기
+                }
+            })
+            .disposed(by: bag)
+        
+        viewModel.requestStatus
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: { [weak self] status in
                 guard let self = self else { return }
-                self.addFriendBtn.isSelected.toggle()
-                self.addFriendBtn.tintColor = self.addFriendBtn.isSelected ? .gray500 : .white
+                if status {
+                    self.addFriendBtn.isSelected.toggle()
+                    self.addFriendBtn.tintColor = self.addFriendBtn.isSelected ? .gray500 : .white
+                    self.delegate?.popupToastView(.postFriendRequest)
+                }
+            })
+            .disposed(by: bag)
+        
+        viewModel.deleteStatus
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: { [weak self] status in
+                guard let self = self else { return }
+                if status {
+                    self.addFriendBtn.isSelected.toggle()
+                    self.addFriendBtn.tintColor = self.addFriendBtn.isSelected ? .gray500 : .white
+                    self.delegate?.popupToastView(.cancelFriendRequest)
+                }
             })
             .disposed(by: bag)
     }

@@ -90,6 +90,11 @@ extension FriendCellProfileView {
     func getNickname() -> String? {
         return nicknameLabel.text
     }
+    
+    /// 카카오 이름을 반환하는 메서드
+    func getKakaoName() -> String? {
+        return kakaoNameLabel.text
+    }
 }
 
 // MARK: - Layout
