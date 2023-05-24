@@ -23,8 +23,9 @@ class AddNemoduFriendTVC: BaseTableViewCell {
             $0.setImage(UIImage(named: "addedFriend"), for: .selected)
         }
     
-    var viewModel = RecommendListVM()
+    private var viewModel = RecommendListVM()
     private let bag = DisposeBag()
+    weak var delegate: PopupToastViewDelegate?
     
     override func configureView() {
         super.configureView()
@@ -91,6 +92,7 @@ extension AddNemoduFriendTVC {
                 if status {
                     self.addFriendBtn.isSelected.toggle()
                     self.addFriendBtn.tintColor = self.addFriendBtn.isSelected ? .gray500 : .white
+                    self.delegate?.popupToastView(.postFriendRequest)
                 }
             })
             .disposed(by: bag)
@@ -102,6 +104,7 @@ extension AddNemoduFriendTVC {
                 if status {
                     self.addFriendBtn.isSelected.toggle()
                     self.addFriendBtn.tintColor = self.addFriendBtn.isSelected ? .gray500 : .white
+                    self.delegate?.popupToastView(.cancelFriendRequest)
                 }
             })
             .disposed(by: bag)

@@ -82,6 +82,10 @@ class RecommendListVC: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         viewModel.getKakaoFriendList()
         viewModel.getNEMODUFriendList()
     }
@@ -103,6 +107,7 @@ class RecommendListVC: BaseViewController {
     
     override func bindOutput() {
         super.bindOutput()
+        bindAPIErrorAlert(viewModel)
         bindKakaoRecommendTV()
         bindNemoduRecommendTV()
     }
@@ -271,6 +276,7 @@ extension RecommendListVC {
             })
     }
     
+    /// 네모두 추천 친구 목록 tableView DataSource
     func nemoduTableViewDataSource() -> RxTableViewSectionedReloadDataSource<FriendListDataSource<FriendDefaultInfo>> {
         RxTableViewSectionedReloadDataSource<FriendListDataSource<FriendDefaultInfo>> (
             configureCell: { dataSource, tableView, indexPath, item in
@@ -279,9 +285,18 @@ extension RecommendListVC {
                     for: indexPath
                 ) as? AddNemoduFriendTVC
                 else { return UITableViewCell() }
+                cell.delegate = self
                 cell.configureCell(item)
                 return cell
             }
         )
+    }
+}
+
+// MARK: - PopupToastViewDelegate
+
+extension RecommendListVC: PopupToastViewDelegate {
+    func popupToastView(_ toastType: ToastType) {
+        popupToast(toastType: toastType)
     }
 }

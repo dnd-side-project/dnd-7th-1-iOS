@@ -173,9 +173,18 @@ extension AllFriendListVC {
                     for: indexPath
                 ) as? AddNemoduFriendTVC
                 else { return UITableViewCell() }
+                cell.delegate = self
                 cell.configureCell(item)
                 return cell
             }
         )
+    }
+}
+
+// MARK: - PopupToastViewDelegate
+
+extension AllFriendListVC: PopupToastViewDelegate {
+    func popupToastView(_ toastType: ToastType) {
+        popupToast(toastType: toastType)
     }
 }

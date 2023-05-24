@@ -138,6 +138,7 @@
 		2388B66B2A1E091A00DF75B4 /* NEMODUFriendListResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2388B66A2A1E091A00DF75B4 /* NEMODUFriendListResponseModel.swift */; };
 		2388B66D2A1E149F00DF75B4 /* AddNemoduFriendTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2388B66C2A1E149F00DF75B4 /* AddNemoduFriendTVC.swift */; };
 		2388B66F2A1E1D0200DF75B4 /* AddDeleteFriendProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2388B66E2A1E1D0200DF75B4 /* AddDeleteFriendProtocol.swift */; };
+		2388B6712A1E2FE200DF75B4 /* PopupToastViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2388B6702A1E2FE200DF75B4 /* PopupToastViewDelegate.swift */; };
 		238C4DDF28A3AC18000BEE36 /* RecordResultVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DDE28A3AC18000BEE36 /* RecordResultVC.swift */; };
 		238C4DE328A3F0D6000BEE36 /* NemoduTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */; };
 		238C4DE528A4BFE2000BEE36 /* UIScrollView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C4DE428A4BFE2000BEE36 /* UIScrollView+.swift */; };
@@ -427,6 +428,7 @@
 		2388B66A2A1E091A00DF75B4 /* NEMODUFriendListResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NEMODUFriendListResponseModel.swift; sourceTree = "<group>"; };
 		2388B66C2A1E149F00DF75B4 /* AddNemoduFriendTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNemoduFriendTVC.swift; sourceTree = "<group>"; };
 		2388B66E2A1E1D0200DF75B4 /* AddDeleteFriendProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDeleteFriendProtocol.swift; sourceTree = "<group>"; };
+		2388B6702A1E2FE200DF75B4 /* PopupToastViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupToastViewDelegate.swift; sourceTree = "<group>"; };
 		238C4DDE28A3AC18000BEE36 /* RecordResultVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordResultVC.swift; sourceTree = "<group>"; };
 		238C4DE228A3F0D6000BEE36 /* NemoduTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NemoduTextView.swift; sourceTree = "<group>"; };
 		238C4DE428A4BFE2000BEE36 /* UIScrollView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+.swift"; sourceTree = "<group>"; };
@@ -1012,12 +1014,12 @@
 				237573F628FBF88E006026ED /* FriendsVC.swift */,
 				237573FE28FC26DF006026ED /* FriendListVC.swift */,
 				2375740628FC4DF4006026ED /* RecommendListVC.swift */,
+				2318D41F2A1D29C7008754C4 /* AllFriendListVC.swift */,
 				237573EE28FA773F006026ED /* EditProfileVC.swift */,
 				3C79AEB529E1AEAA0035EA12 /* SetPrivacyVC.swift */,
 				3CF039ED29E290FF001CA475 /* SetNotificationVC.swift */,
 				3C506C1C29FD3189006EDAAE /* TermsConditionsVC.swift */,
 				3C2327B62A03730700251316 /* NotificationBoxVC.swift */,
-				2318D41F2A1D29C7008754C4 /* AllFriendListVC.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -1062,6 +1064,7 @@
 			children = (
 				23566E692A11095C00EBA458 /* FriendListOutput.swift */,
 				2388B66E2A1E1D0200DF75B4 /* AddDeleteFriendProtocol.swift */,
+				2388B6702A1E2FE200DF75B4 /* PopupToastViewDelegate.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -1737,6 +1740,7 @@
 				3C05FFF128B794390017F4E1 /* CreateChallengeSuccuessVC.swift in Sources */,
 				3CB9DB9D28A92528007BC1BE /* MenuBarCV.swift in Sources */,
 				237573EF28FA773F006026ED /* EditProfileVC.swift in Sources */,
+				2388B6712A1E2FE200DF75B4 /* PopupToastViewDelegate.swift in Sources */,
 				3CF431BA28FE7AE9007EB115 /* AreaRankingListVC.swift in Sources */,
 				3CF039F429E2E756001CA475 /* TermsConditionsAgreeView.swift in Sources */,
 				2348B3BF2892C675001095BC /* AppDelegate.swift in Sources */,
