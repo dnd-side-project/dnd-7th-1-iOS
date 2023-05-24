@@ -277,6 +277,11 @@ extension FriendListVC {
                 let keyword = owner.searchBar.text ?? ""
                 if keyword.count > 1 {
                     owner.viewModel.getSearchResult(keyword)
+                } else {
+                    owner.popUpAlert(alertType: .searchLimit,
+                                     targetVC: owner,
+                                     highlightBtnAction: #selector(self.dismissAlert),
+                                     normalBtnAction: nil)
                 }
             })
             .disposed(by: disposeBag)
