@@ -50,14 +50,14 @@ class ChallengeListTVHV : ChallengeTitleTVHV {
             $0.horizontalEdges.equalTo(contentView)
         }
         containerView.snp.remakeConstraints {
-            $0.height.equalTo(containerViewHeight)
+            $0.height.equalTo(containerViewHeight).priority(.high)
             
             $0.top.equalTo(spaceView.snp.bottom)
             $0.horizontalEdges.equalTo(spaceView)
         }
         
         challengeListTypeMenuBar.snp.makeConstraints {
-            $0.height.equalTo(64)
+            $0.height.equalTo(64).priority(.high)
 
             $0.top.equalTo(containerView.snp.bottom)
             $0.horizontalEdges.equalTo(containerView)

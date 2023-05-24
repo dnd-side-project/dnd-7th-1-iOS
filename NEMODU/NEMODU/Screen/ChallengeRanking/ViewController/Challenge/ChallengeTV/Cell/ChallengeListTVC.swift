@@ -29,7 +29,7 @@ class ChallengeListTVC : BaseTableViewCell {
     
     private let challengeTypeLabel = UILabel()
         .then {
-            $0.text = "종류"
+            $0.text = "--"
             $0.font = .caption1
             $0.textColor = .main
             $0.backgroundColor = .clear
@@ -56,11 +56,11 @@ class ChallengeListTVC : BaseTableViewCell {
     private let challengeNameImageView = UIImageView()
         .then {
             $0.image = UIImage(named: "badge_flag")?.withRenderingMode(.alwaysTemplate)
-            $0.tintColor = ChallengeColorType.pink.primaryColor
+            $0.tintColor = ChallengeColorType.green.primaryColor
         }
     private let challengeNameLabel = UILabel()
         .then {
-            $0.text = "챌린지 이름"
+            $0.text = "----"
             $0.font = .body3
             $0.textColor = .gray900
         }
@@ -81,6 +81,17 @@ class ChallengeListTVC : BaseTableViewCell {
     // MARK: - Variables and Properties
     
     // MARK: - Life Cycle
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        challengeTypeLabel.text = "--"
+        challengeTermLabel.text = "00.00(-) - 00.00(-)"
+        challengeNameImageView.tintColor = ChallengeColorType.green.primaryColor
+        challengeNameLabel.text = "----"
+        currentStateLabel.text = "----"
+        currentJoinUserLabel.text = "-/-"
+    }
     
     override func configureView() {
         super.configureView()

@@ -47,6 +47,10 @@ class RankingListVC : BaseViewController {
             $0.showsVerticalScrollIndicator = false
             
             $0.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: -20, right: 0)
+            
+            $0.sectionHeaderHeight = 24.0
+            $0.rowHeight = 84.0
+            $0.sectionFooterHeight = .leastNormalMagnitude
         }
         
     // MARK: - Variables and Properties

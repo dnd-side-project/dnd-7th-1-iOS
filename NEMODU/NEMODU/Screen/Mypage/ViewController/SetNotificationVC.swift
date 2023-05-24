@@ -118,7 +118,7 @@ class SetNotificationVC: BaseViewController {
         super.bindOutput()
         
         bindAPIErrorAlert(viewModel)
-        fetchUserNotificationSettings()
+        bindUserNotificationSettings()
     }
     
 }
@@ -280,7 +280,7 @@ extension SetNotificationVC {
 
 extension SetNotificationVC {
     
-    private func fetchUserNotificationSettings() {
+    private func bindUserNotificationSettings() {
         viewModel.output.userNotificationSettings
             .subscribe(onNext: { [weak self] data in
                 guard let self = self else { return }
