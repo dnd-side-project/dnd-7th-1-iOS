@@ -89,13 +89,29 @@ class ChallengeVC : BaseViewController {
     // MARK: - Functions
     
     private func getChallengeList() {
-        // 초대받은 챌린지
-        viewModel.getInvitedChallengeList()
-        
-        // 챌린지 내역
-        viewModel.getWaitChallengeList()
-        viewModel.getProgressChallengeList()
-        viewModel.getDoneChallengeList()
+        DispatchQueue.global().sync {
+            let beforeCntInvited = invitedChallengeListResponseModel?.count
+            let beforeCntWait = waitChallengeListResponseModel?.count
+            let beforeCntProgress = progressChallengeListResponseModel?.count
+            let beforeCntDone = doneChallengeListResponseModel?.count
+
+            // 초대받은 챌린지
+            viewModel.getInvitedChallengeList()
+            
+            // 챌린지 내역
+            viewModel.getWaitChallengeList()
+            viewModel.getProgressChallengeList()
+            viewModel.getDoneChallengeList()
+
+            if invitedChallengeListResponseModel?.count != beforeCntInvited ||
+                waitChallengeListResponseModel?.count != beforeCntWait ||
+                progressChallengeListResponseModel?.count != beforeCntProgress ||
+                doneChallengeListResponseModel?.count != beforeCntDone {
+                challengeTableView.reloadData()
+            } else {
+                reloadChallengeTableView(toMoveIndex: reloadCellIndex)
+            }
+        }
     }
     
     func reloadChallengeTableView(toMoveIndex: Int) {
@@ -103,7 +119,7 @@ class ChallengeVC : BaseViewController {
         reloadCellIndex = toMoveIndex
         
         if toMoveIndex == curIndex {
-            challengeTableView.reloadSections(IndexSet(2...2), with: .none)
+            challengeTableView.reloadData()
         } else {
             challengeTableView.reloadSections(IndexSet(2...2), with: toMoveIndex < curIndex ? .right : .left)
         }
