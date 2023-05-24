@@ -51,14 +51,12 @@ class ChallengeVC : BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        viewModel.getWaitChallengeList()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        viewModel.getInvitedChallengeList()
+        getChallengeList()
     }
     
     override func configureView() {
@@ -89,22 +87,25 @@ class ChallengeVC : BaseViewController {
 
     // MARK: - Functions
     
-    func getChallengeList(index: Int) {
-        switch index {
-        case 0:
-            viewModel.getWaitChallengeList()
-        case 1:
-            viewModel.getProgressChallengeList()
-        case 2:
-            viewModel.getDoneChallengeList()
-        default:
-            break
-        }
+    private func getChallengeList() {
+        // 초대받은 챌린지
+        viewModel.getInvitedChallengeList()
+        
+        // 챌린지 내역
+        viewModel.getWaitChallengeList()
+        viewModel.getProgressChallengeList()
+        viewModel.getDoneChallengeList()
     }
     
     func reloadChallengeTableView(toMoveIndex: Int) {
+        let curIndex = reloadCellIndex
         reloadCellIndex = toMoveIndex
-        challengeTableView.reloadSections(IndexSet(2...2), with: .fade)
+        
+        if toMoveIndex == curIndex {
+            challengeTableView.reloadSections(IndexSet(2...2), with: .none)
+        } else {
+            challengeTableView.reloadSections(IndexSet(2...2), with: toMoveIndex < curIndex ? .right : .left)
+        }
     }
     
 }
@@ -253,8 +254,7 @@ extension ChallengeVC : UITableViewDelegate {
         case 1:
             headerId = ChallengeListTVHV.className
             let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerId) as? ChallengeListTVHV
-            
-            headerView?.challengeListTypeMenuBar.challengeContainerCVC = self
+            headerView?.challengeListTypeMenuBar.challengeVC = self
             
             return headerView
         case 2:
@@ -437,7 +437,6 @@ extension ChallengeVC {
                 guard let self = self else { return }
                 
                 self.waitChallengeListResponseModel = data
-                self.reloadChallengeTableView(toMoveIndex: 0)
             })
             .disposed(by: disposeBag)
         
@@ -446,7 +445,6 @@ extension ChallengeVC {
                 guard let self = self else { return }
                 
                 self.progressChallengeListResponseModel = data
-                self.reloadChallengeTableView(toMoveIndex: 1)
             })
             .disposed(by: disposeBag)
         
@@ -455,7 +453,6 @@ extension ChallengeVC {
                 guard let self = self else { return }
                 
                 self.doneChallengeListResponseModel = data
-                self.reloadChallengeTableView(toMoveIndex: 2)
             })
             .disposed(by: disposeBag)
     }
