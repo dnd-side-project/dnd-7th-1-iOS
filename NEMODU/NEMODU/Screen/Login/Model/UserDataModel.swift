@@ -11,6 +11,7 @@ import Alamofire
 struct UserDataModel {
     let friends: [String]
     let isPublicRecord: Bool
+    let isExceptRecommend: Bool
 }
 
 extension UserDataModel {
@@ -38,7 +39,7 @@ extension UserDataModel {
             "picturePath": picturePath,
             "fcmToken": UserDefaults.standard.string(forKey: UserDefaults.Keys.fcmToken) ?? "",
             "isNotification": UserDefaults.standard.bool(forKey: UserDefaults.Keys.isNotification),
-            "isExceptRecommend": false //TODO: - 회원가입 수정 전 임시값
+            "isExceptRecommend": isExceptRecommend
         ]
         
         if loginType == LoginType.kakao.rawValue,

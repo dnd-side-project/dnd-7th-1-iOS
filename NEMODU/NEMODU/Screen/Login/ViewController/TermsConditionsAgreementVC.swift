@@ -261,8 +261,7 @@ extension TermsConditionsAgreementVC {
             .asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                // TODO: - 네모두 시작하기 버튼 바인딩
-                print("startButton - 네모두 시작하기 pressed")
+                self.navigationController?.pushViewController(UserInfoSettingVC(), animated: true)
             })
             .disposed(by: disposeBag)
     }
