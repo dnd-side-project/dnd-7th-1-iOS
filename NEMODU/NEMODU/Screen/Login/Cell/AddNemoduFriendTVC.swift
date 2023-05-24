@@ -23,6 +23,7 @@ class AddNemoduFriendTVC: BaseTableViewCell {
             $0.setImage(UIImage(named: "addedFriend"), for: .selected)
         }
     
+    var viewModel = RecommendListVM()
     private let bag = DisposeBag()
     
     override func configureView() {
@@ -74,9 +75,34 @@ extension AddNemoduFriendTVC {
     func bindBtn() {
         addFriendBtn.rx.tap
             .subscribe(onNext: { [weak self] _ in
+                guard let self = self,
+                      let friend = self.friendProfileView.getNickname()
+                else { return }
+                !self.addFriendBtn.isSelected
+                ? self.viewModel.requestFriend(to: FriendRequestModel(friendNickname: friend))
+                : self.viewModel.deleteFriend(to: FriendRequestModel(friendNickname: friend))
+            })
+            .disposed(by: bag)
+        
+        viewModel.requestStatus
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: { [weak self] status in
                 guard let self = self else { return }
-                self.addFriendBtn.isSelected.toggle()
-                self.addFriendBtn.tintColor = self.addFriendBtn.isSelected ? .gray500 : .white
+                if status {
+                    self.addFriendBtn.isSelected.toggle()
+                    self.addFriendBtn.tintColor = self.addFriendBtn.isSelected ? .gray500 : .white
+                }
+            })
+            .disposed(by: bag)
+        
+        viewModel.deleteStatus
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: { [weak self] status in
+                guard let self = self else { return }
+                if status {
+                    self.addFriendBtn.isSelected.toggle()
+                    self.addFriendBtn.tintColor = self.addFriendBtn.isSelected ? .gray500 : .white
+                }
             })
             .disposed(by: bag)
     }

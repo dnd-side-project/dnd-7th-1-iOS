@@ -11,7 +11,7 @@ import RxSwift
 import KakaoSDKUser
 import CoreLocation
 
-final class RecommendListVM: BaseViewModel {
+final class RecommendListVM: BaseViewModel, AddDeleteFriendProtocol {
     var apiSession: APIService = APISession()
     let apiError = PublishSubject<APIError>()
     var bag = DisposeBag()
@@ -21,6 +21,11 @@ final class RecommendListVM: BaseViewModel {
     // MARK: - Location
     
     var locationManager = CLLocationManager()
+    
+    // MARK: - AddDeleteFriendProtocol
+    
+    var requestStatus = PublishRelay<Bool>()
+    var deleteStatus = PublishRelay<Bool>()
     
     // MARK: - Input
     
