@@ -20,6 +20,7 @@ class ChallengeVC : BaseViewController {
             $0.separatorStyle = .none
             $0.backgroundColor = .white
             $0.showsVerticalScrollIndicator = false
+            $0.rowHeight = 116.0
         }
     
     private lazy var createChallengeButton = UIButton().then {
@@ -275,10 +276,6 @@ extension ChallengeVC : UITableViewDelegate {
         section == 2 ? .leastNormalMagnitude : UITableView.automaticDimension
     }
 
-    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        section == 2 ? .leastNormalMagnitude : UITableView.automaticDimension
-    }
-
     // Cell
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.section {
@@ -321,14 +318,6 @@ extension ChallengeVC : UITableViewDelegate {
         }
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 116
-    }
-
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 116
-    }
-
     // FooterView
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         var message = ""
@@ -375,28 +364,6 @@ extension ChallengeVC : UITableViewDelegate {
         }
     }
 
-    func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
-        switch section {
-        case 0: // 초대받은 챌린지
-            return invitedChallengeListResponseModel?.count ?? 0 == 0 ? 93 : .leastNormalMagnitude
-        case 1: // 챌린지 내역 및 메뉴바
-            return .leastNormalMagnitude
-        case 2: // 챌린지 목록
-            switch reloadCellIndex {
-            case 0: // 진행 대기중
-                return waitChallengeListResponseModel?.count ?? 0 == 0 ? 93 : .leastNormalMagnitude
-            case 1: // 진행 중
-                return progressChallengeListResponseModel?.count ?? 0 == 0 ? 93 : .leastNormalMagnitude
-            case 2: // 진행 완료
-                return doneChallengeListResponseModel?.count ?? 0 == 0 ? 93 : .leastNormalMagnitude
-            default:
-                return 93
-            }
-        default:
-            return 93
-        }
-    }
-    
 }
 
 // MARK: - Input

@@ -96,6 +96,7 @@ class SelectFriendsVC: CreateChallengeVC {
         .then {
             $0.separatorStyle = .none
             $0.allowsMultipleSelection = true
+            $0.rowHeight = UITableView.automaticDimension
         }
     
     // MARK: - Variables and Properties
@@ -397,15 +398,7 @@ extension SelectFriendsVC : UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return friendsListResponseModel?.count ?? 0
     }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
-    }
-
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
-    }
-
+   
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) as? SelectFriendsTVC else { return }
         cell.didTapCheck()
@@ -445,12 +438,7 @@ extension SelectFriendsVC : UITableViewDelegate {
         guard let friendsList = friendsListResponseModel else { return 93 }
         return friendsList.count == 0 ? 93 : .leastNormalMagnitude
     }
-
-    func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
-        guard let friendsList = friendsListResponseModel else { return 93 }
-        return friendsList.count == 0 ? 93 : .leastNormalMagnitude
-    }
-    
+   
 }
 
 // MARK: - Input

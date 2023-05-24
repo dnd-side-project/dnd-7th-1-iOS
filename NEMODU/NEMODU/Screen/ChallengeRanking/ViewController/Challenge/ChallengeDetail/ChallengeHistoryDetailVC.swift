@@ -319,6 +319,8 @@ extension ChallengeHistoryDetailVC {
                 $0.delegate = self
                 $0.dataSource = self
                 
+                $0.rowHeight = 84.0
+                
                 $0.register(RankingUserTVC.self, forCellReuseIdentifier: RankingUserTVC.className)
                 
                 $0.isScrollEnabled = false
@@ -515,19 +517,6 @@ extension ChallengeHistoryDetailVC : UITableViewDelegate {
         return .leastNormalMagnitude
     }
 
-    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        return .leastNormalMagnitude
-    }
-
-    // Cell
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 84
-    }
-
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 84
-    }
-    
     // FooterView
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let fakeView = UIView()
@@ -539,11 +528,7 @@ extension ChallengeHistoryDetailVC : UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return .leastNormalMagnitude
     }
-
-    func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
-        return .leastNormalMagnitude
-    }
-    
+ 
 }
 
 // MARK: - Input
