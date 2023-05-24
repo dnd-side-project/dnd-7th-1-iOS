@@ -26,6 +26,7 @@ final class RecommendListVM: BaseViewModel, AddDeleteFriendProtocol {
     
     var requestStatus = PublishRelay<Bool>()
     var deleteStatus = PublishRelay<Bool>()
+    var invitedStatus = PublishRelay<Bool>()
     
     // MARK: - Input
     
@@ -150,6 +151,25 @@ extension RecommendListVM {
                     owner.output.nemoduFriendslist.friendsInfo.accept(data.infos)
                     owner.output.nemoduFriendslist.nextDistance.accept(data.offset)
                     owner.output.nemoduFriendslist.isLast.accept(data.isLast)
+                }
+            })
+            .disposed(by: bag)
+    }
+    
+    /// 카카오톡 메시지로 네모두 초대를 보내는 메서드
+    func postKakaoInviteMessage(_ uuid: String) {
+        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
+        let path = "auth/kakao/message/\(uuid)?nickname=\(nickname)"
+        let resource = urlResource<String>(path: path)
+        
+        KakaoAPI.shared.postKakaoInviteRequest(with: resource, param: nil)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, result in
+                switch result {
+                case .failure(let error):
+                    owner.apiError.onNext(error)
+                case .success:
+                    owner.invitedStatus.accept(true)
                 }
             })
             .disposed(by: bag)

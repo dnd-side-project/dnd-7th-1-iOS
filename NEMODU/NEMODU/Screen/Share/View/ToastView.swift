@@ -59,7 +59,14 @@ extension ToastView {
                 baseStackView.addArrangedSubview($0)
             }
             setImageSize()
-        case .postFriendRequest, .cancelFriendRequest, .profileChanged, .saveCompleted, .acceptFriendRequest, .refuseFriendRequest, .noRecord:
+        case .postFriendRequest,
+                .cancelFriendRequest,
+                .profileChanged,
+                .saveCompleted,
+                .acceptFriendRequest,
+                .refuseFriendRequest,
+                .noRecord,
+                .kakaoInviteRequest:
             baseStackView.addArrangedSubview(toastMessage)
         }
     }

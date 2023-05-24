@@ -27,6 +27,7 @@ class AddKakaoFriendTVC: BaseTableViewCell {
     weak var delegate: PopupToastViewDelegate?
     
     private var isSigned = false
+    private var uuid: String?
     
     override func configureView() {
         super.configureView()
@@ -61,6 +62,7 @@ class AddKakaoFriendTVC: BaseTableViewCell {
         friendProfileView.prepareForReuse()
         addFriendBtn.isSelected = false
         isSigned = false
+        uuid = nil
     }
 }
 
@@ -81,6 +83,7 @@ extension AddKakaoFriendTVC {
         friendProfileView.setKakaoProfile(friendInfo)
         setButtonImage(friendInfo.isSigned)
         isSigned = friendInfo.isSigned
+        uuid = friendInfo.uuid
     }
 }
 
@@ -98,7 +101,10 @@ extension AddKakaoFriendTVC {
                     ? self.viewModel.requestFriend(to: FriendRequestModel(friendNickname: friend))
                     : self.viewModel.deleteFriend(to: FriendRequestModel(friendNickname: friend))
                 } else {
-                    // 카카오 메세지 보내기
+                    if !self.addFriendBtn.isSelected,
+                       let uuid = self.uuid {
+                        self.viewModel.postKakaoInviteMessage(uuid)
+                    }
                 }
             })
             .disposed(by: bag)
@@ -123,6 +129,18 @@ extension AddKakaoFriendTVC {
                     self.addFriendBtn.isSelected.toggle()
                     self.addFriendBtn.tintColor = self.addFriendBtn.isSelected ? .gray500 : .white
                     self.delegate?.popupToastView(.cancelFriendRequest)
+                }
+            })
+            .disposed(by: bag)
+        
+        viewModel.invitedStatus
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: { [weak self] status in
+                guard let self = self else { return }
+                if status {
+                    self.addFriendBtn.isSelected.toggle()
+                    self.addFriendBtn.tintColor = self.addFriendBtn.isSelected ? .gray500 : .white
+                    self.delegate?.popupToastView(.kakaoInviteRequest)
                 }
             })
             .disposed(by: bag)
