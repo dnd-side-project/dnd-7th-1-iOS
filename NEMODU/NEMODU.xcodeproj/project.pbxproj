@@ -35,7 +35,6 @@
 		23255A6C28CF1307005D6D5A /* AddFriendsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A6B28CF1307005D6D5A /* AddFriendsVC.swift */; };
 		23255A6E28CF3787005D6D5A /* NicknameType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A6D28CF3787005D6D5A /* NicknameType.swift */; };
 		23255A7228CF457E005D6D5A /* FriendAddTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A7128CF457E005D6D5A /* FriendAddTVC.swift */; };
-		23255A7428CF5325005D6D5A /* EnterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A7328CF5325005D6D5A /* EnterVC.swift */; };
 		23255A7628CF5C1F005D6D5A /* UserInfoSettingVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A7528CF5C1F005D6D5A /* UserInfoSettingVM.swift */; };
 		23255A7928D05912005D6D5A /* DayCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A7828D05912005D6D5A /* DayCVC.swift */; };
 		23255A7B28D09F10005D6D5A /* WeekCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23255A7A28D09F10005D6D5A /* WeekCVC.swift */; };
@@ -313,7 +312,6 @@
 		23255A6B28CF1307005D6D5A /* AddFriendsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendsVC.swift; sourceTree = "<group>"; };
 		23255A6D28CF3787005D6D5A /* NicknameType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameType.swift; sourceTree = "<group>"; };
 		23255A7128CF457E005D6D5A /* FriendAddTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendAddTVC.swift; sourceTree = "<group>"; };
-		23255A7328CF5325005D6D5A /* EnterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterVC.swift; sourceTree = "<group>"; };
 		23255A7528CF5C1F005D6D5A /* UserInfoSettingVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoSettingVM.swift; sourceTree = "<group>"; };
 		23255A7828D05912005D6D5A /* DayCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayCVC.swift; sourceTree = "<group>"; };
 		23255A7A28D09F10005D6D5A /* WeekCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekCVC.swift; sourceTree = "<group>"; };
@@ -678,7 +676,6 @@
 				23255A6B28CF1307005D6D5A /* AddFriendsVC.swift */,
 				2378A4962904106900FB7031 /* LocationSettingVC.swift */,
 				2318D4212A1D3579008754C4 /* FriendRecommendSettingVC.swift */,
-				23255A7328CF5325005D6D5A /* EnterVC.swift */,
 				3CF039F129E2BBF1001CA475 /* TermsConditionsAgreementVC.swift */,
 				3C14411529E30B2A00FFCF31 /* SetAuthorityVC.swift */,
 			);
@@ -1889,7 +1886,6 @@
 				2365F3AE2A1CBE7D00475736 /* LogoutRequestModel.swift in Sources */,
 				3C9CD99D28AB7E9800A7550C /* ChallengeListTVC.swift in Sources */,
 				3C2327B72A03730700251316 /* NotificationBoxVC.swift in Sources */,
-				23255A7428CF5325005D6D5A /* EnterVC.swift in Sources */,
 				3C14411629E30B2A00FFCF31 /* SetAuthorityVC.swift in Sources */,
 				23B7206328A0DCAA00D3A410 /* ProceedingChallengeDataSource.swift in Sources */,
 				238C4DE528A4BFE2000BEE36 /* UIScrollView+.swift in Sources */,
