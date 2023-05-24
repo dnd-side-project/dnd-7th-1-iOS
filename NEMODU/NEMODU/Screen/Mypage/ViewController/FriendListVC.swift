@@ -127,6 +127,7 @@ class FriendListVC: BaseViewController {
         super.bindInput()
         bindEditFriendListBtn()
         bindFriendProfile()
+        bindSearchBar()
     }
     
     override func bindOutput() {
@@ -265,6 +266,18 @@ extension FriendListVC {
                 friendBottomSheet.nickname = friend
                 friendBottomSheet.delegate = self
                 self.present(friendBottomSheet, animated: true)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindSearchBar() {
+        searchBar.rx.searchButtonClicked
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                let keyword = owner.searchBar.text ?? ""
+                if keyword.count > 1 {
+                    owner.viewModel.getSearchResult(keyword)
+                }
             })
             .disposed(by: disposeBag)
     }

@@ -177,6 +177,8 @@
 		23D8B7E128B3AC9C00F48165 /* MyRecordListTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7E028B3AC9C00F48165 /* MyRecordListTVC.swift */; };
 		23D8B7E528B4D5AA00F48165 /* CalendarSelectStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7E428B4D5AA00F48165 /* CalendarSelectStackView.swift */; };
 		23D8B7E728B4E44700F48165 /* MyRecordDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D8B7E628B4E44700F48165 /* MyRecordDetailVC.swift */; };
+		23E0DD702A1E70EC0074A21E /* SearchFriendProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E0DD6F2A1E70EC0074A21E /* SearchFriendProtocol.swift */; };
+		23E0DD722A1E7D0C0074A21E /* Reactive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E0DD712A1E7D0C0074A21E /* Reactive.swift */; };
 		23ECC09F28D859E000F65692 /* AuthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23ECC09E28D859E000F65692 /* AuthAPI.swift */; };
 		23EE33572A0FF4CD00EC50E7 /* ContentSizedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EE33562A0FF4CD00EC50E7 /* ContentSizedTableView.swift */; };
 		23EFB81C29113A00009A2D01 /* RefreshBtnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EFB81B29113A00009A2D01 /* RefreshBtnView.swift */; };
@@ -470,6 +472,8 @@
 		23D8B7E028B3AC9C00F48165 /* MyRecordListTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordListTVC.swift; sourceTree = "<group>"; };
 		23D8B7E428B4D5AA00F48165 /* CalendarSelectStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSelectStackView.swift; sourceTree = "<group>"; };
 		23D8B7E628B4E44700F48165 /* MyRecordDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordDetailVC.swift; sourceTree = "<group>"; };
+		23E0DD6F2A1E70EC0074A21E /* SearchFriendProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFriendProtocol.swift; sourceTree = "<group>"; };
+		23E0DD712A1E7D0C0074A21E /* Reactive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reactive.swift; sourceTree = "<group>"; };
 		23ECC09E28D859E000F65692 /* AuthAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthAPI.swift; sourceTree = "<group>"; };
 		23EE33562A0FF4CD00EC50E7 /* ContentSizedTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentSizedTableView.swift; sourceTree = "<group>"; };
 		23EFB81B29113A00009A2D01 /* RefreshBtnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshBtnView.swift; sourceTree = "<group>"; };
@@ -974,6 +978,7 @@
 				2354239028BBA54000865E51 /* UserDefaults+.swift */,
 				2376B9062A05422600528DA6 /* UIApplication+.swift */,
 				2333CC792A1BB3BD003F864C /* CGPoint+.swift */,
+				23E0DD712A1E7D0C0074A21E /* Reactive.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1037,7 +1042,6 @@
 				231A2B9028B2787200FF884B /* MypageVM.swift */,
 				23D8B7DA28B396A100F48165 /* MyRecordDataVM.swift */,
 				2315258E28B4F2A000B80E03 /* MyRecordDetailVM.swift */,
-				230E87F82A1BD6B500EE328D /* MyDetailMapVM.swift */,
 				237573D028F5660A006026ED /* EditRecordMemoVM.swift */,
 				3CCEDB5C29EFDA440047CF6E /* SetNotificationVM.swift */,
 				23A0BE4B2A112D2800AF10BE /* FriendListVM.swift */,
@@ -1075,6 +1079,7 @@
 				23566E692A11095C00EBA458 /* FriendListOutput.swift */,
 				2388B66E2A1E1D0200DF75B4 /* AddDeleteFriendProtocol.swift */,
 				2388B6702A1E2FE200DF75B4 /* PopupToastViewDelegate.swift */,
+				23E0DD6F2A1E70EC0074A21E /* SearchFriendProtocol.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -1849,6 +1854,7 @@
 				3C2327BB2A03E42200251316 /* NotificationListIcon.swift in Sources */,
 				23255A7B28D09F10005D6D5A /* WeekCVC.swift in Sources */,
 				3CF431C028FE82FE007EB115 /* AccumulateRankingListVC.swift in Sources */,
+				23E0DD722A1E7D0C0074A21E /* Reactive.swift in Sources */,
 				23D8B7E728B4E44700F48165 /* MyRecordDetailVC.swift in Sources */,
 				2315258F28B4F2A000B80E03 /* MyRecordDetailVM.swift in Sources */,
 				23D8B7D928B3961900F48165 /* MyRecordListResponseModel.swift in Sources */,
@@ -1871,6 +1877,7 @@
 				237573FB28FC053D006026ED /* TabCVC.swift in Sources */,
 				3C304368292F676700FAD69A /* ChallengeDetailVC.swift in Sources */,
 				2348B40D2892D360001095BC /* UIColor+.swift in Sources */,
+				23E0DD702A1E70EC0074A21E /* SearchFriendProtocol.swift in Sources */,
 				2388B66D2A1E149F00DF75B4 /* AddNemoduFriendTVC.swift in Sources */,
 				2312200529DE5A5400928E4E /* ToggleButtonView.swift in Sources */,
 				23566E642A11034A00EBA458 /* FriendListDataSource.swift in Sources */,
