@@ -135,8 +135,7 @@ extension UserInfoSettingVC {
         naviBar.backBtn.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in
-                guard let self = self,
-                      self.page > 1 else { return }
+                guard let self = self else { return }
                 if self.page == self.pageCnt { self.naviBar.rightBtn.setTitle("다음", for: .normal) }
                 self.page -= 1
                 self.page != 0
@@ -159,11 +158,11 @@ extension UserInfoSettingVC {
                         self.friendRecommendSettingVC.setNicknameLabel(nickname)
                     }
                 } else {
-                    let enterVC = EnterVC()
+                    let setAuthorityVC = SetAuthorityVC()
                     // TODO: - 친구 목록 연결
-                    enterVC.userDataModel = UserDataModel(friends: [],
-                                                          isPublicRecord: self.locationSettingVC.getSignupValue())
-                    self.navigationController?.pushViewController(enterVC, animated: true)
+                    setAuthorityVC.userDataModel = UserDataModel(friends: [],
+                                                                 isPublicRecord: self.locationSettingVC.getSignupValue())
+                    self.navigationController?.pushViewController(setAuthorityVC, animated: true)
                 }
                 
                 if self.page == self.pageCnt { self.naviBar.rightBtn.setTitle("완료", for: .normal) }
