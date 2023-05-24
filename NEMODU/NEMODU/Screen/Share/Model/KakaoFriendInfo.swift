@@ -11,7 +11,7 @@ struct KakaoFriendInfo: Codable {
     let isSigned: Bool
     let kakaoNickname, nickname: String
     let picturePath: String
-    let uuid: Int
+    let uuid: String
 }
 
 extension KakaoFriendInfo {
