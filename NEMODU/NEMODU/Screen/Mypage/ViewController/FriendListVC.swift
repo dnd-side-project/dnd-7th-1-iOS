@@ -285,6 +285,14 @@ extension FriendListVC {
                 }
             })
             .disposed(by: disposeBag)
+        
+        searchBar.rx.text
+            .filter({ $0?.count == 0 })
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.viewModel.getFriendList(size: 12)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
