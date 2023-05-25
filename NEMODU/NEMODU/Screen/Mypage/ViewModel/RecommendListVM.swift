@@ -148,8 +148,9 @@ extension RecommendListVM {
         if let distance = output.nemoduFriendslist.nextDistance.value {
             path += "&distance=\(distance)"
         }
-        // TODO: - 서버 확인 후 수정
-        path += "&nickname=\(UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) ?? "nickname")"
+        if let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) {
+            path += "&nickname=\(nickname)"
+        }
         let resource = urlResource<NEMODUFriendListResponseModel>(path: path)
         
         apiSession.getRequestWithoutHeader(with: resource)
