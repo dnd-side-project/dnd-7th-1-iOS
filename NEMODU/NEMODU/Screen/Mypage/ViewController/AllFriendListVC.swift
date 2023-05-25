@@ -53,6 +53,7 @@ class AllFriendListVC: BaseViewController {
     
     override func bindInput() {
         super.bindInput()
+        bindSearchBar()
     }
     
     override func bindOutput() {
@@ -112,7 +113,32 @@ extension AllFriendListVC {
 // MARK: - Input
 
 extension AllFriendListVC {
-    
+    private func bindSearchBar() {
+        searchBar.rx.searchButtonClicked
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                let keyword = owner.searchBar.text ?? ""
+                if keyword.count > 1 {
+                    owner.viewModel.getSearchResult(keyword)
+                } else {
+                    owner.popUpAlert(alertType: .searchLimit,
+                                     targetVC: owner,
+                                     highlightBtnAction: #selector(self.dismissAlert),
+                                     normalBtnAction: nil)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        searchBar.rx.text
+            .filter({ $0?.count == 0 })
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.listType == .kakao
+                ? self.viewModel.getKakaoFriendList(size: 15)
+                : self.viewModel.getNEMODUFriendList(size: 15)
+            })
+            .disposed(by: disposeBag)
+    }
 }
 
 // MARK: - Output

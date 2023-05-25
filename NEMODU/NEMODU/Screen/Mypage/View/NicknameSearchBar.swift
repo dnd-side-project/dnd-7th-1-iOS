@@ -7,12 +7,17 @@
 
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 
 class NicknameSearchBar: UISearchBar {
+    let disposeBag = DisposeBag()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureSearchBar()
         configureLayout()
+        bindSearchBar()
     }
     
     required init?(coder: NSCoder) {
@@ -31,6 +36,14 @@ extension NicknameSearchBar{
         searchTextField.textColor = .gray900
         searchTextField.placeholder = "닉네임으로 검색"
         searchTextField.backgroundColor = .gray50
+    }
+    
+    private func bindSearchBar() {
+        self.rx.searchButtonClicked
+            .asSignal()
+            .filter({(self.text?.count ?? 0) > 1})
+            .emit(to: self.rx.endEditing)
+            .disposed(by: disposeBag)
     }
     
     private func configureLayout() {
