@@ -10,6 +10,6 @@ import Foundation
 struct NEMODUFriendListResponseModel: Codable {
     let infos: [FriendDefaultInfo]
     let isLast: Bool
-    let offset: Double
+    let offset: Double?
     let size: Int
 }
