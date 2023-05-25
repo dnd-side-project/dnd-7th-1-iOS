@@ -122,7 +122,12 @@ extension RecommendListVM {
     /// 사이즈 3으로 고정
     func getKakaoFriendList(size: Int = 3) {
         let offset = output.kakaoFriendsList.nextOffset.value ?? 0
-        let path = "auth/kakao/friend?size=\(size)&offset=\(offset)"
+        var path = "auth/kakao/friend?size=\(size)&offset=\(offset)"
+        
+        if let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) {
+            path += "&nickname=\(nickname)"
+        }
+        
         let resource = urlResource<KakaoFriendListResponseModel>(path: path)
         
         KakaoAPI.shared.getKakaoFriendList(with: resource)
