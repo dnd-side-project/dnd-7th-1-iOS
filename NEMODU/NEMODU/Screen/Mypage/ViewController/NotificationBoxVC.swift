@@ -173,10 +173,10 @@ extension NotificationBoxVC {
                 guard let self = self else { return }
                 
                 var messageIdList = [String]()
-                notificationBoxResponseModel?.forEach {
+                self.notificationBoxResponseModel?.forEach {
                     messageIdList.append($0.messageId)
                 }
-                viewModel.emptyNotificationList(messageIdList: messageIdList)
+                self.viewModel.emptyNotificationList(messageIdList: messageIdList)
             })
             .disposed(by: disposeBag)
     }
@@ -192,8 +192,8 @@ extension NotificationBoxVC {
             .subscribe(onNext: { [weak self] data in
                 guard let self = self else { return }
                 
-                notificationBoxResponseModel = data
-                notificationListTableView.reloadData()
+                self.notificationBoxResponseModel = data
+                self.notificationListTableView.reloadData()
             })
             .disposed(by: disposeBag)
         

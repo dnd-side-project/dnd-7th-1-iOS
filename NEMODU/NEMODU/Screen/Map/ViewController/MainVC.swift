@@ -14,9 +14,6 @@ import Then
 
 class MainVC: BaseViewController {
     private let mapVC = MapVC()
-        .then {
-            $0.isWalking = false
-        }
     
     private let refreshBtnView = RefreshBtnView()
     

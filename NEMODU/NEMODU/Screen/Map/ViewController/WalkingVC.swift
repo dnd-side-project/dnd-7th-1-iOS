@@ -14,9 +14,6 @@ import Then
 
 class WalkingVC: BaseViewController {
     private let mapVC = MapVC()
-        .then {
-            $0.isWalking = true
-        }
     
     private let recordBaseView = UIView()
         .then {
@@ -70,7 +67,7 @@ class WalkingVC: BaseViewController {
     
     private let timeView = RecordView()
         .then {
-            $0.recordValue.text = "00:00"
+            $0.recordValue.text = "0:00"
             $0.recordTitle.text = "시간"
             $0.recordSubtitle.text = " "
         }
@@ -82,7 +79,8 @@ class WalkingVC: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        mapVC.updateStep()
+        mapVC.endRecordDelegate = self
+        mapVC.startActivityUpdates()
         setStartTime()
     }
     
@@ -136,6 +134,7 @@ class WalkingVC: BaseViewController {
 
 extension WalkingVC {
     private func configureWalkingView() {
+        mapVC.isRecording.accept(true)
         addChild(mapVC)
         view.addSubviews([mapVC.view,
                           recordBaseView])
@@ -241,27 +240,8 @@ extension WalkingVC {
         stopBtn.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in
-                guard let self = self,
-                      let startTime = self.startTime else { return }
-                if self.mapVC.blocks.count < 5 {
-                    self.popUpAlert(alertType: .minimumBlocks,
-                                    targetVC: self,
-                                    highlightBtnAction: #selector(self.dismissAlert),
-                                    normalBtnAction: #selector(self.dismissToRootVC))
-                } else {
-                    let recordResultNC = RecordResultNC()
-                    recordResultNC.modalPresentationStyle = .fullScreen
-                    recordResultNC.recordResultVC.configureRecordValue(
-                        recordData: RecordDataRequest(distance: self.mapVC.updateDistance.value,
-                                                      exerciseTime: self.secondTimeValue,
-                                                      matrices: self.mapVC.blocks,
-                                                      stepCount: self.mapVC.stepCnt,
-                                                      started: startTime.toString(separator: .withTime),
-                                                      ended: Date.now.toString(separator: .withTime)),
-                        weekBlockCnt: self.weekBlockCnt)
-                    self.mapVC.stopUpdateStep()
-                    self.present(recordResultNC, animated: true)
-                }
+                guard let self = self else { return }
+                self.pushRecordResultVC()
             })
             .disposed(by: disposeBag)
         
@@ -271,7 +251,7 @@ extension WalkingVC {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.setRecordBtnStatus(isWalking: true)
-                self.mapVC.updateStep()
+                self.mapVC.startUpdateStep()
             })
             .disposed(by: disposeBag)
     }
@@ -293,12 +273,12 @@ extension WalkingVC {
         // 이동 시간 기록
         viewModel.timer.driver.asObservable()
             .subscribe(onNext: { [weak self] second in
-                guard let self = self else { return }
-                if self.mapVC.isWalking ?? false {
-                    self.secondTimeValue += second
-                    self.timeView.recordValue.text
-                    = self.secondTimeValue.toExerciseTime
-                }
+                guard let self = self,
+                      self.mapVC.isRecording.value
+                else { return }
+                self.secondTimeValue += second
+                self.timeView.recordValue.text
+                = self.secondTimeValue.toExerciseTime
             })
             .disposed(by: disposeBag)
         
@@ -392,10 +372,35 @@ extension WalkingVC {
     private func setRecordBtnStatus(isWalking: Bool) {
         stopPlayView.isHidden = isWalking
         pauseBtn.isHidden = !isWalking
-        mapVC.isWalking = isWalking
+        mapVC.isRecording.accept(isWalking)
     }
-    
-    @objc func dismissToRootVC() {
-        view.window?.rootViewController?.dismiss(animated: true, completion: nil)
+}
+
+// MARK: - EndRecordingDelegate
+
+extension WalkingVC: EndRecordingDelegate {
+    /// 기록 중단 처리 메서드
+    func pushRecordResultVC() {
+        guard let startTime = self.startTime else { return }
+        if self.mapVC.blocks.count < 5 {
+            self.popUpAlert(alertType: .minimumBlocks,
+                            targetVC: self,
+                            highlightBtnAction: #selector(self.dismissAlert),
+                            normalBtnAction: #selector(self.dismissToRootVC))
+        } else {
+            self.mapVC.endActivityUpdates()
+            
+            let recordResultNC = RecordResultNC()
+            recordResultNC.modalPresentationStyle = .fullScreen
+            recordResultNC.recordResultVC.configureRecordValue(
+                recordData: RecordDataRequest(distance: self.mapVC.updateDistance.value,
+                                              exerciseTime: self.secondTimeValue,
+                                              matrices: self.mapVC.blocks,
+                                              stepCount: self.mapVC.stepCnt,
+                                              started: startTime.toString(separator: .withTime),
+                                              ended: Date.now.toString(separator: .withTime)),
+                weekBlockCnt: self.weekBlockCnt)
+            self.present(recordResultNC, animated: true)
+        }
     }
 }
