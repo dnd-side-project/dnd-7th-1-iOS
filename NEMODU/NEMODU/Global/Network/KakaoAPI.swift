@@ -8,7 +8,6 @@
 import Alamofire
 import RxSwift
 import RxCocoa
-import KakaoSDKUser
 
 struct KakaoAPI {
     static let shared = KakaoAPI()
@@ -22,15 +21,15 @@ extension KakaoAPI {
                 observer.onNext(.failure(.networkDisconnected))
                 return Disposables.create()
             }
-            // TODO: - 토큰 만료 처리 추가
+            
             let headers: HTTPHeaders = [
                 "Content-Type": "application/json",
-                "Kakao-Access-Token": UserDefaults.standard.string(forKey: UserDefaults.Keys.kakaoAccessToken) ?? ""
             ]
             
             let task = AF.request(urlResource.resultURL,
                                   encoding: URLEncoding.default,
-                                  headers: headers)
+                                  headers: headers,
+                                  interceptor: KakaoInterceptor())
                 .validate(statusCode: 200...399)
                 .responseDecodable(of: T.self) { response in
                     switch response.result {
@@ -60,17 +59,17 @@ extension KakaoAPI {
                 observer.onNext(.failure(.networkDisconnected))
                 return Disposables.create()
             }
-            // TODO: - 토큰 만료 처리 추가
+            
             let headers: HTTPHeaders = [
-                "Content-Type": "application/json",
-                "Kakao-Access-Token": UserDefaults.standard.string(forKey: UserDefaults.Keys.kakaoAccessToken) ?? ""
+                "Content-Type": "application/json"
             ]
             
             let task = AF.request(urlResource.resultURL,
                                   method: .post,
                                   parameters: param,
                                   encoding: URLEncoding.default,
-                                  headers: headers)
+                                  headers: headers,
+                                  interceptor: KakaoInterceptor())
                 .validate(statusCode: 200...399)
                 .responseDecodable(of: T.self) { response in
                     switch response.result {
