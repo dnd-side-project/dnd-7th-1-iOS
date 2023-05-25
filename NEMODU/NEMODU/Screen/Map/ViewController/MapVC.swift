@@ -361,6 +361,7 @@ extension MapVC {
             .withUnretained(self)
             .subscribe(onNext: { owner, isVehicle in
                 if isVehicle {
+                    Map.alertVehicleWarningLocalNotification()
                     owner.popUpAlert(alertType: .speedWarning,
                                      targetVC: owner,
                                      highlightBtnAction: #selector(owner.restartRecord),
