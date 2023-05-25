@@ -104,6 +104,10 @@ class MapVC: BaseViewController {
     private var previousCoordinate: CLLocationCoordinate2D?
     private var walkDistance: Double = 0
     
+    // MARK: - EndRecordingDelegate
+    
+    weak var endRecordDelegate: EndRecordingDelegate?
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -362,7 +366,7 @@ extension MapVC {
                     owner.popUpAlert(alertType: .speedWarning,
                                      targetVC: owner,
                                      highlightBtnAction: #selector(owner.dismissAlert),
-                                     normalBtnAction: nil)
+                                     normalBtnAction:#selector(owner.postEndRecording))
                     owner.pedoMeter.stopUpdates()
                     owner.pauseCnt = owner.stepCnt
                 } else {
@@ -674,5 +678,19 @@ extension MapVC: FriendProfileProtocol {
         challengeDetailVC.getChallengeHistoryDetailInfo(uuid: uuid)
         challengeDetailVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(challengeDetailVC, animated: true)
+    }
+}
+
+// MARK: - EndRecordingDelegate
+
+protocol EndRecordingDelegate: AnyObject {
+    func pushRecordResultVC()
+}
+
+extension MapVC {
+    /// 기록 종료 확인 버튼 이벤트 전달
+    @objc func postEndRecording() {
+        guard let endRecordDelegate = endRecordDelegate else { return }
+        endRecordDelegate.pushRecordResultVC()
     }
 }
