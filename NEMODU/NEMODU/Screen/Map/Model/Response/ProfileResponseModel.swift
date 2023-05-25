@@ -9,7 +9,8 @@ import Foundation
 
 struct ProfileResponseModel: Codable {
     let allMatrixNumber, areas, rank: Int
-    let isFriend, lasted, nickname: String
+    let isFriend, nickname: String
+    let lasted: String?
     let intro: String?
     let picturePath: String
     let challenges: [ChallengeElementResponseModel]

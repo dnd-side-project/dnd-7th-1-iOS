@@ -124,7 +124,7 @@ extension AlertVC {
         normalBtn.setTitle(alertType.normalBtnTitle, for: .normal)
         switch alertType {
         // 버튼 한 개
-        case .defaultNetworkError, .requestLocationAuthority, .realTimeChallenge, .createWeekChallenge, .sendMailError:
+        case .defaultNetworkError, .requestLocationAuthority, .realTimeChallenge, .createWeekChallenge, .sendMailError, .searchLimit:
             btnStackView.addArrangedSubview(highlightBtn)
         // 버튼 세로 두 개
         case .requestMotionAuthority:

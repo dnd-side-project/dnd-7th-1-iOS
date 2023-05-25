@@ -211,7 +211,7 @@ extension FriendProfileBottomSheet {
                                     for: .normal,
                                     placeholder: .defaultThumbnail)
         nicknameLabel.text = profile.nickname
-        lastAccessTime.text = "최근 활동 : \(profile.lasted.relativeDateTime(.withTime))"
+        lastAccessTime.text = "최근 활동 : \(profile.lasted?.relativeDateTime(.withTime) ?? "없음")"
         profileMessage.text = profile.intro
         configureAddFriendBtn(friendType)
         recordStackView.setRecordData(value1: profile.areas.insertComma,
@@ -374,14 +374,14 @@ extension FriendProfileBottomSheet {
     
     
     func bindToastMessage() {
-        viewModel.output.requestStatus
+        viewModel.requestStatus
             .withUnretained(self)
             .subscribe(onNext: { owner, status in
                 owner.popupToast(toastType: status ? .postFriendRequest : .networkError)
             })
             .disposed(by: disposeBag)
         
-        viewModel.output.deleteStatus
+        viewModel.deleteStatus
             .withUnretained(self)
             .subscribe(onNext: { owner, status in
                 owner.popupToast(toastType: status ? .cancelFriendRequest : .networkError)
