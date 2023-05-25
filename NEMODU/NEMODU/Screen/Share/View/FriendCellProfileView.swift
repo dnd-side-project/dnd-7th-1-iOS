@@ -76,20 +76,24 @@ extension FriendCellProfileView {
         nicknameLabel.text = friendInfo.nickname
     }
     
-    // TODO: - 서버 카카오 친구 목록 구현 후 반영
-    /// 카카오 추천 친구 프로필을 초기화하는 메서드
-//    func setKakaoProfile(_ friendInfo: KakaoFriendInfo) {
-//        nameStackView.addArrangedSubview(kakaoNameLabel)
-//        if let picturePathURL = friendInfo.picturePathURL {
-//            profileImageView.kf.setImage(with: picturePathURL)
-//        }
-//        nicknameLabel.text = friendInfo.nickname
-//        kakaoNameLabel.text = friendInfo.kakaoName
-//    }
+    // 카카오 추천 친구 프로필을 초기화하는 메서드
+    func setKakaoProfile(_ friendInfo: KakaoFriendInfo) {
+        nameStackView.addArrangedSubview(kakaoNameLabel)
+        if let picturePathURL = friendInfo.picturePathURL {
+            profileImageView.kf.setImage(with: picturePathURL)
+        }
+        nicknameLabel.text = friendInfo.kakaoNickname
+        kakaoNameLabel.text = friendInfo.nickname
+    }
     
     /// 닉네임을 반환하는 메서드
     func getNickname() -> String? {
         return nicknameLabel.text
+    }
+    
+    /// 카카오 이름을 반환하는 메서드
+    func getKakaoName() -> String? {
+        return kakaoNameLabel.text
     }
 }
 

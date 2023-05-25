@@ -126,6 +126,7 @@ class FriendListVC: BaseViewController {
     override func bindInput() {
         super.bindInput()
         bindEditFriendListBtn()
+        bindFriendProfile()
     }
     
     override func bindOutput() {
@@ -247,6 +248,23 @@ extension FriendListVC {
                 if !self.editFriendListBtn.isSelected && !self.removedFriendsList.isEmpty {
                     self.viewModel.postDeleteFriendRequest(self.removedFriendsList.map { $0.nickname })
                 }
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindFriendProfile() {
+        friendListTV.rx.itemSelected
+            .asDriver()
+            .drive(onNext: { [weak self] indexPath in
+                guard let self = self,
+                      let cell = self.friendListTV.cellForRow(at: indexPath) as? FriendListDefaultTVC,
+                      let friend = cell.getNickname()
+                else { return }
+                self.friendListTV.deselectRow(at: indexPath, animated: true)
+                let friendBottomSheet = FriendProfileBottomSheet()
+                friendBottomSheet.nickname = friend
+                friendBottomSheet.delegate = self
+                self.present(friendBottomSheet, animated: true)
             })
             .disposed(by: disposeBag)
     }
@@ -425,8 +443,22 @@ extension FriendListVC: FriendRequestHandlingDelegate {
     }
 }
 
+// MARK: - FriendProfileProtocol
+
+extension FriendListVC: FriendProfileProtocol {
+    func deselectAnnotation() {}
+    
+    func pushChallengeDetail(_ uuid: String) {
+        let challengeDetailVC = ChallengeHistoryDetailVC()
+        challengeDetailVC.getChallengeHistoryDetailInfo(uuid: uuid)
+        challengeDetailVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(challengeDetailVC, animated: true)
+    }
+}
+
 // MARK: - NavigationBarBackBtnDelegate
 
 protocol NavigationBarBackBtnDelegate: AnyObject {
     func changeFriendListEditingStatus(_ status: Bool)
 }
+

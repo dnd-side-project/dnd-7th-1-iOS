@@ -28,6 +28,7 @@ final class LoginVM: BaseViewModel {
     struct Output {
         var isOriginUser = PublishRelay<Bool>()
         var goToTabBar = PublishRelay<Bool>()
+        var kakaoLoginError = PublishRelay<Bool>()
     }
     
     // MARK: - Init
@@ -63,58 +64,40 @@ extension LoginVM: Output {
 extension LoginVM {
     /// 카카오 로그인 버튼을 눌렀을 때 카카오 토큰을 저장하고 소셜 로그인을 진행하는 메서드
     func kakaoLogin() {
-        if (UserApi.isKakaoTalkLoginAvailable()) {
-            UserApi.shared.loginWithKakaoTalk { (oauthToken, error) in
+        if UserApi.isKakaoTalkLoginAvailable() {
+            UserApi.shared.loginWithKakaoTalk { oauthToken, error in
                 if let error = error {
                     print(error)
                 } else {
-                    var scopes = [String]()
-                    scopes.append("friends")
-                    scopes.append("account_email")
-                    
                     UserApi.shared.me() { (user, error) in
                         if let error = error {
                             print(error)
-                        }
-                        else {
-                            UserDefaults.standard.set(oauthToken?.accessToken, forKey: UserDefaults.Keys.kakaoAccessToken)
-                            UserDefaults.standard.set(oauthToken?.refreshToken, forKey: UserDefaults.Keys.kakaoRefreshToken)
-                            UserDefaults.standard.set(user?.id, forKey: UserDefaults.Keys.kakaoUserID)
-                            self.socialLogin(type: .kakao)
-                        }
-                    }
-                }
-            }
-        } else {
-            // TODO: - 시뮬레이터용 Account 로그인(임시)
-            UserApi.shared.me { user, error in
-                if let error = error {
-                    print(error)
-                } else {
-                    var scopes = [String]()
-                    scopes.append("friends")
-                    scopes.append("account_email")
-                    
-                    UserApi.shared.loginWithKakaoAccount(scopes: scopes) { (oauthToken, error) in
-                        if let error = error {
-                            print(error)
-                        }
-                        else {
-                            UserApi.shared.me() { (user, error) in
+                        } else {
+                            /// 친구 목록 추가 동의
+                            let scopes = ["friends"]
+                            UserApi.shared.loginWithKakaoAccount(scopes: scopes) { (_, error) in
                                 if let error = error {
                                     print(error)
-                                }
-                                else {
-                                    UserDefaults.standard.set(oauthToken?.accessToken, forKey: UserDefaults.Keys.kakaoAccessToken)
-                                    UserDefaults.standard.set(oauthToken?.refreshToken, forKey: UserDefaults.Keys.kakaoRefreshToken)
-                                    UserDefaults.standard.set(user?.id, forKey: UserDefaults.Keys.kakaoUserID)
-                                    self.socialLogin(type: .kakao)
+                                } else {
+                                    UserApi.shared.me() { (user, error) in
+                                        if let error = error {
+                                            print(error)
+                                        } else {
+                                            UserDefaults.standard.set(oauthToken?.accessToken, forKey: UserDefaults.Keys.kakaoAccessToken)
+                                            UserDefaults.standard.set(oauthToken?.refreshToken, forKey: UserDefaults.Keys.kakaoRefreshToken)
+                                            UserDefaults.standard.set(user?.id, forKey: UserDefaults.Keys.kakaoUserID)
+                                            self.socialLogin(type: .kakao)
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
+        } else {
+            print("다른 방법으로 로그인해주세요")
+            output.kakaoLoginError.accept(true)
         }
     }
     
