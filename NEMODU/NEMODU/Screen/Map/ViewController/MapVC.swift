@@ -351,9 +351,7 @@ extension MapVC {
                   let deviceActivity = deviceActivity
             else { return }
             
-            if deviceActivity.stationary || deviceActivity.walking || deviceActivity.running {
-                self.isVehicle.accept(false)
-            } else if deviceActivity.automotive || deviceActivity.cycling {
+            if deviceActivity.automotive || deviceActivity.cycling {
                 self.isVehicle.accept(true)
             }
         }
@@ -365,7 +363,7 @@ extension MapVC {
                 if isVehicle {
                     owner.popUpAlert(alertType: .speedWarning,
                                      targetVC: owner,
-                                     highlightBtnAction: #selector(owner.dismissAlert),
+                                     highlightBtnAction: #selector(owner.restartRecord),
                                      normalBtnAction:#selector(owner.postEndRecording))
                     owner.pedoMeter.stopUpdates()
                     owner.pauseCnt = owner.stepCnt
@@ -692,5 +690,11 @@ extension MapVC {
     @objc func postEndRecording() {
         guard let endRecordDelegate = endRecordDelegate else { return }
         endRecordDelegate.pushRecordResultVC()
+    }
+    
+    /// 탈것 기록 일시정지 - 계속하기 버튼 메서드
+    @objc func restartRecord() {
+        isVehicle.accept(false)
+        dismissAlert()
     }
 }
