@@ -455,6 +455,19 @@ extension CreateWeekChallengeVC {
     }
     
     private func bindInsertChallengeMessageTextView() {
+        insertChallengeMessageTextView.tv.rx.text
+            .asDriver()
+            .drive(onNext: { [weak self] text in
+                guard let self = self,
+                let text = text else { return }
+                
+                let lines = text.components(separatedBy: .newlines)
+                if lines.count > 4 {
+                    self.insertChallengeMessageTextView.tv.text.removeLast()
+                }
+            })
+            .disposed(by: disposeBag)
+                
         insertChallengeMessageTextView.tv.rx.didBeginEditing
             .subscribe(onNext: { [weak self] _ in
                 guard let self = self else { return }
