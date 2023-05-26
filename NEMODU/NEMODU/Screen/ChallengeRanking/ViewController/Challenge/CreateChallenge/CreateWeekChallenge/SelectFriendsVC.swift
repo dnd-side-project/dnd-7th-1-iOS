@@ -38,39 +38,7 @@ class SelectFriendsVC: CreateChallengeVC {
             $0.isHidden = true
         }
     
-    private let searchTextField = UITextField()
-        .then {
-            $0.font = .body2
-            $0.textColor = .gray900
-            $0.attributedPlaceholder = NSAttributedString(string: "닉네임으로 검색",
-                                                      attributes: [NSAttributedString.Key.foregroundColor : UIColor.gray500,
-                                                                   NSAttributedString.Key.font: UIFont.body3])
-            
-            $0.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 36, height: 0))
-            $0.leftViewMode = .always
-            $0.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 36, height: 0))
-            $0.rightViewMode = .always
-            
-            $0.backgroundColor = .gray50
-            
-            $0.tintColor = .main
-            $0.returnKeyType = .search
-            
-            $0.layer.cornerRadius = 8
-    }
-    
-    private let searchImageView = UIImageView()
-        .then {
-            $0.image = UIImage(named: "search")?.withRenderingMode(.alwaysTemplate)
-            $0.tintColor = .gray500
-        }
-    private lazy var deleteAllTextButton = UIButton()
-        .then {
-            $0.setImage(UIImage(named: "close")?.withRenderingMode(.alwaysTemplate), for: .normal)
-            $0.tintColor = .gray400
-            
-            $0.isHidden = true
-        }
+    private let searchBar = NicknameSearchBar()
     
     private let guideLabel = PaddingLabel()
         .then {
@@ -94,6 +62,7 @@ class SelectFriendsVC: CreateChallengeVC {
     
     private let friendsListTableView = UITableView()
         .then {
+            $0.allowsMultipleSelection = true
             $0.separatorStyle = .none
             $0.allowsMultipleSelection = true
             $0.rowHeight = UITableView.automaticDimension
@@ -115,7 +84,7 @@ class SelectFriendsVC: CreateChallengeVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewModel.getFriendsList(size: 15)
+        viewModel.getFriendList(size: 15)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -139,8 +108,7 @@ class SelectFriendsVC: CreateChallengeVC {
     override func bindInput() {
         super.bindInput()
         
-        bindSearchTextField()
-        bindButtons()
+        bindSearchBar()
     }
     
     override func bindOutput() {
@@ -187,16 +155,13 @@ class SelectFriendsVC: CreateChallengeVC {
             seletedFriendsProfileList.append($0.profileImageView.image ?? .defaultThumbnail)
         }
         
-        var targetIndex = 0
         for index in 0..<selectedFriendsList.count {
             if(selectedFriendsList[index].nickname == friendInfo.nickname) {
-                targetIndex = index
+                selectedFriendsList.remove(at: index)
+                seletedFriendsProfileList.remove(at: index)
                 break
             }
         }
-        
-        selectedFriendsList.remove(at: targetIndex)
-        seletedFriendsProfileList.remove(at: targetIndex)
         
         // 선택 친구목록 제거
         switch selectedFriendsList.count {
@@ -309,12 +274,10 @@ extension SelectFriendsVC {
     
     private func configureLayout() {
         view.addSubviews([friendsListContainerView,
-                          searchTextField,
+                          searchBar,
                           guideLabel, limitFriendsCountLabel,
                           friendsListTableView])
         friendsListContainerView.addSubviews([friendsListView1, friendsListView2, friendsListView3])
-        searchTextField.addSubviews([searchImageView, deleteAllTextButton])
-        
         
         friendsListContainerView.snp.makeConstraints {
             friendsListContainerViewHeightConstraint = $0.height.equalTo(0).constraint
@@ -335,29 +298,15 @@ extension SelectFriendsVC {
             $0.left.equalTo(friendsListView2.snp.right).offset(12)
         }
 
-        searchTextField.snp.makeConstraints {
-            $0.height.equalTo(42)
-            
+        searchBar.snp.makeConstraints {
             $0.top.equalTo(friendsListContainerView.snp.bottom).offset(10)
             $0.horizontalEdges.equalTo(view).inset(16)
-        }
-        searchImageView.snp.makeConstraints {
-            $0.width.height.equalTo(16)
-
-            $0.centerY.equalTo(searchTextField)
-            $0.left.equalTo(searchTextField.snp.left).offset(12)
-        }
-        deleteAllTextButton.snp.makeConstraints {
-            $0.width.height.equalTo(16)
-
-            $0.centerY.equalTo(searchTextField)
-            $0.right.equalTo(searchTextField.snp.right).inset(13)
         }
         
         guideLabel.snp.makeConstraints {
             $0.height.equalTo(40)
             
-            $0.top.equalTo(searchTextField.snp.bottom).offset(10)
+            $0.top.equalTo(searchBar.snp.bottom).offset(10)
             $0.horizontalEdges.equalTo(view)
         }
         limitFriendsCountLabel.snp.makeConstraints {
@@ -384,6 +333,12 @@ extension SelectFriendsVC : UITableViewDataSource {
         }
         guard let friendsList = friendsListResponseModel else { return UITableViewCell() }
         cell.configureSelectFriendsTVC(friendInfo: friendsList[indexPath.row])
+        selectedFriendsList.forEach {
+            if $0.nickname == friendsList[indexPath.row].nickname {
+                cell.isSelected = true
+                tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+            }
+        }
         
         return cell
     }
@@ -398,32 +353,55 @@ extension SelectFriendsVC : UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return friendsListResponseModel?.count ?? 0
     }
-   
+    
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        if tableView.indexPathsForSelectedRows?.count ?? 0 > 3 {
+            // 선택 개수 제한
+            return nil
+        } else {
+            guard let cell = tableView.cellForRow(at: indexPath) as? SelectFriendsTVC else { return nil }
+            // 이미 선택된 친구일 때 선택제한
+            return cell.isSelected ? nil : indexPath
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, willDeselectRowAt indexPath: IndexPath) -> IndexPath? {
+        // 삭제 가능여부 판단
+        if tableView.indexPathsForSelectedRows?.count ?? 0 > 0 {
+            return indexPath
+        } else {
+            // 선택되지 않은 친구일 때 선택해제 제한
+            guard let cell = tableView.cellForRow(at: indexPath) as? SelectFriendsTVC else { return nil }
+            return !cell.isSelected ? nil : indexPath
+        }
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) as? SelectFriendsTVC else { return }
-        cell.didTapCheck()
         
-        guard let friendsList = friendsListResponseModel else { return }
-        showSelectedFriend(friendInfo: friendsList[indexPath.row])
-        
-        updateLimitFriendsCountLabel()
-        checkConfirmButtonEnable()
+        if cell.isSelected {
+            cell.isSelected = true
+            
+            guard let friendsList = friendsListResponseModel else { return }
+            showSelectedFriend(friendInfo: friendsList[indexPath.row])
+            
+            updateLimitFriendsCountLabel()
+            checkConfirmButtonEnable()
+        }
     }
 
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) as? SelectFriendsTVC else { return }
-        cell.didTapCheck()
         
-        guard let friendsList = friendsListResponseModel else { return }
-        deleteSelectedFriend(friendInfo: friendsList[indexPath.row])
-
-        updateLimitFriendsCountLabel()
-        checkConfirmButtonEnable()
-    }
-    
-    // 친구선택 수 제한
-    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        return tableView.indexPathsForSelectedRows?.count ?? 0 < 3 ? indexPath : nil
+        if !cell.isSelected {
+            cell.isSelected = false
+            
+            guard let friendsList = friendsListResponseModel else { return }
+            deleteSelectedFriend(friendInfo: friendsList[indexPath.row])
+            
+            updateLimitFriendsCountLabel()
+            checkConfirmButtonEnable()
+        }
     }
     
     // FooterView
@@ -445,27 +423,27 @@ extension SelectFriendsVC : UITableViewDelegate {
 
 extension SelectFriendsVC {
     
-    private func bindSearchTextField() {
-        searchTextField.rx.text.changed
-            .asDriver()
-            .drive(onNext: { [weak self] text in
-                guard let self = self,
-                let searchNickname = text else { return }
-                
-                searchNickname.count == 0 ? (self.deleteAllTextButton.isHidden = true) : (self.deleteAllTextButton.isHidden = false)
+    private func bindSearchBar() {
+        searchBar.rx.searchButtonClicked
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                let keyword = owner.searchBar.text ?? ""
+                if keyword.count > 1 {
+                    owner.viewModel.getSearchResult(keyword)
+                } else {
+                    owner.popUpAlert(alertType: .searchLimit,
+                                     targetVC: owner,
+                                     highlightBtnAction: #selector(self.dismissAlert),
+                                     normalBtnAction: nil)
+                }
             })
             .disposed(by: disposeBag)
-    }
-    
-    private func bindButtons() {
-        deleteAllTextButton.rx.tap
-            .asDriver()
-            .drive(onNext: { [weak self] _ in
+        
+        searchBar.rx.text
+            .filter({ $0?.count == 0 })
+            .subscribe(onNext: { [weak self] _ in
                 guard let self = self else { return }
-                
-                self.searchTextField.text = ""
-                self.deleteAllTextButton.isHidden = true
-                self.searchTextField.becomeFirstResponder()
+                self.viewModel.getFriendList(size: 15)
             })
             .disposed(by: disposeBag)
     }
