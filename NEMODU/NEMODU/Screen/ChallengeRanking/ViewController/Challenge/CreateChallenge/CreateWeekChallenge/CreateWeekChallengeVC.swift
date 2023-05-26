@@ -182,10 +182,10 @@ class CreateWeekChallengeVC: CreateChallengeVC {
             friendsNickname.append(friend.nickname)
         }
         
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .medium
-        dateFormatter.dateFormat = DateType.withTime.dateFormatter
-        let challengeStart = dateFormatter.string(from: startedDate ?? .now)
+        var challengeStart: String = ""
+        if let startDate = startedDate {
+            challengeStart = "\(startDate.year)-\(startDate.month.showTwoDigitNumber)-\(startDate.day.showTwoDigitNumber)T00:00:00"
+        }
         
         viewModel.requestCreateWeekChallengeVM(with: CreateChallengeRequestModel(friends: friendsNickname, message: challengeMessage, name: challengeName, nickname: myNickname, started: challengeStart, type: type))
     }
