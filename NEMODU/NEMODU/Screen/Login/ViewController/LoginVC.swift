@@ -47,6 +47,11 @@ class LoginVC: BaseViewController {
         super.viewDidLoad()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        UserDefaults.standard.set(nil, forKey: UserDefaults.Keys.nickname)
+    }
+    
     override func configureView() {
         super.configureView()
         configureContentView()
