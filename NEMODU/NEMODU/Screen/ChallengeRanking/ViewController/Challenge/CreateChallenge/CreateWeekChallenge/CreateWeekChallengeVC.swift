@@ -182,10 +182,10 @@ class CreateWeekChallengeVC: CreateChallengeVC {
             friendsNickname.append(friend.nickname)
         }
         
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .medium
-        dateFormatter.dateFormat = DateType.withTime.dateFormatter
-        let challengeStart = dateFormatter.string(from: startedDate ?? .now)
+        var challengeStart: String = ""
+        if let startDate = startedDate {
+            challengeStart = "\(startDate.year)-\(startDate.month.showTwoDigitNumber)-\(startDate.day.showTwoDigitNumber)T00:00:00"
+        }
         
         viewModel.requestCreateWeekChallengeVM(with: CreateChallengeRequestModel(friends: friendsNickname, message: challengeMessage, name: challengeName, nickname: myNickname, started: challengeStart, type: type))
     }
@@ -455,6 +455,19 @@ extension CreateWeekChallengeVC {
     }
     
     private func bindInsertChallengeMessageTextView() {
+        insertChallengeMessageTextView.tv.rx.text
+            .asDriver()
+            .drive(onNext: { [weak self] text in
+                guard let self = self,
+                let text = text else { return }
+                
+                let lines = text.components(separatedBy: .newlines)
+                if lines.count > 4 {
+                    self.insertChallengeMessageTextView.tv.text.removeLast()
+                }
+            })
+            .disposed(by: disposeBag)
+                
         insertChallengeMessageTextView.tv.rx.didBeginEditing
             .subscribe(onNext: { [weak self] _ in
                 guard let self = self else { return }
