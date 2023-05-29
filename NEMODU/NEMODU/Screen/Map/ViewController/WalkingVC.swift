@@ -317,8 +317,7 @@ extension WalkingVC {
                                                profileImageURL: friend.picturePathURL,
                                                nickname: friend.nickname,
                                                color: .main,
-                                               isHidden: !self.viewModel.output.friendVisible.value,
-                                               isEnabled: true)
+                                               isHidden: !self.viewModel.output.friendVisible.value)
             })
             .disposed(by: disposeBag)
     }
@@ -338,8 +337,7 @@ extension WalkingVC {
                                                nickname: friend.nickname,
                                                color: ChallengeColorType(rawValue: friend.challengeColor)?.primaryColor ?? .main,
                                                challengeCnt: friend.challengeNumber,
-                                               isHidden: !self.viewModel.output.friendVisible.value,
-                                               isEnabled: true)
+                                               isHidden: !self.viewModel.output.friendVisible.value)
             })
             .disposed(by: disposeBag)
     }
