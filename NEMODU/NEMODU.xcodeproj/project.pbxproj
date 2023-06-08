@@ -222,7 +222,6 @@
 		3C14411629E30B2A00FFCF31 /* SetAuthorityVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C14411529E30B2A00FFCF31 /* SetAuthorityVC.swift */; };
 		3C2327B72A03730700251316 /* NotificationBoxVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C2327B62A03730700251316 /* NotificationBoxVC.swift */; };
 		3C2327B92A0387EA00251316 /* NotificationListTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C2327B82A0387EA00251316 /* NotificationListTVC.swift */; };
-		3C2327BB2A03E42200251316 /* NotificationListIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C2327BA2A03E42200251316 /* NotificationListIcon.swift */; };
 		3C2A263228FF8BE4009E0069 /* AreaRankingListVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C2A263128FF8BE4009E0069 /* AreaRankingListVM.swift */; };
 		3C2A2634290018C0009E0069 /* StepRankingListVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C2A2633290018C0009E0069 /* StepRankingListVM.swift */; };
 		3C2A263629001E5F009E0069 /* AccumulateRankingListVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C2A263529001E5F009E0069 /* AccumulateRankingListVM.swift */; };
@@ -520,7 +519,6 @@
 		3C14411529E30B2A00FFCF31 /* SetAuthorityVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetAuthorityVC.swift; sourceTree = "<group>"; };
 		3C2327B62A03730700251316 /* NotificationBoxVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationBoxVC.swift; sourceTree = "<group>"; };
 		3C2327B82A0387EA00251316 /* NotificationListTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationListTVC.swift; sourceTree = "<group>"; };
-		3C2327BA2A03E42200251316 /* NotificationListIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationListIcon.swift; sourceTree = "<group>"; };
 		3C2A263128FF8BE4009E0069 /* AreaRankingListVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AreaRankingListVM.swift; sourceTree = "<group>"; };
 		3C2A2633290018C0009E0069 /* StepRankingListVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepRankingListVM.swift; sourceTree = "<group>"; };
 		3C2A263529001E5F009E0069 /* AccumulateRankingListVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccumulateRankingListVM.swift; sourceTree = "<group>"; };
@@ -1190,7 +1188,6 @@
 				3C79AEB329E128B40035EA12 /* NotificationCategoryType.swift */,
 				3C506C1E29FD3A4E006EDAAE /* TermsConditionsWebLink.swift */,
 				2387F1B429FFAEA6001B4897 /* MapType.swift */,
-				3C2327BA2A03E42200251316 /* NotificationListIcon.swift */,
 				23842E092A1902F7006DFCA4 /* ErrorType.swift */,
 			);
 			path = Enum;
@@ -1865,7 +1862,6 @@
 				23EFB81C29113A00009A2D01 /* RefreshBtnView.swift in Sources */,
 				2348B3FB2892D15C001095BC /* Output.swift in Sources */,
 				2339D74E28B2849F0018013D /* MyRecordDataVC.swift in Sources */,
-				3C2327BB2A03E42200251316 /* NotificationListIcon.swift in Sources */,
 				23255A7B28D09F10005D6D5A /* WeekCVC.swift in Sources */,
 				3CF431C028FE82FE007EB115 /* AccumulateRankingListVC.swift in Sources */,
 				23E0DD722A1E7D0C0074A21E /* Reactive.swift in Sources */,

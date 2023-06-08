@@ -33,7 +33,7 @@ final class NotificationBoxVM: BaseViewModel {
         var loading = BehaviorRelay<Bool>(value: false)
         var notificationList = PublishRelay<NotificationBoxResponseModel>()
         var isSuccessMarkReadNotification = PublishRelay<Bool>()
-        var isEmptyNotificationList = PublishRelay<Bool>()
+        var isNotificationListEmpty = PublishRelay<Bool>()
     }
     
     // MARK: - Init
@@ -76,7 +76,7 @@ extension NotificationBoxVM {
                     owner.apiError.onError(error)
                 case .success(let data):
                     if(data.count == 0) {
-                        owner.output.isEmptyNotificationList.accept(true)
+                        owner.output.isNotificationListEmpty.accept(true)
                     } else {
                         owner.output.notificationList.accept(data)
                     }
@@ -103,19 +103,19 @@ extension NotificationBoxVM {
             .disposed(by: bag)
     }
     
-    func emptyNotificationList(messageIdList: [String]) {
+    func emptyNotificationList(messageIDList: [String]) {
         let path = "noti/delete"
         let resource = urlResource<String>(path: path)
 
-        apiSession.postRequest(with: resource, param: RemoveNotificationListRequestModel(notifications: messageIdList).removeNotificationList)
+        apiSession.postRequest(with: resource, param: RemoveNotificationListRequestModel(notifications: messageIDList).removeNotificationList)
             .withUnretained(self)
             .subscribe(onNext: { owner, result in
                 switch result {
                 case .failure(let error):
                     owner.apiError.onError(error)
-                    owner.output.isEmptyNotificationList.accept(false)
+                    owner.output.isNotificationListEmpty.accept(false)
                 case .success(_):
-                    owner.output.isEmptyNotificationList.accept(true)
+                    owner.output.isNotificationListEmpty.accept(true)
                 }
             })
             .disposed(by: bag)
