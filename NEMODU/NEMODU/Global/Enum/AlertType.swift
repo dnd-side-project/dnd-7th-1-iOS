@@ -22,6 +22,7 @@ enum AlertType {
     case logout
     case deleteUser
     case searchLimit
+    case emptyNotification
 }
 
 extension AlertType {
@@ -55,6 +56,8 @@ extension AlertType {
             return "네모두 탈퇴하기"
         case .searchLimit:
             return "두 글자 이상 입력해주세요."
+        case .emptyNotification:
+            return "알림함 비우기"
         }
     }
     
@@ -82,6 +85,8 @@ extension AlertType {
             return "로그아웃 하시겠습니까?"
         case .deleteUser:
             return "탈퇴하기 버튼을 누르면 모든 정보가 즉시\n삭제되며, 복구할 수 없습니다.\n\n정말로 탈퇴하시겠습니까?"
+        case .emptyNotification:
+            return "알림함을 정말 비우시겠습니까?"
         }
     }
     
@@ -103,6 +108,8 @@ extension AlertType {
             return "로그아웃 하기"
         case .deleteUser:
             return "탈퇴하기"
+        case .emptyNotification:
+            return "비우기"
         }
     }
     
@@ -118,7 +125,7 @@ extension AlertType {
             return "기록 끝내기"
         case .discardChanges:
             return "계속 작성하기"
-        case .deleteFriend, .logout, .deleteUser:
+        case .deleteFriend, .logout, .deleteUser, .emptyNotification:
             return "취소"
         }
     }
