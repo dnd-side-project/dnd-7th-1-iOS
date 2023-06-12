@@ -30,37 +30,6 @@ enum NotificationCategoryType: String {
 }
 
 extension NotificationCategoryType {
-    var identifier: String {
-        switch self {
-        // 공통
-        case .challengeWeekStart:
-            return "COMMON_WEEK_START"
-        case .challengeWeekEnd:
-            return "COMMON_WEEK_END"
-        // 친구
-        case .friendRequest:
-            return "FRIEND_RECEIVED_REQUEST"
-        case .friendAccept:
-            return "FRIEND_ACCEPT"
-        // 챌린지
-        case .challengeInvited:
-            return "CHALLENGE_RECEIVED_REQUEST"
-        case .challengeAccepted:
-            return "CHALLENGE_ACCEPTED"
-        case .challengeStart:
-            return "CHALLENGE_START_SOON"
-        case .challengeCancelled:
-            return "CHALLENGE_CANCELED"
-        case .challengeResult:
-            return "CHALLENGE_RESULT"
-        // FCM 토큰 갱신
-        case .fcmTokenReissue:
-            return "COMMON_REISSUE_FCM_TOKEN"
-        }
-    }
-}
-
-extension NotificationCategoryType {
     
     func getNotificationIconImageNamed(isRead: Bool) -> String? {
         switch self {
