@@ -29,7 +29,7 @@ extension UserDataModel {
         }
         
         var parameter: Parameters = [
-            "deviceType": UIDevice.current.model.contains("iPhone") ? "PHONE" : "PAD",
+            "deviceType": FCMTokenManagement.shared.getDeviceType(),
             "nickname": nickname,
             "email": email,
             "friends": friends,
