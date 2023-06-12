@@ -126,6 +126,8 @@ class FriendListVC: BaseViewController {
     override func bindInput() {
         super.bindInput()
         bindEditFriendListBtn()
+        bindFriendProfile()
+        bindSearchBar()
     }
     
     override func bindOutput() {
@@ -247,6 +249,48 @@ extension FriendListVC {
                 if !self.editFriendListBtn.isSelected && !self.removedFriendsList.isEmpty {
                     self.viewModel.postDeleteFriendRequest(self.removedFriendsList.map { $0.nickname })
                 }
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindFriendProfile() {
+        friendListTV.rx.itemSelected
+            .asDriver()
+            .drive(onNext: { [weak self] indexPath in
+                guard let self = self,
+                      let cell = self.friendListTV.cellForRow(at: indexPath) as? FriendListDefaultTVC,
+                      let friend = cell.getNickname()
+                else { return }
+                self.friendListTV.deselectRow(at: indexPath, animated: true)
+                let friendBottomSheet = FriendProfileBottomSheet()
+                friendBottomSheet.nickname = friend
+                friendBottomSheet.delegate = self
+                self.present(friendBottomSheet, animated: true)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindSearchBar() {
+        searchBar.rx.searchButtonClicked
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                let keyword = owner.searchBar.text ?? ""
+                if keyword.count > 1 {
+                    owner.viewModel.getSearchResult(keyword)
+                } else {
+                    owner.popUpAlert(alertType: .searchLimit,
+                                     targetVC: owner,
+                                     highlightBtnAction: #selector(self.dismissAlert),
+                                     normalBtnAction: nil)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        searchBar.rx.text
+            .filter({ $0?.count == 0 })
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.viewModel.getFriendList(size: 12)
             })
             .disposed(by: disposeBag)
     }
@@ -425,8 +469,22 @@ extension FriendListVC: FriendRequestHandlingDelegate {
     }
 }
 
+// MARK: - FriendProfileProtocol
+
+extension FriendListVC: FriendProfileProtocol {
+    func deselectAnnotation() {}
+    
+    func pushChallengeDetail(_ uuid: String) {
+        let challengeDetailVC = ChallengeHistoryDetailVC()
+        challengeDetailVC.getChallengeHistoryDetailInfo(uuid: uuid)
+        challengeDetailVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(challengeDetailVC, animated: true)
+    }
+}
+
 // MARK: - NavigationBarBackBtnDelegate
 
 protocol NavigationBarBackBtnDelegate: AnyObject {
     func changeFriendListEditingStatus(_ status: Bool)
 }
+

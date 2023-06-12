@@ -21,6 +21,8 @@ enum AlertType {
     case deleteFriend(nickname: String)
     case logout
     case deleteUser
+    case searchLimit
+    case emptyNotification
 }
 
 extension AlertType {
@@ -52,6 +54,10 @@ extension AlertType {
             return "로그아웃"
         case .deleteUser:
             return "네모두 탈퇴하기"
+        case .searchLimit:
+            return "두 글자 이상 입력해주세요."
+        case .emptyNotification:
+            return "알림함 비우기"
         }
     }
     
@@ -61,7 +67,7 @@ extension AlertType {
             return "회원님의 위치 정보는\n활동 기록 및 측정에 사용됩니다.\n\n정보는 친구들에게만 보여지며\n설정에서 언제든 공유를 중지할 수 있습니다."
         case .requestMotionAuthority:
             return "회원님의 피트니스 정보는\n걸음수 기록 및 측정에 사용됩니다.\n\n해당 정보는 보다 정확한\n기록 측정을 위해 사용됩니다.\n설정에서 언제든 공유를 중지할 수 있습니다."
-        case .recordNetworkError, .discardChanges, .deleteFriend:
+        case .recordNetworkError, .discardChanges, .deleteFriend, .searchLimit:
             return nil
         case .defaultNetworkError:
             return "네트워크가 원활하지 않아 접속이 지연되고\n있습니다. 잠시 후에 다시 시도해 주세요."
@@ -79,6 +85,8 @@ extension AlertType {
             return "로그아웃 하시겠습니까?"
         case .deleteUser:
             return "탈퇴하기 버튼을 누르면 모든 정보가 즉시\n삭제되며, 복구할 수 없습니다.\n\n정말로 탈퇴하시겠습니까?"
+        case .emptyNotification:
+            return "알림함을 정말 비우시겠습니까?"
         }
     }
     
@@ -88,7 +96,7 @@ extension AlertType {
             return "시스템 설정 가기"
         case .recordNetworkError:
             return "다시 저장하기"
-        case .defaultNetworkError, .realTimeChallenge, .createWeekChallenge, .sendMailError:
+        case .defaultNetworkError, .realTimeChallenge, .createWeekChallenge, .sendMailError, .searchLimit:
             return "확인"
         case .minimumBlocks, .speedWarning:
             return "계속 하기"
@@ -100,6 +108,8 @@ extension AlertType {
             return "로그아웃 하기"
         case .deleteUser:
             return "탈퇴하기"
+        case .emptyNotification:
+            return "비우기"
         }
     }
     
@@ -109,13 +119,13 @@ extension AlertType {
             return "다음에"
         case .recordNetworkError:
             return "그냥 나가기"
-        case .requestLocationAuthority, .defaultNetworkError, .realTimeChallenge, .createWeekChallenge, .sendMailError:
+        case .requestLocationAuthority, .defaultNetworkError, .realTimeChallenge, .createWeekChallenge, .sendMailError, .searchLimit:
             return nil
         case .minimumBlocks, .speedWarning:
             return "기록 끝내기"
         case .discardChanges:
             return "계속 작성하기"
-        case .deleteFriend, .logout, .deleteUser:
+        case .deleteFriend, .logout, .deleteUser, .emptyNotification:
             return "취소"
         }
     }

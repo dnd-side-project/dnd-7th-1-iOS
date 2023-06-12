@@ -9,12 +9,16 @@ import Foundation
 import RxCocoa
 import RxSwift
 
-final class FriendListVM: BaseViewModel {
+final class FriendListVM: BaseViewModel, SearchFriendProtocol {
     var apiSession: APIService = APISession()
     let apiError = PublishSubject<APIError>()
     var bag = DisposeBag()
     var input = Input()
     var output = Output()
+    
+    // MARK: - SearchFriendProtocol
+    
+    var searchList = PublishRelay<[FriendDefaultInfo]>()
     
     // MARK: - Input
     
@@ -48,6 +52,17 @@ final class FriendListVM: BaseViewModel {
         var isLast = BehaviorRelay<Bool>(value: true)
         var nextOffset = BehaviorRelay<Int?>(value: nil)
     }
+    
+    // MARK: - Init
+    
+    init() {
+        bindInput()
+        bindOutput()
+    }
+    
+    deinit {
+        bag = DisposeBag()
+    }
 }
 
 // MARK: - Input
@@ -59,7 +74,14 @@ extension FriendListVM: Input {
 // MARK: - Output
 
 extension FriendListVM: Output {
-    func bindOutput() {}
+    func bindOutput() {
+        searchList
+            .subscribe(onNext: { [weak self] data in
+                guard let self = self else { return }
+                self.output.myFriendsList.friendsInfo.accept(data)
+            })
+            .disposed(by: bag)
+    }
 }
 
 // MARK: - Network

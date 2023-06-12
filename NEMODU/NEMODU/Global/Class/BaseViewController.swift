@@ -66,6 +66,11 @@ extension BaseViewController {
     func setInteractivePopGesture(_ isEnabled: Bool) {
         navigationController?.interactivePopGestureRecognizer?.isEnabled = isEnabled
     }
+    
+    /// 현재 화면의 rootViewController까지 dismiss하는 메서드
+    @objc func dismissToRootVC() {
+        view.window?.rootViewController?.dismiss(animated: true, completion: nil)
+    }
 }
 
 // MARK: - APIErrorHandling

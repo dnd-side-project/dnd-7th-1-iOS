@@ -9,7 +9,7 @@ import Foundation
 import RxCocoa
 import RxSwift
 
-final class SelectFriendsVM: BaseViewModel {
+final class SelectFriendsVM: BaseViewModel, SearchFriendProtocol {
     var apiSession: APIService = APISession()
     let apiError = PublishSubject<APIError>()
     
@@ -17,6 +17,10 @@ final class SelectFriendsVM: BaseViewModel {
     
     var input = Input()
     var output = Output()
+    
+    // MARK: - SearchFriendProtocol
+    
+    var searchList = PublishRelay<[FriendDefaultInfo]>()
     
     // MARK: - Input
     
@@ -51,13 +55,20 @@ extension SelectFriendsVM: Input {
 // MARK: - Output
 
 extension SelectFriendsVM: Output {
-    func bindOutput() {}
+    func bindOutput() {
+        searchList
+            .subscribe(onNext: { [weak self] data in
+                guard let self = self else { return }
+                self.output.friendsList.accept(data)
+            })
+            .disposed(by: bag)
+    }
 }
 
 // MARK: - Networking
 
 extension SelectFriendsVM {
-    func getFriendsList(size: Int) {
+    func getFriendList(size: Int) {
         guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
         var path = "friend/list?nickname=\(nickname)&size=\(size)"
         if let offset = output.nextOffset.value {

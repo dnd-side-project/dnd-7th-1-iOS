@@ -12,6 +12,7 @@ enum ToastType {
     case networkError
     case postFriendRequest
     case cancelFriendRequest
+    case kakaoInviteRequest
     case acceptFriendRequest(nickname: String)
     case refuseFriendRequest(nickname: String)
     case profileChanged
@@ -28,6 +29,8 @@ extension ToastType {
             return "친구 요청을 보냈습니다."
         case .cancelFriendRequest:
             return "친구 요청이 취소되었습니다."
+        case .kakaoInviteRequest:
+            return "초대 메시지가 전송되었습니다."
         case .acceptFriendRequest(let nickname):
             return "\(nickname)님과 친구가 되었습니다."
         case .refuseFriendRequest(let nickname):

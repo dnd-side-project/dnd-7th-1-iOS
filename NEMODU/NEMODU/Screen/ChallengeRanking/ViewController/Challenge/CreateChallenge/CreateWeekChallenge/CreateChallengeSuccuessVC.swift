@@ -15,6 +15,14 @@ class CreateChallengeSuccuessVC: CreateChallengeVC {
     
     // MARK: - UI components
     
+    private let baseContainerView = UIView()
+    private let contentStackView = UIStackView()
+        .then {
+            $0.axis = .vertical
+            $0.spacing = 20
+            $0.alignment = .center
+        }
+    
     private let successTitleLabel = PaddingLabel()
         .then {
             $0.text = "주간 챌린지가 \n만들어졌습니다!"
@@ -38,12 +46,13 @@ class CreateChallengeSuccuessVC: CreateChallengeVC {
             $0.backgroundColor = .gray50
             $0.layer.cornerRadius = 16
         }
-    
     private let challengeTitleLabel = PaddingLabel()
         .then {
             $0.text = "----"
-            $0.font = .body1
             $0.textColor = .gray900
+            $0.font = .body1
+            $0.textAlignment = .center
+            $0.setLineBreakMode()
             
             $0.backgroundColor = .clear
         }
@@ -183,26 +192,28 @@ extension CreateChallengeSuccuessVC {
 extension CreateChallengeSuccuessVC {
     
     private func configureLayout() {
-        view.addSubviews([successTitleLabel, successIconImageView, informationContainerView])
+        view.addSubviews([baseContainerView])
+        baseContainerView.addSubviews([contentStackView])
+        [successTitleLabel, successIconImageView, informationContainerView].forEach {
+            contentStackView.addArrangedSubview($0)
+        }
         informationContainerView.addSubviews([challengeTitleLabel, challengeDateLabel, userProfileStackView, separateView, explainLabel])
         
-        
-        successTitleLabel.snp.makeConstraints {
-            $0.centerX.equalTo(view)
-            $0.top.lessThanOrEqualTo(navigationBar.snp.bottom).offset(60)
+        baseContainerView.snp.makeConstraints {
+            $0.top.equalTo(navigationBar.snp.bottom)
+            $0.horizontalEdges.equalTo(view)
+            $0.bottom.equalTo(confirmButton.snp.top)
         }
+        contentStackView.snp.makeConstraints {
+            $0.centerY.horizontalEdges.equalTo(baseContainerView)
+        }
+        
         successIconImageView.snp.makeConstraints {
             $0.width.height.equalTo(102)
-            
-            $0.centerX.equalTo(successTitleLabel)
-            $0.top.equalTo(successTitleLabel.snp.bottom).offset(36)
         }
         
         informationContainerView.snp.makeConstraints {
             $0.width.equalTo(343)
-            
-            $0.centerX.equalTo(successIconImageView)
-            $0.top.equalTo(successIconImageView.snp.bottom).offset(36)
         }
         challengeTitleLabel.snp.makeConstraints {
             $0.centerX.equalTo(informationContainerView)

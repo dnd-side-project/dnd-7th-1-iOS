@@ -42,7 +42,7 @@ class FriendRecommendSettingVC: BaseViewController {
             $0.isOn = true
         }
     
-    private var isPublicRecommend = true
+    private var isExceptRecommend = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,9 +86,9 @@ extension FriendRecommendSettingVC {
         titleLabel.text = "다른 사용자에게\n\(nickname)님을 추천할까요?"
     }
     
-    /// 동의 상태를 전달하는 메서드
+    /// 동의 상태를 전달하는 메서드 (공개-true/비공개-false)
     func getRecommendAuth() -> Bool {
-        return isPublicRecommend
+        return !isExceptRecommend
     }
 }
 
@@ -129,7 +129,7 @@ extension FriendRecommendSettingVC {
             .changed
             .withUnretained(self)
             .subscribe(onNext: { owner, status in
-                owner.isPublicRecommend = status
+                owner.isExceptRecommend = status
             })
             .disposed(by: disposeBag)
     }

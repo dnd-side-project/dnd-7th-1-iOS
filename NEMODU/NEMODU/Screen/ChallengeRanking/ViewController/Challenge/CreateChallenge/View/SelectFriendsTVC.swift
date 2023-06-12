@@ -35,13 +35,24 @@ class SelectFriendsTVC : BaseTableViewCell {
         configureLayout()
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        isSelected = false
+    }
+    
+    override var isSelected: Bool {
+        didSet {
+            didTapCheck(toCheck: isSelected)
+        }
+    }
+    
     // MARK: - Function
     
     /// 친구목록 셀 선택/해제 시 체크 이미지 토글 함수
-    func didTapCheck() {
-        isSelectCheck.toggle()
-        selectFriendsView.checkImageView.image = UIImage(named: isSelectCheck ? "checkCircle" : "uncheck")?.withRenderingMode(.alwaysTemplate)
-        selectFriendsView.checkImageView.tintColor = isSelectCheck ? .secondary : .gray300
+    func didTapCheck(toCheck: Bool) {
+        selectFriendsView.checkImageView.image = UIImage(named: toCheck ? "checkCircle" : "uncheck")?.withRenderingMode(.alwaysTemplate)
+        selectFriendsView.checkImageView.tintColor = toCheck ? .secondary : .gray300
     }
     
 }

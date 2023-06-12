@@ -124,7 +124,7 @@ extension AlertVC {
         normalBtn.setTitle(alertType.normalBtnTitle, for: .normal)
         switch alertType {
         // 버튼 한 개
-        case .defaultNetworkError, .requestLocationAuthority, .realTimeChallenge, .createWeekChallenge, .sendMailError:
+        case .defaultNetworkError, .requestLocationAuthority, .realTimeChallenge, .createWeekChallenge, .sendMailError, .searchLimit:
             btnStackView.addArrangedSubview(highlightBtn)
         // 버튼 세로 두 개
         case .requestMotionAuthority:
@@ -133,7 +133,7 @@ extension AlertVC {
                 btnStackView.addArrangedSubview($0)
             }
         // 버튼 가로 두 개
-        case .recordNetworkError, .minimumBlocks, .speedWarning, .discardChanges, .deleteFriend, .logout, .deleteUser:
+        case .recordNetworkError, .minimumBlocks, .speedWarning, .discardChanges, .deleteFriend, .logout, .deleteUser, .emptyNotification:
             btnStackView.axis = .horizontal
             [normalBtn, highlightBtn].forEach {
                 btnStackView.addArrangedSubview($0)

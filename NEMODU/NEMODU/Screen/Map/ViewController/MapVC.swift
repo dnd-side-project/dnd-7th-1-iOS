@@ -90,7 +90,8 @@ class MapVC: BaseViewController {
     // 운동 기록
     var blocks: [Matrix] = []
     var blocksCnt = BehaviorRelay<Int>(value: 0)
-    var isWalking: Bool?
+    var isRecording = BehaviorRelay<Bool>(value: false)
+    var isVehicle = BehaviorRelay<Bool>(value: false)
     var updateDistance = BehaviorRelay<Int>(value: 0)
     
     private let activityManager = CMMotionActivityManager()
@@ -102,6 +103,10 @@ class MapVC: BaseViewController {
     private var prevLongitude: Int = 0
     private var previousCoordinate: CLLocationCoordinate2D?
     private var walkDistance: Double = 0
+    
+    // MARK: - EndRecordingDelegate
+    
+    weak var endRecordDelegate: EndRecordingDelegate?
     
     // MARK: - Lifecycle
     
@@ -123,7 +128,7 @@ class MapVC: BaseViewController {
     override func bindInput() {
         super.bindInput()
         bindMapGesture()
-        bindBtn()
+        bindCurrentLocationBtn()
     }
     
     override func bindOutput() {
@@ -205,9 +210,9 @@ extension MapVC {
             })
             .disposed(by: bag)
     }
-    
-    private func bindBtn() {
-        // 현재 위치로 이동 버튼
+
+    /// 현재 위치로 이동 버튼 input 연결 메서드
+    private func bindCurrentLocationBtn() {
         currentLocationBtn.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] _ in
@@ -315,7 +320,8 @@ extension MapVC {
         }
     }
     
-    /// 디바이스의 건강 데이터를 요청하는 메서드
+    /// 디바이스의 건강 데이터 추적 권한 상태를 반환하는 메서드.
+    /// 권한이 정의되지 않은 상태면 권한 요청
     func requestMotionAuthorization() -> Bool {
         let status = CMMotionActivityManager.authorizationStatus()
         switch status {
@@ -334,32 +340,53 @@ extension MapVC {
             fatalError()
         }
     }
-    
-    /// 사용자 activity를 추적하여 운동 상태와 걸음 수를 측정하는 함수
-    func updateStep() {
-        // TODO: - 자동차 or 자전거 사용 시 알람 정책 정한 후 수정
-        activityManager.startActivityUpdates(
-            to: OperationQueue.current!,
-            withHandler: {(
-                deviceActivity: CMMotionActivity!
-            ) -> Void in
-                if deviceActivity.stationary {
-                    print("정지중!")
-                } else if deviceActivity.walking {
-                    print("걷는중!")
-                } else if deviceActivity.running {
-                    print("뛰는중!")
-                } else if deviceActivity.cycling || deviceActivity.automotive {
-                    print("자전거 or 자동차!")
-                    self.popUpAlert(alertType: .speedWarning,
-                                    targetVC: self,
-                                    highlightBtnAction: #selector(self.dismissAlert),
-                                    normalBtnAction: nil)
-                }
+    /**
+     사용자 activity를 추적하여 사용자의 운동 상태를 파악하는 메서드.
+     자동차 or 자전거에 탄 상태라면 걸음수 측정을 중지하고 알람창 띄우기
+     정상 측정 상태라면 걸음수 측정을 다시 시작
+     */
+    func startActivityUpdates() {
+        activityManager.startActivityUpdates(to: OperationQueue.current!) { [weak self] deviceActivity in
+            guard let self = self,
+                  let deviceActivity = deviceActivity
+            else { return }
+            
+            if deviceActivity.automotive || deviceActivity.cycling {
+                self.isVehicle.accept(true)
             }
-        )
+        }
         
-        pedoMeter.startUpdates(from: Date()) { data, error in
+        isVehicle
+            .distinctUntilChanged()
+            .withUnretained(self)
+            .subscribe(onNext: { owner, isVehicle in
+                if isVehicle {
+                    Map.alertVehicleWarningLocalNotification()
+                    owner.popUpAlert(alertType: .speedWarning,
+                                     targetVC: owner,
+                                     highlightBtnAction: #selector(owner.restartRecord),
+                                     normalBtnAction:#selector(owner.postEndRecording))
+                    owner.pedoMeter.stopUpdates()
+                    owner.pauseCnt = owner.stepCnt
+                } else {
+                    owner.startUpdateStep()
+                }
+            })
+            .disposed(by: bag)
+    }
+    
+    /// 기록을 종료하는 메서드
+    func endActivityUpdates() {
+        activityManager.stopActivityUpdates()
+        stopUpdateStep()
+    }
+    
+    /// 사용자의 걸음 수를 측정하는 메서드
+    func startUpdateStep() {
+        isRecording.accept(true)
+        
+        pedoMeter.startUpdates(from: Date()) { [weak self] data, error in
+            guard let self = self else { return }
             if error == nil {
                 if let response = data {
                     self.stepCnt = response.numberOfSteps.intValue + self.pauseCnt
@@ -368,9 +395,10 @@ extension MapVC {
         }
     }
     
-    /// update를 중지하는 함수
+    /// 사용자 걸음 수 측정을 정지하는 메서드
     func stopUpdateStep() {
-        activityManager.stopActivityUpdates()
+        isRecording.accept(false)
+        
         pedoMeter.stopUpdates()
         pauseCnt = stepCnt
     }
@@ -533,8 +561,9 @@ extension MapVC: CLLocationManagerDelegate {
         }
         
         // 기록 중이고
+        // 탈것에 타고있지 않고
         // block 경계 이동 시 좌표 판단 및 block overlay 추가
-        if (isWalking ?? false) && (prevLatitude != latitudeUnit || prevLongitude != longitudeUnit) {
+        if isRecording.value && !isVehicle.value && (prevLatitude != latitudeUnit || prevLongitude != longitudeUnit) {
             prevLatitude = latitudeUnit
             prevLongitude = longitudeUnit
             
@@ -552,7 +581,8 @@ extension MapVC: CLLocationManagerDelegate {
         }
         
         // 이동 거리 계산
-        if (isWalking ?? false),
+        if isRecording.value,
+           !isVehicle.value,
            let previousCoordinate = self.previousCoordinate {
             let prevPoint = CLLocation(latitude: previousCoordinate.latitude,
                                        longitude: previousCoordinate.longitude)
@@ -647,5 +677,25 @@ extension MapVC: FriendProfileProtocol {
         challengeDetailVC.getChallengeHistoryDetailInfo(uuid: uuid)
         challengeDetailVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(challengeDetailVC, animated: true)
+    }
+}
+
+// MARK: - EndRecordingDelegate
+
+protocol EndRecordingDelegate: AnyObject {
+    func pushRecordResultVC()
+}
+
+extension MapVC {
+    /// 기록 종료 확인 버튼 이벤트 전달
+    @objc func postEndRecording() {
+        guard let endRecordDelegate = endRecordDelegate else { return }
+        endRecordDelegate.pushRecordResultVC()
+    }
+    
+    /// 탈것 기록 일시정지 - 계속하기 버튼 메서드
+    @objc func restartRecord() {
+        isVehicle.accept(false)
+        dismissAlert()
     }
 }

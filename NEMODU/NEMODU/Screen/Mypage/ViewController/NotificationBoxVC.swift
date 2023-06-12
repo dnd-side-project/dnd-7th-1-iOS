@@ -63,7 +63,7 @@ class NotificationBoxVC: BaseViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        markCommonNotificationRead()
+        markReadNoActionNotification()
     }
     
     override func configureView() {
@@ -101,14 +101,37 @@ class NotificationBoxVC: BaseViewController {
         viewModel.markUserNotificationRead(targetMessageId: selectedNotificationMessageId)
     }
     
-    private func markCommonNotificationRead() {
+    private func markReadNoActionNotification() {
         notificationBoxResponseModel?.forEach {
-            // 클릭시 아무런 액션이 없는 알림인 경우
-            if($0.type == NotificationListIcon.common.description) {
+            switch NotificationCategoryType(rawValue: $0.type) {
+            case .friendRequest,
+                .friendAccept,
+                .challengeInvited,
+                .challengeAccepted,
+                .challengeStart,
+                .challengeResult:
+                break
+                
+                // 클릭시 아무런 액션이 없는 알림인 경우
+            default:
                 // 알림목록 조회 이후 일괄 읽음처리
                 markUserNotificationRead(selectedNotificationMessageId: $0.messageId)
             }
         }
+    }
+    
+    @objc private func confirmEmptyNotification() {
+        var messageIdList = [String]()
+        notificationBoxResponseModel?.forEach {
+            messageIdList.append($0.messageId)
+        }
+        viewModel.emptyNotificationList(messageIDList: messageIdList)
+        
+        dismissAlert()
+    }
+    
+    @objc private func cancelEmptyNotification() {
+        dismissAlert()
     }
     
 }
@@ -172,11 +195,10 @@ extension NotificationBoxVC {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 
-                var messageIdList = [String]()
-                notificationBoxResponseModel?.forEach {
-                    messageIdList.append($0.messageId)
-                }
-                viewModel.emptyNotificationList(messageIdList: messageIdList)
+                self.popUpAlert(alertType: .emptyNotification,
+                                targetVC: self,
+                                highlightBtnAction: #selector(confirmEmptyNotification),
+                                normalBtnAction: #selector(cancelEmptyNotification))
             })
             .disposed(by: disposeBag)
     }
@@ -192,12 +214,12 @@ extension NotificationBoxVC {
             .subscribe(onNext: { [weak self] data in
                 guard let self = self else { return }
                 
-                notificationBoxResponseModel = data
-                notificationListTableView.reloadData()
+                self.notificationBoxResponseModel = data
+                self.notificationListTableView.reloadData()
             })
             .disposed(by: disposeBag)
         
-        viewModel.output.isEmptyNotificationList
+        viewModel.output.isNotificationListEmpty
             .subscribe(onNext: { [weak self] isEmpty in
                 guard let self = self else { return }
                 
@@ -238,36 +260,37 @@ extension NotificationBoxVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let selectedNotification = notificationBoxResponseModel?[indexPath.row] else { return }
         
+        markUserNotificationRead(selectedNotificationMessageId: selectedNotification.messageId)
+        
         var toPushVC = UIViewController()
-        switch selectedNotification.type {
-            // 친구 요청, 수락 시 마이페이지의 친구화면으로 전환
-        case NotificationListIcon.friend.description:
+        switch NotificationCategoryType(rawValue: selectedNotification.type) {
+        // 친구 요청, 수락 시 마이페이지의 친구화면으로 전환
+        case .friendRequest,
+            .friendAccept:
             let friendsVC = FriendsVC()
             friendsVC.hidesBottomBarWhenPushed = true
             
             toPushVC = friendsVC
             
-            // 초대, 수락, 시작 전 챌린지의 상세화면으로 전환
-        case NotificationListIcon.challenge.description:
-            // TODO: - 해당 알림의 챌린지 uuid값 필요
-//            guard let targetUUID = userInfo["challenge_uuid"] as? String else { return }
+        // 초대, 수락, 시작 전 챌린지의 상세화면으로 전환
+        case .challengeInvited,
+            .challengeAccepted,
+            .challengeStart,
+            .challengeResult:
+            guard let targetUUID = selectedNotification.challengeData?.challengeUuid else { return }
             
             let invitedChallengeDetailVC = InvitedChallengeDetailVC()
             invitedChallengeDetailVC.hidesBottomBarWhenPushed = true
             
-            // TODO: - 해당 챌린지 uuid로 푸시
-//            invitedChallengeDetailVC.uuid = targetUUID
+            invitedChallengeDetailVC.uuid = targetUUID
             invitedChallengeDetailVC.getInvitedChallengeDetailInfo()
             
             toPushVC = invitedChallengeDetailVC
-            // TODO: - 해당 챌린지의 uuid값 조회 전까지 navigation push 제한
-            return
             
+        // 이 외의 알림일 경우
         default:
             return
         }
-        
-        markUserNotificationRead(selectedNotificationMessageId: selectedNotification.messageId)
         navigationController?.pushViewController(toPushVC, animated: true)
     }
     

@@ -147,7 +147,12 @@ extension AuthAPI {
                     = UserDefaults.standard.string(forKey: UserDefaults.Keys.loginType) == LoginType.kakao.rawValue
                     ? UserDefaults.standard.string(forKey: UserDefaults.Keys.kakaoRefreshToken)
                     : ""
-            else { fatalError() }
+            else {
+                observer.onNext(.failure(.error(ErrorResponseModel(code: "1000",
+                                                                   message: "다시 로그인해주세요.",
+                                                                   trace: nil))))
+                return Disposables.create()
+            }
             
             let headers: HTTPHeaders = [
                 "Content-Type": "application/json",

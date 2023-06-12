@@ -52,7 +52,7 @@ extension MiniMapVC {
         view.addSubview(magnificationBtn)
         
         isFocusOn = false
-        isWalking = false
+        isRecording.accept(false)
         
         // configure map as read only
         mapView.mapType = .standard

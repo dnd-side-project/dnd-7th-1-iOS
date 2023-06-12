@@ -99,7 +99,7 @@ extension NotificationListTVC {
     }
     
     func configureNotificationListTVC(notificationInfo: NotificationBoxElement) {
-        iconImageView.image = UIImage(named: (NotificationListIcon(rawValue: notificationInfo.type.description.lowercased())?.getNotificationIconImageNamed(isRead: notificationInfo.isRead)) ?? "defaultThumbnail")
+        iconImageView.image = UIImage(named: NotificationCategoryType(rawValue: notificationInfo.type)?.getNotificationIconImageNamed(isRead: notificationInfo.isRead) ?? "defaultThumbnail")
         iconImageView.clipsToBounds = notificationInfo.isRead
         titleLabel.text = notificationInfo.title
         bodyLabel.text = notificationInfo.content

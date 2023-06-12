@@ -47,6 +47,11 @@ class LoginVC: BaseViewController {
         super.viewDidLoad()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        UserDefaults.standard.set(nil, forKey: UserDefaults.Keys.nickname)
+    }
+    
     override func configureView() {
         super.configureView()
         configureContentView()
@@ -182,6 +187,16 @@ extension LoginVC {
             .drive(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.setTBCtoRootVC()
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.output.kakaoLoginError
+            .asDriver(onErrorJustReturn: true)
+            .drive(onNext: { [weak self] status in
+                guard let self = self else { return }
+                if status {
+                    self.systemErrorAlert("카카오톡에 연결할 수 없습니다.")
+                }
             })
             .disposed(by: disposeBag)
     }
