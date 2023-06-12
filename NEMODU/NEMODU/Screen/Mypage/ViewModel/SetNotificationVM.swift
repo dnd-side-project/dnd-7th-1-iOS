@@ -86,7 +86,7 @@ extension SetNotificationVM {
         let path = "user/filter/notification"
         let resource = urlResource<Bool>(path: path)
         
-        apiSession.postRequest(with: resource, param: UpdateNotificationSettingRequestModel(nickname: nickname, notification: notificationType.identifier).param)
+        apiSession.postRequest(with: resource, param: UpdateNotificationSettingRequestModel(nickname: nickname, notification: notificationType.rawValue).param)
             .withUnretained(self)
             .subscribe(onNext: { owner, result in
                 switch result {
