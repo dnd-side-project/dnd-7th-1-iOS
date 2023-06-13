@@ -151,8 +151,26 @@ extension LoginVM {
                     UserDefaults.standard.set(data.nickname, forKey: UserDefaults.Keys.nickname)
                     owner.output.goToTabBar.accept(true)
                     print("네모두 로그인 성공")
+                    owner.registerUserFCMToken()
                 }
             })
             .disposed(by: bag)
+    }
+    
+    /// 네모두 로그인에 성공한 이후 해당 사용자 디바이스의 fcmToken을 서버에 등록하는 함수
+    func registerUserFCMToken() {
+        if let fcmToken = UserDefaults.standard.string(forKey: UserDefaults.Keys.fcmToken) {
+            FCMTokenManagement.shared.updateFCMToken(targetFCMToken: fcmToken)
+                .withUnretained(self)
+                .subscribe(onNext: { owner, result in
+                    switch result {
+                    case .failure(let error):
+                        print(error)
+                    case .success(let data):
+                        print("fcmToken 등록 성공: ", data)
+                    }
+                })
+                .disposed(by: bag)
+        }
     }
 }

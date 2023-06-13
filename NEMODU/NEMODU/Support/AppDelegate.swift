@@ -7,6 +7,8 @@
 
 import UIKit
 
+import RxSwift
+
 import KakaoSDKCommon
 import KakaoSDKAuth
 import KakaoSDKUser
@@ -17,6 +19,8 @@ import Firebase
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    
+    var bag = DisposeBag()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // SplashView 1초동안 보이게
@@ -24,13 +28,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         NetworkMonitor.shared.startMonitoring()
         
-        // FCM Push Notification Settings
-        FirebaseApp.configure()
-        Messaging.messaging().delegate = self
-        
+        // 알림 권한설정 요청
         UNUserNotificationCenter.current().delegate = self
         requestNotificationSetting()
         application.registerForRemoteNotifications()
+        
+        // FCM 푸쉬 알림 설정
+        FirebaseApp.configure()
+        Messaging.messaging().delegate = self
         
         // 카카오톡 Key 설정
         KakaoSDK.initSDK(appKey: "944b6ad264ad0085b68053652ee73b1b")
@@ -87,13 +92,41 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         guard let action = userInfo[NotificationCategoryType.actionIdentifier] as? String else { return }
         
-        if(action == NotificationCategoryType.fcmTokenReissue.identifier) {
-            // TODO: FCM Token 갱신 서버코드 호출
-            if let uuid: String = makeNotifiacatonUUID(userInfo: userInfo) {
-                print("Notification UUID: ", uuid)
-                // TODO: 알림 UUID 생성 후 수신 유무처리 서버에게 전송
+        if(action == NotificationCategoryType.fcmTokenReissue.rawValue) {
+            // 디바이스에 저장된 fcmToken 조회
+            if let localStoredFCMToken = UserDefaults.standard.string(forKey: UserDefaults.Keys.fcmToken) {
+                // 서버에 현재 fcmToken 갱신처리
+                FCMTokenManagement.shared.updateFCMToken(targetFCMToken: localStoredFCMToken)
+                    .withUnretained(self)
+                    .subscribe(onNext: { owner, result in
+                        switch result {
+                        case .failure(let error):
+                            print(error)
+                        case .success(let data):
+                            print("fcmToken 갱신 서버요청 성공: ", data)
+                        }
+                    })
+                    .disposed(by: bag)
             } else {
-                print("failed to create Notification UUID!")
+                // 현재 등록 fcmToken 재조회
+                Messaging.messaging().token { token, error in
+                    if let error = error {
+                        print("Error fetching FCM registration token: \(error)")
+                    } else if let token = token {
+                        print("FCM registration token: \(token)")
+                        FCMTokenManagement.shared.updateFCMToken(targetFCMToken: token)
+                            .withUnretained(self)
+                            .subscribe(onNext: { owner, result in
+                                switch result {
+                                case .failure(let error):
+                                    print(error)
+                                case .success(let data):
+                                    print("fcmToken 갱신 서버요청 성공: ", data)
+                                }
+                            })
+                            .disposed(by: self.bag)
+                    }
+                }
             }
         }
         
@@ -108,13 +141,15 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         let userInfo = response.notification.request.content.userInfo
         guard let action = userInfo[NotificationCategoryType.actionIdentifier] as? String else { return }
         
+        print("userinfo: ", userInfo)
+        
         var toGoTabVC = UIViewController()
         var toPushVC = UIViewController()
         
         switch action {
             // 친구 요청, 수락 시 마이페이지의 친구화면으로 전환
-        case NotificationCategoryType.friendRequest.identifier,
-            NotificationCategoryType.friendAccept.identifier:
+        case NotificationCategoryType.friendRequest.rawValue,
+            NotificationCategoryType.friendAccept.rawValue:
             toGoTabVC = getTabIndexInstance(targetTabIndex: 2)
             
             let friendsVC = FriendsVC()
@@ -123,13 +158,13 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             toPushVC = friendsVC
             
             // 취소된 챌린지 알림 시, 메인화면으로 전환
-        case NotificationCategoryType.challengeCancelled.identifier:
+        case NotificationCategoryType.challengeCancelled.rawValue:
             toGoTabVC = getTabIndexInstance(targetTabIndex: 1)
             
             // 초대, 수락, 시작 전 챌린지의 상세화면으로 전환
-        case NotificationCategoryType.challengeInvited.identifier,
-            NotificationCategoryType.challengeAccepted.identifier,
-            NotificationCategoryType.challengeStart.identifier:
+        case NotificationCategoryType.challengeInvited.rawValue,
+            NotificationCategoryType.challengeAccepted.rawValue,
+            NotificationCategoryType.challengeStart.rawValue:
             toGoTabVC = getTabIndexInstance(targetTabIndex: 0)
             
             guard let targetUUID = userInfo["challenge_uuid"] as? String else { return }
@@ -143,7 +178,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             toPushVC = invitedChallengeDetailVC
             
             // 진행 완료 챌린지 상세화면으로 전환
-        case NotificationCategoryType.challengeResult.identifier:
+        case NotificationCategoryType.challengeResult.rawValue:
             toGoTabVC = getTabIndexInstance(targetTabIndex: 0)
             
             guard let targetUUID = userInfo["challenge_uuid"] as? String else { return }
@@ -200,19 +235,6 @@ extension AppDelegate {
             }
     }
     
-    /// 서버에게 보낼 알림 고유 식별 ID(UUID) 반환
-    private func makeNotifiacatonUUID(userInfo: [AnyHashable : Any]) -> String? {
-        if let messageID = userInfo["gcm.message_id"] as? String {
-            if let random = userInfo["random"] as? String {
-                return messageID + random
-            } else {
-                return nil
-            }
-        }
-        
-        return nil
-    }
-    
     private func getTabIndexInstance(targetTabIndex: Int) -> UIViewController {
         let nemoduTBC = window?.rootViewController as? NEMODUTBC
         nemoduTBC?.selectedIndex = targetTabIndex
@@ -244,9 +266,48 @@ extension AppDelegate {
 extension AppDelegate: MessagingDelegate {
     
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-        let curFCMToken = UserDefaults.standard.string(forKey: UserDefaults.Keys.fcmToken) ?? ""
-        if(curFCMToken != fcmToken) {
-            // TODO: FCM Token 갱신 서버코드 호출
+        // 디바이스에 저장된 fcmToken 검사
+        if let localStoredFCMToken = UserDefaults.standard.string(forKey: UserDefaults.Keys.fcmToken) {
+            // 받은 토큰 nil값 검사
+            if let receiveFCMToken = fcmToken {
+                // 기존 디바이스에 저장된 토큰과 다를 경우 서버에게 사용자의 fcmToken 갱신요청
+                if(receiveFCMToken != localStoredFCMToken) {
+                    FCMTokenManagement.shared.updateFCMToken(targetFCMToken: receiveFCMToken)
+                        .withUnretained(self)
+                        .subscribe(onNext: { owner, result in
+                            switch result {
+                            case .failure(let error):
+                                print(error)
+                            case .success(let data):
+                                print("fcmToken 갱신 성공: ", data)
+                            }
+                        })
+                        .disposed(by: bag)
+                }
+            } else {
+                // 받은 토큰이 nil인 경우
+                // 현재 등록 fcmToken 재조회
+                Messaging.messaging().token { token, error in
+                    if let error = error {
+                        print("Error fetching FCM registration token: \(error)")
+                    } else if let token = token {
+                        print("FCM registration token: \(token)")
+                        FCMTokenManagement.shared.updateFCMToken(targetFCMToken: token)
+                            .withUnretained(self)
+                            .subscribe(onNext: { owner, result in
+                                switch result {
+                                case .failure(let error):
+                                    print(error)
+                                case .success(let data):
+                                    print("fcmToken 갱신 성공: ", data)
+                                }
+                            })
+                            .disposed(by: self.bag)
+                    }
+                }
+            }
+        } else {
+            // 디바이스에 저장된 토큰이 없는경우(ex. 설치 후 앱 최초 실행 등)
             UserDefaults.standard.set(fcmToken, forKey: UserDefaults.Keys.fcmToken)
         }
     }
