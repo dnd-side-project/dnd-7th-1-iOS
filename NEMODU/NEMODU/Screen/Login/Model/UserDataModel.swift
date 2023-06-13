@@ -21,8 +21,6 @@ extension UserDataModel {
               let pictureName = UserDefaults.standard.string(forKey: UserDefaults.Keys.pictureName),
               let picturePath = UserDefaults.standard.string(forKey: UserDefaults.Keys.picturePath),
               let loginType = UserDefaults.standard.string(forKey: UserDefaults.Keys.loginType)
-                // TODO: - fcmToken 처리
-//              let fcmToken = UserDefaults.standard.string(forKey: UserDefaults.Keys.fcmToken)
         else {
             // TODO: - 회원가입에 실패했습니다 알람 띄우기
             fatalError()
@@ -37,7 +35,7 @@ extension UserDataModel {
             "loginType": loginType,
             "pictureName": pictureName,
             "picturePath": picturePath,
-            "fcmToken": UserDefaults.standard.string(forKey: UserDefaults.Keys.fcmToken) ?? "",
+            "fcmToken": UserDefaults.standard.string(forKey: UserDefaults.Keys.fcmToken) ?? NSNull(),
             "isNotification": UserDefaults.standard.bool(forKey: UserDefaults.Keys.isNotification),
             "isExceptRecommend": isExceptRecommend
         ]
