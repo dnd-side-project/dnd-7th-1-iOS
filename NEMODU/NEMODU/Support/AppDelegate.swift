@@ -7,8 +7,6 @@
 
 import UIKit
 
-import RxSwift
-
 import KakaoSDKCommon
 import KakaoSDKAuth
 import KakaoSDKUser
