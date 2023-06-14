@@ -20,8 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     
-    var bag = DisposeBag()
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // SplashView 1초동안 보이게
         Thread.sleep(forTimeInterval: 1)
@@ -92,42 +90,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         guard let action = userInfo[NotificationCategoryType.actionIdentifier] as? String else { return }
         
-        if(action == NotificationCategoryType.fcmTokenReissue.rawValue) {
-            // 디바이스에 저장된 fcmToken 조회
-            if let localStoredFCMToken = UserDefaults.standard.string(forKey: UserDefaults.Keys.fcmToken) {
-                // 서버에 현재 fcmToken 갱신처리
-                FCMTokenManagement.shared.updateFCMToken(targetFCMToken: localStoredFCMToken)
-                    .withUnretained(self)
-                    .subscribe(onNext: { owner, result in
-                        switch result {
-                        case .failure(let error):
-                            print(error)
-                        case .success(let data):
-                            print("fcmToken 갱신 서버요청 성공: ", data)
-                        }
-                    })
-                    .disposed(by: bag)
-            } else {
-                // 현재 등록 fcmToken 재조회
-                Messaging.messaging().token { token, error in
-                    if let error = error {
-                        print("Error fetching FCM registration token: \(error)")
-                    } else if let token = token {
-                        print("FCM registration token: \(token)")
-                        FCMTokenManagement.shared.updateFCMToken(targetFCMToken: token)
-                            .withUnretained(self)
-                            .subscribe(onNext: { owner, result in
-                                switch result {
-                                case .failure(let error):
-                                    print(error)
-                                case .success(let data):
-                                    print("fcmToken 갱신 서버요청 성공: ", data)
-                                }
-                            })
-                            .disposed(by: self.bag)
-                    }
-                }
-            }
+        if NotificationCategoryType(rawValue: action) == .fcmTokenReissue {
+            FCMTokenManagement.shared.updateFCMToken(targetFCMToken: UserDefaults.standard.string(forKey: UserDefaults.Keys.fcmToken))
         }
         
         completionHandler(.newData)
@@ -141,15 +105,13 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         let userInfo = response.notification.request.content.userInfo
         guard let action = userInfo[NotificationCategoryType.actionIdentifier] as? String else { return }
         
-        print("userinfo: ", userInfo)
-        
         var toGoTabVC = UIViewController()
         var toPushVC = UIViewController()
         
-        switch action {
+        switch NotificationCategoryType(rawValue: action) {
             // 친구 요청, 수락 시 마이페이지의 친구화면으로 전환
-        case NotificationCategoryType.friendRequest.rawValue,
-            NotificationCategoryType.friendAccept.rawValue:
+        case .friendRequest,
+            .friendAccept:
             toGoTabVC = getTabIndexInstance(targetTabIndex: 2)
             
             let friendsVC = FriendsVC()
@@ -158,13 +120,13 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             toPushVC = friendsVC
             
             // 취소된 챌린지 알림 시, 메인화면으로 전환
-        case NotificationCategoryType.challengeCancelled.rawValue:
+        case .challengeCancelled:
             toGoTabVC = getTabIndexInstance(targetTabIndex: 1)
             
             // 초대, 수락, 시작 전 챌린지의 상세화면으로 전환
-        case NotificationCategoryType.challengeInvited.rawValue,
-            NotificationCategoryType.challengeAccepted.rawValue,
-            NotificationCategoryType.challengeStart.rawValue:
+        case .challengeInvited,
+            .challengeAccepted,
+            .challengeStart:
             toGoTabVC = getTabIndexInstance(targetTabIndex: 0)
             
             guard let targetUUID = userInfo["challenge_uuid"] as? String else { return }
@@ -178,7 +140,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             toPushVC = invitedChallengeDetailVC
             
             // 진행 완료 챌린지 상세화면으로 전환
-        case NotificationCategoryType.challengeResult.rawValue:
+        case .challengeResult:
             toGoTabVC = getTabIndexInstance(targetTabIndex: 0)
             
             guard let targetUUID = userInfo["challenge_uuid"] as? String else { return }
@@ -266,49 +228,11 @@ extension AppDelegate {
 extension AppDelegate: MessagingDelegate {
     
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-        // 디바이스에 저장된 fcmToken 검사
-        if let localStoredFCMToken = UserDefaults.standard.string(forKey: UserDefaults.Keys.fcmToken) {
-            // 받은 토큰 nil값 검사
-            if let receiveFCMToken = fcmToken {
-                // 기존 디바이스에 저장된 토큰과 다를 경우 서버에게 사용자의 fcmToken 갱신요청
-                if(receiveFCMToken != localStoredFCMToken) {
-                    FCMTokenManagement.shared.updateFCMToken(targetFCMToken: receiveFCMToken)
-                        .withUnretained(self)
-                        .subscribe(onNext: { owner, result in
-                            switch result {
-                            case .failure(let error):
-                                print(error)
-                            case .success(let data):
-                                print("fcmToken 갱신 성공: ", data)
-                            }
-                        })
-                        .disposed(by: bag)
-                }
-            } else {
-                // 받은 토큰이 nil인 경우
-                // 현재 등록 fcmToken 재조회
-                Messaging.messaging().token { token, error in
-                    if let error = error {
-                        print("Error fetching FCM registration token: \(error)")
-                    } else if let token = token {
-                        print("FCM registration token: \(token)")
-                        FCMTokenManagement.shared.updateFCMToken(targetFCMToken: token)
-                            .withUnretained(self)
-                            .subscribe(onNext: { owner, result in
-                                switch result {
-                                case .failure(let error):
-                                    print(error)
-                                case .success(let data):
-                                    print("fcmToken 갱신 성공: ", data)
-                                }
-                            })
-                            .disposed(by: self.bag)
-                    }
-                }
-            }
-        } else {
-            // 디바이스에 저장된 토큰이 없는경우(ex. 설치 후 앱 최초 실행 등)
-            UserDefaults.standard.set(fcmToken, forKey: UserDefaults.Keys.fcmToken)
+        // 사용자가 로그인 중일 때만 FCM 토큰 갱신 진행
+        guard UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) != nil else { return }
+        
+        if fcmToken != UserDefaults.standard.string(forKey: UserDefaults.Keys.fcmToken) {
+            FCMTokenManagement.shared.updateFCMToken(targetFCMToken: fcmToken)
         }
     }
     

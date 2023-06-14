@@ -8,60 +8,61 @@
 import Alamofire
 import RxSwift
 
+import Firebase
+
 struct FCMTokenManagement {
     
     // MARK: - Variables and Properties
     
     static let shared = FCMTokenManagement()
     
+    var apiSession: APIService = APISession()
+    let apiError = PublishSubject<APIError>()
+    
+    var bag = DisposeBag()
+    
     // MARK: - FCM Token 갱신
     
-    /// [POST] FCM 토큰을 서버에 최신화하기 위해 서버에 등록된 사용자의 fcmToken 변경을 요청 하는 함수
-    func updateFCMToken(targetFCMToken: String) -> Observable<Result<String, APIError>> {
-        Observable<Result<String, APIError>>.create { observer in
-            if !NetworkMonitor.shared.isConnected {
-                observer.onNext(.failure(.networkDisconnected))
-                return Disposables.create()
-            }
-            
-            guard let token = UserDefaults.standard.string(forKey: UserDefaults.Keys.accessToken) else { return Disposables.create() }
-            let headers: HTTPHeaders = [
-                "Content-Type": "application/json",
-                "Authorization" : token
-            ]
-            
-            let path = "auth/fcm/token"
-            let resource = urlResource<String>(path: path)
-
-            guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { return Disposables.create() }
-            let param = UpdateFCMTokenRequestModel(deviceType: getDeviceType(),
-                                                   fcmToken: targetFCMToken,
-                                                   nickname: nickname).param
-
-            let task = AF.request(resource.resultURL,
-                                  method: .post,
-                                  parameters: param,
-                                  encoding: JSONEncoding.default,
-                                  headers: headers)
-                .validate(statusCode: 200...399)
-                .responseDecodable(of: String.self) { response in
-                    switch response.result {
-                    case .failure(let error):
-                        dump(error)
-                        guard let error = response.data else { return }
-                        observer.onNext(resource.judgeError(data: error))
-                        
-                    case .success(let data):
-                        // 디바이스에 업데이트에 성공한 fcmToken을 로컬로 저장
-                        UserDefaults.standard.set(targetFCMToken, forKey: UserDefaults.Keys.fcmToken)
-                        observer.onNext(.success(data))
-                    }
+    /// FCM 토큰의 nil 값을 검사하고 유효한 토큰을 네모두 서버에 등록하는 함수
+    func updateFCMToken(targetFCMToken: String?) {
+        if let targetFCMToken = targetFCMToken {
+            registerUserFCMToken(targetFCMToken: targetFCMToken)
+        } else {
+            // 현재 등록 fcmToken 재조회
+            Messaging.messaging().token { token, error in
+                if let error = error {
+                    print("FCM 토큰을 불러올 수 없습니다: \(error)")
+                } else if let token = token {
+                    print("FCM 토큰 조회 성공: \(token)")
+                    registerUserFCMToken(targetFCMToken: token)
                 }
-
-            return Disposables.create {
-                task.cancel()
             }
         }
+    }
+    
+    /// 네모두 서버에 사용자의 FCM 토큰을 등록하는 함수
+    func registerUserFCMToken(targetFCMToken: String) {
+        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname)
+        else { fatalError() } // TODO: - nickname fatalError 처리
+        
+        let path = "auth/fcm/token"
+        let resource = urlResource<String>(path: path)
+        let param = UpdateFCMTokenRequestModel(deviceType: getDeviceType(),
+                                               fcmToken: targetFCMToken,
+                                               nickname: nickname).param
+        
+        apiSession.postRequest(with: resource, param: param)
+            .subscribe(onNext: { result in
+                switch result {
+                case .failure(let error):
+                    apiError.onError(error)
+                case .success(let data):
+                    print("FCM 토큰 갱신 성공: ", data)
+                    // 업데이트에 성공한 FCM 토큰을 디바이스에 로컬로 저장
+                    UserDefaults.standard.set(targetFCMToken, forKey: UserDefaults.Keys.fcmToken)
+                }
+            })
+            .disposed(by: bag)
     }
     
     /// (FCM Token 관리를 위한) 현재 디바이스 정보 값(PHONE or Pad) 반환
