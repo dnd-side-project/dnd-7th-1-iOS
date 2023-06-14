@@ -21,6 +21,10 @@ struct FCMTokenManagement {
     
     var bag = DisposeBag()
     
+    // MARK: - Life Cycle
+    
+    private init() { }
+    
     // MARK: - FCM Token 갱신
     
     /// FCM 토큰의 nil 값을 검사하고 유효한 토큰을 네모두 서버에 등록하는 함수
