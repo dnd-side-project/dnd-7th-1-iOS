@@ -7,6 +7,13 @@
 
 import Foundation
 
+struct InvitedChallengeListResponseModel: Codable {
+    let infos: [InvitedChallengeListElement]
+    let size: Int
+    let isLast: Bool
+    let offset: Int?
+}
+
 struct InvitedChallengeListElement: Codable {
     let created, inviterNickname, message, name: String
     let picturePath, uuid: String
@@ -18,5 +25,3 @@ extension InvitedChallengeListElement {
         return URL(string: picturePathURL)
     }
 }
-
-typealias InvitedChallengeListResponseModel = [InvitedChallengeListElement]
