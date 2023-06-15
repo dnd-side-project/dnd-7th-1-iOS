@@ -9,7 +9,7 @@ import Foundation
 import Alamofire
 
 struct AccumulateRankingListResponseModel: Codable {
-    let matrixRankings: [MatrixRanking]
+    var matrixRankings: [MatrixRanking]
 }
 
 // MARK: - MatrixRanking

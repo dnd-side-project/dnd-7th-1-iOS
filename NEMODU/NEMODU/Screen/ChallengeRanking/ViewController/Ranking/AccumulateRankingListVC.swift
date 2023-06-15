@@ -19,6 +19,8 @@ class AccumulateRankingListVC : RankingListVC {
     
     private let viewModel = AccumulateRankingListVM()
     private var accumulateRankingListResponseModel: AccumulateRankingListResponseModel?
+    private var cntAccumulateRankingList = 0
+    private var isLast = false
     
     // MARK: - Life Cycle
     
@@ -29,13 +31,20 @@ class AccumulateRankingListVC : RankingListVC {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        viewModel.getAccumulateRankingList(with: myUserNickname)
+        getAccumulateRankingData()
     }
     
     override func bindInput() {
         super.bindInput()
         
+        bindMyAccumulateRanking()
         bindAccumulateRankingList()
+    }
+    
+    override func bindOutput() {
+        super.bindOutput()
+        
+        bindAPIErrorAlert(viewModel)
     }
     
     override func configureWeeksNavigation(targetDate: Int) {
@@ -46,22 +55,19 @@ class AccumulateRankingListVC : RankingListVC {
         weeksNavigationView.isHidden = true
     }
     
-    override func bindOutput() {
-        super.bindOutput()
-        
-        bindAPIErrorAlert(viewModel)
-    }
-    
     // MARK: - Functions
     
-    func configureRankingUserTVC() {
-        guard let accumulateRankingList = accumulateRankingListResponseModel else { return }
-        for accumulateRanking in accumulateRankingList.matrixRankings {
-            if accumulateRanking.nickname == myUserNickname {
-                myRankingView.configureRankingUserView(rankNumber: accumulateRanking.rank, profileImageURL: accumulateRanking.picturePathURL, nickname: accumulateRanking.nickname, blocksNumber: accumulateRanking.score)
-                myRankingView.configureRankingTop()
-            }
-        }
+    func getAccumulateRankingData() {
+        accumulateRankingListResponseModel = nil
+        isLast = false
+        cntAccumulateRankingList = 0
+        viewModel.getMyAccumulateRanking(nickname: myUserNickname)
+        viewModel.getAccumulateRankingList(offset: cntAccumulateRankingList + 1)
+    }
+    
+    func configureRankingUserTVC(myAccumulateRanking: MatrixRanking) {
+        myRankingView.configureRankingUserView(rankNumber: myAccumulateRanking.rank, profileImageURL: myAccumulateRanking.picturePathURL, nickname: myAccumulateRanking.nickname, blocksNumber: myAccumulateRanking.score)
+        myRankingView.configureRankingTop()
     }
     
     override func configureTableView() {
@@ -124,15 +130,46 @@ extension AccumulateRankingListVC : UITableViewDelegate {
 // MARK: - Output
 
 extension AccumulateRankingListVC {
+    private func bindMyAccumulateRanking() {
+        viewModel.output.myAccumulateRanking
+            .subscribe(onNext: { [weak self] data in
+                guard let self = self else { return }
+                
+                self.configureRankingUserTVC(myAccumulateRanking: data)
+            })
+            .disposed(by: disposeBag)
+    }
+    
     private func bindAccumulateRankingList() {
         viewModel.output.accumulateRankings
             .subscribe(onNext: { [weak self] data in
                 guard let self = self else { return }
                 
-                self.accumulateRankingListResponseModel = data
+                if self.accumulateRankingListResponseModel == nil {
+                    self.accumulateRankingListResponseModel = data
+                    self.cntAccumulateRankingList = self.accumulateRankingListResponseModel?.matrixRankings.count ?? 0
+                } else {
+                    self.accumulateRankingListResponseModel?.matrixRankings.append(contentsOf: data.matrixRankings)
+                    let responseDataList = data.matrixRankings.count
+                    self.isLast = responseDataList == 0 ? true : false
+                    self.cntAccumulateRankingList += responseDataList
+                }
                 
-                self.configureRankingUserTVC()
                 self.rankingTableView.reloadData()
+            })
+            .disposed(by: disposeBag)
+        
+        rankingTableView.rx.willDisplayCell
+            .subscribe(onNext: { [weak self] cell, indexPath in
+                guard let self = self else { return }
+                
+                if let cntRankingList = self.accumulateRankingListResponseModel?.matrixRankings.count {
+                    let lastIndex = cntRankingList - 1
+                    if(lastIndex == indexPath.row &&
+                       self.isLast == false) {
+                        self.viewModel.getAccumulateRankingList(offset: cntRankingList + 1)
+                    }                    
+                }
             })
             .disposed(by: disposeBag)
     }
