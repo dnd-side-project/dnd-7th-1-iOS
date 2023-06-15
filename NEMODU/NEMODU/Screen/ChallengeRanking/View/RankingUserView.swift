@@ -131,12 +131,19 @@ extension RankingUserView {
     
     /// 기본적인 랭킹 목록 정보를 입력하는 함수
     func configureRankingUserView(rankNumber: Int, profileImageURL: URL?, nickname: String, blocksNumber: Int) {
-        rankNumberLabel.text = "\(rankNumber)"
+        var rank = String(rankNumber)
+        var score = String(blocksNumber)
+        if rankNumber == 0 {
+            rank = "-"
+            score = "-"
+        }
+        
+        rankNumberLabel.text = "\(rank)"
         userProfileImageView.kf.setImage(with: profileImageURL, placeholder: UIImage.defaultThumbnail)
         showMeLabel.isHidden = !isMyNickname(nickname: nickname)
 
         userNicknameLabel.text = nickname
-        blocksNumberLabel.text = "\(blocksNumber.insertComma)"
+        blocksNumberLabel.text = "\(score.insertComma)"
     }
     
     /// 걸음수(Step) 랭킹에 표시되는 기본 단위 설정
