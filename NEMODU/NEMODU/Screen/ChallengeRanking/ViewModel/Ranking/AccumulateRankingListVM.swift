@@ -30,6 +30,8 @@ final class AccumulateRankingListVM: BaseViewModel {
     
     struct Output: AccumulateRankingListViewModelOuput {
         var loading = BehaviorRelay<Bool>(value: false)
+        
+        var myAccumulateRanking = PublishRelay<MatrixRanking>()
         var accumulateRankings = PublishRelay<AccumulateRankingListResponseModel>()
     }
     
@@ -60,8 +62,25 @@ extension AccumulateRankingListVM: Output {
 // MARK: - Networking
 
 extension AccumulateRankingListVM {
-    func getAccumulateRankingList(with nickname: String) {
-        let path = "matrix/rank/accumulate?nickname=\(nickname)"
+    func getMyAccumulateRanking(nickname: String) {
+        let path = "matrix/rank/accumulate/\(nickname)"
+        let resource = urlResource<MatrixRanking>(path: path)
+        
+        apiSession.getRequest(with: resource)
+            .withUnretained(self)
+            .subscribe(onNext: { owner, result in
+                switch result {
+                case .failure(let error):
+                    owner.apiError.onError(error)
+                case .success(let data):
+                    owner.output.myAccumulateRanking.accept(data)
+                }
+            })
+            .disposed(by: bag)
+    }
+    
+    func getAccumulateRankingList(offset: Int, size: Int = 10) {
+        let path = "matrix/rank/accumulate?offset=\(offset)&size=\(size)"
         let resource = urlResource<AccumulateRankingListResponseModel>(path: path)
         
         apiSession.getRequest(with: resource)
