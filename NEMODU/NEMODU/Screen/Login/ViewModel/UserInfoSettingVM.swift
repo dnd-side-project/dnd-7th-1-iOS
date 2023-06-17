@@ -130,7 +130,7 @@ extension UserInfoSettingVM {
         guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
         let path = "auth/logout"
         let resource = urlResource<String>(path: path)
-        let param = LogoutRequestModel(deviceType: UIDevice.current.model.contains("iPhone") ? "PHONE" : "PAD",
+        let param = LogoutRequestModel(deviceType: FCMTokenManagement.shared.getDeviceType(),
                                        nickname: nickname)
         
         apiSession.postRequest(with: resource, param: param.param)

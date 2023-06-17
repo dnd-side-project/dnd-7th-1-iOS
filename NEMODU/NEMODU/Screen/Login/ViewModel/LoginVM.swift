@@ -151,6 +151,7 @@ extension LoginVM {
                     UserDefaults.standard.set(data.nickname, forKey: UserDefaults.Keys.nickname)
                     owner.output.goToTabBar.accept(true)
                     print("네모두 로그인 성공")
+                    FCMTokenManagement.shared.updateFCMToken(targetFCMToken: UserDefaults.standard.string(forKey: UserDefaults.Keys.fcmToken))
                 }
             })
             .disposed(by: bag)

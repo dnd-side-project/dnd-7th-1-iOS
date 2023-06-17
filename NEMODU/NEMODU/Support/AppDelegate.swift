@@ -17,20 +17,21 @@ import Firebase
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // SplashView 1초동안 보이게
         Thread.sleep(forTimeInterval: 1)
         
         NetworkMonitor.shared.startMonitoring()
         
-        // FCM Push Notification Settings
-        FirebaseApp.configure()
-        Messaging.messaging().delegate = self
-        
+        // 알림 권한설정 요청
         UNUserNotificationCenter.current().delegate = self
         requestNotificationSetting()
         application.registerForRemoteNotifications()
+        
+        // FCM 푸쉬 알림 설정
+        FirebaseApp.configure()
+        Messaging.messaging().delegate = self
         
         // 카카오톡 Key 설정
         KakaoSDK.initSDK(appKey: "944b6ad264ad0085b68053652ee73b1b")
@@ -84,22 +85,31 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         Messaging.messaging().apnsToken = deviceToken
     }
     
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        guard let action = userInfo[NotificationCategoryType.actionIdentifier] as? String else { return }
+        
+        if NotificationCategoryType(rawValue: action) == .fcmTokenReissue {
+            FCMTokenManagement.shared.updateFCMToken(targetFCMToken: UserDefaults.standard.string(forKey: UserDefaults.Keys.fcmToken))
+        }
+        
+        completionHandler(.newData)
+    }
+    
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler([.banner, .sound, .badge])
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
         let userInfo = response.notification.request.content.userInfo
-        
-        guard let action = userInfo["action"] as? String else { return }
+        guard let action = userInfo[NotificationCategoryType.actionIdentifier] as? String else { return }
         
         var toGoTabVC = UIViewController()
         var toPushVC = UIViewController()
         
-        switch action {
+        switch NotificationCategoryType(rawValue: action) {
             // 친구 요청, 수락 시 마이페이지의 친구화면으로 전환
-        case NotificationCategoryType.friendRequest.identifier,
-            NotificationCategoryType.friendAccept.identifier:
+        case .friendRequest,
+            .friendAccept:
             toGoTabVC = getTabIndexInstance(targetTabIndex: 2)
             
             let friendsVC = FriendsVC()
@@ -108,13 +118,13 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             toPushVC = friendsVC
             
             // 취소된 챌린지 알림 시, 메인화면으로 전환
-        case NotificationCategoryType.challengeCancelled.identifier:
+        case .challengeCancelled:
             toGoTabVC = getTabIndexInstance(targetTabIndex: 1)
             
             // 초대, 수락, 시작 전 챌린지의 상세화면으로 전환
-        case NotificationCategoryType.challengeInvited.identifier,
-            NotificationCategoryType.challengeAccepted.identifier,
-            NotificationCategoryType.challengeStart.identifier:
+        case .challengeInvited,
+            .challengeAccepted,
+            .challengeStart:
             toGoTabVC = getTabIndexInstance(targetTabIndex: 0)
             
             guard let targetUUID = userInfo["challenge_uuid"] as? String else { return }
@@ -128,7 +138,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             toPushVC = invitedChallengeDetailVC
             
             // 진행 완료 챌린지 상세화면으로 전환
-        case NotificationCategoryType.challengeResult.identifier:
+        case .challengeResult:
             toGoTabVC = getTabIndexInstance(targetTabIndex: 0)
             
             guard let targetUUID = userInfo["challenge_uuid"] as? String else { return }
@@ -216,7 +226,12 @@ extension AppDelegate {
 extension AppDelegate: MessagingDelegate {
     
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-        UserDefaults.standard.set(fcmToken, forKey: UserDefaults.Keys.fcmToken)
+        // 사용자가 로그인 중일 때만 FCM 토큰 갱신 진행
+        guard UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) != nil else { return }
+        
+        if fcmToken != UserDefaults.standard.string(forKey: UserDefaults.Keys.fcmToken) {
+            FCMTokenManagement.shared.updateFCMToken(targetFCMToken: fcmToken)
+        }
     }
     
 }
