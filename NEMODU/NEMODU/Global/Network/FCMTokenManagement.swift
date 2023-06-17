@@ -2,7 +2,7 @@
 //  FCMTokenManagement.swift
 //  NEMODU
 //
-//  Created by Kennadi on 2023/06/12.
+//  Created by Kim HeeJae on 2023/06/12.
 //
 
 import Alamofire
@@ -67,6 +67,11 @@ struct FCMTokenManagement {
                 }
             })
             .disposed(by: bag)
+    }
+    
+    /// Firebase Messaging을 통해 FCM 토큰을 가져오는 함수
+    func getFCMToken() -> String? {
+        return Messaging.messaging().fcmToken
     }
     
     /// (FCM Token 관리를 위한) 현재 디바이스 정보 값(PHONE or Pad) 반환

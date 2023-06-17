@@ -35,7 +35,7 @@ extension UserDataModel {
             "loginType": loginType,
             "pictureName": pictureName,
             "picturePath": picturePath,
-            "fcmToken": UserDefaults.standard.string(forKey: UserDefaults.Keys.fcmToken) ?? NSNull(),
+            "fcmToken": FCMTokenManagement.shared.getFCMToken() ?? NSNull(),
             "isNotification": UserDefaults.standard.bool(forKey: UserDefaults.Keys.isNotification),
             "isExceptRecommend": isExceptRecommend
         ]
