@@ -76,7 +76,6 @@ extension ChallengeVM {
     
     func getInvitedChallengeList(size: Int = 10) {
         if !output.isLastInvitedChallenge.value {
-            print("호출됨")
             guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
             var path = "challenge/invite?nickname=\(nickname)&size=\(size)"
             if let offset = output.nextOffsetInvitedChallenge.value {
