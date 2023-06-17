@@ -1,5 +1,5 @@
 //
-//  ProgressAndDoneChallengeListResponseModel.swift
+//  ProgressChallengeListResponseModel.swift
 //  NEMODU
 //
 //  Created by Kime Heejae on 2022/10/31.
@@ -14,4 +14,4 @@ struct ProgressAndDoneChallengeListElement: Codable {
     let picturePaths: [String]
 }
 
-typealias ProgressAndDoneChallengeListResponseModel = [ProgressAndDoneChallengeListElement]
+typealias ProgressChallengeListResponseModel = [ProgressAndDoneChallengeListElement]

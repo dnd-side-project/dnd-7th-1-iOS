@@ -29,11 +29,17 @@ final class ChallengeVM: BaseViewModel {
     struct Output: ChallengeViewModelOuput {
         var loading = BehaviorRelay<Bool>(value: false)
         
-        var invitedChallengeList = PublishRelay<InvitedChallengeListResponseModel>()
+        var invitedChallengeList = PublishRelay<[InvitedChallengeListElement]>()
+        var isLastInvitedChallenge = BehaviorRelay<Bool>(value: false)
+        var nextOffsetInvitedChallenge = BehaviorRelay<Int?>(value: nil)
         
         var waitChallengeList = PublishRelay<WaitChallengeListResponseModel>()
-        var progressChallengeList = PublishRelay<ProgressAndDoneChallengeListResponseModel>()
-        var doneChallengeList = PublishRelay<ProgressAndDoneChallengeListResponseModel>()
+        
+        var progressChallengeList = PublishRelay<ProgressChallengeListResponseModel>()
+        
+        var doneChallengeList = PublishRelay<[ProgressAndDoneChallengeListElement]>()
+        var isLastDoneChallenge = BehaviorRelay<Bool>(value: false)
+        var nextOffsetDoneChallenge = BehaviorRelay<Int?>(value: nil)
     }
     
     // MARK: - Init
@@ -63,34 +69,45 @@ extension ChallengeVM: Output {
 // MARK: - Networking
 
 extension ChallengeVM {
-    func getInvitedChallengeList() {
-        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { return }
-        let path = "challenge/invite?nickname=\(nickname)"
-        let resource = urlResource<InvitedChallengeListResponseModel>(path: path)
-        
-        apiSession.getRequest(with: resource)
-            .withUnretained(self)
-            .subscribe(onNext: { owner, result in
-                
-                switch result {
-                case .failure(let error):
-                    owner.apiError.onNext(error)
-                case .success(let data):
-                    owner.output.invitedChallengeList.accept(data)
-                }
-            })
-            .disposed(by: bag)
+    func refreshInvitedChallengeList() {
+        output.isLastInvitedChallenge.accept(false)
+        getInvitedChallengeList()
+    }
+    
+    func getInvitedChallengeList(size: Int = 10) {
+        if !output.isLastInvitedChallenge.value {
+            print("호출됨")
+            guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
+            var path = "challenge/invite?nickname=\(nickname)&size=\(size)"
+            if let offset = output.nextOffsetInvitedChallenge.value {
+                path += "&offset=\(offset)"
+            }
+            let resource = urlResource<InvitedChallengeListResponseModel>(path: path)
+            
+            apiSession.getRequest(with: resource)
+                .withUnretained(self)
+                .subscribe(onNext: { owner, result in
+                    switch result {
+                    case .failure(let error):
+                        owner.apiError.onNext(error)
+                    case .success(let data):
+                        owner.output.invitedChallengeList.accept(data.infos)
+                        owner.output.isLastInvitedChallenge.accept(data.isLast)
+                        owner.output.nextOffsetInvitedChallenge.accept(data.offset)
+                    }
+                })
+                .disposed(by: bag)
+        }
     }
     
     func getWaitChallengeList() {
-        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { return }
+        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
         let path = "challenge/wait?nickname=\(nickname)"
         let resource = urlResource<WaitChallengeListResponseModel>(path: path)
         
         apiSession.getRequest(with: resource)
             .withUnretained(self)
             .subscribe(onNext: { owner, result in
-                
                 switch result {
                 case .failure(let error):
                     owner.apiError.onNext(error)
@@ -102,14 +119,13 @@ extension ChallengeVM {
     }
     
     func getProgressChallengeList() {
-        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { return }
+        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
         let path = "challenge/progress?nickname=\(nickname)"
-        let resource = urlResource<ProgressAndDoneChallengeListResponseModel>(path: path)
+        let resource = urlResource<ProgressChallengeListResponseModel>(path: path)
         
         apiSession.getRequest(with: resource)
             .withUnretained(self)
             .subscribe(onNext: { owner, result in
-                
                 switch result {
                 case .failure(let error):
                     owner.apiError.onError(error)
@@ -120,22 +136,28 @@ extension ChallengeVM {
             .disposed(by: bag)
     }
     
-    func getDoneChallengeList() {
-        guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { return }
-        let path = "challenge/done?nickname=\(nickname)"
-        let resource = urlResource<ProgressAndDoneChallengeListResponseModel>(path: path)
-        
-        apiSession.getRequest(with: resource)
-            .withUnretained(self)
-            .subscribe(onNext: { owner, result in
-                
-                switch result {
-                case .failure(let error):
-                    owner.apiError.onError(error)
-                case .success(let data):
-                    owner.output.doneChallengeList.accept(data)
-                }
-            })
-            .disposed(by: bag)
+    func getDoneChallengeList(size: Int = 10) {
+        if !output.isLastDoneChallenge.value {
+            guard let nickname = UserDefaults.standard.string(forKey: UserDefaults.Keys.nickname) else { fatalError() }
+            var path = "challenge/done?nickname=\(nickname)&size=\(size)"
+            if let offset = output.nextOffsetDoneChallenge.value {
+                path += "&offset=\(offset)"
+            }
+            let resource = urlResource<DoneChallengeListResponseModel>(path: path)
+            
+            apiSession.getRequest(with: resource)
+                .withUnretained(self)
+                .subscribe(onNext: { owner, result in
+                    switch result {
+                    case .failure(let error):
+                        owner.apiError.onError(error)
+                    case .success(let data):
+                        owner.output.doneChallengeList.accept(data.infos)
+                        owner.output.isLastDoneChallenge.accept(data.isLast)
+                        owner.output.nextOffsetDoneChallenge.accept(data.offset)
+                    }
+                })
+                .disposed(by: bag)
+        }
     }
 }
