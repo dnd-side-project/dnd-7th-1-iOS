@@ -197,8 +197,8 @@ extension NotificationBoxVC {
                 
                 self.popUpAlert(alertType: .emptyNotification,
                                 targetVC: self,
-                                highlightBtnAction: #selector(confirmEmptyNotification),
-                                normalBtnAction: #selector(cancelEmptyNotification))
+                                highlightBtnAction: #selector(self.confirmEmptyNotification),
+                                normalBtnAction: #selector(self.cancelEmptyNotification))
             })
             .disposed(by: disposeBag)
     }
